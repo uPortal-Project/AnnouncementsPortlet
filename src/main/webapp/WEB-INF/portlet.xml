@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd
+    http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+    version="1.0">
+    
+    <!-- IMPORTANT: For this portlet to work, you must mirror all <security-role-ref> elements in both portlet sections!! -->
+    
+    <portlet>
+        <portlet-name>AnnouncementsDisplay</portlet-name>
+        <display-name xml:lang="en">Announcements</display-name>
+        <display-name xml:lang="sv">Tillkännagivanden</display-name>
+        <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>/WEB-INF/context/portlet/announcementsDisplay.xml</value>
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+            <portlet-mode>edit</portlet-mode>
+        </supports>
+        
+        <supported-locale>en</supported-locale>
+        <supported-locale>sv</supported-locale>
+        
+        <resource-bundle>ann-portlet</resource-bundle>
+        
+        <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
+        <security-role-ref>
+            <role-name>Portal_Administrators</role-name>
+            <role-link>local.2</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>Everyone</role-name>
+            <role-link>local.0</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>All_Logged_In_Users</role-name>
+            <role-link>pags.1</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>Faculty</role-name>
+            <role-link>local.23</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>Staff</role-name>
+            <role-link>local.33</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>Students</role-name>
+            <role-link>local.34</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>Grad_Students</role-name>
+            <role-link>local.26</role-link>
+        </security-role-ref>
+        
+    </portlet>
+    
+    <portlet>
+        <portlet-name>AnnouncementsAdmin</portlet-name>
+        <display-name xml:lang="en">Announcement Administration</display-name>
+        <display-name xml:lang="sv">Administrera Tillkännagivanden</display-name>
+        
+        <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+        <init-param>
+            <name>contextConfigLocation</name>
+            <value>/WEB-INF/context/portlet/announcementsAdmin.xml</value>
+            
+        </init-param>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>view</portlet-mode>
+        </supports>
+        
+        <supported-locale>en</supported-locale>
+        <supported-locale>sv</supported-locale>
+        
+        <resource-bundle>ann-admin-portlet</resource-bundle>
+        
+        <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
+        <security-role-ref>
+            <role-name>Portal_Administrators</role-name>
+            <role-link>local.2</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>Everyone</role-name>
+            <role-link>local.0</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>All_Logged_In_Users</role-name>
+            <role-link>pags.1</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>Faculty</role-name>
+            <role-link>local.23</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>Staff</role-name>
+            <role-link>local.33</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>Students</role-name>
+            <role-link>local.34</role-link>
+        </security-role-ref>
+        
+        <security-role-ref>
+            <role-name>Grad_Students</role-name>
+            <role-link>local.26</role-link>
+        </security-role-ref>
+        
+    </portlet>
+    
+</portlet-app>

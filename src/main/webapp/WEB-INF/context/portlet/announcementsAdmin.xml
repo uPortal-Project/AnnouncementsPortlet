@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+    
+    <!-- Controllers -->
+    
+    <bean id="abstractController" abstract="true">
+        <property name="announcementService">
+            <ref bean="announcementService"/>
+        </property>
+    </bean>
+    
+    <bean id="baseAdminController" parent="abstractController"
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.BaseAdminController"/>
+    
+    <bean id="showTopicController" parent="abstractController"
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.ShowTopicController"/>
+    
+    <bean id="deleteTopicController" parent="abstractController"
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.DeleteTopicController"/>
+    
+    <bean id="approveAnnouncementController" parent="abstractController"
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.ApproveAnnouncementController">
+        <property name="displayController" ref="displayAnnouncementsController"/>
+    </bean>
+    
+    <bean id="deleteAnnouncementController" parent="abstractController"
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.DeleteAnnouncementController"/>
+ 
+    <bean id="addUserController" parent="abstractController"
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.AddUserController"/>    
+    
+    <bean id="deleteUserController" parent="abstractController"
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.DeleteUserController"/>    
+       
+    <bean id="addTopicFormController" parent="abstractController" 
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.AddTopicFormController">
+        <property name="commandClass" value="edu.uci.vcsa.portal.portlets.announcements.model.Topic"/>
+        <property name="commandName" value="topic"/>
+        <property name="formView" value="addTopic"/>
+        <property name="successView" value="baseAdmin"/>
+        <property name="validator" ref="addTopicValidator"/>
+    </bean>
+    
+    <bean id="addMembersFormController" parent="abstractController" 
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.AddMembersFormController">
+        <property name="groupService">
+            <ref bean="groupService"/>
+        </property>
+        <property name="commandClass" value="edu.uci.vcsa.portal.portlets.announcements.model.RoleSelection"/>
+        <property name="commandName" value="selection"/>
+        <property name="formView" value="addMembers"/>
+        <property name="successView" value="addTopic"/>
+    </bean>
+    
+    <bean id="addAnnouncementFormController" parent="abstractController" 
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.AddAnnouncementFormController">
+        <property name="commandClass" value="edu.uci.vcsa.portal.portlets.announcements.model.Announcement"/>
+        <property name="commandName" value="announcement"/>
+        <property name="formView" value="addAnnouncement"/>
+        <property name="successView" value="showTopic"/>
+        <property name="validator" ref="addAnnouncementValidator"/>
+    </bean>
+    
+    <!-- Validators -->
+    
+    <bean id="addTopicValidator" class="edu.uci.vcsa.portal.portlets.announcements.model.validators.TopicValidator"/>
+    <bean id="addAnnouncementValidator" class="edu.uci.vcsa.portal.portlets.announcements.model.validators.AnnouncementValidator"/>
+        
+    <!-- Portlet Mode handling -->
+       
+    <bean id="parameterMappingInterceptor" class="org.springframework.web.portlet.handler.ParameterMappingInterceptor"/>
+    
+    <bean id="portletModeParameterHandlerMapping" class="org.springframework.web.portlet.handler.PortletModeParameterHandlerMapping">
+        <property name="order" value="10"/>
+        <property name="interceptors">
+            <list>
+                <ref bean="parameterMappingInterceptor"/>
+                <ref bean="openSessionInViewInterceptor"/>
+            </list>
+        </property>
+        <property name="portletModeParameterMap">
+            <map>
+                <entry key="view">
+                    <map>
+                        <entry key="baseAdmin" value-ref="baseAdminController"/>
+                        <entry key="addTopic" value-ref="addTopicFormController"/>
+                        <entry key="deleteTopic" value-ref="deleteTopicController"/>
+                        <entry key="showTopic" value-ref="showTopicController"/>
+                        <entry key="addMembers" value-ref="addMembersFormController"/>
+                        <entry key="addUser" value-ref="addUserController"/>            
+                        <entry key="deleteUser" value-ref="deleteUserController"/>              
+                        <entry key="addAnnouncement" value-ref="addAnnouncementFormController"/>
+                        <entry key="deleteAnnouncement" value-ref="deleteAnnouncementController"/>
+                        <entry key="approveAnnouncement" value-ref="approveAnnouncementController"/>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="portletModeHandlerMapping" class="org.springframework.web.portlet.handler.PortletModeHandlerMapping">
+        <property name="order" value="20"/>
+        <property name="interceptors">
+            <list>
+                <ref bean="openSessionInViewInterceptor"/>
+            </list>
+        </property>
+        <property name="portletModeMap">
+            <map>
+                <entry key="view" value-ref="baseAdminController"/>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="exceptionHandler" parent="defaultExceptionHandlerTemplate"/>
+    
+</beans>

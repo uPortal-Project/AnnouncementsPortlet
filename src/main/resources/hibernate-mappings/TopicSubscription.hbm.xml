@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping package="edu.uci.vcsa.portal.portlets.announcements.model" default-cascade="none">
+
+    <class name="TopicSubscription" table="SUBSCRIPTION">
+
+        <cache usage="nonstrict-read-write"/>
+
+        <id name="id" column="SUB_ID" type="long">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="topic" class="Topic" lazy="proxy">
+            <column name="TOPIC_ID"></column>
+        </many-to-one>
+
+        <property name="owner" type="string" column="OWNER_ID"/>
+        <property name="subscribed" type="boolean" column="SUBSCRIBED"/>
+
+    </class>
+
+</hibernate-mapping>

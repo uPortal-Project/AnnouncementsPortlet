@@ -1,0 +1,132 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+    
+    <bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="false">
+        <property name="location" value="classpath:datasource.properties"/>
+    </bean>    
+    
+    <!-- Message source for this context, loaded from localized "messages_xx" files -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>messages</value>
+                <value>validation</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- Database configuration beans -->
+    <!-- DATASOURCE CONNECTIONS BEANS -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName">
+            <value>${driver.class}</value>
+        </property>
+        <property name="url">
+            <value>${driver.url}</value>
+        </property>
+        <property name="username">
+            <value>${driver.username}</value>  
+        </property>
+        <property name="password">
+            <value>${driver.password}</value>
+        </property>
+        <property name="initialSize" value="5"/>
+        <property name="maxActive" value="50"/>
+    </bean>
+    
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="flushModeName">
+            <value>FLUSH_AUTO</value>
+        </property>   
+    </bean>
+    
+    <!-- Default View Resolver -->
+    <bean id="viewResolver"
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="cache" value="true"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    
+    
+    <!-- Abstract Default Exception Handler Bean -->
+    <bean id="defaultExceptionHandlerTemplate"
+        class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver"
+        abstract="true">
+        <property name="defaultErrorView" value="error"/>
+        <property name="exceptionMappings">
+            <props>
+                <prop key="edu.uci.vcsa.portal.portlets.announcements.UnauthorizedException">errorPermission</prop>
+                <prop key="java.lang.Exception">error</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <!-- DAO creation for both portlets -->
+    <bean id="announcementService" class="edu.uci.vcsa.portal.portlets.announcements.service.HibernateAnnouncementService">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
+    
+    <bean id="groupService" class="edu.uci.vcsa.portal.portlets.announcements.service.PortletXMLGroupService" init-method="init" />
+    
+    <bean id="topicSubscriptionService" class="edu.uci.vcsa.portal.portlets.announcements.service.TopicSubscriptionService" init-method="init">
+        <property name="announcementService" ref="announcementService"/>
+        <property name="emergencyTopic" ref="emergencyTopic"/>
+    </bean>
+    
+    <!-- Cleanup thread bean -->
+    <!-- To disable the automatic deletion of old announcements, just comment out this bean -->
+    <bean id="cleanupThread" class="edu.uci.vcsa.portal.portlets.announcements.service.AnnouncementCleanupThread" init-method="start">
+        <property name="announcementService" ref="announcementService"/>
+        <property name="hourToCheck" value="3"/>
+        <property name="minuteToCheck" value="0"/>    
+    </bean>
+    
+    <!-- Emergency Topic Definition -->
+    <bean id="emergencyTopic" class="edu.uci.vcsa.portal.portlets.announcements.model.Topic">
+        <property name="creator"><value>automatic</value></property>
+        <property name="title"><value>EMERGENCY</value></property>
+        <property name="description"><value>Do not edit this topic!</value></property>
+        <property name="allowRss"><value>false</value></property>
+        <property name="subscriptionMethod"><value>4</value></property>
+        <property name="audience">
+            <set>
+                <value>Everyone</value>
+            </set>
+        </property>
+        <property name="admins">
+            <set>
+                <value>Portal_Administrators</value>
+            </set>
+        </property>
+    </bean>
+    
+    <!-- Controller must be defined here so that both portlets can access it -->
+
+    <bean id="displayAnnouncementsController" 
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.BaseDisplayController">
+        <property name="tss" ref="topicSubscriptionService"/>
+        <property name="guestAnnouncementCacheTimeout" value="60"/>    <!-- in minutes -->
+    </bean>
+
+</beans>

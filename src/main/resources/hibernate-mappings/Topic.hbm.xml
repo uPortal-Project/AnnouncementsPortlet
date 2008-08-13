@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping package="edu.uci.vcsa.portal.portlets.announcements.model"
+            default-cascade="all-delete-orphan">
+
+   <class name="Topic" table="TOPIC">
+            
+        <cache usage="nonstrict-read-write"/>
+            
+        <id name="id" column="TOPIC_ID" type="long">
+             <generator class="native"/>
+        </id>
+            
+        <set name="announcements" lazy="true" inverse="true" cascade="all">
+             <key column="PARENT_ID"/>
+             <one-to-many class="edu.uci.vcsa.portal.portlets.announcements.model.Announcement" />
+        </set>
+            
+        <set name="audience" lazy="false" table="AUDIENCE">
+             <cache usage="nonstrict-read-write"/>
+             <key column="PARENT_ID"/>
+             <element column="AUDIENCE_MEMBER" type="string"/>
+        </set>
+            
+        <set name="admins" lazy="false" table="ADMINS">
+             <cache usage="nonstrict-read-write"/>
+             <key column="PARENT_ID"/>
+             <element column="ADMIN" type="string"/>
+        </set>
+            
+        <set name="authors" lazy="false" table="AUTHORS">
+             <cache usage="nonstrict-read-write"/>
+             <key column="PARENT_ID"/>
+             <element column="AUTHOR" type="string"/>
+        </set>
+            
+        <set name="moderators" lazy="false" table="MODERATORS">
+             <cache usage="nonstrict-read-write"/>
+             <key column="PARENT_ID"/>
+             <element column="MODERATOR" type="string"/>
+        </set>
+            
+        <property name="title" type="text" column="TITLE"/>
+        <property name="description" type="text" column="DESCRP"/>
+        <property name="creator" type="string" column="CREATED_BY"/>
+        <property name="allowRss" type="boolean" column="ALLOW_RSS"/>
+        <property name="subscriptionMethod" type="int" column="SUB_METHOD"/>
+            
+   </class>
+
+</hibernate-mapping>

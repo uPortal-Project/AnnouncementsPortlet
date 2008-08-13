@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Controllers -->
+    
+    <bean id="abstractDisplayController" abstract="true">
+        <property name="announcementService">
+            <ref bean="announcementService"/>
+        </property>
+    </bean>
+        
+    <bean id="displayFullAnnouncementController" parent="abstractDisplayController" 
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.DisplayFullAnnouncementController"/>
+    
+    
+    <bean id="editDisplayPreferencesController" parent="abstractDisplayController" 
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.EditDisplayPreferencesController">
+        <property name="tss" ref="topicSubscriptionService"/>
+    </bean>
+    
+    
+    <!-- Portlet Mode handling -->
+        
+    <bean id="parameterMappingInterceptor" class="org.springframework.web.portlet.handler.ParameterMappingInterceptor"/>
+    
+    <bean id="portletModeParameterHandlerMapping" class="org.springframework.web.portlet.handler.PortletModeParameterHandlerMapping">
+        <property name="order" value="10"/>
+        <property name="interceptors">
+            <list>
+                <ref bean="openSessionInViewInterceptor"/>
+                <ref bean="parameterMappingInterceptor"/>
+            </list>
+        </property>
+        <property name="portletModeParameterMap">
+            <map>
+                <entry key="view">
+                    <map>
+                        <entry key="displayAnnouncements" value-ref="displayAnnouncementsController"/>
+                        <entry key="displayFullAnnouncement" value-ref="displayFullAnnouncementController"/>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="portletModeHandlerMapping" class="org.springframework.web.portlet.handler.PortletModeHandlerMapping">
+        <property name="order" value="20"/>
+        <property name="interceptors">
+            <list>
+                <ref bean="openSessionInViewInterceptor"/>
+            </list>
+        </property>
+        <property name="portletModeMap">
+            <map>
+                <entry key="view" value-ref="displayAnnouncementsController"/>
+                <entry key="edit" value-ref="editDisplayPreferencesController"/> 
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="exceptionHandler" parent="defaultExceptionHandlerTemplate"/>
+
+</beans>

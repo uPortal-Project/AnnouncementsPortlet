@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping package="edu.uci.vcsa.portal.portlets.announcements.model" default-cascade="none">
+
+    <class name="Announcement" table="ANNOUNCEMENT">
+
+        <cache usage="nonstrict-read-write"/>
+
+        <id name="id" column="ANN_ID" type="long">
+            <generator class="native"/>
+        </id>
+
+        <property name="title" type="text" column="TITLE"/>
+        <property name="abstractText" type="text" column="ABSTRACT"/>
+        <property name="created" type="timestamp" column="CREATED"/>
+        <property name="startDisplay" type="timestamp" column="START_DISPLAY"/>
+        <property name="endDisplay" type="timestamp" column="END_DISPLAY"/>
+        <property name="message" type="text" column="MESSAGE"/>
+        <property name="author" type="string" column="AUTHOR"/>
+        <property name="link" type="string" column="LINK"/>
+        <property name="published" type="boolean" column="PUBLISHED" not-null="true"/>
+
+        <many-to-one name="parent" column="PARENT_ID" lazy="proxy"/>
+
+    </class>
+
+</hibernate-mapping>
