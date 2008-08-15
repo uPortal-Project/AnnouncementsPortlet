@@ -3,33 +3,42 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+    <parent>
+        <groupId>org.jasig</groupId>
+        <artifactId>jasig-parent</artifactId>
+        <version>5</version>
+    </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.uci.vcsa</groupId>
     <artifactId>Announcements</artifactId>
     <packaging>war</packaging>
     <name>Announcements Portlet</name>
-    <version>0.2.3</version>
-    
-    <organization>
-        <name>University of California, Irvine</name>
-        <url>http://www.uci.edu/</url>
-    </organization>
-    <developers>
-        <developer>
-            <id>eolsson</id>
-            <name>Erik A. Olsson</name>
-            <email>eolsson@uci.edu</email>
-            <organization>Student Affairs Information Technology</organization>
-            <organizationUrl>http://satech.vcsa.uci.edu</organizationUrl>
-            <timezone>-8</timezone>
-        </developer>
-    </developers>
+    <version>1.0.0-SNAPSHOT</version>
     
     <url>http://www.ja-sig.org/wiki/display/PLT/Announcements+Portlet</url>
     
     <description>A set of portlets that facilitate the authoring, editing, publishing, and
         displaying of portal announcements.</description>
+    
+    <organization>
+        <name>University of California, Irvine</name>
+        <url>http://www.uci.edu/</url>
+    </organization>
+    
+    <developers>
+        <developer>
+            <id>eolsson</id>
+            <name>Erik A. Olsson</name>
+            <email>eolsson@uci.edu</email>
+            <timezone>-8</timezone>
+        </developer>
+    </developers>
 
+    <scm>
+        <connection>scm:svn:https://www.ja-sig.org/sandbox/AnnouncementsPortlet/trunk</connection>
+        <url>http://developer.ja-sig.org/source/browse/jasigsvn/sandbox/AnnouncementsPortlet/trunk</url>
+    </scm>
 
     <repositories>
         <repository>
