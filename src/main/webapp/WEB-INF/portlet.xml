@@ -11,7 +11,9 @@
     <portlet>
         <portlet-name>AnnouncementsDisplay</portlet-name>
         <display-name xml:lang="en">Announcements</display-name>
-        <display-name xml:lang="sv">Tillkännagivanden</display-name>
+        <display-name xml:lang="sv">Tillk&#228;nnagivanden</display-name>
+        <display-name xml:lang="fr">Annonces</display-name>
+        
         <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
         <init-param>
             <name>contextConfigLocation</name>
@@ -25,8 +27,9 @@
         
         <supported-locale>en</supported-locale>
         <supported-locale>sv</supported-locale>
+        <supported-locale>fr</supported-locale>
         
-        <resource-bundle>ann-portlet</resource-bundle>
+        <resource-bundle>i18n/ann-portlet</resource-bundle>
         
         <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
         <security-role-ref>
@@ -69,13 +72,13 @@
     <portlet>
         <portlet-name>AnnouncementsAdmin</portlet-name>
         <display-name xml:lang="en">Announcement Administration</display-name>
-        <display-name xml:lang="sv">Administrera Tillkännagivanden</display-name>
+        <display-name xml:lang="sv">Administrera Tillk&#228;nnagivanden</display-name>
+        <display-name xml:lang="fr">Administration Annonces</display-name> 
         
         <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
         <init-param>
             <name>contextConfigLocation</name>
             <value>/WEB-INF/context/portlet/announcementsAdmin.xml</value>
-            
         </init-param>
         <supports>
             <mime-type>text/html</mime-type>
@@ -84,8 +87,9 @@
         
         <supported-locale>en</supported-locale>
         <supported-locale>sv</supported-locale>
+        <supported-locale>fr</supported-locale>
         
-        <resource-bundle>ann-admin-portlet</resource-bundle>
+        <resource-bundle>i18n/ann-admin-portlet</resource-bundle>
         
         <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
         <security-role-ref>

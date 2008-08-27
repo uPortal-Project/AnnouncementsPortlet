@@ -20,8 +20,8 @@
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>messages</value>
-                <value>validation</value>
+                <value>i18n/messages</value>
+                <value>i18n/validation</value>
             </list>
         </property>
     </bean>
