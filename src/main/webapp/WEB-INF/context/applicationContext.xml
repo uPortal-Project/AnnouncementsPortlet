@@ -8,7 +8,12 @@
     
     <bean id="propertyConfigurer"
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="false">
-        <property name="location" value="classpath:datasource.properties"/>
+        <property name="locations">
+            <list>
+                <value>classpath:datasource.properties</value>
+                <value>classpath:configuration.properties</value>
+            </list>
+        </property>
     </bean>    
     
     <!-- Message source for this context, loaded from localized "messages_xx" files -->

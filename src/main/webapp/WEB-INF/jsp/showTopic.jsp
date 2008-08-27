@@ -1,11 +1,49 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
 
+<c:if test="${includeJQuery}">
+<script type="text/javascript" src="<c:url value="/js/jquery-1.2.3.min.js"/>"></script>
+</c:if>
+
 <script type="text/javascript">
 function <portlet:namespace/>_delete(url) {
 	var response = window.confirm('<spring:message code="show.deleteAnn"/>');
 	if (response) {
 		window.location = url;
 	}
+}
+function <portlet:namespace/>approval(id, newValue) {
+	var messages = new Array("<spring:message code="show.scheduled"/>",
+			"<spring:message code="show.expired"/>",
+			"<spring:message code="show.showing"/>",
+			"<spring:message code="show.pending"/>",
+			"<spring:message code="show.unpublish"/>",
+			"<spring:message code="show.publish"/>",
+			"<c:url value="/icons/stop.png"/>",
+			"<c:url value="/icons/accept.png"/>");
+	var colors = new Array("#070", "#c00", "#070", "#c00");
+
+	$.post("<c:url value="/ajaxApprove"/>",
+			{
+				annId: id,
+				approval: newValue
+			},
+			function(data) {
+				if (newValue == 'true') {
+					$("#<portlet:namespace/>annSwitch-"+id+" > img").attr("src", messages[6]);
+					$("#<portlet:namespace/>annSwitch-"+id+" > img").attr("alt", messages[4]);
+					$("#<portlet:namespace/>annSwitch-"+id).attr("title", messages[4]);
+					$("#<portlet:namespace/>annSwitch-"+id).attr("href", "javascript:<portlet:namespace/>approval("+id+",'false');");
+				} else {
+					$("#<portlet:namespace/>annSwitch-"+id+" > img").attr("src", messages[7]);
+					$("#<portlet:namespace/>annSwitch-"+id+" > img").attr("alt", messages[5]);
+					$("#<portlet:namespace/>annSwitch-"+id).attr("title", messages[5]);	
+					$("#<portlet:namespace/>annSwitch-"+id).attr("href", "javascript:<portlet:namespace/>approval("+id+",'true');");			
+				}
+				$("#<portlet:namespace/>annStatus-"+id).css("background-color", colors[data.status]);
+				$("#<portlet:namespace/>annStatus-"+id).empty().append(messages[data.status]);				
+			},
+			"json"
+	);
 }
 </script>
 
@@ -33,18 +71,18 @@ function <portlet:namespace/>_delete(url) {
 						<c:when test="${ann.published}">
 							<c:choose>
 								<c:when test="${ann.startDisplay > now}">
-									<td style="background-color:#070;color:#fff;font-weight:bold;vertical-align:middle;" align="center"><spring:message code="show.scheduled"/></td>
+									<td id="<portlet:namespace/>annStatus-${ann.id}" style="background-color:#070;color:#fff;font-weight:bold;vertical-align:middle;" align="center"><spring:message code="show.scheduled"/></td>
 								</c:when>
 								<c:when test="${ann.endDisplay < now}">
-									<td style="background-color:#c00;color:#fff;font-weight:bold;vertical-align:middle;" align="center"><spring:message code="show.expired"/></td>
+									<td id="<portlet:namespace/>annStatus-${ann.id}" style="background-color:#c00;color:#fff;font-weight:bold;vertical-align:middle;" align="center"><spring:message code="show.expired"/></td>
 								</c:when>
 								<c:otherwise>
-									<td style="background-color:#070;color:#fff;font-weight:bold;vertical-align:middle;" align="center"><spring:message code="show.showing"/></td>
+									<td id="<portlet:namespace/>annStatus-${ann.id}" style="background-color:#070;color:#fff;font-weight:bold;vertical-align:middle;" align="center"><spring:message code="show.showing"/></td>
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							<td style="background-color:#c00;color:#fff;font-weight:bold;vertical-align:middle;" align="center"><spring:message code="show.pending"/></td>
+							<td id="<portlet:namespace/>annStatus-${ann.id}" style="background-color:#c00;color:#fff;font-weight:bold;vertical-align:middle;" align="center"><spring:message code="show.pending"/></td>
 						</c:otherwise>
 					</c:choose>
 
@@ -60,10 +98,10 @@ function <portlet:namespace/>_delete(url) {
 							<a href="#" onclick="<portlet:namespace/>_delete('<portlet:actionURL><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="show.delete"/>"><img alt="<spring:message code="show.delete"/>" src="<c:url value="/icons/bin_empty.png"/>" height="16" width="16"/></a>
 							<c:choose>
 								<c:when test="${ann.published}">
-									<a href="<portlet:actionURL><portlet:param name="action" value="approveAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/><portlet:param name="approval" value="false"/></portlet:actionURL>" title="<spring:message code="show.unpublish"/>"><img alt="<spring:message code="show.unpublish"/>" src="<c:url value="/icons/stop.png"/>" height="16" width="16"/></a>
+									<a id="<portlet:namespace/>annSwitch-${ann.id}" href="javascript:<portlet:namespace/>approval(${ann.id},'false');" title="<spring:message code="show.unpublish"/>"><img alt="<spring:message code="show.unpublish"/>" src="<c:url value="/icons/stop.png"/>" height="16" width="16"/></a>
 								</c:when>
 								<c:otherwise>
-									<a href="<portlet:actionURL><portlet:param name="action" value="approveAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/><portlet:param name="approval" value="true"/></portlet:actionURL>" title="<spring:message code="show.publish"/>"><img alt="<spring:message code="show.publish"/>" src="<c:url value="/icons/accept.png"/>" height="16" width="16"/></a>
+									<a id="<portlet:namespace/>annSwitch-${ann.id}" href="javascript:<portlet:namespace/>approval(${ann.id},'true');" title="<spring:message code="show.publish"/>"><img alt="<spring:message code="show.publish"/>" src="<c:url value="/icons/accept.png"/>" height="16" width="16"/></a>
 								</c:otherwise>
 							</c:choose>
 						</c:if>

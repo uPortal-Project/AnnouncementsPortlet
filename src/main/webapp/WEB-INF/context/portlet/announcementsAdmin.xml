@@ -6,6 +6,15 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
     
+    <bean id="propertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="false">
+        <property name="locations">
+            <list>
+                <value>classpath:configuration.properties</value>
+            </list>
+        </property>
+    </bean>  
+    
     <!-- Controllers -->
     
     <bean id="abstractController" abstract="true">
@@ -18,7 +27,9 @@
         class="edu.uci.vcsa.portal.portlets.announcements.controller.BaseAdminController"/>
     
     <bean id="showTopicController" parent="abstractController"
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.ShowTopicController"/>
+        class="edu.uci.vcsa.portal.portlets.announcements.controller.ShowTopicController">
+        <property name="includeJQuery"><value>${javascript.jQuery.include}</value></property>
+    </bean>
     
     <bean id="deleteTopicController" parent="abstractController"
         class="edu.uci.vcsa.portal.portlets.announcements.controller.DeleteTopicController"/>

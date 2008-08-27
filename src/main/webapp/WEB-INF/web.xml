@@ -40,11 +40,11 @@
     </servlet>
     
     <servlet>
-        <servlet-name>RssFeedServlet</servlet-name>
+        <servlet-name>spring</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>/WEB-INF/context/servlet/rssfeed.xml</param-value>
+            <param-value>/WEB-INF/context/servlet/spring-servlet.xml</param-value>
         </init-param>
     </servlet>
     
@@ -79,8 +79,13 @@
     </servlet-mapping>
     
     <servlet-mapping>
-        <servlet-name>RssFeedServlet</servlet-name>
+        <servlet-name>spring</servlet-name>
         <url-pattern>/rss/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>/ajaxApprove</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>

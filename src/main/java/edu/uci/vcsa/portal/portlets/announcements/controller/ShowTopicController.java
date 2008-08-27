@@ -52,6 +52,7 @@ import edu.uci.vcsa.portal.portlets.announcements.service.UserPermissionChecker;
 public class ShowTopicController extends AbstractController {
 	
 	private IAnnouncementService announcementService;
+	private Boolean includeJQuery;
 
 	/* (non-Javadoc)
 	 * @see org.springframework.web.portlet.mvc.AbstractController#handleRenderRequestInternal(javax.portlet.RenderRequest, javax.portlet.RenderResponse)
@@ -85,6 +86,7 @@ public class ShowTopicController extends AbstractController {
 		mav.put("topic", topic);
 		mav.put("announcements", annList);
 		mav.put("now", new Date());
+		mav.put("includeJQuery", includeJQuery);
 		
 		return new ModelAndView("showTopic",mav);
 	}
@@ -94,6 +96,10 @@ public class ShowTopicController extends AbstractController {
 	 */
 	public void setAnnouncementService(IAnnouncementService announcementService) {
 		this.announcementService = announcementService;
+	}
+
+	public void setIncludeJQuery(Boolean includeJQuery) {
+		this.includeJQuery = includeJQuery;
 	}
 	
 	

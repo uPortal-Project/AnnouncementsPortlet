@@ -10,6 +10,11 @@
         <property name="announcementService" ref="announcementService" />
     </bean>
     
+    <bean id="ajaxApproveController" class="edu.uci.vcsa.portal.portlets.announcements.controller.ApproveAjaxController">
+        <property name="announcementService" ref="announcementService"/>
+        <property name="displayController" ref="displayAnnouncementsController"/>
+    </bean>
+    
     <!-- Interceptors -->
     
     <!-- Handler Mappings -->
@@ -22,7 +27,8 @@
         </property>
         <property name="mappings">
             <props>
-                <prop key="/getFeed">rssFeedController</prop>
+                <prop key="/rss/getFeed">rssFeedController</prop>
+                <prop key="/ajaxApprove">ajaxApproveController</prop>
             </props>
         </property>
     </bean>
