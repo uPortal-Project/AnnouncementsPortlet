@@ -28,7 +28,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.portlet.ActionRequest;
@@ -56,7 +55,9 @@ import edu.uci.vcsa.portal.portlets.announcements.service.IAnnouncementService;
 public class AddAnnouncementFormController extends SimpleFormController {
 
 	private IAnnouncementService announcementService;
-	private static Log log = LogFactory.getLog(AddAnnouncementFormController.class);	
+	private static Log log = LogFactory.getLog(AddAnnouncementFormController.class);
+	private String customDateFormat = "yyyy-MM-dd";
+	private String datePickerFormat = "format-y-m-d divider-dash";
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.web.portlet.mvc.SimpleFormController#onSubmitAction(javax.portlet.ActionRequest, javax.portlet.ActionResponse, java.lang.Object, org.springframework.validation.BindException)
@@ -127,10 +128,11 @@ public class AddAnnouncementFormController extends SimpleFormController {
 			log.error("No topicId found by looking at parent topic id of command object: "+exp.getMessage());
 		}
 		
+		model.put("datePickerFormat", datePickerFormat);
+		
 		return model;
 	}
 	
-
 
 	/* (non-Javadoc)
 	 * @see org.springframework.web.portlet.mvc.BaseCommandController#initBinder(javax.portlet.PortletRequest, org.springframework.web.portlet.bind.PortletRequestDataBinder)
@@ -138,10 +140,11 @@ public class AddAnnouncementFormController extends SimpleFormController {
 	@Override
 	protected void initBinder(PortletRequest request,
 			PortletRequestDataBinder binder) throws Exception {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+	
+		SimpleDateFormat dateFormat = new SimpleDateFormat(customDateFormat);
 		dateFormat.setLenient(false);
 	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-	    //binder.setAllowedFields(new String[] {"author","title","description","availability","count"});
+	    binder.setAllowedFields(new String[] {"title","abstractText","message","link","startDisplay","endDisplay"});
 	}
 	
 	/* (non-Javadoc)
@@ -180,12 +183,72 @@ public class AddAnnouncementFormController extends SimpleFormController {
 		response.setRenderParameter("action","baseAdmin");
 	}
 	
-
 	/**
 	 * @param announcementService the announcementService to set
 	 */
 	public void setAnnouncementService(IAnnouncementService announcementService) {
 		this.announcementService = announcementService;
+	}
+
+	/**
+	 * When a custom date format is set by Spring, this method converts it immediately to a string of two CSS classes
+	 * required by the date picker in the view.
+	 * @param customDateFormat
+	 */
+	public void setCustomDateFormat(String customDateFormat) {
+		this.customDateFormat = customDateFormat;
+		
+		if (log.isDebugEnabled()) {
+			log.debug("Trying to parse custom date input format: ["+customDateFormat+"]");
+		}
+		
+		String[] finalPieces = {"", "", ""};
+		String[] pieces = {"", "", ""};
+		String divider = null;
+		
+		// Ignore any custom date format requests if the requirements are not met
+		if (customDateFormat.contains("/") && !customDateFormat.contains("-") && !customDateFormat.contains(".")) {
+			pieces = customDateFormat.split("/");
+			divider = "slash";
+		} 
+		else if (customDateFormat.contains("-") && !customDateFormat.contains("/") && !customDateFormat.contains(".")) {
+			pieces = customDateFormat.split("-");
+			divider = "dash";
+		}
+		else if (customDateFormat.contains(".") && !customDateFormat.contains("/") && !customDateFormat.contains("-")) {
+			pieces = customDateFormat.split("\\.");
+			divider = "dot";
+		}
+		else {
+			return;
+		}
+		
+		// Ignore any custom date format requests if the requirements are not met
+		if (pieces.length > 3) {
+			return;
+		}
+		
+		if (log.isDebugEnabled()) {
+			log.debug("Custom date input format: ["+pieces[0]+" "+divider+" "+pieces[1]+" "+divider+" "+pieces[2]+"]");
+		}
+		
+		for (int i=0; i<pieces.length; i++) {
+			if (pieces[i].equalsIgnoreCase("mm")) {
+				finalPieces[i] = "m";
+			}
+			else if (pieces[i].equalsIgnoreCase("dd")) {
+				finalPieces[i] = "d";
+			}
+			else if (pieces[i].equalsIgnoreCase("yyyy")) {
+				finalPieces[i] = "y";
+			}
+		}
+		
+		datePickerFormat = "format-" + finalPieces[0] + "-" + finalPieces[1] + "-" + finalPieces[2] + " divider-" + divider;
+		
+		if (log.isDebugEnabled()) {
+			log.debug("Custom date input format parsed as: ["+datePickerFormat+"]");
+		}
 	}
 
 

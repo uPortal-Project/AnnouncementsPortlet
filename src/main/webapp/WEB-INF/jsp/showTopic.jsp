@@ -87,7 +87,7 @@ function <portlet:namespace/>approval(id, newValue) {
 					</c:choose>
 
 					<td><c:out value="${ann.title}"/></td>
-					<td><fmt:formatDate value="${ann.startDisplay}" pattern="MM/dd/yyyy"/> - <fmt:formatDate value="${ann.endDisplay}" pattern="MM/dd/yyyy"/></td>
+					<td><fmt:formatDate value="${ann.startDisplay}" dateStyle="short"/> - <fmt:formatDate value="${ann.endDisplay}" dateStyle="short"/></td>
 
 					<td>
 						

@@ -75,6 +75,7 @@
         <property name="formView" value="addAnnouncement"/>
         <property name="successView" value="showTopic"/>
         <property name="validator" ref="addAnnouncementValidator"/>
+        <property name="customDateFormat"><value>${dateformat.input.default}</value></property>
     </bean>
     
     <!-- Validators -->

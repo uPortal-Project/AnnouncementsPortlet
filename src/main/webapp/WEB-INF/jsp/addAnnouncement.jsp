@@ -60,7 +60,7 @@
 		</td>
 		<td>
 			<form:errors cssClass="portlet-msg-error" path="startDisplay"/>
-			<form:input cssClass="portlet-form-input-field format-m-d-y range-low-today no-transparency" path="startDisplay" size="11" maxlength="10"/>
+			<form:input cssClass="portlet-form-input-field ${datePickerFormat} range-low-today no-transparency" path="startDisplay" size="11" maxlength="10"/>
 		</td>
 	</tr>
 	<tr>
@@ -69,7 +69,7 @@
 		</td>
 		<td>
 			<form:errors cssClass="portlet-msg-error" path="endDisplay"/>
-	 		<form:input cssClass="portlet-form-input-field format-m-d-y range-low-today no-transparency" path="endDisplay" size="11" maxlength="10"/>
+	 		<form:input cssClass="portlet-form-input-field ${datePickerFormat} range-low-today no-transparency" path="endDisplay" size="11" maxlength="10"/>
 		</td>
 	</tr>
 </table>

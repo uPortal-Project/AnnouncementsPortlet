@@ -2,7 +2,7 @@
 
 <div class="portlet-section-header"><c:out value="${announcement.title}"/></div>
 <p>
-<span class="portlet-section-text" style="font-size:0.8em;"><spring:message code="displayFull.displayEnd"/> <fmt:formatDate value="${announcement.endDisplay}" pattern="MMM dd, yyyy"/></span>
+<span class="portlet-section-text" style="font-size:0.8em;"><spring:message code="displayFull.displayEnd"/> <fmt:formatDate value="${announcement.endDisplay}" dateStyle="long"/></span>
 <c:if test="${not empty announcement.link}">
 	<br/>
 	<span class="portlet-section-text" style="font-size:0.8em;"><spring:message code="display.link.prefix"/> <a href="${announcement.link}"><c:out value="${announcement.link}"/></a></span>
