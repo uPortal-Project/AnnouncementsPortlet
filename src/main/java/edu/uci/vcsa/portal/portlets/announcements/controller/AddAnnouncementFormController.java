@@ -144,7 +144,7 @@ public class AddAnnouncementFormController extends SimpleFormController {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(customDateFormat);
 		dateFormat.setLenient(false);
 	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-	    binder.setAllowedFields(new String[] {"title","abstractText","message","link","startDisplay","endDisplay"});
+	    binder.setAllowedFields(new String[] {"id","created","author","title","abstractText","message","link","startDisplay","endDisplay"});
 	}
 	
 	/* (non-Javadoc)
