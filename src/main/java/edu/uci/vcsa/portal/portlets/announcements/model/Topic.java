@@ -186,6 +186,49 @@ public class Topic {
 		}
 		return announcementsFiltered;
 	}
+	
+	/**
+	 * Get the current number of displaying announcements
+	 * @return
+	 */
+	public int getDisplayingAnnouncementCount() {
+		return getPublishedAnnouncements().size();
+	}
+	
+	/**
+	 * Get the current number of approved & scheduled announcements
+	 * @return
+	 */
+	public int getScheduledAnnouncementCount() {
+		int count = 0;
+		Date now = new Date();
+		if (this.announcements != null) {
+			for (Announcement ann: this.announcements) {
+				if (ann.isPublished() &&
+						ann.getStartDisplay().after(now)) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	/**
+	 * Get the current number of pending announcements
+	 * @return
+	 */
+	public int getPendingAnnouncementCount() {
+		int count = 0;
+		if (this.announcements != null) {
+			for (Announcement ann: this.announcements) {
+				if (!ann.isPublished()) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	
 	/**
 	 * @return the id
 	 */

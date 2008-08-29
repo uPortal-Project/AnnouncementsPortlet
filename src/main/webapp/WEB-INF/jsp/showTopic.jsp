@@ -92,16 +92,16 @@ function <portlet:namespace/>approval(id, newValue) {
 					<td>
 						
 						<c:if test="${((not user.moderator) and user.userName eq ann.author) or user.moderator}">
-							<a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="show.viewedit"/>"><img alt="<spring:message code="show.viewedit"/>" src="<c:url value="/icons/pencil.png"/>" height="16" width="16"/></a>
+							<a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="show.viewedit"/>"><img alt="<spring:message code="show.viewedit"/>" src="<c:url value="/icons/pencil.png"/>" border="0" height="16" width="16"/></a>
 						</c:if>
 						<c:if test="${user.moderator}">
-							<a href="#" onclick="<portlet:namespace/>_delete('<portlet:actionURL><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="show.delete"/>"><img alt="<spring:message code="show.delete"/>" src="<c:url value="/icons/bin_empty.png"/>" height="16" width="16"/></a>
+							<a href="#" onclick="<portlet:namespace/>_delete('<portlet:actionURL><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="show.delete"/>"><img border="0" alt="<spring:message code="show.delete"/>" src="<c:url value="/icons/bin_empty.png"/>" height="16" width="16"/></a>
 							<c:choose>
 								<c:when test="${ann.published}">
-									<a id="<portlet:namespace/>annSwitch-${ann.id}" href="javascript:<portlet:namespace/>approval(${ann.id},'false');" title="<spring:message code="show.unpublish"/>"><img alt="<spring:message code="show.unpublish"/>" src="<c:url value="/icons/stop.png"/>" height="16" width="16"/></a>
+									<a id="<portlet:namespace/>annSwitch-${ann.id}" href="javascript:<portlet:namespace/>approval(${ann.id},'false');" title="<spring:message code="show.unpublish"/>"><img alt="<spring:message code="show.unpublish"/>" src="<c:url value="/icons/stop.png"/>" border="0" height="16" width="16"/></a>
 								</c:when>
 								<c:otherwise>
-									<a id="<portlet:namespace/>annSwitch-${ann.id}" href="javascript:<portlet:namespace/>approval(${ann.id},'true');" title="<spring:message code="show.publish"/>"><img alt="<spring:message code="show.publish"/>" src="<c:url value="/icons/accept.png"/>" height="16" width="16"/></a>
+									<a id="<portlet:namespace/>annSwitch-${ann.id}" href="javascript:<portlet:namespace/>approval(${ann.id},'true');" title="<spring:message code="show.publish"/>"><img alt="<spring:message code="show.publish"/>" src="<c:url value="/icons/accept.png"/>" border="0" height="16" width="16"/></a>
 								</c:otherwise>
 							</c:choose>
 						</c:if>
@@ -134,25 +134,25 @@ function <portlet:namespace/>approval(id, newValue) {
 				<c:forEach items="${topic.admins}" var="member">
 					<c:out value="${member}"/><br/>
 				</c:forEach>
-				<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addMembers"/><portlet:param name="topicId" value="${topic.id}"/><portlet:param name="groupKey" value="admins"/></portlet:renderURL>"><img src="<c:url value="/icons/pencil.png"/>" height="16" width="16" style="vertical-align:middle"/> <spring:message code="show.permissions.edit"/></a>
+				<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addMembers"/><portlet:param name="topicId" value="${topic.id}"/><portlet:param name="groupKey" value="admins"/></portlet:renderURL>"><img src="<c:url value="/icons/pencil.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="show.permissions.edit"/></a>
 			</td>
 			<td valign="top">
 				<c:forEach items="${topic.moderators}" var="member">
 					<c:out value="${member}"/><br/>
 				</c:forEach>
-				<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addMembers"/><portlet:param name="topicId" value="${topic.id}"/><portlet:param name="groupKey" value="moderators"/></portlet:renderURL>"><img src="<c:url value="/icons/pencil.png"/>" height="16" width="16" style="vertical-align:middle"/> <spring:message code="show.permissions.edit"/></a>
+				<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addMembers"/><portlet:param name="topicId" value="${topic.id}"/><portlet:param name="groupKey" value="moderators"/></portlet:renderURL>"><img src="<c:url value="/icons/pencil.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="show.permissions.edit"/></a>
 			</td>
 			<td valign="top">
 				<c:forEach items="${topic.authors}" var="member">
 					<c:out value="${member}"/><br/>
 				</c:forEach>
-				<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addMembers"/><portlet:param name="topicId" value="${topic.id}"/><portlet:param name="groupKey" value="authors"/></portlet:renderURL>"><img src="<c:url value="/icons/pencil.png"/>" height="16" width="16" style="vertical-align:middle"/> <spring:message code="show.permissions.edit"/></a>
+				<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addMembers"/><portlet:param name="topicId" value="${topic.id}"/><portlet:param name="groupKey" value="authors"/></portlet:renderURL>"><img src="<c:url value="/icons/pencil.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="show.permissions.edit"/></a>
 			</td>
 			<td valign="top">
 				<c:forEach items="${topic.audience}" var="member">
 					<c:out value="${member}"/><br/>
 				</c:forEach>
-				<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addMembers"/><portlet:param name="topicId" value="${topic.id}"/><portlet:param name="groupKey" value="audience"/></portlet:renderURL>"><img src="<c:url value="/icons/pencil.png"/>" height="16" width="16" style="vertical-align:middle"/> <spring:message code="show.permissions.edit"/></a>
+				<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addMembers"/><portlet:param name="topicId" value="${topic.id}"/><portlet:param name="groupKey" value="audience"/></portlet:renderURL>"><img src="<c:url value="/icons/pencil.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="show.permissions.edit"/></a>
 			</td>
 		</tr>
 	</table>
