@@ -37,7 +37,7 @@
 							</td>
 							<td>
 								<c:if test="${ts.topic.allowRss}">
-									<a href="<c:url value="/rss/getFeed?topic=${ts.topic.id}"/>" title="<spring:message code="edit.rss"/>"><img alt="<spring:message code="edit.rss"/>" src="<c:url value="/icons/feed.png"/>" height="16" width="16" border="0"/></a>
+									<a href="<c:url value="/getRssFeed?topic=${ts.topic.id}"/>" title="<spring:message code="edit.rss"/>"><img alt="<spring:message code="edit.rss"/>" src="<c:url value="/icons/feed.png"/>" height="16" width="16" border="0"/></a>
 								</c:if>
 							</td>
 						</tr>		
@@ -58,7 +58,7 @@
 								</td>
 								<td>
 									<c:if test="${ts.topic.allowRss}">
-										<a href="<c:url value="/rss/getFeed?topic=${ts.topic.id}"/>" title="<spring:message code="edit.rss"/>"><img alt="<spring:message code="edit.rss"/>" src="<c:url value="/icons/feed.png"/>" height="16" width="16" border="0"/></a>
+										<a href="<c:url value="/getRssFeed?topic=${ts.topic.id}"/>" title="<spring:message code="edit.rss"/>"><img alt="<spring:message code="edit.rss"/>" src="<c:url value="/icons/feed.png"/>" height="16" width="16" border="0"/></a>
 									</c:if>
 								</td>
 							</tr>		

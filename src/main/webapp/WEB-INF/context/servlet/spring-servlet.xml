@@ -27,7 +27,7 @@
         </property>
         <property name="mappings">
             <props>
-                <prop key="/rss/getFeed">rssFeedController</prop>
+                <prop key="/getRssFeed">rssFeedController</prop>
                 <prop key="/ajaxApprove">ajaxApproveController</prop>
             </props>
         </property>

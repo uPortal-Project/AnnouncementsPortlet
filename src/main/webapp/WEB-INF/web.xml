@@ -80,7 +80,7 @@
     
     <servlet-mapping>
         <servlet-name>spring</servlet-name>
-        <url-pattern>/rss/*</url-pattern>
+        <url-pattern>/getRssFeed</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
