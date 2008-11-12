@@ -60,7 +60,7 @@
 		<c:if test="${not (from == 0)}">
 			<a href="<portlet:renderURL><portlet:param name="action" value="displayAnnouncements"/><portlet:param name="from" value="${from - increment}"/><portlet:param name="to" value="${to - increment}"/></portlet:renderURL>"><spring:message code="display.link.prev"/> <c:out value="${increment}"/></a>
 		</c:if>
-		<c:if test="${(not(from == 0)) and hasMore}">&nbsp;&mdash;&nbsp;</c:if>
+		<c:if test="${(not (from == 0)) and hasMore}">&nbsp;&mdash;&nbsp;</c:if>
 		<c:if test="${hasMore}">
 			<a href="<portlet:renderURL><portlet:param name="action" value="displayAnnouncements"/><portlet:param name="from" value="${from + increment}"/><portlet:param name="to" value="${to + increment}"/></portlet:renderURL>"><spring:message code="display.link.next"/> <c:out value="${increment}"/></a>
 		</c:if>
