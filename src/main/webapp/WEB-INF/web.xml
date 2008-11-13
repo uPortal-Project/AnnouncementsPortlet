@@ -49,28 +49,6 @@
     </servlet>
     
     
-    <servlet>
-        <servlet-name>AnnouncementsAdmin</servlet-name>
-        <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
-        <init-param>
-            <param-name>portlet-name</param-name>
-            <param-value>AnnouncementsAdmin</param-value>
-        </init-param>
-        
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    
-    <servlet>
-        <servlet-name>AnnouncementsDisplay</servlet-name>
-        <servlet-class>org.apache.pluto.core.PortletServlet</servlet-class>
-        <init-param>
-            <param-name>portlet-name</param-name>
-            <param-value>AnnouncementsDisplay</param-value>
-        </init-param>
-        
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    
     <!-- [INSERT JSPC FRAGMENT HERE] -->
     
     <servlet-mapping>
@@ -88,16 +66,7 @@
         <url-pattern>/ajaxApprove</url-pattern>
     </servlet-mapping>
     
-    <servlet-mapping>
-        <servlet-name>AnnouncementsAdmin</servlet-name>
-        <url-pattern>/PlutoInvoker/AnnouncementsAdmin</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-        <servlet-name>AnnouncementsDisplay</servlet-name>
-        <url-pattern>/PlutoInvoker/AnnouncementsDisplay</url-pattern>
-    </servlet-mapping>
-    
+    <!--
     <taglib>
         <taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
         <taglib-location>/WEB-INF/tags/c.tld</taglib-location>
@@ -120,5 +89,6 @@
         <taglib-uri>http://java.sun.com/jsp/jstl/functions</taglib-uri>
         <taglib-location>/WEB-INF/tags/fn.tld</taglib-location>
     </taglib>
+    -->
     
 </web-app>

@@ -47,11 +47,19 @@ public class AnnouncementCleanupThread extends Thread {
 	private int minuteToCheck = 0;
 	private int checkInterval = 60; 	// seconds
 	private long maxCheckIntervalMillis = 43200000L;	// 12 hours
+	private boolean keepRunning;
 	
 	private static Logger log = Logger.getLogger(AnnouncementCleanupThread.class);
 	
 	public AnnouncementCleanupThread() {
 		setDaemon(true);
+		keepRunning = true;
+	}
+	
+	public void stopThread() {
+		keepRunning = false;
+		log.info("Stopping cleanup thread...");
+		this.interrupt();
 	}
 	
 	/* (non-Javadoc)
@@ -64,7 +72,7 @@ public class AnnouncementCleanupThread extends Thread {
 		long lastCheckTime = System.currentTimeMillis();
 		boolean firstCheck = true;
 		
-		while (true) {
+		while (true && keepRunning) {
 			now = new Date();
 			nowCal.setTime(now);
 			
@@ -86,7 +94,6 @@ public class AnnouncementCleanupThread extends Thread {
 				log.debug("Waiting to see if we should check the time...");
 				sleep(checkInterval * 1000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
 				break;
 			}
 		}

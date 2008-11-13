@@ -101,7 +101,7 @@
     
     <!-- Cleanup thread bean -->
     <!-- To disable the automatic deletion of old announcements, just comment out this bean -->
-    <bean id="cleanupThread" class="edu.uci.vcsa.portal.portlets.announcements.service.AnnouncementCleanupThread" init-method="start">
+    <bean id="cleanupThread" class="edu.uci.vcsa.portal.portlets.announcements.service.AnnouncementCleanupThread" init-method="start" destroy-method="stopThread">
         <property name="announcementService" ref="announcementService"/>
         <property name="hourToCheck" value="3"/>
         <property name="minuteToCheck" value="0"/>    
