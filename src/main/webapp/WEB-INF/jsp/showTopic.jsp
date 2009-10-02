@@ -5,6 +5,8 @@
 </c:if>
 
 <script type="text/javascript">
+var <portlet:namespace/> = <portlet:namespace/> || {};
+<portlet:namespace/>.jQuery = ${ includeJQuery ? 'jQuery.noConflict(true)' : 'jQuery' };
 function <portlet:namespace/>_delete(url) {
 	var response = window.confirm('<spring:message code="show.deleteAnn"/>');
 	if (response) {
@@ -12,6 +14,7 @@ function <portlet:namespace/>_delete(url) {
 	}
 }
 function <portlet:namespace/>approval(id, newValue) {
+    var $ = <portlet:namespace/>.jQuery;
 	var messages = new Array("<spring:message code="show.scheduled"/>",
 			"<spring:message code="show.expired"/>",
 			"<spring:message code="show.showing"/>",
