@@ -41,33 +41,33 @@
     </bean>
     
     <bean id="baseAdminController" parent="abstractController"
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.BaseAdminController"/>
+        class="org.jasig.portlet.announcements.controller.BaseAdminController"/>
     
     <bean id="showTopicController" parent="abstractController"
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.ShowTopicController">
+        class="org.jasig.portlet.announcements.controller.ShowTopicController">
         <property name="includeJQuery"><value>${javascript.jQuery.include}</value></property>
     </bean>
     
     <bean id="deleteTopicController" parent="abstractController"
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.DeleteTopicController"/>
+        class="org.jasig.portlet.announcements.controller.DeleteTopicController"/>
     
     <bean id="approveAnnouncementController" parent="abstractController"
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.ApproveAnnouncementController">
+        class="org.jasig.portlet.announcements.controller.ApproveAnnouncementController">
         <property name="displayController" ref="displayAnnouncementsController"/>
     </bean>
     
     <bean id="deleteAnnouncementController" parent="abstractController"
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.DeleteAnnouncementController"/>
+        class="org.jasig.portlet.announcements.controller.DeleteAnnouncementController"/>
  
     <bean id="addUserController" parent="abstractController"
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.AddUserController"/>    
+        class="org.jasig.portlet.announcements.controller.AddUserController"/>    
     
     <bean id="deleteUserController" parent="abstractController"
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.DeleteUserController"/>    
+        class="org.jasig.portlet.announcements.controller.DeleteUserController"/>    
        
     <bean id="addTopicFormController" parent="abstractController" 
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.AddTopicFormController">
-        <property name="commandClass" value="edu.uci.vcsa.portal.portlets.announcements.model.Topic"/>
+        class="org.jasig.portlet.announcements.controller.AddTopicFormController">
+        <property name="commandClass" value="org.jasig.portlet.announcements.model.Topic"/>
         <property name="commandName" value="topic"/>
         <property name="formView" value="addTopic"/>
         <property name="successView" value="baseAdmin"/>
@@ -75,19 +75,19 @@
     </bean>
     
     <bean id="addMembersFormController" parent="abstractController" 
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.AddMembersFormController">
+        class="org.jasig.portlet.announcements.controller.AddMembersFormController">
         <property name="groupService">
             <ref bean="groupService"/>
         </property>
-        <property name="commandClass" value="edu.uci.vcsa.portal.portlets.announcements.model.RoleSelection"/>
+        <property name="commandClass" value="org.jasig.portlet.announcements.model.RoleSelection"/>
         <property name="commandName" value="selection"/>
         <property name="formView" value="addMembers"/>
         <property name="successView" value="addTopic"/>
     </bean>
     
     <bean id="addAnnouncementFormController" parent="abstractController" 
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.AddAnnouncementFormController">
-        <property name="commandClass" value="edu.uci.vcsa.portal.portlets.announcements.model.Announcement"/>
+        class="org.jasig.portlet.announcements.controller.AddAnnouncementFormController">
+        <property name="commandClass" value="org.jasig.portlet.announcements.model.Announcement"/>
         <property name="commandName" value="announcement"/>
         <property name="formView" value="addAnnouncement"/>
         <property name="successView" value="showTopic"/>
@@ -97,8 +97,8 @@
     
     <!-- Validators -->
     
-    <bean id="addTopicValidator" class="edu.uci.vcsa.portal.portlets.announcements.model.validators.TopicValidator"/>
-    <bean id="addAnnouncementValidator" class="edu.uci.vcsa.portal.portlets.announcements.model.validators.AnnouncementValidator"/>
+    <bean id="addTopicValidator" class="org.jasig.portlet.announcements.model.validators.TopicValidator"/>
+    <bean id="addAnnouncementValidator" class="org.jasig.portlet.announcements.model.validators.AnnouncementValidator"/>
         
     <!-- Portlet Mode handling -->
        

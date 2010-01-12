@@ -30,11 +30,11 @@
     </bean>
         
     <bean id="displayFullAnnouncementController" parent="abstractDisplayController" 
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.DisplayFullAnnouncementController"/>
+        class="org.jasig.portlet.announcements.controller.DisplayFullAnnouncementController"/>
     
     
     <bean id="editDisplayPreferencesController" parent="abstractDisplayController" 
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.EditDisplayPreferencesController">
+        class="org.jasig.portlet.announcements.controller.EditDisplayPreferencesController">
         <property name="tss" ref="topicSubscriptionService"/>
     </bean>
     

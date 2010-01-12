@@ -16,36 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package edu.uci.vcsa.portal.portlets.announcements;
-
-import org.jasig.portlet.announcements.model.Topic;
-import org.jasig.portlet.announcements.model.TopicSubscription;
-
-import junit.framework.TestCase;
+package org.jasig.portlet.announcements;
 
 /**
- * @author eolsson
- *
+ * @author Erik A. Olsson (eolsson@uci.edu)
+ * 
+ * $LastChangedBy$
+ * $LastChangedDate$
  */
-public class TestTopicSubscription extends TestCase {
+public class UnauthorizedException extends SecurityException {
 
-	private TopicSubscription ts;
-	
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		
-	}
+	private static final long serialVersionUID = 6700248976586222636L;
 
-	public void testTopicSubscription() {
-		Topic t = new Topic();
-		t.setId(new Long(5L));
-		
-		ts = new TopicSubscription("junit",t,true);
-		assertEquals(Long.valueOf(5L), Long.valueOf(ts.getTopic().getId()));
+	public UnauthorizedException() {
+		super();
 	}
 	
+	public UnauthorizedException(String m) {
+		super(m);
+	}
 	
 }

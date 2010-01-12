@@ -24,11 +24,11 @@
     
     <!-- Controllers -->
     
-    <bean id="rssFeedController" class="edu.uci.vcsa.portal.portlets.announcements.controller.RssFeedController">
+    <bean id="rssFeedController" class="org.jasig.portlet.announcements.controller.RssFeedController">
         <property name="announcementService" ref="announcementService" />
     </bean>
     
-    <bean id="ajaxApproveController" class="edu.uci.vcsa.portal.portlets.announcements.controller.ApproveAjaxController">
+    <bean id="ajaxApproveController" class="org.jasig.portlet.announcements.controller.ApproveAjaxController">
         <property name="announcementService" ref="announcementService"/>
         <property name="displayController" ref="displayAnnouncementsController"/>
     </bean>

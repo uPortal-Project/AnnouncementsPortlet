@@ -16,36 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package edu.uci.vcsa.portal.portlets.announcements;
+package org.jasig.portlet.announcements.service;
 
-import org.jasig.portlet.announcements.model.Topic;
-import org.jasig.portlet.announcements.model.TopicSubscription;
+import java.util.List;
+import java.util.Set;
 
-import junit.framework.TestCase;
+import org.jasig.portlet.announcements.model.Role;
+import org.jasig.portlet.announcements.model.RoleSelection;
+
 
 /**
- * @author eolsson
- *
+ * @author Erik A. Olsson (eolsson@uci.edu)
+ * 
+ * $LastChangedBy$
+ * $LastChangedDate$
  */
-public class TestTopicSubscription extends TestCase {
+public interface IGroupService {
 
-	private TopicSubscription ts;
+	public List<Role> getAllRoles();
 	
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		
-	}
+	public Set<String> getSetForRoleSelection(RoleSelection roleSel);
+	
+	public List<Role> getAllRolesFromGroupSet(Set<String> selected);
 
-	public void testTopicSubscription() {
-		Topic t = new Topic();
-		t.setId(new Long(5L));
-		
-		ts = new TopicSubscription("junit",t,true);
-		assertEquals(Long.valueOf(5L), Long.valueOf(ts.getTopic().getId()));
-	}
-	
-	
 }

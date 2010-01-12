@@ -16,36 +16,39 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package edu.uci.vcsa.portal.portlets.announcements;
+package org.jasig.portlet.announcements.model;
 
-import org.jasig.portlet.announcements.model.Topic;
-import org.jasig.portlet.announcements.model.TopicSubscription;
-
-import junit.framework.TestCase;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
- * @author eolsson
- *
+ * @author Erik A. Olsson (eolsson@uci.edu)
+ * 
+ * $LastChangedBy$
+ * $LastChangedDate$
  */
-public class TestTopicSubscription extends TestCase {
+public class RoleSelection implements Serializable {
 
-	private TopicSubscription ts;
-	
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		
-	}
+	private static final long serialVersionUID = -4522351577889716059L;
+	List<String> selectedRoles;
 
-	public void testTopicSubscription() {
-		Topic t = new Topic();
-		t.setId(new Long(5L));
-		
-		ts = new TopicSubscription("junit",t,true);
-		assertEquals(Long.valueOf(5L), Long.valueOf(ts.getTopic().getId()));
+	public RoleSelection() {
+		selectedRoles = new ArrayList<String>();
 	}
 	
+	public RoleSelection(Set<String> selection) {
+		selectedRoles = new ArrayList<String>();
+		selectedRoles.addAll(selection);
+	}
+	
+	public List<String> getSelectedRoles() {
+		return selectedRoles;
+	}
+
+	public void setSelectedRoles(List<String> selectedRoles) {
+		this.selectedRoles = selectedRoles;
+	}
 	
 }

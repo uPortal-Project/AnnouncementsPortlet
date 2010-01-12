@@ -21,7 +21,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 	
-<hibernate-mapping package="edu.uci.vcsa.portal.portlets.announcements.model"
+<hibernate-mapping package="org.jasig.portlet.announcements.model"
             default-cascade="all-delete-orphan">
 
    <class name="Topic" table="TOPIC">
@@ -34,7 +34,7 @@
             
         <set name="announcements" lazy="true" inverse="true" cascade="all">
              <key column="PARENT_ID"/>
-             <one-to-many class="edu.uci.vcsa.portal.portlets.announcements.model.Announcement" />
+             <one-to-many class="org.jasig.portlet.announcements.model.Announcement" />
         </set>
             
         <set name="audience" lazy="false" table="AUDIENCE">

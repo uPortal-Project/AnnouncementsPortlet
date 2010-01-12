@@ -21,7 +21,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 	
-<hibernate-mapping package="edu.uci.vcsa.portal.portlets.announcements.model" default-cascade="none">
+<hibernate-mapping package="org.jasig.portlet.announcements.model" default-cascade="none">
 
     <class name="TopicSubscription" table="SUBSCRIPTION">
 

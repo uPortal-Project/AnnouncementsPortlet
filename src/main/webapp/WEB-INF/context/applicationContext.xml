@@ -97,36 +97,36 @@
         <property name="defaultErrorView" value="error"/>
         <property name="exceptionMappings">
             <props>
-                <prop key="edu.uci.vcsa.portal.portlets.announcements.UnauthorizedException">errorPermission</prop>
+                <prop key="org.jasig.portlet.announcements.UnauthorizedException">errorPermission</prop>
                 <prop key="java.lang.Exception">error</prop>
             </props>
         </property>
     </bean>
     
     <!-- DAO creation for both portlets -->
-    <bean id="announcementService" class="edu.uci.vcsa.portal.portlets.announcements.service.HibernateAnnouncementService">
+    <bean id="announcementService" class="org.jasig.portlet.announcements.service.HibernateAnnouncementService">
         <property name="sessionFactory">
             <ref bean="sessionFactory"/>
         </property>
     </bean>
     
-    <bean id="groupService" class="edu.uci.vcsa.portal.portlets.announcements.service.PortletXMLGroupService" init-method="init" />
+    <bean id="groupService" class="org.jasig.portlet.announcements.service.PortletXMLGroupService" init-method="init" />
     
-    <bean id="topicSubscriptionService" class="edu.uci.vcsa.portal.portlets.announcements.service.TopicSubscriptionService" init-method="init">
+    <bean id="topicSubscriptionService" class="org.jasig.portlet.announcements.service.TopicSubscriptionService" init-method="init">
         <property name="announcementService" ref="announcementService"/>
         <property name="emergencyTopic" ref="emergencyTopic"/>
     </bean>
     
     <!-- Cleanup thread bean -->
     <!-- To disable the automatic deletion of old announcements, just comment out this bean -->
-    <bean id="cleanupThread" class="edu.uci.vcsa.portal.portlets.announcements.service.AnnouncementCleanupThread" init-method="start" destroy-method="stopThread">
+    <bean id="cleanupThread" class="org.jasig.portlet.announcements.service.AnnouncementCleanupThread" init-method="start" destroy-method="stopThread">
         <property name="announcementService" ref="announcementService"/>
         <property name="hourToCheck" value="3"/>
         <property name="minuteToCheck" value="0"/>    
     </bean>
     
     <!-- Emergency Topic Definition -->
-    <bean id="emergencyTopic" class="edu.uci.vcsa.portal.portlets.announcements.model.Topic">
+    <bean id="emergencyTopic" class="org.jasig.portlet.announcements.model.Topic">
         <property name="creator"><value>automatic</value></property>
         <property name="title"><value>EMERGENCY</value></property>
         <property name="description"><value>Do not edit this topic!</value></property>
@@ -147,7 +147,7 @@
     <!-- Controller must be defined here so that both portlets can access it -->
 
     <bean id="displayAnnouncementsController" 
-        class="edu.uci.vcsa.portal.portlets.announcements.controller.BaseDisplayController">
+        class="org.jasig.portlet.announcements.controller.BaseDisplayController">
         <property name="tss" ref="topicSubscriptionService"/>
         <property name="guestAnnouncementCacheTimeout" value="60"/>    <!-- in minutes -->
     </bean>

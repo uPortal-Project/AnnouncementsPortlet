@@ -29,7 +29,7 @@
         memoryStoreEvictionPolicy="LRU"    
     />
     
-    <cache name="edu.uci.vcsa.portal.portlets.announcements.model.Announcement" 
+    <cache name="org.jasig.portlet.announcements.model.Announcement" 
         maxElementsInMemory="1000" 
         eternal="true"
         overflowToDisk="false" 
@@ -38,7 +38,7 @@
         memoryStoreEvictionPolicy="LRU"
     />
 
-    <cache name="edu.uci.vcsa.portal.portlets.announcements.model.Topic" 
+    <cache name="org.jasig.portlet.announcements.model.Topic" 
         maxElementsInMemory="50" 
         eternal="true"
         overflowToDisk="false" 
@@ -47,7 +47,7 @@
         memoryStoreEvictionPolicy="LRU"    
     />
                
-    <cache name="edu.uci.vcsa.portal.portlets.announcements.model.TopicSubscription" 
+    <cache name="org.jasig.portlet.announcements.model.TopicSubscription" 
         maxElementsInMemory="7680" 
         eternal="false"
         overflowToDisk="false" 
@@ -56,7 +56,7 @@
         memoryStoreEvictionPolicy="LFU"
     />      
     
-    <cache name="edu.uci.vcsa.portal.portlets.announcements.model.Topic.audience" 
+    <cache name="org.jasig.portlet.announcements.model.Topic.audience" 
         maxElementsInMemory="2048" 
         eternal="false"
         overflowToDisk="false" 
@@ -65,7 +65,7 @@
         memoryStoreEvictionPolicy="LRU"    
     />
 
-    <cache name="edu.uci.vcsa.portal.portlets.announcements.model.Topic.admins" 
+    <cache name="org.jasig.portlet.announcements.model.Topic.admins" 
         maxElementsInMemory="2048" 
         eternal="false"
         overflowToDisk="false" 
@@ -74,7 +74,7 @@
         memoryStoreEvictionPolicy="LRU"    
     />
     
-    <cache name="edu.uci.vcsa.portal.portlets.announcements.model.Topic.moderators" 
+    <cache name="org.jasig.portlet.announcements.model.Topic.moderators" 
         maxElementsInMemory="2048" 
         eternal="false"
         overflowToDisk="false" 
@@ -83,7 +83,7 @@
         memoryStoreEvictionPolicy="LRU"    
     />
     
-    <cache name="edu.uci.vcsa.portal.portlets.announcements.model.Topic.authors" 
+    <cache name="org.jasig.portlet.announcements.model.Topic.authors" 
         maxElementsInMemory="2048" 
         eternal="false"
         overflowToDisk="false" 
