@@ -32,7 +32,7 @@
     <artifactId>Announcements</artifactId>
     <packaging>war</packaging>
     <name>Announcements Portlet</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     
     <url>http://www.ja-sig.org/wiki/display/PLT/Announcements+Portlet</url>
     
@@ -40,8 +40,8 @@
         displaying of portal announcements.</description>
     
     <organization>
-        <name>University of California, Irvine</name>
-        <url>http://www.uci.edu/</url>
+        <name>Jasig, Inc.</name>
+        <url>http://www.jasig.org/</url>
     </organization>
     
     <developers>
@@ -97,15 +97,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
-            <version>2.0.6</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-portlet</artifactId>
-            <version>2.0.6</version>
+            <version>2.5.6.SEC01</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -113,15 +105,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-hibernate3</artifactId>
-            <version>2.0.6</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
-            <version>3.2.3.ga</version>
+            <version>2.0.8</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -132,14 +116,14 @@
             <version>1.2.14</version>
             <type>jar</type>
         </dependency>
-
+        
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
-            <version>1.2</version>
+            <version>1.4</version>
             <type>jar</type>
         </dependency>
-
+        
         <dependency>
             <groupId>hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
@@ -148,18 +132,42 @@
             <scope>compile</scope>
         </dependency>
         
+        <!-- Switch to MySQL by removing the dependency above and uncommenting the one below.
+         |   Other changes also required to the datasource.properties file. See the wiki.
+         -->
+        <!--  
+        <dependency>
+            <groupId>com.mysql.jdbc</groupId>
+            <artifactId>com.springsource.com.mysql.jdbc</artifactId>
+            <version>5.1.6</version>
+            <type>jar</type>
+        </dependency>
+        -->
+                 
         <dependency>
             <groupId>rome</groupId>
             <artifactId>rome</artifactId>
             <version>0.9</version>
             <type>jar</type>
         </dependency>
-
+        
         <dependency>
             <groupId>jdom</groupId>
             <artifactId>jdom</artifactId>
             <version>1.0</version>
             <type>jar</type>
+        </dependency>
+       
+        <dependency>
+        	<groupId>org.springframework</groupId>
+        	<artifactId>spring-webmvc-portlet</artifactId>
+        	<version>2.5.6.SEC01</version>
+        </dependency>
+        
+        <dependency>
+        	<groupId>org.hibernate</groupId>
+        	<artifactId>hibernate</artifactId>
+        	<version>3.2.7.ga</version>
         </dependency>
 
         <!-- ======= Provided ============== -->
@@ -168,31 +176,27 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.4</version>
-
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
-
-
+        
         <dependency>
             <groupId>javax.portlet</groupId>
             <artifactId>portlet-api</artifactId>
             <version>1.0</version>
-
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
 
-
         <!-- ===== Test Dependencies ====================================== -->
-
+        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.2</version>
             <scope>test</scope>
         </dependency>
-
+        
     </dependencies>
 
     <build>

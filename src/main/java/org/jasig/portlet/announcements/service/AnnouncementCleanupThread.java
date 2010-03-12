@@ -82,7 +82,7 @@ public class AnnouncementCleanupThread extends Thread {
 				firstCheck = false;
 			}
 			try {
-				log.debug("Waiting to see if we should check the time...");
+				log.trace("Waiting to see if we should check the time...");
 				sleep(checkInterval * 1000);
 			} catch (InterruptedException e) {
 				break;

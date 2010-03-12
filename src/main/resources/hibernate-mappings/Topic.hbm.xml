@@ -26,7 +26,7 @@
 
    <class name="Topic" table="TOPIC">
             
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="read-write"/>
             
         <id name="id" column="TOPIC_ID" type="long">
              <generator class="native"/>

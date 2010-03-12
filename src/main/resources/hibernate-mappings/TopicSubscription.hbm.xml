@@ -25,7 +25,7 @@
 
     <class name="TopicSubscription" table="SUBSCRIPTION">
 
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="read-write"/>
 
         <id name="id" column="SUB_ID" type="long">
             <generator class="native"/>

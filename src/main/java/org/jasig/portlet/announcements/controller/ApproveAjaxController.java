@@ -23,8 +23,13 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.ehcache.CacheManager;
+
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.springframework.beans.factory.BeanCreationException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -33,10 +38,12 @@ import org.springframework.web.servlet.mvc.AbstractController;
  * @author eolsson
  *
  */
-public class ApproveAjaxController extends AbstractController {
+public class ApproveAjaxController extends AbstractController implements InitializingBean {
 
 	private IAnnouncementService announcementService;
-	private BaseDisplayController displayController;
+
+	@Autowired
+	private CacheManager cm = null;
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -68,11 +75,11 @@ public class ApproveAjaxController extends AbstractController {
 		}
 		
 		ann.setPublished(approval);
-		displayController.invalidateGuestCache();
+		cm.removeCache("guestAnnouncementCache");
 		
 		announcementService.addOrSaveAnnouncement(ann);
 		
-		return new ModelAndView("/ajaxApprove", "status", status);
+		return new ModelAndView("ajaxApprove", "status", status);
 		
 	}
 
@@ -83,11 +90,14 @@ public class ApproveAjaxController extends AbstractController {
 		this.announcementService = announcementService;
 	}
 
-	/**
-	 * @param displayController the displayController to set
-	 */
-	public void setDisplayController(BaseDisplayController displayController) {
-		this.displayController = displayController;
+	public void setCm(CacheManager cm) {
+		this.cm = cm;
+	}
+
+	public void afterPropertiesSet() throws Exception {
+		if (cm == null) {
+			throw new BeanCreationException("Required cacheManager field was not set");
+		}
 	}
 	
 }

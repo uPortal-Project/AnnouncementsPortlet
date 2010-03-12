@@ -50,8 +50,11 @@
 				<td align="center" width="15%" class="<portlet:namespace/>-row2color">
 			</c:otherwise>
 		</c:choose>
-			<c:out value="${announcement.parent.title}"/><br/>
-			<span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>			
+			<c:out value="${announcement.parent.title}"/>
+			<c:if test="${showDate}">
+				<br/>
+				<span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
+			</c:if>			
 		</td>
 		<c:choose>
 			<c:when test="${status.index mod 2 == 0}">
@@ -75,11 +78,11 @@
   <tr>
 	<td align="left" style="font-size:0.9em; padding-top:0.5em;">
 		<c:if test="${not (from == 0)}">
-			<a href="<portlet:renderURL><portlet:param name="action" value="displayAnnouncements"/><portlet:param name="from" value="${from - increment}"/><portlet:param name="to" value="${to - increment}"/></portlet:renderURL>"><spring:message code="display.link.prev"/> <c:out value="${increment}"/></a>
+			<a href="<portlet:renderURL portletMode="view" windowState="normal"><portlet:param name="from" value="${from - increment}"/><portlet:param name="to" value="${to - increment}"/></portlet:renderURL>"><spring:message code="display.link.prev"/> <c:out value="${increment}"/></a>
 		</c:if>
 		<c:if test="${(not (from == 0)) and hasMore}">&nbsp;&mdash;&nbsp;</c:if>
 		<c:if test="${hasMore}">
-			<a href="<portlet:renderURL><portlet:param name="action" value="displayAnnouncements"/><portlet:param name="from" value="${from + increment}"/><portlet:param name="to" value="${to + increment}"/></portlet:renderURL>"><spring:message code="display.link.next"/> <c:out value="${increment}"/></a>
+			<a href="<portlet:renderURL portletMode="view" windowState="normal"><portlet:param name="from" value="${from + increment}"/><portlet:param name="to" value="${to + increment}"/></portlet:renderURL>"><spring:message code="display.link.next"/> <c:out value="${increment}"/></a>
 		</c:if>
 	</td>
 	<td align="right" style="font-size:0.9em; padding-top:0.5em;">

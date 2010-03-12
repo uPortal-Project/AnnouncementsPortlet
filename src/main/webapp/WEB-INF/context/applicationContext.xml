@@ -17,12 +17,14 @@
     | under the License.   
     |-->
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:aop="http://www.springframework.org/schema/aop"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-    http://www.springframework.org/schema/aop
-    http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
     
     <bean id="propertyConfigurer"
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="false">
@@ -59,8 +61,8 @@
         <property name="password">
             <value>${driver.password}</value>
         </property>
-        <property name="initialSize" value="5"/>
-        <property name="maxActive" value="20"/>
+        <property name="initialSize" value="3"/>
+        <property name="maxActive" value="10"/>
     </bean>
     
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
@@ -93,7 +95,7 @@
     <!-- Abstract Default Exception Handler Bean -->
     <bean id="defaultExceptionHandlerTemplate"
         class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver"
-        abstract="true">
+        abstract="true" lazy-init="false">
         <property name="defaultErrorView" value="error"/>
         <property name="exceptionMappings">
             <props>
@@ -144,12 +146,8 @@
         </property>
     </bean>
     
-    <!-- Controller must be defined here so that both portlets can access it -->
-
-    <bean id="displayAnnouncementsController" 
-        class="org.jasig.portlet.announcements.controller.BaseDisplayController">
-        <property name="tss" ref="topicSubscriptionService"/>
-        <property name="guestAnnouncementCacheTimeout" value="60"/>    <!-- in minutes -->
+    <bean id="cacheManager" class="net.sf.ehcache.CacheManager" destroy-method="shutdown">
+    	<constructor-arg type="java.net.URL" value="classpath:ehcache-nondb.xml" />
     </bean>
-
+    
 </beans>

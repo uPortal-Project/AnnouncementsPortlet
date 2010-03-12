@@ -25,7 +25,7 @@
 
     <class name="Announcement" table="ANNOUNCEMENT">
 
-        <cache usage="nonstrict-read-write"/>
+        <cache usage="read-write"/>
 
         <id name="id" column="ANN_ID" type="long">
             <generator class="native"/>
