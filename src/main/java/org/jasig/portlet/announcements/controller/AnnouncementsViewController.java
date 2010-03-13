@@ -32,6 +32,7 @@ import javax.portlet.RenderRequest;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+import net.sf.ehcache.Status;
 
 import org.apache.log4j.Logger;
 import org.jasig.portlet.announcements.UnauthorizedException;
@@ -97,11 +98,10 @@ public class AnnouncementsViewController implements InitializingBean {
 			
 		List<Announcement> announcements;
 		List<Announcement> emergencyAnnouncements;
+
 		
-		if (!isGuest || 
-				(guestAnnouncementCache.get("guest") == null || guestAnnouncementCache.get("guest").isExpired()) || 
-				(guestAnnouncementCache.get("emergency") == null || guestAnnouncementCache.get("emergency").isExpired())
-				) {
+		if (!isGuest || guestAnnouncementCache.getStatus() != Status.STATUS_ALIVE || 
+				(new Date(guestAnnouncementCache.getTimeToLiveSeconds() * 1000)).before(new Date())) {
 			
 			// create a new announcement list 
 			announcements = new ArrayList<Announcement>();
@@ -128,6 +128,16 @@ public class AnnouncementsViewController implements InitializingBean {
 			if (isGuest) {
 				if (logger.isDebugEnabled())
 					logger.debug("Guest cache expired. Regenerating guest cache.");
+				
+				// if the cache is dead, recreate it
+				if (guestAnnouncementCache.getStatus() != Status.STATUS_ALIVE) {
+					try {
+						this.afterPropertiesSet();
+					} catch (Exception e) {
+						logger.error("Failed to recreate cache",e);
+						throw new PortletException("Problem initializing announcement cache.");
+					}
+				}
 				
 				guestAnnouncementCache.put(new Element("guest", announcements));
 				guestAnnouncementCache.put(new Element("emergency", emergencyAnnouncements));
