@@ -55,10 +55,6 @@
     <bean id="deleteTopicController" parent="abstractController"
         class="org.jasig.portlet.announcements.controller.DeleteTopicController"/>
     
-    <bean id="approveAnnouncementController" parent="abstractController"
-        class="org.jasig.portlet.announcements.controller.ApproveAnnouncementController">
-    </bean>
-    
     <bean id="deleteAnnouncementController" parent="abstractController"
         class="org.jasig.portlet.announcements.controller.DeleteAnnouncementController"/>
  
