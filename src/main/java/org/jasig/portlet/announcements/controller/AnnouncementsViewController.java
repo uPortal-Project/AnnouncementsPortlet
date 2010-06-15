@@ -27,6 +27,7 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletMode;
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 
 import net.sf.ehcache.Cache;
@@ -40,7 +41,7 @@ import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
-import org.jasig.portlet.announcements.service.TopicSubscriptionService;
+import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,13 +64,15 @@ public class AnnouncementsViewController implements InitializingBean {
 	private Boolean showDate = Boolean.TRUE;
 	
 	@Autowired
-	private TopicSubscriptionService tss = null;
+	private ITopicSubscriptionService tss = null;
 	
 	@Autowired
 	private IAnnouncementService announcementService = null;
 	
 	@Autowired
 	private CacheManager cm = null;
+	
+	public static final String PREFERENCE_DISABLE_EDIT = "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
 	
 	/**
 	 * Main method of this display controller. Calculates which topics should be shown to 
@@ -174,6 +177,11 @@ public class AnnouncementsViewController implements InitializingBean {
 			model.addAttribute("isGuest", Boolean.FALSE);
 		}
 		
+		// Disable the edit link where appropriate
+        PortletPreferences prefs = request.getPreferences();
+        Boolean disableEdit = Boolean.valueOf(prefs.getValue(PREFERENCE_DISABLE_EDIT, "false"));
+        model.addAttribute("disableEdit", disableEdit);
+		
 		model.addAttribute("showDate", showDate);
 		model.addAttribute("from", new Integer(from));
 		model.addAttribute("to", new Integer(to));
@@ -255,7 +263,7 @@ public class AnnouncementsViewController implements InitializingBean {
 		
 	}
 	
-	public void setTss(TopicSubscriptionService tss) {
+	public void setTss(ITopicSubscriptionService tss) {
 		this.tss = tss;
 	}
 

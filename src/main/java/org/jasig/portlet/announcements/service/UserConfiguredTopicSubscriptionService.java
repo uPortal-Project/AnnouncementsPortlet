@@ -33,12 +33,12 @@ import org.jasig.portlet.announcements.model.TopicSubscription;
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
  * 
- * $LastChangedBy$
- * $LastChangedDate$
+ * $LastChangedBy: eolsson $
+ * $LastChangedDate: 2010-01-12 14:39:53 -0700 (Tue, 12 Jan 2010) $
  */
-public class TopicSubscriptionService {
+public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptionService {
 
-	private static Log log = LogFactory.getLog(TopicSubscriptionService.class);
+	private Log log = LogFactory.getLog(getClass());
 		
 	private IAnnouncementService announcementService;
 	private Topic emergencyTopic;

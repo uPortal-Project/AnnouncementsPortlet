@@ -47,9 +47,8 @@
     
     <context:annotation-config />
     
-    <bean id="topicSubscriptionService" class="org.jasig.portlet.announcements.service.UserConfiguredTopicSubscriptionService" init-method="init">
+    <bean id="topicSubscriptionService" class="org.jasig.portlet.announcements.service.PortletPreferencesTopicSubscriptionService">
         <property name="announcementService" ref="announcementService"/>
-        <property name="emergencyTopic" ref="emergencyTopic"/>
     </bean>
 
     <bean class="org.jasig.portlet.announcements.controller.AnnouncementsViewController" 

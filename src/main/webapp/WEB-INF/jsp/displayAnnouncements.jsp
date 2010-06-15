@@ -86,7 +86,7 @@
 		</c:if>
 	</td>
 	<td align="right" style="font-size:0.9em; padding-top:0.5em;">
-		<c:if test="${not isGuest}">
+		<c:if test="${not isGuest && not disableEdit}">
 			<a style="text-decoration:none;" href="<portlet:renderURL portletMode="edit" windowState="normal"/>"><img src="<c:url value="/icons/pencil.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="display.link.edit"/></a>
 		</c:if>
 	</td>

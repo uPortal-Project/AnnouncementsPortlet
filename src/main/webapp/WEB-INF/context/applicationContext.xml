@@ -113,12 +113,7 @@
     </bean>
     
     <bean id="groupService" class="org.jasig.portlet.announcements.service.PortletXMLGroupService" init-method="init" />
-    
-    <bean id="topicSubscriptionService" class="org.jasig.portlet.announcements.service.TopicSubscriptionService" init-method="init">
-        <property name="announcementService" ref="announcementService"/>
-        <property name="emergencyTopic" ref="emergencyTopic"/>
-    </bean>
-    
+
     <!-- Cleanup thread bean -->
     <!-- To disable the automatic deletion of old announcements, just comment out this bean -->
     <bean id="cleanupThread" class="org.jasig.portlet.announcements.service.AnnouncementCleanupThread" init-method="start" destroy-method="stopThread">
