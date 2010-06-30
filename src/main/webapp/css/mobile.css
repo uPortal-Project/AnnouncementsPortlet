@@ -1,0 +1,49 @@
+/*annplt-toolbar*/
+.annplt-toolbar {background: #5e6e88 url(../icons/mainbar_bg.png) top left repeat-x; padding:3px 5px; border-top:#ddd 1px solid; border-bottom:#1e2639 1px solid;}
+.annplt-toolbar ul,.annplt-toolbar li {text-align:center;}
+.annplt-toolbar ul {display:block; margin:0px; padding:3px 0;}
+.annplt-toolbar li {font-size:13px; margin:0px; font-weight:bold; display:inline-block; padding:8px 5px; text-transform:capitalize;}
+.annplt-toolbar li a {padding:8px 10px; display:inline:block; color:#fff; background: #3e537e url(../icons/mainbar_button_bg.png) top left repeat-x; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; box-shadow:inset 0 0 3px #000000; -moz-box-shadow:inset 0 0 3px #000000; -webkit-box-shadow:inset 0 0 3px #000000;}
+
+/*form buttons*/
+.annplt-form-button {font-size:1em; display:block; width:250px; margin-bottom:10px; margin-left:auto; margin-right:auto; text-align:center; padding:8px 10px; display:block; color:#fff; background: #3e537e url(../icons/mainbar_button_bg.png) top left repeat-x; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; box-shadow:inset 0 0 3px #000000; -moz-box-shadow:inset 0 0 3px #000000; -webkit-box-shadow:inset 0 0 3px #000000;}
+a.annplt-form-button {text-decoration:none; width:230px;}
+
+/* Pagination 
+ *   If you only need two navigation buttons, use the ".left" and ".right" classes on the two list items and it will stretch those buttons accordingly for emphasis
+ */
+.annplt-pagination {padding:5px; background: #ceccd1 url(../icons/options_bar.png) top left repeat-x; border-top:#fff 1px solid; border-bottom:#999 1px solid;}
+.annplt-pagination ul, .annplt-pagination li {list-style:none; margin:0px;}
+.annplt-pagination ul {display:block; text-align:center; padding:0px; margin:0px;}
+.annplt-pagination li {font-size:12px; font-weight:bold; display:inline-block; padding:0 10px; text-transform:capitalize;}
+.annplt-pagination a {-webkit-box-shadow:inset 0 0 3px #000000; text-decoration:none; color:#999; padding:8px 15px; background: #3e537e url(../icons/options_bar.png) top left repeat-x; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; box-shadow:inset 0 0 3px #000000; -moz-box-shadow:inset 0 0 3px #000000;}
+.annplt-pagination li.left a {display:inline-block; width:80px; }
+.annplt-pagination li.right a {display:inline-block; width:80px; }
+
+/* Announcements portlet */
+.annplt-emergency span {display:none;}
+.annplt-emergency .annplt-announcement {background: #ff0000}
+.annplt-emergency .annplt-announcement {padding:5px;border-top:#ff8888 1px solid; border-bottom:#aa0000 1px solid;}
+.annplt-emergency .annplt-announcement h2 {color:#444;}
+
+.annplt-announcement p {margin:0; padding:0;}
+.annplt-announcement .titlebar {padding:10px 10px 5px 10px; }
+.annplt-announcement {background:#eee; padding:5px; border-top:#fff 1px solid; border-bottom:#999 1px dotted;}
+.annplt-announcement_inner {background:#fff; border-radius:5px; -moz-border-radius:5px; -webkit-border-radisu:5px;}
+.annplt-announcement h2, .annplt-announcement h2 a {font-size:1em;color:#333; margin:0; padding:0;}
+.annplt-announcements > span {padding:3px 5px; text-align:center; display:block; background-color:#ccc; font-size:14px; font-weight:bold; color:#333; border-top:#fff 1px solid; border-bottom:#999 1px solid;}
+
+.annplt-announcement .category, .annplt-announcement .date{color:#444; font-size:.6em;}
+.annplt-announcement .date {padding-left:5px; border-left:#444 1px solid;}
+.annplt-announcement .category {padding-right:5px;}
+.annplt-announcement .expiration {display:none;}
+.annplt-announcement p.article {font-size: .75em; padding:0 10px 10px 10px;}
+
+.annplt-announcement .annplt-announcement p.body {display:none;}
+.annplt-announcement .reference {display:none;}
+.annplt-view_announcement .reference a {font-size:.6em; color:#000099; text-decoration:underline; margin:0; padding:0;}
+.annplt-view_announcement  p.body {font-size: 1em; padding:10px;}
+
+/*Announcements Subscriptions*/
+annplt-subscriptions li {margin:5px; padding:10px; background-color:#ddd; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px}
+annplt-subscriptions a {display:block; text-align:right;}

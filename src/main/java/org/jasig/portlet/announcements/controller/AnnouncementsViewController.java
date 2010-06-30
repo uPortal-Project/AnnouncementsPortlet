@@ -72,6 +72,9 @@ public class AnnouncementsViewController implements InitializingBean {
 	@Autowired
 	private CacheManager cm = null;
 	
+	@Autowired(required=true)
+	private IViewNameSelector viewNameSelector = null;
+	
 	public static final String PREFERENCE_DISABLE_EDIT = "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
 	
 	/**
@@ -190,7 +193,7 @@ public class AnnouncementsViewController implements InitializingBean {
 		model.addAttribute("announcements", announcementsShort);
 		model.addAttribute("emergency", emergencyAnnouncements);
 		
-		return "displayAnnouncements";
+		return viewNameSelector.select(request, "displayAnnouncements");
 	}
 	
 	@RequestMapping(value="VIEW",params="action=displayFullAnnouncement")
