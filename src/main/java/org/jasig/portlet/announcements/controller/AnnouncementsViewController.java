@@ -210,7 +210,7 @@ public class AnnouncementsViewController implements InitializingBean {
 		
 		model.addAttribute("announcement", announcement);		
 		
-		return "displayFullAnnouncement";
+		return viewNameSelector.select(request, "displayFullAnnouncement");
 	}
 	
 	@RequestMapping("EDIT")

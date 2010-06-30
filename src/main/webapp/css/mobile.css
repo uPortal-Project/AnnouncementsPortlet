@@ -42,7 +42,7 @@ a.annplt-form-button {text-decoration:none; width:230px;}
 .annplt-announcement .annplt-announcement p.body {display:none;}
 .annplt-announcement .reference {display:none;}
 .annplt-view_announcement .reference a {font-size:.6em; color:#000099; text-decoration:underline; margin:0; padding:0;}
-.annplt-view_announcement  p.body {font-size: 1em; padding:10px;}
+.annplt-view_announcement  .body {font-size: 1em; padding:10px;}
 
 /*Announcements Subscriptions*/
 annplt-subscriptions li {margin:5px; padding:10px; background-color:#ddd; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px}
