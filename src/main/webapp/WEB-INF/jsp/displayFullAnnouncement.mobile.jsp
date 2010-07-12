@@ -20,12 +20,12 @@
 
 <link type="text/css" rel="stylesheet" href="<c:url value="/css/mobile.css"/>"/>
 
-<div class="content">
+<div class="content annplt-content">
     <div class="annplt-announcement annplt-view_announcement">
         <div class="annplt-announcement_inner">
         <div class="titlebar">
-            <span class="category">Sports</span>
-            <span class="date"></span>
+            <span class="category"><c:out value="${announcement.parent.title}"/></span>
+            <span class="date"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
             <h2><c:out value="${announcement.title}"/></h2>
             <span class="expiration"><spring:message code="displayFull.displayEnd"/> <fmt:formatDate value="${announcement.endDisplay}" dateStyle="long"/></span>
             <c:if test="${not empty announcement.link}">
@@ -39,7 +39,7 @@
     </div>
 </div>
 
-<div class="toolbar">
+<div class="annplt-toolbar">
     <ul>
         <li>
             <a href="<portlet:renderURL/>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <span><spring:message code="displayFull.back"/></span></a>

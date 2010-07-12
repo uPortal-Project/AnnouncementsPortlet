@@ -18,18 +18,20 @@
     under the License.    
 --%>
 
+<link type="text/css" rel="stylesheet" href="<c:url value="/css/mobile.css"/>"/>
+
 <portlet:actionURL var="actionUrl">
     <portlet:param name="action" value="editDisplayPreferences"/>
 </portlet:actionURL>
 
 <link type="text/css" rel="stylesheet" href="<c:url value="/css/mobile.css"/>"/>
 
-<div class="content">
+<div class="content annplt-content">
 
     <form method="post" action="<c:out value="${actionUrl}"/>">
 
         <!--note the classes attached to the <input><span><a> tags-->
-        <ul class="subscriptions">
+        <ul class="annplt-subscriptions">
             <c:forEach items="${topicSubscriptions}" var="ts" varStatus="status">
                 <%-- Ignore emergency topics --%>
                 <c:if test="${ts.topic.subscriptionMethod != 4}">
@@ -73,7 +75,7 @@
         <div class="options">
             <c:if test="${not isGuest}">
                 <input type="hidden" name="topicsToUpdate" value="${topicsToUpdate}"/>
-                <button class="portlet-form-button" type="submit">Update Subscriptions</button>
+                <button class="annplt-form-button" type="submit">Update Subscriptions</button>
                 <a class="annplt-form-button" href="<portlet:renderURL portletMode="view"/>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.cancelandreturn"/></a>
             </c:if>
             <c:if test="${isGuest}">

@@ -20,7 +20,7 @@
 
 <link type="text/css" rel="stylesheet" href="<c:url value="/css/mobile.css"/>"/>
 
-<div class="content">
+<div class="content annplt-content">
 
     <c:if test="${not empty emergency}">
         <div class="annplt-emergency">
