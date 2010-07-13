@@ -227,7 +227,7 @@ public class AnnouncementsViewController implements InitializingBean {
 		model.addAttribute("topicSubscriptions", myTopics);
 		model.addAttribute("topicsToUpdate", myTopics.size());
 		
-		return "editDisplayPreferences";
+		return viewNameSelector.select(request, "editDisplayPreferences");
 	}
 	
 	@RequestMapping("EDIT")

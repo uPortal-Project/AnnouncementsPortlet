@@ -18,8 +18,6 @@
     under the License.    
 --%>
 
-<link type="text/css" rel="stylesheet" href="<c:url value="/css/mobile.css"/>"/>
-
 <portlet:actionURL var="actionUrl">
     <portlet:param name="action" value="editDisplayPreferences"/>
 </portlet:actionURL>
@@ -30,48 +28,53 @@
 
     <form method="post" action="<c:out value="${actionUrl}"/>">
 
-        <!--note the classes attached to the <input><span><a> tags-->
-        <ul class="annplt-subscriptions">
-            <c:forEach items="${topicSubscriptions}" var="ts" varStatus="status">
-                <%-- Ignore emergency topics --%>
-                <c:if test="${ts.topic.subscriptionMethod != 4}">
-                    <c:choose>
-                        <c:when test="${not isGuest}">
-                            <c:choose>
-                                <c:when test="${ts.topic.subscriptionMethod == 1}">
-                                    <input type="checkbox" disabled="disabled" checked="checked" value="true" name="subscribed_${status.index}"/>   
-                                </c:when>
-                                <c:when test="${ts.topic.subscriptionMethod != 1 and ts.subscribed}">
-                                    <input type="checkbox" checked="checked" value="true" name="subscribed_${status.index}"/>   
-                                </c:when>
-                                <c:when test="${ts.topic.subscriptionMethod != 1 and not ts.subscribed}">
-                                    <input type="checkbox" value="true" name="subscribed_${status.index}"/> 
-                                </c:when>
-                            </c:choose>
-                            <input type="hidden" name="topicId_${status.index}" value="${ts.topic.id}"/>
-                            <input type="hidden" name="topicSubId_${status.index}" value="${ts.id}"/>
-                            <span class="topic"><c:out value="${ts.topic.title}"/></span>
-                            <span class="description"><c:out value="${ts.topic.description}"/></span>
-                            <c:if test="${ts.topic.allowRss}">
-                                <a class="rss" href="<c:url value="/getRssFeed?topic=${ts.topic.id}"/>" title="<spring:message code="edit.rss"/>"><img alt="<spring:message code="edit.rss"/>" src="<c:url value="/icons/feed.png"/>" height="16" width="16" border="0"/></a>
-                            </c:if>
-                        </c:when>
-                        <c:otherwise>
-                            <c:if test="${ts.topic.subscriptionMethod == 1}">
-                                <input type="checkbox" disabled="disabled" checked="checked" value="true" name="subscribed_${status.index}"/>   
+        <div class="annplt-announcement">
+    
+            <!--note the classes attached to the <input><span><a> tags-->
+            <ul class="annplt-subscriptions">
+                <c:forEach items="${topicSubscriptions}" var="ts" varStatus="status">
+                    <%-- Ignore emergency topics --%>
+                    <c:if test="${ts.topic.subscriptionMethod != 4}">
+                        <c:choose>
+                            <c:when test="${not isGuest}">
+                                <c:choose>
+                                    <c:when test="${ts.topic.subscriptionMethod == 1}">
+                                        <input type="checkbox" disabled="disabled" checked="checked" value="true" name="subscribed_${status.index}"/>   
+                                    </c:when>
+                                    <c:when test="${ts.topic.subscriptionMethod != 1 and ts.subscribed}">
+                                        <input type="checkbox" checked="checked" value="true" name="subscribed_${status.index}"/>   
+                                    </c:when>
+                                    <c:when test="${ts.topic.subscriptionMethod != 1 and not ts.subscribed}">
+                                        <input type="checkbox" value="true" name="subscribed_${status.index}"/> 
+                                    </c:when>
+                                </c:choose>
                                 <input type="hidden" name="topicId_${status.index}" value="${ts.topic.id}"/>
                                 <input type="hidden" name="topicSubId_${status.index}" value="${ts.id}"/>
                                 <span class="topic"><c:out value="${ts.topic.title}"/></span>
-                                <c:out value="${ts.topic.description}"/>
+                                <span class="description"><c:out value="${ts.topic.description}"/></span>
                                 <c:if test="${ts.topic.allowRss}">
                                     <a class="rss" href="<c:url value="/getRssFeed?topic=${ts.topic.id}"/>" title="<spring:message code="edit.rss"/>"><img alt="<spring:message code="edit.rss"/>" src="<c:url value="/icons/feed.png"/>" height="16" width="16" border="0"/></a>
                                 </c:if>
-                            </c:if>     
-                        </c:otherwise>
-                    </c:choose>
-                </c:if>
-            </c:forEach>
-        </ul><!--note the class attached to the <a> tag-->
+                            </c:when>
+                            <c:otherwise>
+                                <c:if test="${ts.topic.subscriptionMethod == 1}">
+                                    <input type="checkbox" disabled="disabled" checked="checked" value="true" name="subscribed_${status.index}"/>   
+                                    <input type="hidden" name="topicId_${status.index}" value="${ts.topic.id}"/>
+                                    <input type="hidden" name="topicSubId_${status.index}" value="${ts.id}"/>
+                                    <span class="topic"><c:out value="${ts.topic.title}"/></span>
+                                    <c:out value="${ts.topic.description}"/>
+                                    <c:if test="${ts.topic.allowRss}">
+                                        <a class="rss" href="<c:url value="/getRssFeed?topic=${ts.topic.id}"/>" title="<spring:message code="edit.rss"/>"><img alt="<spring:message code="edit.rss"/>" src="<c:url value="/icons/feed.png"/>" height="16" width="16" border="0"/></a>
+                                    </c:if>
+                                </c:if>     
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
+                </c:forEach>
+            </ul><!--note the class attached to the <a> tag-->
+
+        </div>
+        
         <div class="options">
             <c:if test="${not isGuest}">
                 <input type="hidden" name="topicsToUpdate" value="${topicsToUpdate}"/>
