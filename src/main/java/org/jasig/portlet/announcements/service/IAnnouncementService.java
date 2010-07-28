@@ -66,4 +66,6 @@ public interface IAnnouncementService {
 	
 	public void deleteAnnouncement(Announcement ann);
 	
+	public void deleteTopicSubscription(TopicSubscription sub);
+	
 }

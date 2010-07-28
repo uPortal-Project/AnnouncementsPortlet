@@ -60,99 +60,117 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 		}
 	}
 
-	public List<TopicSubscription> getTopicSubscription(RenderRequest request, boolean includeEmergency) throws PortletException {
-		
-		List<TopicSubscription> subscriptions = new ArrayList<TopicSubscription>();
-		List<TopicSubscription> subSaved = null;
-		// must reload all topics each time, in case new ones were added by admins since last visit
-		List<Topic> allTopics = announcementService.getAllTopics();
-		
-		if (request.getRemoteUser() == null) {
-			subSaved = new ArrayList<TopicSubscription>();
-		} 
-		else { 
-			try {
-				subSaved = announcementService.getTopicSubscriptionFor(request);
-			} catch (Exception e) {
-				log.error("ERROR getting topic subscriptions for "+request.getRemoteUser()+": "+e.getMessage());
-			}
-		}
-		
-		String user = request.getRemoteUser();
-		if (user == null) {
-			user = "guest";
-		}
-				
-		if (subSaved != null) {
-			log.debug("Found DisplayPrefs for "+user);
-			// we got some preferences from the database for this user, so
-			// lets cycle through all the current topics and if any new PUSHED_FORCED 
-			// or PUSHED_INITIAL show up, add them to the subscription
-			
-			for (Topic topic: allTopics) {
-				
-				boolean allowedToViewTopic = false;
-				
-				// check that this user should be looking at this topic
-				allowedToViewTopic = UserPermissionChecker.inRoleForTopic(request, "audience", topic);
-				
-				if (allowedToViewTopic && 
-						topic.getSubscriptionMethod() == Topic.PUSHED_FORCED &&
-						!topicSubscriptionExists( topic, subSaved )) {
-					if (log.isDebugEnabled())
-						log.debug("Adding missing PUSHED_FORCED topic ["+topic.getId()+"] for "+user);
-					subscriptions.add(new TopicSubscription(user, topic, new Boolean(true)));
-				}
-				else if (allowedToViewTopic && 
-						topic.getSubscriptionMethod() == Topic.PUSHED_INITIAL &&
-						!topicSubscriptionExists( topic, subSaved )) {
-					// this is a PUSHED_INITIAL topic that we have not set a preference for yet
-					if (log.isDebugEnabled())
-						log.debug("Adding missing PUSHED_INITIAL topic ["+topic.getId()+"] for "+user);
-					subscriptions.add(new TopicSubscription(user, topic, new Boolean(true)));
-				}
-				else if (allowedToViewTopic && 
-						topic.getSubscriptionMethod() == Topic.PULLED &&
-						!topicSubscriptionExists( topic, subSaved )) {
-					// must be an optional topic that's new and hasn't been seen before
-					if (log.isDebugEnabled())
-						log.debug("Adding missing PULLED topic ["+topic.getId()+"] for "+user);
-					subscriptions.add(new TopicSubscription(user, topic, new Boolean(false)));
-				}
-				
-				// if the topic is present, but no longer in audience group, we must remove it
-				if (!allowedToViewTopic && topicSubscriptionExists(topic, subSaved)) {
-					TopicSubscription toRemove = null;
-					for (TopicSubscription ts: subSaved) {
-						if (ts.getTopic().equals(topic)) {
-							toRemove = ts;
-						}
-					}
-					if (toRemove != null) {
-						subSaved.remove(toRemove);
-					}
-				}
-			}
-		
-			subscriptions.addAll(subSaved);
-		
-			if (!user.equals("guest")) {
-				announcementService.addOrSaveTopicSubscription(subscriptions);
-			}
-			
-			if (includeEmergency) {
-				// add the emergency topic for everyone, but don't save the topicsubscription to the database since it's implied
-				emergencyTopic = announcementService.getEmergencyTopic();
-				subscriptions.add(new TopicSubscription(user, emergencyTopic, new Boolean(true)));
-			}
-		
-			return subscriptions;
-			
-		}
-		else {
-			throw new PortletException("Could not determine/create subscription preferences for user "+user);
-		}
-	}
+    public List<TopicSubscription> getTopicSubscription(RenderRequest request, boolean includeEmergency) throws PortletException {
+        
+        List<TopicSubscription> subscriptions = new ArrayList<TopicSubscription>();
+        List<TopicSubscription> subSaved = null;
+        // must reload all topics each time, in case new ones were added by admins since last visit
+        List<Topic> allTopics = announcementService.getAllTopics();
+        
+        if (request.getRemoteUser() == null) {
+            subSaved = new ArrayList<TopicSubscription>();
+        } 
+        else { 
+            try {
+                subSaved = announcementService.getTopicSubscriptionFor(request);
+            } catch (Exception e) {
+                log.error("ERROR getting topic subscriptions for "+request.getRemoteUser()+": "+e.getMessage());
+            }
+        }
+        
+        String user = request.getRemoteUser();
+        if (user == null) {
+            user = "guest";
+        }
+                
+        if (subSaved != null) {
+            log.debug("Found DisplayPrefs for "+user);
+            // we got some preferences from the database for this user, so
+            // lets cycle through all the current topics and if any new PUSHED_FORCED 
+            // or PUSHED_INITIAL show up, add them to the subscription
+            
+            for (Topic topic: allTopics) {
+                
+                boolean allowedToViewTopic = false;
+                
+                // check that this user should be looking at this topic
+                allowedToViewTopic = UserPermissionChecker.inRoleForTopic(request, "audience", topic);
+                
+                if (allowedToViewTopic && topic.getSubscriptionMethod() == Topic.PUSHED_FORCED /* &&
+                        !topicSubscriptionExists( topic, subSaved ) */) {
+                    // It's not allowable to have a TopicSubscription record 
+                    // disabling this topic, but it's possible if the topic was 
+                    // previously optional;  remove the record if so...
+                    TopicSubscription invalid = null;
+                    for (TopicSubscription ts : subSaved) {
+                        if (ts.getTopic().equals(topic) && ts.getSubscribed().equals(Boolean.FALSE)) {
+                            // Don't do the work in the loop b/c we also have to 
+                            // remove it from the list we're iterating over
+                            invalid = ts;
+                        }
+                    }
+                    if (invalid != null) {
+                        // Prune it
+                        if (log.isDebugEnabled())
+                            log.debug("Removing invalid TopicSubscription topic ["+topic.getId()+"] for "+user);
+                        subSaved.remove(invalid);
+                        announcementService.deleteTopicSubscription(invalid);
+                    }
+                    if (!topicSubscriptionExists(topic, subSaved)) {
+                        if (log.isDebugEnabled())
+                            log.debug("Adding missing PUSHED_FORCED topic ["+topic.getId()+"] for "+user);
+                        subscriptions.add(new TopicSubscription(user, topic, new Boolean(true)));
+                    }
+                }
+                else if (allowedToViewTopic && 
+                        topic.getSubscriptionMethod() == Topic.PUSHED_INITIAL &&
+                        !topicSubscriptionExists( topic, subSaved )) {
+                    // this is a PUSHED_INITIAL topic that we have not set a preference for yet
+                    if (log.isDebugEnabled())
+                        log.debug("Adding missing PUSHED_INITIAL topic ["+topic.getId()+"] for "+user);
+                    subscriptions.add(new TopicSubscription(user, topic, new Boolean(true)));
+                }
+                else if (allowedToViewTopic && 
+                        topic.getSubscriptionMethod() == Topic.PULLED &&
+                        !topicSubscriptionExists( topic, subSaved )) {
+                    // must be an optional topic that's new and hasn't been seen before
+                    if (log.isDebugEnabled())
+                        log.debug("Adding missing PULLED topic ["+topic.getId()+"] for "+user);
+                    subscriptions.add(new TopicSubscription(user, topic, new Boolean(false)));
+                }
+                
+                // if the topic is present, but no longer in audience group, we must remove it
+                if (!allowedToViewTopic && topicSubscriptionExists(topic, subSaved)) {
+                    TopicSubscription toRemove = null;
+                    for (TopicSubscription ts: subSaved) {
+                        if (ts.getTopic().equals(topic)) {
+                            toRemove = ts;
+                        }
+                    }
+                    if (toRemove != null) {
+                        subSaved.remove(toRemove);
+                        // We're here because a DB record is no longer 
+                        // allowable... remove from persistence as well!
+                        announcementService.deleteTopicSubscription(toRemove);
+                    }
+                }
+            }
+        
+            subscriptions.addAll(subSaved);
+
+            if (includeEmergency) {
+                // add the emergency topic for everyone, but don't save the topicsubscription to the database since it's implied
+                emergencyTopic = announcementService.getEmergencyTopic();
+                subscriptions.add(new TopicSubscription(user, emergencyTopic, new Boolean(true)));
+            }
+        
+            return subscriptions;
+            
+        }
+        else {
+            throw new PortletException("Could not determine/create subscription preferences for user "+user);
+        }
+    }
 	
 	public List<TopicSubscription> getTopicSubscriptionEdit(RenderRequest request) throws PortletException {
 		return getTopicSubscription(request, false);

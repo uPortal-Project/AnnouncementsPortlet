@@ -273,5 +273,14 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
 			throw convertHibernateAccessException(ex);
 		}
 	}
+
+    public void deleteTopicSubscription(TopicSubscription sub) {
+        try {
+            getHibernateTemplate().delete(sub);
+            getHibernateTemplate().flush();
+        } catch (HibernateException ex) {
+            throw convertHibernateAccessException(ex);
+        }
+    }
 	
 }

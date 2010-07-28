@@ -230,41 +230,52 @@ public class AnnouncementsViewController implements InitializingBean {
 		return viewNameSelector.select(request, "editDisplayPreferences");
 	}
 	
-	@RequestMapping("EDIT")
-	public void savePreferences(ActionRequest request, ActionResponse response,
-			@RequestParam("topicsToUpdate") Integer topicsToUpdate) throws PortletException {
-		
-		List<TopicSubscription> newSubscription = new ArrayList<TopicSubscription>();
-		
-		for (int i=0; i<topicsToUpdate; i++) {
-			Long topicId = Long.valueOf( request.getParameter("topicId_"+i) );
-			Long topicSubId = Long.valueOf( request.getParameter("topicSubId_"+i) );
-			Boolean subscribed = Boolean.valueOf( request.getParameter("subscribed_"+i) );
-			Topic topic = announcementService.getTopic(topicId);
-			
-			// Make sure that any pushed_forced topics weren't sneakingly removed (by tweaking the URL, for example)
-			if (topic.getSubscriptionMethod() == Topic.PUSHED_FORCED) {
-				subscribed = new Boolean(true);
-			} 
-			
-			TopicSubscription ts = new TopicSubscription(request.getRemoteUser(), topic, subscribed);
-			ts.setId(topicSubId);
-			
-			newSubscription.add(ts);
-		}
-		
-		if (newSubscription.size() > 0) {
-			try {
-				announcementService.addOrSaveTopicSubscription(newSubscription);
-			} catch (Exception e) {
-				logger.error("ERROR saving TopicSubscriptions for user "+request.getRemoteUser()+". Message: "+e.getMessage());
-			}
-		} 
-		
-		response.setPortletMode(PortletMode.VIEW);
-		response.setRenderParameter("action", "displayAnnouncements");
-		
-	}
+    @RequestMapping("EDIT")
+    public void savePreferences(ActionRequest request, ActionResponse response,
+            @RequestParam("topicsToUpdate") Integer topicsToUpdate) throws PortletException {
+        
+        List<TopicSubscription> newSubscription = new ArrayList<TopicSubscription>();
+        
+        for (int i=0; i<topicsToUpdate; i++) {
+            Long topicId = Long.valueOf( request.getParameter("topicId_"+i) );
+            
+            // Will be numeric for existing, persisted TopicSubscription 
+            // instances;  blank (due to null id field) otherwise
+            String topicSubId = request.getParameter("topicSubId_"+i).trim();
+
+            Boolean subscribed = Boolean.valueOf( request.getParameter("subscribed_"+i) );
+            Topic topic = announcementService.getTopic(topicId);
+            
+            // Make sure that any pushed_forced topics weren't sneakingly removed (by tweaking the URL, for example)
+            if (topic.getSubscriptionMethod() == Topic.PUSHED_FORCED) {
+                subscribed = new Boolean(true);
+            } 
+            
+            TopicSubscription ts = new TopicSubscription(request.getRemoteUser(), topic, subscribed);
+            if (topicSubId.length() > 0) {
+                // This TopicSubscription represents an existing, persisted entity
+                try {
+                    ts.setId(Long.valueOf(topicSubId));
+                } catch (NumberFormatException nfe) {
+                    logger.debug(nfe.getMessage(), nfe);
+                }
+            }
+            
+            newSubscription.add(ts);
+        }
+        
+        if (newSubscription.size() > 0) {
+            try {
+                announcementService.addOrSaveTopicSubscription(newSubscription);
+            } catch (Exception e) {
+                logger.error("ERROR saving TopicSubscriptions for user "+request.getRemoteUser()+". Message: "+e.getMessage());
+            }
+        } 
+        
+        response.setPortletMode(PortletMode.VIEW);
+        response.setRenderParameter("action", "displayAnnouncements");
+        
+    }
 	
 	public void setTss(ITopicSubscriptionService tss) {
 		this.tss = tss;
