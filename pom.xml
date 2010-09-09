@@ -28,7 +28,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.uci.vcsa</groupId>
+    <groupId>org.jasig.portlet</groupId>
     <artifactId>Announcements</artifactId>
     <packaging>war</packaging>
     <name>Announcements Portlet</name>
@@ -48,14 +48,14 @@
         <developer>
             <id>eolsson</id>
             <name>Erik A. Olsson</name>
-            <email>eolsson@uci.edu</email>
+            <email>erik.olsson@uci.edu</email>
             <timezone>-8</timezone>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:svn:https://www.ja-sig.org/sandbox/AnnouncementsPortlet/trunk</connection>
-        <url>http://developer.ja-sig.org/source/browse/jasigsvn/sandbox/AnnouncementsPortlet/trunk</url>
+        <connection>scm:svn:https://source.jasig.org/portlets/AnnouncementsPortlet/trunk</connection>
+        <url>http://source.jasig.org/portlets/AnnouncementsPortlet/trunk</url>
     </scm>
 
     <repositories>
@@ -97,17 +97,41 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
-            <version>2.5.6.SEC01</version>
+            <version>2.5.6.SEC02</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-hibernate3</artifactId>
-            <version>2.0.8</version>
+            <artifactId>spring-orm</artifactId>
+            <version>2.5.6.SEC02</version>
             <type>jar</type>
             <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc-portlet</artifactId>
+            <version>2.5.6.SEC02</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.3.2.GA</version>
+        </dependency>
+        
+        <dependency><!-- java bytecode processor required by hibernate-->
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.4.GA</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>1.5.0</version>
         </dependency>
 
         <dependency>
@@ -115,6 +139,12 @@
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
             <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.2</version>
         </dependency>
         
         <dependency>
@@ -135,14 +165,15 @@
         <!-- Switch to MySQL by removing the dependency above and uncommenting the one below.
          |   Other changes also required to the datasource.properties file. See the wiki.
          -->
-        <!--  
+        
+        <!-- 
         <dependency>
-            <groupId>com.mysql.jdbc</groupId>
-            <artifactId>com.springsource.com.mysql.jdbc</artifactId>
-            <version>5.1.6</version>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.12</version>
             <type>jar</type>
         </dependency>
-        -->
+        -->         
                  
         <dependency>
             <groupId>rome</groupId>
@@ -157,20 +188,8 @@
             <version>1.0</version>
             <type>jar</type>
         </dependency>
-       
-        <dependency>
-        	<groupId>org.springframework</groupId>
-        	<artifactId>spring-webmvc-portlet</artifactId>
-        	<version>2.5.6.SEC01</version>
-        </dependency>
-        
-        <dependency>
-        	<groupId>org.hibernate</groupId>
-        	<artifactId>hibernate</artifactId>
-        	<version>3.2.7.ga</version>
-        </dependency>
 
-        <!-- ======= Provided ============== -->
+        <!-- ======= Provided ============== --> 
 
         <dependency>
             <groupId>javax.servlet</groupId>

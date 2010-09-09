@@ -20,7 +20,6 @@ package org.jasig.portlet.announcements.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -33,7 +32,6 @@ import javax.portlet.RenderRequest;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-import net.sf.ehcache.Status;
 
 import org.apache.log4j.Logger;
 import org.jasig.portlet.announcements.UnauthorizedException;
@@ -43,6 +41,7 @@ import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -100,14 +99,17 @@ public class AnnouncementsViewController implements InitializingBean {
 		}
 		
 		boolean isGuest = (request.getRemoteUser() == null 
-				|| request.getRemoteUser().equalsIgnoreCase(GUEST_USERNAME));
+						  || request.getRemoteUser().equalsIgnoreCase(GUEST_USERNAME));
 			
 		List<Announcement> announcements;
 		List<Announcement> emergencyAnnouncements;
 
+		Element guestCacheElement = null;
+		Element emergCacheElement = null;
+		guestCacheElement = guestAnnouncementCache.get("guest");
+		emergCacheElement = guestAnnouncementCache.get("emergency");
 		
-		if (!isGuest || guestAnnouncementCache.getStatus() != Status.STATUS_ALIVE || 
-				(new Date(guestAnnouncementCache.getTimeToLiveSeconds() * 1000)).before(new Date())) {
+		if (!isGuest || (guestCacheElement == null || emergCacheElement == null)) {
 			
 			// create a new announcement list 
 			announcements = new ArrayList<Announcement>();
@@ -135,16 +137,6 @@ public class AnnouncementsViewController implements InitializingBean {
 				if (logger.isDebugEnabled())
 					logger.debug("Guest cache expired. Regenerating guest cache.");
 				
-				// if the cache is dead, recreate it
-				if (guestAnnouncementCache.getStatus() != Status.STATUS_ALIVE) {
-					try {
-						this.afterPropertiesSet();
-					} catch (Exception e) {
-						logger.error("Failed to recreate cache",e);
-						throw new PortletException("Problem initializing announcement cache.");
-					}
-				}
-				
 				guestAnnouncementCache.put(new Element("guest", announcements));
 				guestAnnouncementCache.put(new Element("emergency", emergencyAnnouncements));
 			}
@@ -152,9 +144,9 @@ public class AnnouncementsViewController implements InitializingBean {
 		else {
 			// we're a guest and we're within the cache timeout period, so return the cached announcements
 			if (logger.isDebugEnabled())
-				logger.debug("Guest cache valid until "+(new Date(guestAnnouncementCache.getTimeToLiveSeconds() * 1000)).toString()+". Using guest cache.");
-			announcements = (List<Announcement>) guestAnnouncementCache.get("guest").getObjectValue();
-			emergencyAnnouncements = (List<Announcement>) guestAnnouncementCache.get("emergency").getObjectValue();
+				logger.debug("Guest cache valid. Using guest cache.");
+			announcements = (List<Announcement>) guestCacheElement.getObjectValue();
+			emergencyAnnouncements = (List<Announcement>) emergCacheElement.getObjectValue();
 		}
 		
 		// create a shortened list
@@ -174,11 +166,7 @@ public class AnnouncementsViewController implements InitializingBean {
 		}
 		
 		// add a marker to the view to render different content for guest user
-		if (isGuest) {
-			model.addAttribute("isGuest", Boolean.TRUE);
-		} else {
-			model.addAttribute("isGuest", Boolean.FALSE);
-		}
+		model.addAttribute("isGuest", Boolean.valueOf(isGuest));
 		
 		// Disable the edit link where appropriate
         PortletPreferences prefs = request.getPreferences();
@@ -287,7 +275,12 @@ public class AnnouncementsViewController implements InitializingBean {
 
 	public void afterPropertiesSet() throws Exception {
 		guestAnnouncementCache = cm.getCache("guestAnnouncementCache");
-		logger.debug("guestAnnouncementCache created.");
+		if (guestAnnouncementCache == null) {
+			throw new BeanCreationException("Required guestAnnouncementCache could not be loaded.");
+		}
+		else {
+			logger.debug("guestAnnouncementCache created.");
+		}
 	}
 
 	public void setCm(CacheManager cm) {
