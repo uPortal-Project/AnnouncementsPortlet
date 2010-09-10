@@ -75,7 +75,7 @@ public class ApproveAjaxController extends AbstractController implements Initial
 		}
 		
 		ann.setPublished(approval);
-		cm.removeCache("guestAnnouncementCache");
+		cm.getCache("guestAnnouncementCache").flush();
 		
 		announcementService.addOrSaveAnnouncement(ann);
 		
