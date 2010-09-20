@@ -89,13 +89,15 @@ public class UserPermissionChecker {
 	 * @return true if the user in the PortletRequest has the role specified by the Topic
 	 */
 	public static boolean inRoleForTopic(PortletRequest request, String role, Topic topic) {
-		// automatic for portal admins
-		if (UserPermissionChecker.isPortalAdmin(request)) {
+		boolean isGuest = (request.getRemoteUser() == null);
+		
+		// automatic for portal admins, only check if not a guest
+		if (!isGuest && UserPermissionChecker.isPortalAdmin(request)) {
 			return true;
 		}
 		
 		String user = request.getRemoteUser();
-		if (user == null) {
+		if (isGuest) {
 			user = "guest";
 		}
 		
