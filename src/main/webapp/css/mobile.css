@@ -42,8 +42,8 @@ a.annplt-form-button {text-decoration:none; width:230px; color:#fff !important; 
 .annplt-announcement p.article {font-size: .75em; padding:0 10px 10px 10px;}
 
 .annplt-announcement p.body {display:none;}
-.annplt-announcement .reference {display:none;}
-.annplt-announcement.annplt-view_announcement .reference a {display:block; font-size:.6em; color:#000099; text-decoration:underline; margin:0; padding:0;}
+.annplt-announcement .reference {font-size:.6em; margin:0; padding:0;}
+.annplt-announcement.annplt-view_announcement .reference a {color:#000099; text-decoration:underline; margin:0; padding:0;}
 .annplt-announcement.annplt-view_announcement  .body {display:block; font-size: 1em; padding:10px;}
 .annplt-announcement.annplt-view_announcement  .expiration {display:block;}
 

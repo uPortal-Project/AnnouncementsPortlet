@@ -30,7 +30,7 @@
             <span class="expiration"><spring:message code="displayFull.displayEnd"/> <fmt:formatDate value="${announcement.endDisplay}" dateStyle="long"/></span>
             <c:if test="${not empty announcement.link}">
                 <div class="reference">
-                    <spring:message code="display.link.prefix"/> <a href="${announcement.link}"><span><c:out value="${announcement.link}"/></span></a>
+                    <spring:message code="display.link.prefix"/> <a href="${announcement.link}"><span><spring:message code="display.link.placeholder"/></span></a>
                 </div>
             </c:if>
         </div>

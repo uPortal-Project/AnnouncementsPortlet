@@ -51,7 +51,7 @@
                         </c:if>
                         <h2><a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a></h2>
                         <c:if test="${not empty announcement.link}">
-                            <div class="reference"><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><span><c:out value="${announcement.link}"/></span></a></div>
+                            <div class="reference"><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><span><spring:message code="display.link.placeholder"/></span></a></div>
                         </c:if>
                     </div>
                     <p class="article"><c:out value="${announcement.abstractText}"/></p>
