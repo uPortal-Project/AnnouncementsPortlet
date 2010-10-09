@@ -18,44 +18,51 @@
  */
 package org.jasig.portlet.announcements.controller;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
+import java.beans.PropertyEditorSupport;
+
+import javax.portlet.PortletException;
 
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
-import org.springframework.web.portlet.mvc.AbstractController;
-
 
 /**
- * @author Erik A. Olsson (eolsson@uci.edu)
- * 
- * $LastChangedBy$
- * $LastChangedDate$
+ * @author eolsson
+ *
  */
-public class DeleteTopicController extends AbstractController {
+public class TopicEditor extends PropertyEditorSupport {
 
 	private IAnnouncementService announcementService;
 	
+	public TopicEditor(IAnnouncementService service) {
+		this.announcementService = service;
+	}
+	
 	/* (non-Javadoc)
-	 * @see org.springframework.web.portlet.mvc.AbstractController#handleActionRequestInternal(javax.portlet.ActionRequest, javax.portlet.ActionResponse)
+	 * @see java.beans.PropertyEditorSupport#getAsText()
 	 */
 	@Override
-	protected void handleActionRequestInternal(ActionRequest request,
-			ActionResponse response) throws Exception {
-		
-		Long topicId = Long.valueOf( request.getParameter("topicId") );
-		Topic topic = announcementService.getTopic(topicId);
-		
-		announcementService.deleteTopic(topic);
-		
-		response.setRenderParameter("action", "baseAdmin");
+	public String getAsText() {
+		Topic t = (Topic) super.getValue();
+		if (t == null) {
+			return null;
+		}
+		return t.getId().toString();
 	}
 
-	/**
-	 * @param announcementService the announcementService to set
+	/* (non-Javadoc)
+	 * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
 	 */
-	public void setAnnouncementService(IAnnouncementService announcementService) {
-		this.announcementService = announcementService;
+	@Override
+	public void setAsText(String text) throws IllegalArgumentException {
+		if (text != null && !"".equals(text)) {
+			try {
+				super.setValue(announcementService.getTopic(Long.parseLong(text)));
+			} catch (PortletException e) {
+				throw new IllegalArgumentException("Invalid Topic ID. Cannot convert to object.");
+			}
+		}
 	}
 
+	
+	
 }

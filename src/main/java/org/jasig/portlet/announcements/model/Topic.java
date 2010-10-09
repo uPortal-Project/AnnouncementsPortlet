@@ -309,6 +309,18 @@ public class Topic {
 		Topic t = (Topic) obj;
 		return (t.getId().compareTo(this.id) == 0);
 	}
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Topic [allowRss=" + allowRss + ", creator=" + creator
+				+ ", description=" + description + ", id=" + id
+				+ ", moderators=" + moderators + ", subscriptionMethod="
+				+ subscriptionMethod + ", title=" + title + "]";
+	}
 	
 	
 	

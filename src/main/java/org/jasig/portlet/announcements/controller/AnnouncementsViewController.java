@@ -100,6 +100,8 @@ public class AnnouncementsViewController implements InitializingBean {
 		
 		boolean isGuest = (request.getRemoteUser() == null 
 						  || request.getRemoteUser().equalsIgnoreCase(GUEST_USERNAME));
+		logger.debug("isGuest is: "+Boolean.toString(isGuest));
+		logger.debug("remoteUser is: "+request.getRemoteUser());
 			
 		List<Announcement> announcements;
 		List<Announcement> emergencyAnnouncements;

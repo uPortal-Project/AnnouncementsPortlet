@@ -19,44 +19,45 @@
 package org.jasig.portlet.announcements.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
 
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
-import org.springframework.web.portlet.ModelAndView;
-import org.springframework.web.portlet.mvc.AbstractController;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @author Erik A. Olsson (eolsson@uci.edu)
- * 
- * $LastChangedBy$
- * $LastChangedDate$
+ * @author eolsson
+ *
  */
-public class BaseAdminController extends AbstractController {
+@Controller
+@RequestMapping("VIEW")
+public class AdminController {
 
+	@Autowired
 	private IAnnouncementService announcementService;
 	
-	/* (non-Javadoc)
-	 * @see org.springframework.web.portlet.mvc.AbstractController#handleRenderRequestInternal(javax.portlet.RenderRequest, javax.portlet.RenderResponse)
+	/**
+	 * Base view mapping for the Admin portlet, fetches all the topics and figures out what permissions the 
+	 * current user has on each.
+	 * @param request
+	 * @param model
+	 * @return
 	 */
-	@Override
-	protected ModelAndView handleRenderRequestInternal(RenderRequest request,
-			RenderResponse response) throws Exception {
+	@RequestMapping
+	public String showBaseView(RenderRequest request, Model model) {
 		
-		Map<String,Object> mav = new HashMap<String,Object>();
 		List<Topic> allTopics = announcementService.getAllTopics();
 		
 		// add all topics for the portal admin
 		if (UserPermissionChecker.isPortalAdmin(request)) {
-			mav.put("allTopics", announcementService.getAllTopics());
-			mav.put("portalAdmin", new Boolean(true));
+			model.addAttribute("allTopics", announcementService.getAllTopics());
+			model.addAttribute("portalAdmin", new Boolean(true));
 		}
 		else {
 			List<Topic> adminTopics = new ArrayList<Topic>();
@@ -75,14 +76,15 @@ public class BaseAdminController extends AbstractController {
 				}
 			}
 			
-			mav.put("adminTopics", adminTopics);
-			mav.put("otherTopics", otherTopics);
-			mav.put("portalAdmin", new Boolean(false));
+			model.addAttribute("adminTopics", adminTopics);
+			model.addAttribute("otherTopics", otherTopics);
+			model.addAttribute("portalAdmin", Boolean.FALSE);
 		}
 		
-		return new ModelAndView("baseAdmin", mav);
+		return "baseAdmin";
 		
 	}
+	
 
 	/**
 	 * @param announcementService the announcementService to set
@@ -91,6 +93,4 @@ public class BaseAdminController extends AbstractController {
 		this.announcementService = announcementService;
 	}
 
-	
-	
 }

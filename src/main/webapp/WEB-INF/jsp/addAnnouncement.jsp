@@ -28,10 +28,10 @@
 
 <portlet:actionURL var="actionUrl">
 	<portlet:param name="action" value="addAnnouncement"/>
-	<portlet:param name="topicId" value="${topicId}"/>
+	<portlet:param name="topicId" value="${announcement.parent.id}"/>
 </portlet:actionURL>
 
-<div class="portlet-section-header"><spring:message code="addAnnouncement.header"/> <c:out value="${topicTitle}"/></div>
+<div class="portlet-section-header"><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></div>
 
 <form:form commandName="announcement" method="post" action="${actionUrl}">
 <table width="100%" cellpadding="3">
@@ -93,10 +93,11 @@
 <form:hidden path="id"/>
 <form:hidden path="created"/>
 <form:hidden path="author"/>
+<form:hidden path="parent"/>
 <button type="submit" class="portlet-form-button"><spring:message code="addAnnouncement.save"/></button>
 </form:form>
 <br/>
-<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topicId}"/></portlet:renderURL>">
+<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${announcement.parent.id}"/></portlet:renderURL>">
 <img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.backtotopic"/></a>
 &nbsp;&nbsp;
 <a style="text-decoration:none;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>">

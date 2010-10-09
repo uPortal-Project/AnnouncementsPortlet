@@ -64,6 +64,13 @@
         <property name="password">
             <value>${driver.password}</value>
         </property>
+        <property name="validationQuery">
+            <value>${driver.validationQuery}</value>
+        </property>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="minEvictableIdleTimeMillis" value="60000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="10000"/>
         <property name="initialSize" value="3"/>
         <property name="maxActive" value="10"/>
     </bean>
