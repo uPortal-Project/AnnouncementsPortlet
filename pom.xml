@@ -22,9 +22,9 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.jasig</groupId>
+        <groupId>org.jasig.parent</groupId>
         <artifactId>jasig-parent</artifactId>
-        <version>5</version>
+        <version>21</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -221,6 +221,28 @@
     <build>
         <finalName>${pom.artifactId}</finalName>
         <plugins>
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.5.1</version>
+                <configuration>
+                    <basedir>${basedir}</basedir>  
+                    <header>${jasig-short-license-url}</header>
+                    <aggregate>true</aggregate>
+                    <excludes>
+                        <exclude>LICENSE</exclude>
+                        <exclude>NOTICE</exclude>
+                        <exclude>**/src/main/webapp/rs/**</exclude>
+                        <exclude>**/src/main/webapp/date-picker/**</exclude>
+                        <exclude>**/src/main/webapp/tinymce/**</exclude>
+                    </excludes>
+                    <mapping>
+                        <tld>XML_STYLE</tld>
+                        <tag>DYNASCRIPT_STYLE</tag>
+                    </mapping>
+                </configuration>
+            </plugin>
+            
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
 
