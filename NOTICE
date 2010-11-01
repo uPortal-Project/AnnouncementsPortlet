@@ -39,3 +39,11 @@ licensed under the GNU Public License, a copy of which can
 be found at:
 
 http://jquery.com/dev/svn/trunk/jquery/GPL-LICENSE.txt
+
+This portlet includes:
+
+ JSP Standard Tag Library under the Apache License, Version 2
+ Spring Framework under the Apache License, Version 2
+
+ Apache Commons Logging under the Apache License, Version 2
+ AOP Alliance under the Public Domain License
