@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.jasig.parent</groupId>
         <artifactId>jasig-parent</artifactId>
-        <version>21</version>
+        <version>29</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -313,7 +313,13 @@
                     <workingDirectory>src/main/webapp</workingDirectory>
                 </configuration>
             </plugin>
-
+			<plugin>
+                    <groupId>org.jasig.maven</groupId>
+                    <artifactId>maven-notice-plugin</artifactId>                    
+                    <configuration>
+                        <noticeTemplate>AnnouncementsPortlet.NOTICE.template</noticeTemplate>                        
+                    </configuration>
+                </plugin>
         </plugins>
     </build>
 

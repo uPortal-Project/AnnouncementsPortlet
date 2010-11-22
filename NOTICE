@@ -1,4 +1,4 @@
-Copyright 2010, Jasig, Inc.
+Copyright 2010, JA-SIG, Inc.
 This project includes software developed by Jasig.
 http://www.jasig.org/
 
@@ -14,7 +14,6 @@ an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 KIND, either express or implied. See the License for the
 specific language governing permissions and limitations
 under the License.
-
 Components within the portlet:
 
 This portlet uses the "Unobtrusive Date-Picker Widget" 
@@ -35,15 +34,45 @@ under the GNU LESSER GENERAL PUBLIC LICENSE (LGPL)
 http://tinymce.moxiecode.com/
 
 This portlet uses the jQuery JavaScript library which is
-licensed under the GNU Public License, a copy of which can
+licensed under the MIT License, a copy of which can
 be found at:
 
-http://jquery.com/dev/svn/trunk/jquery/GPL-LICENSE.txt
+http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt
 
-This portlet includes:
-
- JSP Standard Tag Library under the Apache License, Version 2
- Spring Framework under the Apache License, Version 2
-
- Apache Commons Logging under the Apache License, Version 2
- AOP Alliance under the Public Domain License
+When distributed in binary this portlet includes:
+  Announcements Portlet under Apache License Version 2.0
+  AntLR under BSD License
+  AOP alliance under Public Domain
+  Backport of JSR 166 under Public Domain
+  Commons DBCP under The Apache Software License, Version 2.0
+  Commons Logging under The Apache Software License, Version 2.0
+  Commons Pool under The Apache Software License, Version 2.0
+  dom4j under BSD License
+  Ehcache Core under The Apache Software License, Version 2.0
+  Hibernate Core under GNU Lesser General Public License
+  HSQLDB under HSQLDB License
+  Javassist under lgpl
+  jsr107cache under Apache License, Version 2.0
+  JUnit under Common Public License Version 1.0
+  Log4j under The Apache Software License, Version 2.0
+  Portlet API under Commons Development and Distribution License, Version 1.0
+  ROME, RSS and atOM utilitiEs for Java under The Apache Software License, Version 2.0
+  SLF4J API Module under MIT License
+  SLF4J LOG4J-12 Binding under MIT License
+  Spring Framework under The Apache Software License, Version 2.0
+  Spring Framework: Beans under The Apache Software License, Version 2.0
+  Spring Framework: Context under The Apache Software License, Version 2.0
+  Spring Framework: Context Support under The Apache Software License, Version 2.0
+  Spring Framework: Core under The Apache Software License, Version 2.0
+  Spring Framework: ORM under The Apache Software License, Version 2.0
+  Spring Framework: Transaction under The Apache Software License, Version 2.0
+  Spring Framework: Web under The Apache Software License, Version 2.0
+  Spring Framework: Web MVC under The Apache Software License, Version 2.0
+  Spring Framework: Web MVC Portlet under The Apache Software License, Version 2.0
+  Unnamed - commons-collections:commons-collections:jar:3.1 under Apache License, Version 2.0
+  Unnamed - javax.servlet:jstl:jar:1.1.2 under Commons Development and Distribution License, Version 1.0
+  Unnamed - javax.servlet:servlet-api:jar:2.4 under Commons Development and Distribution License, Version 1.0
+  Unnamed - javax.transaction:jta:jar:1.1 under Commons Development and Distribution License, Version 1.0
+  Unnamed - jdom:jdom:jar:1.0 under Apache style license
+  Unnamed - taglibs:standard:jar:1.1.2 under Apache License, Version 2.0
+  XML Commons External Components XML APIs under The Apache Software License, Version 2.0
