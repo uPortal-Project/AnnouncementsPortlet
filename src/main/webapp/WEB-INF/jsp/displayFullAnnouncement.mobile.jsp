@@ -25,7 +25,7 @@
         <div class="annplt-announcement_inner">
         <div class="titlebar">
             <span class="category"><c:out value="${announcement.parent.title}"/></span>
-            <span class="date"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
+            <c:if test="${displayPublishDate}"><span class="date"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span></c:if>
             <h2><c:out value="${announcement.title}"/></h2>
             <span class="expiration"><spring:message code="displayFull.displayEnd"/> <fmt:formatDate value="${announcement.endDisplay}" dateStyle="long"/></span>
             <c:if test="${not empty announcement.link}">

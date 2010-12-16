@@ -313,13 +313,13 @@
                     <workingDirectory>src/main/webapp</workingDirectory>
                 </configuration>
             </plugin>
-			<plugin>
-                    <groupId>org.jasig.maven</groupId>
-                    <artifactId>maven-notice-plugin</artifactId>                    
-                    <configuration>
-                        <noticeTemplate>AnnouncementsPortlet.NOTICE.template</noticeTemplate>                        
-                    </configuration>
-                </plugin>
+            <plugin>
+                <groupId>org.jasig.maven</groupId>
+                <artifactId>maven-notice-plugin</artifactId>                    
+                <configuration>
+                    <noticeTemplate>AnnouncementsPortlet.NOTICE.template</noticeTemplate>                        
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
