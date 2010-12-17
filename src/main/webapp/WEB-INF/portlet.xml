@@ -119,6 +119,14 @@
         
         <resource-bundle>i18n/ann-admin-portlet</resource-bundle>
         
+        <portlet-preferences>
+            <preference>
+                <name>AdminAnnouncementController.allowOpenEndDate</name>
+                <value></value>
+                <read-only>true</read-only>
+            </preference>
+        </portlet-preferences>
+
         <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
         <security-role-ref>
             <role-name>Portal_Administrators</role-name>

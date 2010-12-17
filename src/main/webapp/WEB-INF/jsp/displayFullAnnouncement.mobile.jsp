@@ -27,7 +27,16 @@
             <span class="category"><c:out value="${announcement.parent.title}"/></span>
             <c:if test="${displayPublishDate}"><span class="date"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span></c:if>
             <h2><c:out value="${announcement.title}"/></h2>
-            <span class="expiration"><spring:message code="displayFull.displayEnd"/> <fmt:formatDate value="${announcement.endDisplay}" dateStyle="long"/></span>
+            <span class="expiration"><spring:message code="displayFull.displayEnd"/>
+                <c:choose>
+                    <c:when test="${announcement.endDisplay == null}">
+                        <spring:message code="displayFull.displayEnd.unspecified"/>
+                    </c:when>
+                    <c:otherwise>
+                        <fmt:formatDate value="${announcement.endDisplay}" dateStyle="long"/>
+                    </c:otherwise>
+                </c:choose>
+            </span>
             <c:if test="${not empty announcement.link}">
                 <div class="reference">
                     <spring:message code="display.link.prefix"/> <a href="${announcement.link}"><span><spring:message code="display.link.placeholder"/></span></a>

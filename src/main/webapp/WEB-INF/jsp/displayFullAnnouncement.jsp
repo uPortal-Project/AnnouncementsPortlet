@@ -21,7 +21,15 @@
 <p>
 <span class="portlet-section-text" style="font-size:0.8em;">
     <c:if test="${displayPublishDate}"><spring:message code="displayFull.displayBegin"/> <fmt:formatDate value="${announcement.startDisplay}" dateStyle="long"/><br/></c:if>
-    <spring:message code="displayFull.displayEnd"/> <fmt:formatDate value="${announcement.endDisplay}" dateStyle="long"/>
+    <spring:message code="displayFull.displayEnd"/>
+    <c:choose>
+        <c:when test="${announcement.endDisplay == null}">
+            <spring:message code="displayFull.displayEnd.unspecified"/>
+        </c:when>
+        <c:otherwise>
+            <fmt:formatDate value="${announcement.endDisplay}" dateStyle="long"/>
+        </c:otherwise>
+    </c:choose>
 </span>
 <c:if test="${not empty announcement.link}">
     <br/>

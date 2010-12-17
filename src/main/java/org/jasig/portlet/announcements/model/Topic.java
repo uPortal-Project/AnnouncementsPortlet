@@ -171,9 +171,18 @@ public class Topic {
 		Date now = new Date();
 		if (this.announcements != null) {
 			for (Announcement ann: this.announcements) {
-				if (ann.isPublished() && 
-						ann.getStartDisplay().before(now) &&
-						ann.getEndDisplay().after(now) ) {
+		        Date startDisplay = ann.getStartDisplay();
+		        Date endDisplay = ann.getEndDisplay();
+		        if (endDisplay == null) {
+		            // Unspecified end date means the announcement does not expire;  we 
+		            // will substitute a date in the future each time this item is 
+		            // evaluated.
+		            long aYearFromNow = System.currentTimeMillis() + Announcement.MILLISECONDS_IN_A_YEAR;
+		            endDisplay = new Date(aYearFromNow);
+		        }
+			    if (ann.isPublished() && 
+			            startDisplay.before(now) &&
+			            endDisplay.after(now) ) {
 					announcementsFiltered.add(ann);
 				}
 			}

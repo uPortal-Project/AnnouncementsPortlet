@@ -39,8 +39,8 @@ import org.springframework.web.servlet.mvc.AbstractController;
  *
  */
 public class ApproveAjaxController extends AbstractController implements InitializingBean {
-
-	private IAnnouncementService announcementService;
+    
+    private IAnnouncementService announcementService;
 
 	@Autowired
 	private CacheManager cm = null;
@@ -56,6 +56,16 @@ public class ApproveAjaxController extends AbstractController implements Initial
 		Boolean approval = Boolean.valueOf( request.getParameter("approval") );
 		Announcement ann = announcementService.getAnnouncement(annId);
 		
+		Date startDisplay = ann.getStartDisplay();
+		Date endDisplay = ann.getEndDisplay();
+		if (endDisplay == null) {
+		    // Unspecified end date means the announcement does not expire;  we 
+		    // will substitute a date in the future each time this item is 
+		    // evaluated.
+		    long aYearFromNow = System.currentTimeMillis() + Announcement.MILLISECONDS_IN_A_YEAR;
+		    endDisplay = new Date(aYearFromNow);
+		}
+		
 		Date now = new Date();
 		int status = 3;
 		/**
@@ -64,13 +74,13 @@ public class ApproveAjaxController extends AbstractController implements Initial
 		 * Showing   = 2
 		 * Pending   = 3
 		 */
-		if (ann.getStartDisplay().after(now) && ann.getEndDisplay().after(now) && approval) {
+		if (startDisplay.after(now) && endDisplay.after(now) && approval) {
 			status = 0;
 		}
-		else if (ann.getStartDisplay().before(now) && ann.getEndDisplay().after(now) && approval) {
+		else if (startDisplay.before(now) && endDisplay.after(now) && approval) {
 			status = 2;
 		}
-		else if (ann.getEndDisplay().before(now)) {
+		else if (endDisplay.before(now)) {
 			status = 1;
 		}
 		

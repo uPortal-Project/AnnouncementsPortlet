@@ -25,6 +25,8 @@ import java.util.Date;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,6 +56,8 @@ import org.springframework.web.bind.support.SessionStatus;
 @Controller
 @RequestMapping("VIEW")
 public class AdminAnnouncementController implements InitializingBean {
+    
+    public static final String PREFERENCE_ALLOW_OPEN_ENDDATE = "AdminAnnouncementController.allowOpenEndDate";
 
 	@Autowired
 	private IAnnouncementService announcementService;
@@ -111,7 +115,7 @@ public class AdminAnnouncementController implements InitializingBean {
 				}
 			}
 			
-			model.addAttribute("announcement", ann);
+            model.addAttribute("announcement", ann);
 			model.addAttribute("datePickerFormat", datePickerFormat);
 		}
 		
@@ -134,8 +138,8 @@ public class AdminAnnouncementController implements InitializingBean {
 			@ModelAttribute("announcement") Announcement announcement, 
 			BindingResult result, 
 			SessionStatus status) throws PortletException {
-		
-		new AnnouncementValidator().validate(announcement, result);
+
+		new AnnouncementValidator(getAllowOpenEndDate(request)).validate(announcement, result);
 		if (result.hasErrors()) {
 			response.setRenderParameter("action", "addAnnouncement");
 			return;
@@ -188,6 +192,11 @@ public class AdminAnnouncementController implements InitializingBean {
 		
 		response.setRenderParameter("topicId", topicId.toString());
 		response.setRenderParameter("action", "showTopic");
+	}
+	
+	public boolean getAllowOpenEndDate(PortletRequest req) {
+	    PortletPreferences prefs = req.getPreferences();
+	    return Boolean.parseBoolean(prefs.getValue(PREFERENCE_ALLOW_OPEN_ENDDATE, "false"));
 	}
 	
 	/**

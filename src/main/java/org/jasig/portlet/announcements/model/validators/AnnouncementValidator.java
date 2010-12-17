@@ -37,6 +37,16 @@ import org.springframework.validation.Validator;
  * $LastChangedDate$
  */
 public class AnnouncementValidator implements Validator {
+    
+    private final boolean allowOpenEndDate;
+    
+    public AnnouncementValidator() {
+        this(false);
+    }
+
+    public AnnouncementValidator(boolean allowOpenEndDate) {
+        this.allowOpenEndDate = allowOpenEndDate;
+    }
 
 	/* (non-Javadoc)
 	 * @see org.springframework.validation.Validator#supports(java.lang.Class)
@@ -53,8 +63,10 @@ public class AnnouncementValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "addAnn.title.required.error");	
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "abstractText", "addAnn.abstract.required.error");	
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "message", "addAnn.message.required.error");	
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startDisplay", "addAnn.start.required.error");	
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "endDisplay", "addAnn.end.required.error");	
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startDisplay", "addAnn.start.required.error");
+		if (!allowOpenEndDate) {
+	        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "endDisplay", "addAnn.end.required.error");   
+		}
 		
 		Announcement test = (Announcement) obj;
 		if (test.getLink() != null && !"".equals(test.getLink().trim())) {

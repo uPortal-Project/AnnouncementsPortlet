@@ -28,7 +28,16 @@ import java.util.Date;
  */
 public class Announcement implements Comparable<Announcement> {
 
-	private String title;
+    /**
+     * Useful for announcements with open-ended display periods.
+     */
+    public static final long MILLISECONDS_IN_A_YEAR = 1000L   // Milliseconds in a second
+                                                * 60L   // Seconds in a minute 
+                                                * 60L   // Minutes in an hour 
+                                                * 24L   // Hours in a day 
+                                                * 365L; // Days in a year (basically)
+
+    private String title;
 	private String abstractText;
 	private Date created;
 	private Date startDisplay;
@@ -39,7 +48,6 @@ public class Announcement implements Comparable<Announcement> {
 	private Boolean published = false;
 	private Topic parent;
 	private Long id;
-	
 	
 	/**
 	 * @return the published
