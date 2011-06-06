@@ -68,6 +68,10 @@ public class AdminAnnouncementController implements InitializingBean {
 	@Autowired
 	private String customDateFormat = "yyyy-MM-dd";
 	
+	/**
+	 * CSS classes added to the start & end date input fields to enable the 
+	 * jQuery UI datepicker
+	 */
 	private String datePickerFormat = "format-y-m-d divider-dash";
 
 	
@@ -116,8 +120,9 @@ public class AdminAnnouncementController implements InitializingBean {
 			}
 			
             model.addAttribute("announcement", ann);
-			model.addAttribute("datePickerFormat", datePickerFormat);
 		}
+
+		model.addAttribute("datePickerFormat", datePickerFormat);
 		
 		return "addAnnouncement";
 	}
