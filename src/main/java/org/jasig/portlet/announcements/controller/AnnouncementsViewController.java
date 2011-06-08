@@ -62,7 +62,6 @@ public class AnnouncementsViewController implements InitializingBean {
     private static final String PREFERENCE_DISPLAY_STARTDATE = "AnnouncementsViewController.displayPublishDate";
     private static final Logger logger = Logger.getLogger(AnnouncementsViewController.class);
     private Cache guestAnnouncementCache = null;
-    private final int pageSize = 5;
     private Boolean showDate = Boolean.TRUE;
 
     @Autowired
@@ -78,6 +77,7 @@ public class AnnouncementsViewController implements InitializingBean {
     private IViewNameSelector viewNameSelector = null;
 
     public static final String PREFERENCE_DISABLE_EDIT = "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
+    public static final String PREFERENCE_PAGE_SIZE = "AnnouncementsViewController.PAGE_SIZE";
 
     /**
      * Main method of this display controller. Calculates which topics should be shown to
@@ -96,9 +96,12 @@ public class AnnouncementsViewController implements InitializingBean {
             @RequestParam(value="to",required=false) Integer to)
         throws PortletException {
 
+        PortletPreferences prefs = request.getPreferences();
+        int pageSize = Integer.valueOf( prefs.getValue( PREFERENCE_PAGE_SIZE, "5" ) );;
+
         if (from == null || to == null) {
             from = 0;
-            to = this.pageSize;
+            to = pageSize;
         }
 
         boolean isGuest = (request.getRemoteUser() == null
@@ -174,7 +177,6 @@ public class AnnouncementsViewController implements InitializingBean {
         model.addAttribute("isGuest", Boolean.valueOf(isGuest));
 
         // Disable the edit link where appropriate
-        PortletPreferences prefs = request.getPreferences();
         Boolean disableEdit = Boolean.valueOf(prefs.getValue(PREFERENCE_DISABLE_EDIT, "false"));
         model.addAttribute("disableEdit", disableEdit);
 
