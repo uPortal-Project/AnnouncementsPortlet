@@ -34,46 +34,54 @@
 	</c:forEach>
 </c:if>
 
-<table width="100%" cellspacing="0" cellpadding="0" class="data">
-	<tr>
-		<th width="15%"><spring:message code="display.header.topic"/></th>
-		<th><spring:message code="display.header.ann"/></th>
-	</tr>
+<c:choose>
+    <c:when test="${empty announcements}">
+        <p><span class=""><spring:message code="display.no.announcements"/></span></p>
+    </c:when>
+    <c:otherwise>
+        <table width="100%" cellspacing="0" cellpadding="0" class="data">
+            <tr>
+                <th width="15%"><spring:message code="display.header.topic"/></th>
+                <th><spring:message code="display.header.ann"/></th>
+            </tr>
 
-<c:forEach items="${announcements}" var="announcement" varStatus="status">
-	<tr>
-		<c:choose>
-			<c:when test="${status.index mod 2 == 0}">
-				<td align="center" width="15%" class="<portlet:namespace/>-row1color">
-			</c:when>
-			<c:otherwise>
-				<td align="center" width="15%" class="<portlet:namespace/>-row2color">
-			</c:otherwise>
-		</c:choose>
-			<c:out value="${announcement.parent.title}"/>
-			<c:if test="${showDate}">
-				<br/>
-				<span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
-			</c:if>			
-		</td>
-		<c:choose>
-			<c:when test="${status.index mod 2 == 0}">
-				<td class="<portlet:namespace/>-row1color">
-			</c:when>
-			<c:otherwise>
-				<td class="<portlet:namespace/>-row2color">
-			</c:otherwise>
-		</c:choose>
-			<a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a>
-			<br/><c:out value="${announcement.abstractText}"/>
-			<br/>
-			<c:if test="${not empty announcement.link}">
-				<span class="portlet-section-text" style="font-size:0.9em; padding-top:0.2em;"><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></span> 
-			</c:if>			
-		</td>
-	</tr>
-</c:forEach>
-</table>
+        <c:forEach items="${announcements}" var="announcement" varStatus="status">
+            <tr>
+                <c:choose>
+                    <c:when test="${status.index mod 2 == 0}">
+                        <td align="center" width="15%" class="<portlet:namespace/>-row1color">
+                    </c:when>
+                    <c:otherwise>
+                        <td align="center" width="15%" class="<portlet:namespace/>-row2color">
+                    </c:otherwise>
+                </c:choose>
+                    <c:out value="${announcement.parent.title}"/>
+                    <c:if test="${showDate}">
+                        <br/>
+                        <span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
+                    </c:if>			
+                </td>
+                <c:choose>
+                    <c:when test="${status.index mod 2 == 0}">
+                        <td class="<portlet:namespace/>-row1color">
+                    </c:when>
+                    <c:otherwise>
+                        <td class="<portlet:namespace/>-row2color">
+                    </c:otherwise>
+                </c:choose>
+                    <a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a>
+                    <br/><c:out value="${announcement.abstractText}"/>
+                    <br/>
+                    <c:if test="${not empty announcement.link}">
+                        <span class="portlet-section-text" style="font-size:0.9em; padding-top:0.2em;"><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></span> 
+                    </c:if>			
+                </td>
+            </tr>
+        </c:forEach>
+        </table>
+    </c:otherwise>
+</c:choose>
+
 <table border="0" width="100%">
   <tr>
 	<td align="left" style="font-size:0.9em; padding-top:0.5em;">
