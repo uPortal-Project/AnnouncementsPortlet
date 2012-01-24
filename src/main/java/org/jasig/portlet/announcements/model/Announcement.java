@@ -210,15 +210,26 @@ public class Announcement implements Comparable<Announcement> {
 		return (t.getId().compareTo(this.id) == 0);
 	}
 
-	// manipulate the sorting to that newest = first
+	// manipulate the sorting so that start date, then title, then id,
+	// are used to determine order of display appearance
 	public int compareTo(Announcement otherAnn) {
-		int val = startDisplay.compareTo(otherAnn.getStartDisplay());
-		if (val == 0) {
-			val = title.compareTo(otherAnn.getTitle());
-		} else {
-			val = (val * -1);
+		
+		switch (startDisplay.compareTo(otherAnn.getStartDisplay())) {
+			case -1 : return 1;
+			case 1 : return -1;
+			case 0 :
+				// Since the start dates are the same, we will differentiate against title 
+				switch (title.compareTo(otherAnn.getTitle())) {
+					case -1 :	return -1;
+					case 1 : return 1;
+					case 0 :
+						// Titles are the same, so we will compare id's, which are unique
+						return id.compareTo(otherAnn.getId());
+				 }
 		}
-		return val;
+		
+		// This return is never reached, though the compiler doesn't realise it,
+		return 0;
 	}
 	
 }
