@@ -17,14 +17,25 @@
     specific language governing permissions and limitations
     under the License.    
 --%>
-<script type="text/javascript" src="<c:url value="/date-picker/js/datepicker.js"/>"></script>
+<c:set var="n"><portlet:namespace/></c:set>
+<script src="<rs:resourceURL value="/rs/jquery/1.4.2/jquery-1.4.2.min.js"/>" type="text/javascript"></script>
+<script src="<rs:resourceURL value="/rs/jqueryui/1.8/jquery-ui-1.8.min.js"/>" type="text/javascript"></script>
 <script type="text/javascript" src="<c:url value="/tinymce/tiny_mce.js"/>"></script>
 
-<style type="text/css">
-<!--
-@import url(<c:url value="/date-picker/css/datepicker.css"/>);
--->
-</style>
+<script type="text/javascript">
+    var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
+    ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
+    
+    /*  runs when the document is finished loading.  This prevents things like the 'div' from being fully created */
+    ${n}.jQuery(document).ready(function () { 
+        var $ = ${n}.jQuery; //reassign $ for normal use of jQuery  
+    	
+    	$( "#${n}datepickerstart" ).datepicker({dateFormat: 'yy-mm-dd'});
+    	$( "#${n}datepickerend" ).datepicker({dateFormat: 'yy-mm-dd'});
+    });
+    
+</script>
+
 
 <portlet:actionURL var="actionUrl">
 	<portlet:param name="action" value="addAnnouncement"/>
@@ -72,21 +83,22 @@
 		</td>
 	</tr>
 	<tr>
-		<td valign="top">
+		<td valign="top">			
 			<spring:message code="addAnnouncement.start"/>
+			
 		</td>
 		<td>
 			<form:errors cssClass="portlet-msg-error" path="startDisplay"/>
-			<form:input cssClass="portlet-form-input-field ${datePickerFormat} range-low-today no-transparency" path="startDisplay" size="11" maxlength="10"/>
+			<form:input path="startDisplay" id="${n}datepickerstart"></form:input>
 		</td>
 	</tr>
 	<tr>
 		<td valign="top">
-			<spring:message code="addAnnouncement.end"/>
+			<spring:message code="addAnnouncement.end"/>			
 		</td>
 		<td>
 			<form:errors cssClass="portlet-msg-error" path="endDisplay"/>
-	 		<form:input cssClass="portlet-form-input-field ${datePickerFormat} range-low-today no-transparency" path="endDisplay" size="11" maxlength="10"/>
+			<form:input path="endDisplay" id="${n}datepickerend"></form:input>
 		</td>
 	</tr>
 </table>
@@ -118,4 +130,3 @@ tinyMCE.init({
 });
 //-->
 </script>
-
