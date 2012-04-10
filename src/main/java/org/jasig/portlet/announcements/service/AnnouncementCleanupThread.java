@@ -77,7 +77,9 @@ public class AnnouncementCleanupThread extends Thread {
 				(firstCheck || System.currentTimeMillis() > (lastCheckTime + maxCheckIntervalMillis))) {
 				
 				log.info("Going to delete old announcements at "+now.toString());
-				announcementService.deleteAnnouncementsPastCurrentTime();
+				//UOC Customization.
+				//we no longer want to auto delete events. 
+				//announcementService.deleteAnnouncementsPastCurrentTime();
 				lastCheckTime = System.currentTimeMillis();
 				firstCheck = false;
 			}

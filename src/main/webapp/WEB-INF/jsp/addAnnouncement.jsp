@@ -39,10 +39,10 @@
 
 <portlet:actionURL var="actionUrl">
 	<portlet:param name="action" value="addAnnouncement"/>
-	<portlet:param name="topicId" value="${announcement.parent.id}"/>
+	<portlet:param name="topicId" value="${topicId}"/>
 </portlet:actionURL>
 
-<div class="portlet-section-header"><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></div>
+<div class="portlet-section-header"><spring:message code="addAnnouncement.header"/> <c:out value="${topicTitle}"/></div>
 
 <form:form commandName="announcement" method="post" action="${actionUrl}">
 <table width="100%" cellpadding="3">
@@ -61,7 +61,31 @@
 		</td>
 		<td>
 			<form:errors cssClass="portlet-msg-error" path="abstractText"/>
-			<form:textarea cssClass="portlet-form-input-field" path="abstractText" rows="2" cols="40" cssStyle="width:80%;"/>
+			<script language="javascript" type="text/javascript">
+			<!--
+			window.onload = function() { 
+				  var txts = document.getElementsByTagName('TEXTAREA') 
+
+				  for(var i = 0, l = txts.length; i < l; i++) {
+				    if(/^[0-9]+$/.test(txts[i].getAttribute("title"))) { 
+				      var func = function() { 
+				        var len = parseInt(this.getAttribute("title"), 10); 
+
+				        if(this.value.length > len) { 
+				          alert('Maximum length exceeded: ' + len); 
+				          this.value = this.value.substr(0, len); 
+				          return false; 
+				        } 
+				      }
+
+				      txts[i].onkeyup = func;
+				      txts[i].onblur = func;
+				    } 
+				  } 
+				}
+			-->
+			</script>
+			<form:textarea cssClass="portlet-form-input-field" path="abstractText" rows="2" cols="40" cssStyle="width:80%;" title="120" />
 		</td>
 	</tr>
 	<tr>
@@ -109,7 +133,7 @@
 <button type="submit" class="portlet-form-button"><spring:message code="addAnnouncement.save"/></button>
 </form:form>
 <br/>
-<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${announcement.parent.id}"/></portlet:renderURL>">
+<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topicId}"/></portlet:renderURL>">
 <img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.backtotopic"/></a>
 &nbsp;&nbsp;
 <a style="text-decoration:none;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>">

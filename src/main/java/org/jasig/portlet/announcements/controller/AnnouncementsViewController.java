@@ -21,6 +21,8 @@ package org.jasig.portlet.announcements.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Comparator;
+import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -300,5 +302,57 @@ public class AnnouncementsViewController implements InitializingBean {
         this.cm = cm;
     }
 
+  //UOC Customizations:  add history support
+	
+  	@RequestMapping(value = "VIEW", params = "action=displayFullAnnouncementHistory")
+  	public String displayFullAnnouncementHistory(Model model,
+  			RenderRequest request,
+  			@RequestParam("announcementId") String announcementId)
+  			throws Exception {
 
+  		Long annId = Long.valueOf(announcementId);
+
+  		Announcement announcement = announcementService.getAnnouncement(annId);
+
+  		if (!UserPermissionChecker.inRoleForTopic(request, "audience",
+  				announcement.getParent())) {
+  			throw new UnauthorizedException();
+  		}
+
+  		model.addAttribute("announcement", announcement);
+
+  		return viewNameSelector.select(request, "displayFullAnnouncementHistory");
+  	}
+
+  	@RequestMapping(value = "VIEW", params = "action=displayHistory")
+  	public String displayHistory(Model model, RenderRequest request)
+  			throws Exception {
+
+  		List<Announcement> announcements = new ArrayList<Announcement>();
+
+  		// fetch the user's topic subscription from the database
+  		List<TopicSubscription> myTopics = tss.getTopicSubscription(request);
+
+  		// add all the published announcements of each subscribed topic to the
+  		// announcement list
+  		for (TopicSubscription ts : myTopics) {
+  			if (ts.getSubscribed()
+  					&& ts.getTopic().getSubscriptionMethod() != Topic.EMERGENCY) {
+  				announcements.addAll(ts.getTopic().getHistoricAnnouncements());
+  			}
+  		}
+  		
+  		// sort the list by end display date descending (since they are not
+  		// sorted from the database)
+  		Collections.sort(announcements, new Comparator<Announcement>() {
+  			public int compare(Announcement s, Announcement s2) {
+  				return s2.getEndDisplay().compareTo(s.getEndDisplay());
+  			}
+
+  		});
+
+  		model.addAttribute("announcements", announcements);
+
+  		return viewNameSelector.select(request, "displayHistory");
+  	}
 }

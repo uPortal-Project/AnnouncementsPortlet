@@ -18,9 +18,12 @@
  */
 package org.jasig.portlet.announcements.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
@@ -35,6 +38,9 @@ public class Topic {
 	public static final int PULLED = 3;				/* ...Not pushed to anybody, but target audience members can subscribe (pull) if they want to */
 	public static final int EMERGENCY = 4;			/* A topic that supercedes all other topics */
 	
+	private static final org.apache.log4j.Logger logger = Logger
+			.getLogger(Topic.class);
+			
 	private Set<Announcement> announcements;
 	
 	private Set<String> admins;
@@ -170,19 +176,45 @@ public class Topic {
 		Set<Announcement> announcementsFiltered = new TreeSet<Announcement>();
 		Date now = new Date();
 		if (this.announcements != null) {
-			for (Announcement ann: this.announcements) {
-		        Date startDisplay = ann.getStartDisplay();
-		        Date endDisplay = ann.getEndDisplay();
-		        if (endDisplay == null) {
-		            // Unspecified end date means the announcement does not expire;  we 
-		            // will substitute a date in the future each time this item is 
-		            // evaluated.
-		            long aYearFromNow = System.currentTimeMillis() + Announcement.MILLISECONDS_IN_A_YEAR;
-		            endDisplay = new Date(aYearFromNow);
-		        }
-			    if (ann.isPublished() && 
-			            startDisplay.before(now) &&
-			            endDisplay.after(now) ) {
+			for (Announcement ann : this.announcements) {
+				if (ann.isPublished() && ann.getStartDisplay().before(now)
+						&& ann.getEndDisplay().after(now)) {
+					announcementsFiltered.add(ann);
+				}
+			}
+		}
+		return announcementsFiltered;
+	}
+
+	/**
+	 * Returns a list of all published announcements in this topic. For topics
+	 * to be included in this list, they must also be within their specified
+	 * display period which is the window from yesterday to 30 days ago.
+	 * 
+	 * @return the announcements
+	 */
+	public Set<Announcement> getHistoricAnnouncements() {
+		Set<Announcement> announcementsFiltered = new TreeSet<Announcement>();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -1); // subtract 1 day from today.
+		Date now = cal.getTime();
+		cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -30); // subtract 30 days from today.
+		Date then = cal.getTime();
+		if (this.announcements != null) {
+			for (Announcement ann : this.announcements) {
+				if (logger.isInfoEnabled()) {
+					logger.info("hist title: " + ann.getTitle() + "\n"
+							+ "published? " + ann.isPublished() + "\n"
+							+ "now: " + now + "\n" + "then: " + then + "\n"
+							+ "startDisplay: " + ann.getStartDisplay() + "\n"
+							+ "enDisplay: " + ann.getEndDisplay() + "\n"
+							+ "before now? "
+							+ ann.getStartDisplay().before(now) + "\n"
+							+ "after then? " + ann.getEndDisplay().after(then));
+				}
+				if (ann.getEndDisplay().before(now)
+						&& ann.getEndDisplay().after(then)) {
 					announcementsFiltered.add(ann);
 				}
 			}

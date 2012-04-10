@@ -64,7 +64,9 @@
     <bean id="adminTopicController" class="org.jasig.portlet.announcements.controller.AdminTopicController"/>
     <bean id="adminAnnouncementController" class="org.jasig.portlet.announcements.controller.AdminAnnouncementController"/>
     <bean id="adminRoleSetController" class="org.jasig.portlet.announcements.controller.AdminRoleSetController"/>
-
+    <bean id="previewAnnouncementController" class="org.jasig.portlet.announcements.controller.PreviewAnnouncementController"/>
+	<bean id="showTopicController" class="org.jasig.portlet.announcements.controller.ShowTopicController"/>
+    <bean id="showHistoryController" class="org.jasig.portlet.announcements.controller.ShowHistoryController"/>
    
     <bean id="exceptionHandler" parent="defaultExceptionHandlerTemplate"/>
     
