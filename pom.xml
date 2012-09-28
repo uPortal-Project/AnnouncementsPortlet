@@ -35,7 +35,7 @@
     <version>1.1.0-SNAPSHOT</version>
     
     <properties>
-    	<resource-server.version>1.0.14</resource-server.version>
+    	<resource-server.version>1.0.26</resource-server.version>
     </properties>
     
     <url>http://www.ja-sig.org/wiki/display/PLT/Announcements+Portlet</url>
@@ -277,8 +277,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
 
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
 
@@ -287,16 +287,14 @@
                 <artifactId>maven-war-plugin</artifactId>
 
                 <configuration>
-                    <webXml>${web.xml.location}</webXml>
                     <warName>Announcements</warName>
-                    <webXml>${basedir}/target/jspweb.xml</webXml>
                     <overlays>
                         <overlay>
                             <groupId>org.jasig.resourceserver</groupId>
                             <artifactId>resource-server-content</artifactId>
                             <includes>	
-                            	<include>rs/jquery/1.4.2/jquery-1.4.2.min.js</include>	                                
-                                <include>rs/jqueryui/1.8/jquery-ui-1.8.min.js</include>
+                            	<include>rs/jquery/1.6.4/</include>
+                                <include>rs/jqueryui/1.8.13/</include>
                             </includes>
                         </overlay>
                     </overlays>
@@ -319,78 +317,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <!-- 
-            This profile executes the 'jspc-maven-plugin' by default, but allows 
-            those who wish to disable it to do so 
-        -->
-        <profile>
-            <id>jspc</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <web.xml.location>${basedir}/target/jspweb.xml</web.xml.location>
-            </properties>
-            <build>
-                <plugins>
-		            <plugin>
-		                <groupId>org.codehaus.mojo</groupId>
-		                <artifactId>jspc-maven-plugin</artifactId>
-		                <executions>
-		                    <execution>
-		                        <id>jspc</id>
-		                        <goals>
-		                            <goal>compile</goal>
-		                        </goals>
-		                    </execution>
-		                </executions>
-		                <configuration>
-		                    <injectString>&lt;!-- [INSERT JSPC FRAGMENT HERE] --&gt;</injectString>
-		                </configuration>
-		                <dependencies>
-		                    <!-- These dependencies are the portlet.tld is needed for JSP compilation -->
-		                    <dependency>
-		                        <groupId>org.apache.pluto</groupId>
-		                        <artifactId>pluto-taglib</artifactId>
-		                        <version>1.1.3</version>
-		                        <type>jar</type>
-		                    </dependency>
-		                    <dependency>
-		                        <groupId>javax.portlet</groupId>
-		                        <artifactId>portlet-api</artifactId>
-		                        <version>1.0</version>
-		                        <type>jar</type>
-		                    </dependency>
-		                    <dependency>
-		                        <groupId>javax.servlet</groupId>
-		                        <artifactId>jstl</artifactId>
-		                        <version>1.1.2</version>
-		                        <type>jar</type>
-		                    </dependency>
-		                    <dependency>
-		                        <groupId>taglibs</groupId>
-		                        <artifactId>standard</artifactId>
-		                        <version>1.1.2</version>
-		                        <type>jar</type>
-		                    </dependency>
-		                </dependencies>
-		            </plugin>        
-                </plugins>
-            </build>
-        </profile>
-        
-        <!-- 
-            Pass '-P disableJspc' on the command line to turn off the 
-            'jspc-maven-plugin' 
-        -->
-        <profile>
-            <id>disableJspc</id>
-            <properties>
-                <web.xml.location>${basedir}/src/main/webapp/WEB-INF/web.xml</web.xml.location>
-            </properties>
-        </profile>
-    </profiles>
 
 </project>

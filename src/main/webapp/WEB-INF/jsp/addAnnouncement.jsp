@@ -18,8 +18,8 @@
     under the License.    
 --%>
 <c:set var="n"><portlet:namespace/></c:set>
-<script src="<rs:resourceURL value="/rs/jquery/1.4.2/jquery-1.4.2.min.js"/>" type="text/javascript"></script>
-<script src="<rs:resourceURL value="/rs/jqueryui/1.8/jquery-ui-1.8.min.js"/>" type="text/javascript"></script>
+<script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
+<script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
 <script type="text/javascript" src="<c:url value="/tinymce/tiny_mce.js"/>"></script>
 
 <script type="text/javascript">
@@ -27,11 +27,11 @@
     ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
     
     /*  runs when the document is finished loading.  This prevents things like the 'div' from being fully created */
-    ${n}.jQuery(document).ready(function () { 
+    ${n}.jQuery(function () { 
         var $ = ${n}.jQuery; //reassign $ for normal use of jQuery  
     	
-    	$( "#${n}datepickerstart" ).datepicker({dateFormat: 'yy-mm-dd'});
-    	$( "#${n}datepickerend" ).datepicker({dateFormat: 'yy-mm-dd'});
+    	$("#${n}datepickerstart").datepicker({dateFormat: 'yy-mm-dd'});
+    	$("#${n}datepickerend").datepicker({dateFormat: 'yy-mm-dd'});
     });
     
 </script>
