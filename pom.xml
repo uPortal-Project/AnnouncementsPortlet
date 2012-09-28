@@ -58,8 +58,9 @@
     </developers>
 
     <scm>
-        <connection>scm:svn:https://source.jasig.org/portlets/AnnouncementsPortlet/trunk</connection>
-        <url>http://source.jasig.org/portlets/AnnouncementsPortlet/trunk</url>
+        <connection>scm:git:git://github.com/Jasig/AnnouncementsPortlet.git</connection>
+        <developerConnection>scm:git:git@github.com:Jasig/AnnouncementsPortlet.git</developerConnection>
+        <url>https://github.com/Jasig/AnnouncementsPortlet</url>
     </scm>
 
     <repositories>
