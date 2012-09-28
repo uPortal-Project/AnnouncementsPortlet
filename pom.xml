@@ -30,7 +30,7 @@
     <artifactId>Announcements</artifactId>
     <packaging>war</packaging>
     <name>Announcements Portlet</name>
-    <version>1.1.0</version>
+    <version>1.1.1-SNAPSHOT</version>
     
     <properties>
     	<resource-server.version>1.0.26</resource-server.version>
