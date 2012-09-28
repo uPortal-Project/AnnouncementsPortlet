@@ -106,7 +106,7 @@ function <portlet:namespace/>approval(id, newValue) {
 						</c:otherwise>
 					</c:choose>
 
-					<td><c:out value="${ann.title}"/></td>
+					<td><a  title="Click to Preview"  href="<portlet:renderURL><portlet:param name="action" value="previewAnnouncement"/><portlet:param name="annId" value="${ ann.id }"/></portlet:renderURL>"><c:out value="${ann.title}"/></a></td>
 					<td><fmt:formatDate value="${ann.startDisplay}" dateStyle="short"/> - <fmt:formatDate value="${ann.endDisplay}" dateStyle="short"/></td>
 
 					<td>
@@ -135,6 +135,9 @@ function <portlet:namespace/>approval(id, newValue) {
 <br/>
 <a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>">
 <img src="<c:url value="/icons/add.png"/>" height="16" width="16" style="vertical-align:middle" border="0"/> <spring:message code="show.addAnn"/></a>
+<br/>
+<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showHistory"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>">
+<spring:message code="show.history"/></a>
 <br/>
 <br/>
 

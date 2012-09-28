@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.portlet.PortletRequest;
 
+import org.apache.log4j.Logger;
 import org.jasig.portlet.announcements.model.Topic;
 
 
@@ -45,7 +46,10 @@ public class UserPermissionChecker {
 	public String userName;
 	
 	private static final String ADMIN_ROLE_NAME = "Portal_Administrators";
-	
+
+	private static final org.apache.log4j.Logger logger = Logger
+			.getLogger(UserPermissionChecker.class);
+
 	/**
 	 * 
 	 * @param request
@@ -78,6 +82,15 @@ public class UserPermissionChecker {
 	}
 	
 	public static boolean isPortalAdmin(PortletRequest request) {
+
+		if (logger.isTraceEnabled()) {
+			logger.trace("isPortalAdmin "
+					+ request.getRemoteUser()
+					+ "? "
+					+ request
+							.isUserInRole(UserPermissionChecker.ADMIN_ROLE_NAME));
+		}
+
 		return request.isUserInRole(UserPermissionChecker.ADMIN_ROLE_NAME);
 	}
 	
@@ -102,12 +115,25 @@ public class UserPermissionChecker {
 		}
 		
 		Set<String> group = topic.getGroup(role);
-		for (String groupMember: group) {
+
+		for (String groupMember : group) {
+			if (logger.isDebugEnabled()) {
+				logger.debug("is " + user + " a member of " + groupMember
+						+ " for '" + topic.getTitle() + "'? "
+						+ request.isUserInRole(groupMember));
+			}
 			if (request.isUserInRole(groupMember)) {
 				return true;
 			}
 			if (groupMember.startsWith("USER.")) {
 				String p[] = groupMember.split("\\.");
+
+				if (logger.isDebugEnabled()) {
+					logger.debug("does " + user + " match " + p[1] + " for '"
+							+ topic.getTitle() + "'? "
+							+ p[1].equalsIgnoreCase(user));
+				}
+
 				if (p[1].equalsIgnoreCase(user)) {
 					return true;
 				}
