@@ -42,6 +42,7 @@ import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
+import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,9 @@ public class AnnouncementsViewController implements InitializingBean {
 
     @Autowired(required=true)
     private IViewNameSelector viewNameSelector = null;
+
+    @Autowired(required=true)
+    private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
     public static final String PREFERENCE_DISABLE_EDIT = "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
     public static final String PREFERENCE_PAGE_SIZE = "AnnouncementsViewController.PAGE_SIZE";
@@ -199,7 +203,7 @@ public class AnnouncementsViewController implements InitializingBean {
 
         Announcement announcement = announcementService.getAnnouncement(annId);
 
-        if (!UserPermissionChecker.inRoleForTopic(request, "audience", announcement.getParent())) {
+        if(!userPermissionCheckerFactory.createUserPermissionChecker(request, announcement.getParent()).isAudience()) {
             throw new UnauthorizedException();
         }
 
