@@ -20,18 +20,20 @@
 -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
     xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:util="http://www.springframework.org/schema/util"       
-	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans 
-		http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context-2.5.xsd
-		http://www.springframework.org/schema/util 
-		http://www.springframework.org/schema/util/spring-util-2.5.xsd">
-    
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-2.5.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+    <context:annotation-config />
+
     <bean id="propertyConfigurer"
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="false">
         <property name="locations">
@@ -40,8 +42,8 @@
                 <value>classpath:configuration.properties</value>
             </list>
         </property>
-    </bean>    
-    
+    </bean>
+
     <!-- Message source for this context, loaded from localized "messages_xx" files -->
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
@@ -51,7 +53,7 @@
             </list>
         </property>
     </bean>
-    
+
     <!-- Database configuration beans -->
     <!-- DATASOURCE CONNECTIONS BEANS -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -62,7 +64,7 @@
             <value>${driver.url}</value>
         </property>
         <property name="username">
-            <value>${driver.username}</value>  
+            <value>${driver.username}</value>
         </property>
         <property name="password">
             <value>${driver.password}</value>
@@ -77,7 +79,7 @@
         <property name="initialSize" value="3"/>
         <property name="maxActive" value="10"/>
     </bean>
-    
+
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
@@ -87,14 +89,14 @@
             </props>
         </property>
     </bean>
-    
+
     <bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="flushModeName">
             <value>FLUSH_AUTO</value>
-        </property>   
+        </property>
     </bean>
-    
+
     <!-- Default View Resolver -->
     <bean id="viewResolver"
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -103,8 +105,8 @@
         <property name="prefix" value="/WEB-INF/jsp/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
-    
-    
+
+
     <!-- Abstract Default Exception Handler Bean -->
     <bean id="defaultExceptionHandlerTemplate"
         class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver"
@@ -117,14 +119,14 @@
             </props>
         </property>
     </bean>
-    
+
     <!-- DAO creation for both portlets -->
     <bean id="announcementService" class="org.jasig.portlet.announcements.service.HibernateAnnouncementService">
         <property name="sessionFactory">
             <ref bean="sessionFactory"/>
         </property>
     </bean>
-    
+
     <bean id="groupService" class="org.jasig.portlet.announcements.service.PortletXMLGroupService" init-method="init" />
 
     <!-- Cleanup thread bean -->
@@ -132,9 +134,9 @@
     <bean id="cleanupThread" class="org.jasig.portlet.announcements.service.AnnouncementCleanupThread" init-method="start" destroy-method="stopThread">
         <property name="announcementService" ref="announcementService"/>
         <property name="hourToCheck" value="3"/>
-        <property name="minuteToCheck" value="0"/>    
+        <property name="minuteToCheck" value="0"/>
     </bean>
-    
+
     <!-- Emergency Topic Definition -->
     <bean id="emergencyTopic" class="org.jasig.portlet.announcements.model.Topic">
         <property name="creator"><value>automatic</value></property>
@@ -153,20 +155,22 @@
             </set>
         </property>
     </bean>
-    
+
     <bean id="cacheManager" class="net.sf.ehcache.CacheManager" destroy-method="shutdown">
-    	<constructor-arg type="java.net.URL" value="classpath:ehcache-nondb.xml" />
+        <constructor-arg type="java.net.URL" value="classpath:ehcache-nondb.xml" />
     </bean>
+
+    <bean id="userPermissionCheckerFactory" class="org.jasig.portlet.announcements.service.UserPermissionCheckerFactory" />
 
     <bean id="ViewNameSelector" class="org.jasig.portlet.announcements.controller.UserAgentViewNameSelector">
         <property name="userAgentMappings">
-		    <!-- Regexes of mobile device user agents -->
-		    <util:map>
-		        <entry key=".*iPhone.*" value=".mobile"/>
-		        <entry key=".*Android.*" value=".mobile"/>
-		        <entry key=".*Safari.*Pre.*" value=".mobile"/>
-		        <entry key=".*Nokia.*AppleWebKit.*" value=".mobile"/>
-		    </util:map>
+            <!-- Regexes of mobile device user agents -->
+            <util:map>
+                <entry key=".*iPhone.*" value=".mobile"/>
+                <entry key=".*Android.*" value=".mobile"/>
+                <entry key=".*Safari.*Pre.*" value=".mobile"/>
+                <entry key=".*Nokia.*AppleWebKit.*" value=".mobile"/>
+            </util:map>
         </property>
     </bean>
 

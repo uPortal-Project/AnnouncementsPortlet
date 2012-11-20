@@ -6,9 +6,9 @@
  * Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a
  * copy of the License at:
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -36,119 +36,119 @@ import org.jasig.portlet.announcements.model.Topic;
  * a specific Topic.
  *
  */
-public class UserPermissionChecker {
-		
-	public boolean admin;
-	public boolean moderator;
-	public boolean author;
-	public boolean audience;
-	public String userName;
-	
-	private static final String ADMIN_ROLE_NAME = "Portal_Administrators";
-	
-	/**
-	 * 
-	 * @param request
-	 * @param topic
-	 */
-	public UserPermissionChecker(PortletRequest request, Topic topic) {
-		String user = request.getRemoteUser();
-		if (user == null) {
-			user = "guest";
-		}
-		
-		admin = UserPermissionChecker.inRoleForTopic(request, "admins", topic);
-		moderator = UserPermissionChecker.inRoleForTopic(request, "moderators", topic);
-		author = UserPermissionChecker.inRoleForTopic(request, "authors", topic);
-		audience = UserPermissionChecker.inRoleForTopic(request, "audience", topic);
-		userName = user;
-		
-		if (request.isUserInRole(UserPermissionChecker.ADMIN_ROLE_NAME)) {
-			admin = true;
-		}
-		
-		// Make sure that roles are properly inherited
-		if (admin) {
-			moderator = true;
-		}
-		
-		if (moderator) {
-			author = true;
-		}
-	}
-	
-	public static boolean isPortalAdmin(PortletRequest request) {
-		return request.isUserInRole(UserPermissionChecker.ADMIN_ROLE_NAME);
-	}
-	
-	/**
-	 * 
-	 * @param request
-	 * @param role
-	 * @param topic
-	 * @return true if the user in the PortletRequest has the role specified by the Topic
-	 */
-	public static boolean inRoleForTopic(PortletRequest request, String role, Topic topic) {
-		boolean isGuest = (request.getRemoteUser() == null);
-		
-		// automatic for portal admins, only check if not a guest
-		if (!isGuest && UserPermissionChecker.isPortalAdmin(request)) {
-			return true;
-		}
-		
-		String user = request.getRemoteUser();
-		if (isGuest) {
-			user = "guest";
-		}
-		
-		Set<String> group = topic.getGroup(role);
-		for (String groupMember: group) {
-			if (request.isUserInRole(groupMember)) {
-				return true;
-			}
-			if (groupMember.startsWith("USER.")) {
-				String p[] = groupMember.split("\\.");
-				if (p[1].equalsIgnoreCase(user)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+public final class UserPermissionChecker {
 
-	/**
-	 * @return the userName
-	 */
-	public String getUserName() {
-		return userName;
-	}
+    public static final String PORTAL_ADMIN_ROLE_NAME = "Portal_Administrators";
+    public static final String ADMIN_ROLE_NAME = "admins";
+    public static final String MODERATOR_ROLE_NAME = "moderator";
+    public static final String AUTHOR_ROLE_NAME = "author";
+    public static final String AUDIENCE_ROLE_NAME = "audience";
 
-	/**
-	 * @return the admin
-	 */
-	public boolean isAdmin() {
-		return admin;
-	}
+    public static final String GUEST_USERNAME = "guest";
 
-	/**
-	 * @return the moderator
-	 */
-	public boolean isModerator() {
-		return moderator;
-	}
+    private final boolean admin;
+    private final boolean moderator;
+    private final boolean author;
+    private final boolean audience;
+    private final String userName;
+    private final boolean guest;
 
-	/**
-	 * @return the author
-	 */
-	public boolean isAuthor() {
-		return author;
-	}
+    /**
+     * Used by {@link UserPermissionCheckerFactory}.  A fully-constructed 
+     * instance can tell you anything about a user's permissions, but is more 
+     * expensive to create.  If you only need to know if the user is in the 
+     * audience for a topic, use the static method.
+     */
+    /* package-private */ UserPermissionChecker(PortletRequest request, Topic topic) {
+        guest = (request.getRemoteUser() == null);
+        userName = guest ? GUEST_USERNAME : request.getRemoteUser();
 
-	/**
-	 * @return the audience
-	 */
-	public boolean isAudience() {
-		return audience;
-	}
-	
+        if(request.isUserInRole(UserPermissionChecker.PORTAL_ADMIN_ROLE_NAME) || inRoleForTopic(request, ADMIN_ROLE_NAME, topic)) {
+            admin = moderator = author = true;
+        } else if(inRoleForTopic(request, MODERATOR_ROLE_NAME, topic)) {
+            admin = false;
+            moderator = author = true;
+        } else if(inRoleForTopic(request, AUTHOR_ROLE_NAME, topic)) {
+            admin = moderator = false;
+            author = true;
+        } else {
+            admin = moderator = author = false;
+        }
+
+        audience = inRoleForTopic(request, AUDIENCE_ROLE_NAME, topic);
+    }
+
+    /**
+     *
+     * @param request
+     * @param role
+     * @param topic
+     * @return true if the user in the PortletRequest has the role specified by the Topic
+     */
+    public static boolean inRoleForTopic(PortletRequest request, String role, Topic topic) {
+        boolean isGuest = (request.getRemoteUser() == null);
+
+        // automatic for portal admins, only check if not a guest
+        if (!isGuest && UserPermissionChecker.isPortalAdmin(request)) {
+            return true;
+        }
+        
+        String userName = isGuest ? GUEST_USERNAME : request.getRemoteUser();
+
+        Set<String> group = topic.getGroup(role);
+        for (String groupMember: group) {
+            if (groupMember.startsWith("USER.")) {
+                String p[] = groupMember.split("\\.");
+                if (p[1].equalsIgnoreCase(userName)) {
+                    return true;
+                }
+            } else if (request.isUserInRole(groupMember)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isPortalAdmin(PortletRequest request) {
+        return request.isUserInRole(UserPermissionChecker.PORTAL_ADMIN_ROLE_NAME);
+    }
+
+    public boolean isGuest() {
+        return guest;
+    }
+    /**
+     * @return the userName
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * @return the admin
+     */
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    /**
+     * @return the moderator
+     */
+    public boolean isModerator() {
+        return moderator;
+    }
+
+    /**
+     * @return the author
+     */
+    public boolean isAuthor() {
+        return author;
+    }
+
+    /**
+     * @return the audience
+     */
+    public boolean isAudience() {
+        return audience;
+    }
+
 }

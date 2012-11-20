@@ -6,9 +6,9 @@
  * Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a
  * copy of the License at:
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -37,6 +37,7 @@ import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.validators.TopicValidator;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
+import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,13 +56,15 @@ import org.springframework.web.bind.support.SessionStatus;
 public class AdminTopicController {
 
 	private static final Log log = LogFactory.getLog(AdminTopicController.class);
-	
+
 	@Autowired
 	private IAnnouncementService announcementService;
-	
+
 	@Autowired
 	private Boolean includeJQuery;
-	
+
+	@Autowired
+	private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 	/**
 	 * Add topic view controller, creates or fetches the topic for adding or editing
 	 * @param topicIdStr
@@ -70,9 +73,9 @@ public class AdminTopicController {
 	 * @throws PortletException
 	 */
 	@RequestMapping(params="action=addTopic")
-	public String showAddTopicForm(@RequestParam(value="edit", required=false) String topicIdStr, 
+	public String showAddTopicForm(@RequestParam(value="edit", required=false) String topicIdStr,
 			Model model) throws PortletException {
-		
+
 		if (!model.containsAttribute("topic")) {
 			if (topicIdStr != null && !"".equals(topicIdStr)) {
 				Long topicId = Long.parseLong(topicIdStr);
@@ -89,7 +92,7 @@ public class AdminTopicController {
 		}
 		return "addTopic";
 	}
-	
+
 	/**
 	 * Saves the Topic that was submitted
 	 * @param topic
@@ -100,10 +103,10 @@ public class AdminTopicController {
 	 * @throws PortletException
 	 */
 	@RequestMapping(params="action=addTopic")
-	public void actionAddTopicForm(@ModelAttribute("topic") Topic topic, 
+	public void actionAddTopicForm(@ModelAttribute("topic") Topic topic,
 			BindingResult result, SessionStatus status, ActionRequest request,
 			ActionResponse response) throws PortletException {
-		
+
 		new TopicValidator().validate(topic, result);
 		if (result.hasErrors()) {
 			if (log.isDebugEnabled())
@@ -111,32 +114,32 @@ public class AdminTopicController {
 			response.setRenderParameter("action", "addTopic");
 			return;
 		}
-		
+
 		if (!result.hasErrors() && topic != null) {
 			if (log.isDebugEnabled())
 				log.debug("No errors in form");
-			
+
 			// no id has been assigned by hibernate, so this must be a new topic
 			if ( !topic.hasId() ) {
 				topic.setCreator(request.getRemoteUser());
 			} else {
 				Long id = topic.getId();
 				Topic oldTopic = announcementService.getTopic(id);
-				
+
 				topic.setCreator(oldTopic.getCreator());
 				topic.setAdmins(oldTopic.getAdmins());
 				topic.setAudience(oldTopic.getAudience());
 				topic.setModerators(oldTopic.getModerators());
-				topic.setAuthors(oldTopic.getAuthors());				
+				topic.setAuthors(oldTopic.getAuthors());
 			}
 			announcementService.addOrSaveTopic(topic);
 			status.setComplete();
-			
+
 			response.setRenderParameter("action", "baseAdmin");
-		}	
-		
+		}
+
 	}
-	
+
 	/**
 	 * Delete a specified topic
 	 * @param topicId
@@ -145,19 +148,19 @@ public class AdminTopicController {
 	 * @throws PortletException
 	 */
 	@RequestMapping(params="action=deleteTopic")
-	public void actionDeleteTopic(@RequestParam("topicId") String topicId, 
+	public void actionDeleteTopic(@RequestParam("topicId") String topicId,
 			ActionRequest request, ActionResponse response) throws NumberFormatException, PortletException {
 		Topic topic = announcementService.getTopic(Long.parseLong(topicId));
-		
-		if (!UserPermissionChecker.inRoleForTopic(request, "admins", topic)) {
+
+		if(!UserPermissionChecker.inRoleForTopic(request, UserPermissionChecker.ADMIN_ROLE_NAME, topic)) {
 			throw new UnauthorizedException("You do not have access to delete this topic!");
 		}
-		
+
 		announcementService.deleteTopic(topic);
-		
+
 		response.setRenderParameter("action", "baseAdmin");
 	}
-	
+
 	/**
 	 * Show a specified topic management view
 	 * @param topicId
@@ -168,33 +171,32 @@ public class AdminTopicController {
 	 * @throws PortletException
 	 */
 	@RequestMapping(params="action=showTopic")
-	public String showTopic(@RequestParam("topicId") String topicId, 
+	public String showTopic(@RequestParam("topicId") String topicId,
 			RenderRequest request, Model model) throws NumberFormatException, PortletException {
 
 		Topic topic = announcementService.getTopic(Long.parseLong(topicId));
-		
-		if (!UserPermissionChecker.inRoleForTopic(request, "authors", topic) &&
-				!UserPermissionChecker.inRoleForTopic(request, "moderators", topic) &&
-				!UserPermissionChecker.inRoleForTopic(request, "admins", topic)) {
-			throw new UnauthorizedException("You do not have access to this topic!");
+
+		UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(request, topic);
+		if(!upChecker.isAuthor() && !upChecker.isModerator() && !upChecker.isAdmin()) {
+		    throw new UnauthorizedException("You do not have access to this topic!");
 		}
-		
+
 		Set<Announcement> annSet = topic.getAnnouncements();
 		List<Announcement> annList = new ArrayList<Announcement>();
 		annList.addAll(annSet);
 		if (annSet.size() < 1)
 			annList = null;
-		
+
 		if (annList != null) {
 			Collections.sort(annList);
 		}
-				
-		model.addAttribute("user", new UserPermissionChecker(request, topic));
+
+		model.addAttribute("user", upChecker);
 		model.addAttribute("topic", topic);
 		model.addAttribute("announcements", annList);
 		model.addAttribute("now", new Date());
 		model.addAttribute("includeJQuery", includeJQuery);
-		
+
 		return "showTopic";
 	}
 
@@ -211,6 +213,6 @@ public class AdminTopicController {
 	public void setIncludeJQuery(Boolean includeJQuery) {
 		this.includeJQuery = includeJQuery;
 	}
-		
-	
+
+
 }
