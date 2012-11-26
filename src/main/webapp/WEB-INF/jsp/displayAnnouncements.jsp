@@ -92,6 +92,7 @@
 		<c:if test="${hasMore}">
 			<a href="<portlet:renderURL portletMode="view" windowState="normal"><portlet:param name="from" value="${from + increment}"/><portlet:param name="to" value="${to + increment}"/></portlet:renderURL>"><spring:message code="display.link.next"/> <c:out value="${increment}"/></a>
 		</c:if>
+		<a href="<portlet:renderURL portletMode="view" ><portlet:param name="action" value="displayHistory"/></portlet:renderURL>"><spring:message code="display.link.history"/></a>
 	</td>
 	<td align="right" style="font-size:0.9em; padding-top:0.5em;">
 		<c:if test="${not isGuest && not disableEdit}">

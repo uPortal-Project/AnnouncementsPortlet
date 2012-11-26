@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%-- 
+<%--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,15 +7,15 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
     KIND, either express or implied. See the License for the
     specific language governing permissions and limitations
-    under the License.    
+    under the License.
 --%>
 <c:if test="${includeJQuery}">
 <script type="text/javascript" src="<c:url value="/js/jquery-1.2.3.min.js"/>"></script>
@@ -56,11 +56,11 @@ function <portlet:namespace/>approval(id, newValue) {
 				} else {
 					$("#<portlet:namespace/>annSwitch-"+id+" > img").attr("src", messages[7]);
 					$("#<portlet:namespace/>annSwitch-"+id+" > img").attr("alt", messages[5]);
-					$("#<portlet:namespace/>annSwitch-"+id).attr("title", messages[5]);	
-					$("#<portlet:namespace/>annSwitch-"+id).attr("href", "javascript:<portlet:namespace/>approval("+id+",'true');");			
+					$("#<portlet:namespace/>annSwitch-"+id).attr("title", messages[5]);
+					$("#<portlet:namespace/>annSwitch-"+id).attr("href", "javascript:<portlet:namespace/>approval("+id+",'true');");
 				}
 				$("#<portlet:namespace/>annStatus-"+id).css("background-color", colors[data.status]);
-				$("#<portlet:namespace/>annStatus-"+id).empty().append(messages[data.status]);				
+				$("#<portlet:namespace/>annStatus-"+id).empty().append(messages[data.status]);
 			},
 			"json"
 	);
@@ -106,11 +106,11 @@ function <portlet:namespace/>approval(id, newValue) {
 						</c:otherwise>
 					</c:choose>
 
-					<td><c:out value="${ann.title}"/></td>
+					<td><a  title="Click to Preview"  href="<portlet:renderURL><portlet:param name="action" value="previewAnnouncement"/><portlet:param name="annId" value="${ ann.id }"/></portlet:renderURL>"><c:out value="${ann.title}"/></a></td>
 					<td><fmt:formatDate value="${ann.startDisplay}" dateStyle="short"/> - <fmt:formatDate value="${ann.endDisplay}" dateStyle="short"/></td>
 
 					<td>
-						
+
 						<c:if test="${((not user.moderator) and user.userName eq ann.author) or user.moderator}">
 							<a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="show.viewedit"/>"><img alt="<spring:message code="show.viewedit"/>" src="<c:url value="/icons/pencil.png"/>" border="0" height="16" width="16"/></a>
 						</c:if>
@@ -136,12 +136,16 @@ function <portlet:namespace/>approval(id, newValue) {
 <a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>">
 <img src="<c:url value="/icons/add.png"/>" height="16" width="16" style="vertical-align:middle" border="0"/> <spring:message code="show.addAnn"/></a>
 <br/>
+<div style="width:20px;float:left;">&nbsp;</div>
+<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showHistory"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>">
+<spring:message code="show.history"/></a>
+<br/>
 <br/>
 
 <c:if test="${user.admin}">
 
 	<div class="portlet-section-header"><spring:message code="show.header.permissions"/> <c:out value="${topic.title}"/></div>
-	
+
 	<table width="100%" class="data">
 		<tr>
 			<th><spring:message code="general.admins"/></th>
@@ -180,4 +184,4 @@ function <portlet:namespace/>approval(id, newValue) {
 
 </c:if>
 
-<a style="text-decoration:none;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>"><img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
+<a style="text-decoration:none;" href="<portlet:renderURL portletMode="view"></portlet:renderURL>"><img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
