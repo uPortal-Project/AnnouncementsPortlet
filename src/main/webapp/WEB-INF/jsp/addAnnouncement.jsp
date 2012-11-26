@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%-- 
+<%--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,15 +7,15 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
     KIND, either express or implied. See the License for the
     specific language governing permissions and limitations
-    under the License.    
+    under the License.
 --%>
 <c:set var="n"><portlet:namespace/></c:set>
 <script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
@@ -25,15 +25,15 @@
 <script type="text/javascript">
     var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
     ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
-    
+
     /*  runs when the document is finished loading.  This prevents things like the 'div' from being fully created */
-    ${n}.jQuery(function () { 
-        var $ = ${n}.jQuery; //reassign $ for normal use of jQuery  
-    	
+    ${n}.jQuery(function () {
+        var $ = ${n}.jQuery; //reassign $ for normal use of jQuery
+
     	$("#${n}datepickerstart").datepicker({dateFormat: 'yy-mm-dd'});
     	$("#${n}datepickerend").datepicker({dateFormat: 'yy-mm-dd'});
     });
-    
+
 </script>
 
 
@@ -52,7 +52,7 @@
 		</td>
 		<td>
 			<form:errors cssClass="portlet-msg-error" path="title"/>
-	 		<form:input cssClass="portlet-form-input-field" path="title" size="30" maxlength="80"/>		
+	 		<form:input cssClass="portlet-form-input-field" path="title" size="30" maxlength="80"/>
 		</td>
 	</tr>
 	<tr>
@@ -61,7 +61,7 @@
 		</td>
 		<td>
 			<form:errors cssClass="portlet-msg-error" path="abstractText"/>
-			<form:textarea cssClass="portlet-form-input-field" path="abstractText" rows="2" cols="40" cssStyle="width:80%;"/>
+			<form:textarea cssClass="portlet-form-input-field" path="abstractText" rows="2" cols="40" cssStyle="width:80%;" />
 		</td>
 	</tr>
 	<tr>
@@ -83,9 +83,9 @@
 		</td>
 	</tr>
 	<tr>
-		<td valign="top">			
+		<td valign="top">
 			<spring:message code="addAnnouncement.start"/>
-			
+
 		</td>
 		<td>
 			<form:errors cssClass="portlet-msg-error" path="startDisplay"/>
@@ -94,7 +94,7 @@
 	</tr>
 	<tr>
 		<td valign="top">
-			<spring:message code="addAnnouncement.end"/>			
+			<spring:message code="addAnnouncement.end"/>
 		</td>
 		<td>
 			<form:errors cssClass="portlet-msg-error" path="endDisplay"/>

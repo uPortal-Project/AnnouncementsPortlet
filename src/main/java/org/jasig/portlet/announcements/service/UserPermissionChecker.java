@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.portlet.PortletRequest;
 
+import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Topic;
 
 
@@ -54,9 +55,9 @@ public final class UserPermissionChecker {
     private final boolean guest;
 
     /**
-     * Used by {@link UserPermissionCheckerFactory}.  A fully-constructed 
-     * instance can tell you anything about a user's permissions, but is more 
-     * expensive to create.  If you only need to know if the user is in the 
+     * Used by {@link UserPermissionCheckerFactory}.  A fully-constructed
+     * instance can tell you anything about a user's permissions, but is more
+     * expensive to create.  If you only need to know if the user is in the
      * audience for a topic, use the static method.
      */
     /* package-private */ UserPermissionChecker(PortletRequest request, Topic topic) {
@@ -92,7 +93,7 @@ public final class UserPermissionChecker {
         if (!isGuest && UserPermissionChecker.isPortalAdmin(request)) {
             return true;
         }
-        
+
         String userName = isGuest ? GUEST_USERNAME : request.getRemoteUser();
 
         Set<String> group = topic.getGroup(role);
@@ -151,4 +152,11 @@ public final class UserPermissionChecker {
         return audience;
     }
 
+    public boolean canEditTopic() {
+        return (isAuthor() || isModerator() || isAdmin());
+    }
+
+    public void validateCanEditTopic() {
+        if(!canEditTopic()) throw new UnauthorizedException("You do not have access to this topic!");
+    }
 }

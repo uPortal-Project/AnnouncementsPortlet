@@ -6,9 +6,9 @@
  * Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a
  * copy of the License at:
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -30,7 +30,7 @@ import org.jasig.portlet.announcements.model.TopicSubscription;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
- * 
+ *
  * $LastChangedBy$
  * $LastChangedDate$
  */
@@ -39,33 +39,35 @@ public interface IAnnouncementService {
 	public List<Topic> getAllTopics();
 
 	public Topic getEmergencyTopic();
-	
+
 	public void addOrSaveTopic(Topic topic);
-	
+
 	public void persistTopic(Topic topic);
-	
+
 	public void mergeTopic(Topic topic);
-	
+
 	public void addOrSaveAnnouncement(Announcement ann);
-	
+
 	public void mergeAnnouncement(Announcement ann);
-	
+
 	public Topic getTopic(Long id) throws PortletException;
-	
+
 	public Announcement getAnnouncement(Long id) throws PortletException;
-	
+
 	public void deleteAnnouncementsPastCurrentTime();
-	
+
+	public void deleteAnnouncementsPastExpirationThreshold(int numDays);
+
 	public List<TopicSubscription> getTopicSubscriptionFor(RenderRequest request) throws PortletException;
-	
+
 	public void addOrSaveTopicSubscription(List<TopicSubscription> subs);
-	
+
 	public void persistTopicSubscription(List<TopicSubscription> subs);
-	
+
 	public void deleteTopic(Topic topic);
-	
+
 	public void deleteAnnouncement(Announcement ann);
-	
+
 	public void deleteTopicSubscription(TopicSubscription sub);
-	
+
 }

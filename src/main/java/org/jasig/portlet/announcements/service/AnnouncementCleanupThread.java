@@ -6,9 +6,9 @@
  * Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a
  * copy of the License at:
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
@@ -33,51 +34,67 @@ import org.apache.log4j.Logger;
  */
 public class AnnouncementCleanupThread extends Thread {
 
+    @Autowired
 	private IAnnouncementService announcementService;
+
 	private int hourToCheck = 3;  // military time
 	private int minuteToCheck = 0;
 	private int checkInterval = 60; 	// seconds
+	private int expireThreshold = 60; // in days
 	private long maxCheckIntervalMillis = 43200000L;	// 12 hours
 	private boolean keepRunning;
-	
+
 	private static Logger log = Logger.getLogger(AnnouncementCleanupThread.class);
-	
+
 	public AnnouncementCleanupThread() {
 		setDaemon(true);
 		keepRunning = true;
 	}
-	
+
 	public void stopThread() {
 		keepRunning = false;
 		log.info("Stopping cleanup thread...");
 		this.interrupt();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Thread#run()
 	 */
 	@Override
 	public void run() {
+	    if(expireThreshold < 0) {
+	        //A value less than 0 indicates we want to retain all expired announcements
+            // and as such there is no reason for the thread to keep running
+            this.stopThread();
+        }
+
 		Date now;
 		Calendar nowCal = new GregorianCalendar();
 		long lastCheckTime = System.currentTimeMillis();
 		boolean firstCheck = true;
-		
+
 		while (true && keepRunning) {
 			now = new Date();
 			nowCal.setTime(now);
-			
+
 			/**
 			 * If the current hour of the day = the hour to check AND
 			 * the current minute of the hour = the minute to check (plus a range of 2 minutes) AND
 			 * the current time is later than the last time we checked + the required interval
 			 */
-			if (nowCal.get(Calendar.HOUR_OF_DAY) == hourToCheck && 
+			if (nowCal.get(Calendar.HOUR_OF_DAY) == hourToCheck &&
 				nowCal.get(Calendar.MINUTE) <= (minuteToCheck + 1) &&
 				(firstCheck || System.currentTimeMillis() > (lastCheckTime + maxCheckIntervalMillis))) {
-				
-				log.info("Going to delete old announcements at "+now.toString());
-				announcementService.deleteAnnouncementsPastCurrentTime();
+
+			    if(expireThreshold > 0) {
+			        log.info("Going to delete old announcements at "+now.toString());
+			        announcementService.deleteAnnouncementsPastExpirationThreshold(expireThreshold);
+			    }
+			    else {
+			        log.info("Going to delete expired announcements at "+now.toString());
+                    announcementService.deleteAnnouncementsPastCurrentTime();
+			    }
+
 				lastCheckTime = System.currentTimeMillis();
 				firstCheck = false;
 			}
@@ -88,13 +105,6 @@ public class AnnouncementCleanupThread extends Thread {
 				break;
 			}
 		}
-	}
-
-	/**
-	 * @param announcementService the announcementService to set
-	 */
-	public void setAnnouncementService(IAnnouncementService announcementService) {
-		this.announcementService = announcementService;
 	}
 
 	/**
@@ -124,5 +134,8 @@ public class AnnouncementCleanupThread extends Thread {
 	public void setMaxCheckIntervalMillis(long maxCheckIntervalMillis) {
 		this.maxCheckIntervalMillis = maxCheckIntervalMillis;
 	}
-	
+
+	public void setExpireThreshold(int expireThreshold) {
+	    this.expireThreshold = expireThreshold;
+	}
 }

@@ -177,11 +177,9 @@ public class AdminTopicController {
 		Topic topic = announcementService.getTopic(Long.parseLong(topicId));
 
 		UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(request, topic);
-		if(!upChecker.isAuthor() && !upChecker.isModerator() && !upChecker.isAdmin()) {
-		    throw new UnauthorizedException("You do not have access to this topic!");
-		}
+		upChecker.validateCanEditTopic();
 
-		Set<Announcement> annSet = topic.getAnnouncements();
+		Set<Announcement> annSet = topic.getNonHistoricAnnouncements();
 		List<Announcement> annList = new ArrayList<Announcement>();
 		annList.addAll(annSet);
 		if (annSet.size() < 1)
