@@ -38,6 +38,7 @@ import net.sf.ehcache.Element;
 import org.apache.log4j.Logger;
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Announcement;
+import org.jasig.portlet.announcements.model.AnnouncementSortStrategy;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
@@ -61,7 +62,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AnnouncementsViewController implements InitializingBean {
 
     private static final String GUEST_USERNAME = "guest";
-    private static final String PREFERENCE_DISPLAY_STARTDATE = "AnnouncementsViewController.displayPublishDate";
     private static final Logger logger = Logger.getLogger(AnnouncementsViewController.class);
     private Cache guestAnnouncementCache = null;
     private Boolean showDate = Boolean.TRUE;
@@ -81,8 +81,11 @@ public class AnnouncementsViewController implements InitializingBean {
     @Autowired
     private final UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
+    public static final String PREFERENCE_DISPLAY_STARTDATE = "AnnouncementsViewController.displayPublishDate";
     public static final String PREFERENCE_DISABLE_EDIT = "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
     public static final String PREFERENCE_PAGE_SIZE = "AnnouncementsViewController.PAGE_SIZE";
+    public static final String PREFERENCE_SORT_STRATEGY = "AnnouncementsViewController.AnnouncementSortStrategy";
+    public static final String DEFAULT_SORT_STRATEGY = "START_DISPLAY_DATE_ASCENDING";
 
     /**
      * Main method of this display controller. Calculates which topics should be shown to
@@ -90,7 +93,8 @@ public class AnnouncementsViewController implements InitializingBean {
      * @param model
      * @param request
      * @param from
-     * @param to
+     * @param toimport java.util.Date;
+
      * @return
      * @throws PortletException
      */
@@ -143,8 +147,9 @@ public class AnnouncementsViewController implements InitializingBean {
             }
 
             // sort the list (since they are not sorted from the database)
-            Collections.sort(announcements);
-            Collections.sort(emergencyAnnouncements);
+            Comparator<Announcement> sortStrategy = AnnouncementSortStrategy.getStrategy(prefs.getValue(PREFERENCE_SORT_STRATEGY,DEFAULT_SORT_STRATEGY));
+            Collections.sort(announcements,sortStrategy);
+            Collections.sort(emergencyAnnouncements,sortStrategy);
 
             if (isGuest) {
                 if (logger.isDebugEnabled())

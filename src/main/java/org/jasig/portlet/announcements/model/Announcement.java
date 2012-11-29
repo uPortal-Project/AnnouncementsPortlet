@@ -6,9 +6,9 @@
  * Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a
  * copy of the License at:
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -22,7 +22,7 @@ import java.util.Date;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
- * 
+ *
  * $LastChangedBy$
  * $LastChangedDate$
  */
@@ -32,9 +32,9 @@ public class Announcement implements Comparable<Announcement> {
      * Useful for announcements with open-ended display periods.
      */
     public static final long MILLISECONDS_IN_A_YEAR = 1000L   // Milliseconds in a second
-                                                * 60L   // Seconds in a minute 
-                                                * 60L   // Minutes in an hour 
-                                                * 24L   // Hours in a day 
+                                                * 60L   // Seconds in a minute
+                                                * 60L   // Minutes in an hour
+                                                * 24L   // Hours in a day
                                                 * 365L; // Days in a year (basically)
 
     private String title;
@@ -48,14 +48,14 @@ public class Announcement implements Comparable<Announcement> {
 	private Boolean published = false;
 	private Topic parent;
 	private Long id;
-	
+
 	/**
 	 * @return the published
 	 */
 	public Boolean isPublished() {
 		return published;
 	}
-	
+
 	/**
 	 * @return the published
 	 */
@@ -69,11 +69,11 @@ public class Announcement implements Comparable<Announcement> {
 	public void setPublished(Boolean published) {
 		this.published = published;
 	}
-	
+
 	public boolean hasId() {
 		return (this.id != null);
 	}
-	
+
 	/**
 	 * @return the id
 	 */
@@ -125,8 +125,16 @@ public class Announcement implements Comparable<Announcement> {
 	 * @return the endDisplay
 	 */
 	public Date getEndDisplay() {
-		return endDisplay;
+	    return endDisplay;
 	}
+
+	public Date getNullSafeEndDisplay() {
+	    // Unspecified end date means the announcement does not expire;  we
+	    // will substitute a date in the future each time this item is
+        // evaluated.
+	    return endDisplay != null ? endDisplay : new Date(System.currentTimeMillis() + Announcement.MILLISECONDS_IN_A_YEAR);
+	}
+
 	/**
 	 * @return the message
 	 */
@@ -200,7 +208,7 @@ public class Announcement implements Comparable<Announcement> {
 	public void setLink(String link) {
 		this.link = link;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -213,23 +221,7 @@ public class Announcement implements Comparable<Announcement> {
 	// manipulate the sorting so that start date, then title, then id,
 	// are used to determine order of display appearance
 	public int compareTo(Announcement otherAnn) {
-		
-		switch (startDisplay.compareTo(otherAnn.getStartDisplay())) {
-			case -1 : return 1;
-			case 1 : return -1;
-			case 0 :
-				// Since the start dates are the same, we will differentiate against title 
-				switch (title.compareTo(otherAnn.getTitle())) {
-					case -1 :	return -1;
-					case 1 : return 1;
-					case 0 :
-						// Titles are the same, so we will compare id's, which are unique
-						return id.compareTo(otherAnn.getId());
-				 }
-		}
-		
-		// This return is never reached, though the compiler doesn't realise it,
-		return 0;
+	    return AnnouncementSortStrategy.START_DISPLAY_DATE_DESCENDING.getComparator().compare(this, otherAnn);
 	}
-	
+
 }
