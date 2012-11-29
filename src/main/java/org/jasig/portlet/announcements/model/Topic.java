@@ -20,6 +20,7 @@ package org.jasig.portlet.announcements.model;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -172,7 +173,7 @@ public class Topic {
 	 * @return the announcements
 	 */
 	public Set<Announcement> getPublishedAnnouncements() {
-		Set<Announcement> announcementsFiltered = new TreeSet<Announcement>();
+		Set<Announcement> announcementsFiltered = new HashSet<Announcement>();  // Don't use a TreeSet here... causes lost announcements
 		Date now = new Date();
 		if (this.announcements != null) {
 			for (Announcement ann : this.announcements) {
@@ -205,7 +206,7 @@ public class Topic {
      * @return the announcements
      */
 	public Set<Announcement> getNonHistoricAnnouncements() {
-	    Set<Announcement> announcementsFiltered = new TreeSet<Announcement>();
+	    Set<Announcement> announcementsFiltered = new HashSet<Announcement>();  // Don't use a TreeSet here... causes lost announcements
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1); // subtract 1 day from today.
         Date date = cal.getTime();
@@ -228,7 +229,7 @@ public class Topic {
 	 * @return the announcements
 	 */
 	public Set<Announcement> getHistoricAnnouncements() {
-		Set<Announcement> announcementsFiltered = new TreeSet<Announcement>();
+		Set<Announcement> announcementsFiltered = new HashSet<Announcement>();  // Don't use a TreeSet here... causes lost announcements
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, -1); // subtract 1 day from today.
 		Date dateStart = cal.getTime();
