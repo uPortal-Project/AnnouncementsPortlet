@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%-- 
+<%--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,15 +7,15 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
     KIND, either express or implied. See the License for the
     specific language governing permissions and limitations
-    under the License.    
+    under the License.
 --%>
 <style type="text/css">
 .<portlet:namespace/>-row1color { padding: 5px; background-color: #eee; }
@@ -56,10 +56,10 @@
                     </c:otherwise>
                 </c:choose>
                     <c:out value="${announcement.parent.title}"/>
-                    <c:if test="${showDate}">
+                    <c:if test="${displayPublishDate}">
                         <br/>
                         <span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
-                    </c:if>			
+                    </c:if>
                 </td>
                 <c:choose>
                     <c:when test="${status.index mod 2 == 0}">
@@ -73,8 +73,8 @@
                     <br/><c:out value="${announcement.abstractText}"/>
                     <br/>
                     <c:if test="${not empty announcement.link}">
-                        <span class="portlet-section-text" style="font-size:0.9em; padding-top:0.2em;"><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></span> 
-                    </c:if>			
+                        <span class="portlet-section-text" style="font-size:0.9em; padding-top:0.2em;"><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></span>
+                    </c:if>
                 </td>
             </tr>
         </c:forEach>
