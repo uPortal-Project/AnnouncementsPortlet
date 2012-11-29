@@ -27,12 +27,14 @@ import java.util.Set;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Announcement;
+import org.jasig.portlet.announcements.model.AnnouncementSortStrategy;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.validators.TopicValidator;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
@@ -55,6 +57,9 @@ import org.springframework.web.bind.support.SessionStatus;
 @RequestMapping("VIEW")
 public class AdminTopicController {
 
+    public static final String PREFERENCE_SORT_STRATEGY = "AdminTopicController.AnnouncementSortStrategy";
+    public static final String DEFAULT_SORT_STRATEGY = "START_DISPLAY_DATE_ASCENDING";
+
 	private static final Log log = LogFactory.getLog(AdminTopicController.class);
 
 	@Autowired
@@ -65,6 +70,7 @@ public class AdminTopicController {
 
 	@Autowired
 	private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
+
 	/**
 	 * Add topic view controller, creates or fetches the topic for adding or editing
 	 * @param topicIdStr
@@ -174,6 +180,7 @@ public class AdminTopicController {
 	public String showTopic(@RequestParam("topicId") String topicId,
 			RenderRequest request, Model model) throws NumberFormatException, PortletException {
 
+	    PortletPreferences prefs = request.getPreferences();
 		Topic topic = announcementService.getTopic(Long.parseLong(topicId));
 
 		UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(request, topic);
@@ -188,7 +195,7 @@ public class AdminTopicController {
 			annList = null;
 
 		if (annList != null) {
-			Collections.sort(annList);
+		    Collections.sort(annList,AnnouncementSortStrategy.getStrategy(prefs.getValue(PREFERENCE_SORT_STRATEGY,DEFAULT_SORT_STRATEGY)));
 		}
 
 		model.addAttribute("user", upChecker);
