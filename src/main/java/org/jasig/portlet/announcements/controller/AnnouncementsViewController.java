@@ -20,6 +20,7 @@ package org.jasig.portlet.announcements.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -42,6 +43,7 @@ import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
+import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,13 +70,16 @@ public class AnnouncementsViewController implements InitializingBean {
     private ITopicSubscriptionService tss = null;
 
     @Autowired
-    private IAnnouncementService announcementService = null;
+    private final IAnnouncementService announcementService = null;
 
     @Autowired
     private CacheManager cm = null;
 
     @Autowired(required=true)
-    private IViewNameSelector viewNameSelector = null;
+    private final IViewNameSelector viewNameSelector = null;
+
+    @Autowired
+    private final UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
     public static final String PREFERENCE_DISABLE_EDIT = "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
     public static final String PREFERENCE_PAGE_SIZE = "AnnouncementsViewController.PAGE_SIZE";
@@ -195,14 +200,7 @@ public class AnnouncementsViewController implements InitializingBean {
     public String displayFullAnnouncement(Model model, RenderRequest request,
             @RequestParam("announcementId") String announcementId) throws Exception {
 
-        Long annId = Long.valueOf( announcementId );
-
-        Announcement announcement = announcementService.getAnnouncement(annId);
-
-        if (!UserPermissionChecker.inRoleForTopic(request, "audience", announcement.getParent())) {
-            throw new UnauthorizedException();
-        }
-
+        Announcement announcement = getAnnouncementById(request,announcementId);
         model.addAttribute("announcement", announcement);
 
         return viewNameSelector.select(request, "displayFullAnnouncement");
@@ -286,6 +284,7 @@ public class AnnouncementsViewController implements InitializingBean {
         this.showDate = showDate;
     }
 
+    @Override
     public void afterPropertiesSet() throws Exception {
         guestAnnouncementCache = cm.getCache("guestAnnouncementCache");
         if (guestAnnouncementCache == null) {
@@ -300,5 +299,58 @@ public class AnnouncementsViewController implements InitializingBean {
         this.cm = cm;
     }
 
+  	@RequestMapping(value = "VIEW", params = "action=displayFullAnnouncementHistory")
+  	public String displayFullAnnouncementHistory(Model model,
+  			RenderRequest request,
+  			@RequestParam("announcementId") String announcementId)
+  			throws Exception {
 
+  		Announcement announcement = getAnnouncementById(request,announcementId);
+  		model.addAttribute("announcement", announcement);
+
+  		return viewNameSelector.select(request, "displayFullAnnouncementHistory");
+  	}
+
+  	@RequestMapping(value = "VIEW", params = "action=displayHistory")
+  	public String displayHistory(Model model, RenderRequest request)
+  			throws Exception {
+
+  		List<Announcement> announcements = new ArrayList<Announcement>();
+
+  		// fetch the user's topic subscription from the database
+  		List<TopicSubscription> myTopics = tss.getTopicSubscription(request);
+
+  		// add all the published announcements of each subscribed topic to the
+  		// announcement list
+  		for (TopicSubscription ts : myTopics) {
+  			if (ts.getSubscribed() && ts.getTopic().getSubscriptionMethod() != Topic.EMERGENCY) {
+  				announcements.addAll(ts.getTopic().getHistoricAnnouncements());
+  			}
+  		}
+
+  		// sort the list by end display date descending (since they are not
+  		// sorted from the database)
+  		Collections.sort(announcements, new Comparator<Announcement>() {
+  			@Override
+            public int compare(Announcement s, Announcement s2) {
+  				return s2.getEndDisplay().compareTo(s.getEndDisplay());
+  			}
+
+  		});
+
+  		model.addAttribute("announcements", announcements);
+
+  		return viewNameSelector.select(request, "displayHistory");
+  	}
+
+    private Announcement getAnnouncementById(PortletRequest request, String announcementId) throws Exception {
+        Long annId = Long.valueOf(announcementId);
+        Announcement announcement = announcementService.getAnnouncement(annId);
+
+        if (!UserPermissionChecker.inRoleForTopic(request, UserPermissionChecker.AUDIENCE_ROLE_NAME, announcement.getParent())) {
+            throw new UnauthorizedException();
+        }
+
+        return announcement;
+    }
 }

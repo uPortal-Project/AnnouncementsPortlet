@@ -25,13 +25,13 @@
     xmlns:p="http://www.springframework.org/schema/p"
     xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="
-        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-    
+
     <context:annotation-config />
-    
+
     <bean id="propertyConfigurer"
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" lazy-init="false">
         <property name="locations">
@@ -39,16 +39,16 @@
                 <value>classpath:configuration.properties</value>
             </list>
         </property>
-    </bean>  
-    
+    </bean>
+
     <bean id="includeJQuery" class="java.lang.Boolean">
         <constructor-arg value="${javascript.jQuery.include}"/>
     </bean>
-    
+
     <bean id="customDateFormat" class="java.lang.String">
         <constructor-arg value="${dateformat.input.default}"/>
     </bean>
-    
+
     <bean class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping">
         <property name="interceptors">
             <list>
@@ -57,15 +57,16 @@
             </list>
         </property>
     </bean>
-    
+
     <!-- Controllers -->
-    
+
     <bean id="adminController" class="org.jasig.portlet.announcements.controller.AdminController"/>
     <bean id="adminTopicController" class="org.jasig.portlet.announcements.controller.AdminTopicController"/>
     <bean id="adminAnnouncementController" class="org.jasig.portlet.announcements.controller.AdminAnnouncementController"/>
     <bean id="adminRoleSetController" class="org.jasig.portlet.announcements.controller.AdminRoleSetController"/>
+    <bean id="previewAnnouncementController" class="org.jasig.portlet.announcements.controller.PreviewAnnouncementController"/>
+    <bean id="showHistoryController" class="org.jasig.portlet.announcements.controller.ShowHistoryController"/>
 
-   
     <bean id="exceptionHandler" parent="defaultExceptionHandlerTemplate"/>
-    
+
 </beans>

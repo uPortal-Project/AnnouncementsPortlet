@@ -129,12 +129,16 @@
 
     <bean id="groupService" class="org.jasig.portlet.announcements.service.PortletXMLGroupService" init-method="init" />
 
+    <bean id="historyExpireThreshold" class="java.lang.Integer">
+        <constructor-arg value="${history.expire.threshold}"/>
+    </bean>
+
     <!-- Cleanup thread bean -->
     <!-- To disable the automatic deletion of old announcements, just comment out this bean -->
     <bean id="cleanupThread" class="org.jasig.portlet.announcements.service.AnnouncementCleanupThread" init-method="start" destroy-method="stopThread">
-        <property name="announcementService" ref="announcementService"/>
         <property name="hourToCheck" value="3"/>
         <property name="minuteToCheck" value="0"/>
+        <property name="expireThreshold" ref="historyExpireThreshold"/>
     </bean>
 
     <!-- Emergency Topic Definition -->

@@ -6,9 +6,9 @@
  * Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License. You may obtain a
  * copy of the License at:
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,13 +18,16 @@
  */
 package org.jasig.portlet.announcements.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
- * 
+ *
  * $LastChangedBy$
  * $LastChangedDate$
  */
@@ -34,14 +37,16 @@ public class Topic {
 	public static final int PUSHED_INITIAL = 2; 	/* ...Pushed initially, but users can unsubscribe */
 	public static final int PULLED = 3;				/* ...Not pushed to anybody, but target audience members can subscribe (pull) if they want to */
 	public static final int EMERGENCY = 4;			/* A topic that supercedes all other topics */
-	
+
+	private static final org.apache.log4j.Logger logger = Logger.getLogger(Topic.class);
+
 	private Set<Announcement> announcements;
-	
+
 	private Set<String> admins;
 	private Set<String> moderators;
 	private Set<String> authors;
 	private Set<String> audience;
-	
+
 	private String creator;
 	private String title;
 	private String description;
@@ -56,7 +61,7 @@ public class Topic {
 		audience = new TreeSet<String>();
 	}
 
-	
+
 	public Set<String> getGroup(String key) {
 		if (key.compareTo("admins") == 0) {
 			return getAdmins();
@@ -71,7 +76,7 @@ public class Topic {
 			return getAudience();
 		}
 	}
-	
+
 	public void setGroup(String key, Set<String> members) {
 		if (key.compareTo("admins") == 0) {
 			setAdmins(members);
@@ -90,7 +95,7 @@ public class Topic {
 	public boolean hasId() {
 		return (this.id != null);
 	}
-	
+
 	/**
 	 * @return the moderators
 	 */
@@ -152,7 +157,7 @@ public class Topic {
 	public void setAllowRss(boolean allowRss) {
 		this.allowRss = allowRss;
 	}
-	
+
 	/**
 	 * Returns a list of all announcements in this topic, regardless of status.
 	 * @return the announcements
@@ -170,26 +175,77 @@ public class Topic {
 		Set<Announcement> announcementsFiltered = new TreeSet<Announcement>();
 		Date now = new Date();
 		if (this.announcements != null) {
-			for (Announcement ann: this.announcements) {
-		        Date startDisplay = ann.getStartDisplay();
-		        Date endDisplay = ann.getEndDisplay();
-		        if (endDisplay == null) {
-		            // Unspecified end date means the announcement does not expire;  we 
-		            // will substitute a date in the future each time this item is 
-		            // evaluated.
-		            long aYearFromNow = System.currentTimeMillis() + Announcement.MILLISECONDS_IN_A_YEAR;
-		            endDisplay = new Date(aYearFromNow);
-		        }
-			    if (ann.isPublished() && 
-			            startDisplay.before(now) &&
-			            endDisplay.after(now) ) {
+			for (Announcement ann : this.announcements) {
+			    Date startDisplay = ann.getStartDisplay();
+                Date endDisplay = ann.getEndDisplay();
+                if (endDisplay == null) {
+                    // Unspecified end date means the announcement does not expire;  we
+                    // will substitute a date in the future each time this item is
+                    // evaluated.
+                    long aYearFromNow = System.currentTimeMillis() + Announcement.MILLISECONDS_IN_A_YEAR;
+                    endDisplay = new Date(aYearFromNow);
+                }
+                if (ann.isPublished() && startDisplay.before(now) && endDisplay.after(now) ) {
+                    announcementsFiltered.add(ann);
+                }
+			}
+		}
+		if(logger.isDebugEnabled()) {
+		    logger.debug(String.format("Returning %d of %d announcements",
+		            this.announcements.size(), announcementsFiltered.size()));
+		}
+		return announcementsFiltered;
+	}
+
+	/**
+     * Returns a list of all historic announcements in this topic.
+     * Non-historic announcements are simply all non-expired
+     * announcements as well as announcements that expired less
+     * than a day ago.
+     * @return the announcements
+     */
+	public Set<Announcement> getNonHistoricAnnouncements() {
+	    Set<Announcement> announcementsFiltered = new TreeSet<Announcement>();
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1); // subtract 1 day from today.
+        Date date = cal.getTime();
+        if (this.announcements != null) {
+            for (Announcement ann : this.announcements) {
+                if((ann.getEndDisplay() == null) || (date.before(ann.getEndDisplay()))) {
+                    announcementsFiltered.add(ann);
+                }
+            }
+        }
+        if(logger.isDebugEnabled()) {
+            logger.debug(String.format("Returning %d of %d announcements",
+                    this.announcements.size(), announcementsFiltered.size()));
+        }
+        return announcementsFiltered;
+	}
+
+	/**
+	 * Returns a list of all historic announcements in this topic.
+	 * @return the announcements
+	 */
+	public Set<Announcement> getHistoricAnnouncements() {
+		Set<Announcement> announcementsFiltered = new TreeSet<Announcement>();
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -1); // subtract 1 day from today.
+		Date dateStart = cal.getTime();
+		if (this.announcements != null) {
+			for (Announcement ann : this.announcements) {
+				if (ann.getEndDisplay().before(dateStart)) {
 					announcementsFiltered.add(ann);
 				}
 			}
 		}
+		if(logger.isDebugEnabled()) {
+            logger.debug(String.format("Returning %d of %d announcements",
+                    this.announcements.size(), announcementsFiltered.size()));
+        }
 		return announcementsFiltered;
 	}
-	
+
 	/**
 	 * Get the current number of displaying announcements
 	 * @return
@@ -197,7 +253,7 @@ public class Topic {
 	public int getDisplayingAnnouncementCount() {
 		return getPublishedAnnouncements().size();
 	}
-	
+
 	/**
 	 * Get the current number of approved & scheduled announcements
 	 * @return
@@ -215,7 +271,7 @@ public class Topic {
 		}
 		return count;
 	}
-	
+
 	/**
 	 * Get the current number of pending announcements
 	 * @return
@@ -231,7 +287,7 @@ public class Topic {
 		}
 		return count;
 	}
-	
+
 	/**
 	 * @return the id
 	 */
@@ -330,7 +386,7 @@ public class Topic {
 				+ ", moderators=" + moderators + ", subscriptionMethod="
 				+ subscriptionMethod + ", title=" + title + "]";
 	}
-	
-	
-	
+
+
+
 }

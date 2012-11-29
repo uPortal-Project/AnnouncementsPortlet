@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
-<%-- 
+<%--
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -7,15 +7,15 @@
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
     KIND, either express or implied. See the License for the
     specific language governing permissions and limitations
-    under the License.    
+    under the License.
 --%>
 <c:if test="${portalAdmin}">
 <script type="text/javascript">
@@ -37,9 +37,22 @@ function <portlet:namespace/>_delete(url) {
 		<tr>
 			<td>
 				<c:out value="${topic.title}"/>
-			</td> 
+			</td>
             <td>
 				( <c:out value="${topic.displayingAnnouncementCount}"/>, <c:out value="${topic.scheduledAnnouncementCount}"/>, <c:out value="${topic.pendingAnnouncementCount}"/> )
+			</td>
+			<td>
+			     <c:choose>
+			         <c:when test="${topic.subscriptionMethod == 1}">
+			             <spring:message code="addTopic.pushedforced"/>
+			         </c:when>
+			         <c:when test="${topic.subscriptionMethod == 2}">
+			             <spring:message code="addTopic.pushedoptional"/>
+			         </c:when>
+			         <c:when test="${topic.subscriptionMethod == 3}">
+			             <spring:message code="addTopic.optional"/>
+			         </c:when>
+			     </c:choose>
 			</td>
 			<td>
 				<a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.manage"/>"><img src="<c:url value="/icons/cog.png"/>" height="16" width="16" border="0" alt="<spring:message code="baseAdmin.manage"/>"/></a>&nbsp;&nbsp;
@@ -56,10 +69,23 @@ function <portlet:namespace/>_delete(url) {
 		<tr>
 			<td>
 				<c:out value="${topic.title}"/>
-			</td> 
+			</td>
             <td>
 				( <c:out value="${topic.displayingAnnouncementCount}"/>, <c:out value="${topic.scheduledAnnouncementCount}"/>, <c:out value="${topic.pendingAnnouncementCount}"/> )
 			</td>
+			<td>
+                 <c:choose>
+                     <c:when test="${topic.subscriptionMethod == 1}">
+                         <spring:message code="addTopic.pushedforced"/>
+                     </c:when>
+                     <c:when test="${topic.subscriptionMethod == 2}">
+                         <spring:message code="addTopic.pushedoptional"/>
+                     </c:when>
+                     <c:when test="${topic.subscriptionMethod == 3}">
+                         <spring:message code="addTopic.optional"/>
+                     </c:when>
+                 </c:choose>
+            </td>
 			<td>
 				<a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.manage"/>"><img src="<c:url value="/icons/cog.png"/>" height="16" width="16" border="0" alt="<spring:message code="baseAdmin.manage"/>"/></a>&nbsp;&nbsp;
 				<c:if test="${topic.subscriptionMethod != 4}">
@@ -72,7 +98,21 @@ function <portlet:namespace/>_delete(url) {
 		<tr>
 			<td>
 				<c:out value="${topic.title}"/>
-			</td> 
+			</td>
+			<td>&nbsp;</td>
+			<td>
+                 <c:choose>
+                     <c:when test="${topic.subscriptionMethod == 1}">
+                         <spring:message code="addTopic.pushedforced"/>
+                     </c:when>
+                     <c:when test="${topic.subscriptionMethod == 2}">
+                         <spring:message code="addTopic.pushedoptional"/>
+                     </c:when>
+                     <c:when test="${topic.subscriptionMethod == 3}">
+                         <spring:message code="addTopic.optional"/>
+                     </c:when>
+                 </c:choose>
+            </td>
 			<td>
 				<a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.manage"/>"><img src="<c:url value="/icons/cog.png"/>" height="16" width="16" border="0" alt="<spring:message code="baseAdmin.manage"/>"/></a>&nbsp;&nbsp;
 			</td>
