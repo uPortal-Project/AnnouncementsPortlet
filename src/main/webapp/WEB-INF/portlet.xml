@@ -25,15 +25,15 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd
     http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
     version="1.0">
-    
+
     <!-- IMPORTANT: For this portlet to work, you must mirror all <security-role-ref> elements in both portlet sections!! -->
-    
+
     <portlet>
         <portlet-name>AnnouncementsDisplay</portlet-name>
         <display-name xml:lang="en">Announcements</display-name>
         <display-name xml:lang="sv">Tillk&#228;nnagivanden</display-name>
         <display-name xml:lang="fr">Annonces</display-name>
-        
+
         <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
         <init-param>
             <name>contextConfigLocation</name>
@@ -44,18 +44,32 @@
             <portlet-mode>view</portlet-mode>
             <portlet-mode>edit</portlet-mode>
         </supports>
-        
+
         <supported-locale>en</supported-locale>
         <supported-locale>sv</supported-locale>
         <supported-locale>fr</supported-locale>
-        
+
         <resource-bundle>i18n/ann-portlet</resource-bundle>
-        
+
         <portlet-preferences>
             <preference>
                 <name>AnnouncementsViewController.displayPublishDate</name>
                 <value>false</value>
                 <read-only>true</read-only>
+            </preference>
+            <preference>
+                <!--
+                    Available Strategies:
+                    CREATE_DATE_ASCENDING
+                    CREATE_DATE_DESCENDING
+                    START_DISPLAY_DATE_ASCENDING
+                    START_DISPLAY_DATE_DESCENDING
+                    END_DISPLAY_DATE_ASCENDING
+                    END_DISPLAY_DATE_DESCENDING
+                 -->
+                <name>AnnouncementsViewController.AnnouncementSortStrategy</name>
+                <value>START_DISPLAY_DATE_DESCENDING</value>
+                <read-only>false</read-only>
             </preference>
         </portlet-preferences>
 
@@ -64,45 +78,45 @@
             <role-name>Portal_Administrators</role-name>
             <role-link>local.2</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Everyone</role-name>
             <role-link>local.0</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>All_Logged_In_Users</role-name>
             <role-link>pags.1</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Faculty</role-name>
             <role-link>local.23</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Staff</role-name>
             <role-link>local.33</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Students</role-name>
             <role-link>local.34</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Grad_Students</role-name>
             <role-link>local.26</role-link>
         </security-role-ref>
-        
+
     </portlet>
-    
+
     <portlet>
         <portlet-name>AnnouncementsAdmin</portlet-name>
         <display-name xml:lang="en">Announcement Administration</display-name>
         <display-name xml:lang="sv">Administrera Tillk&#228;nnagivanden</display-name>
-        <display-name xml:lang="fr">Administration Annonces</display-name> 
-        
+        <display-name xml:lang="fr">Administration Annonces</display-name>
+
         <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
         <init-param>
             <name>contextConfigLocation</name>
@@ -112,13 +126,13 @@
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
         </supports>
-        
+
         <supported-locale>en</supported-locale>
         <supported-locale>sv</supported-locale>
         <supported-locale>fr</supported-locale>
-        
+
         <resource-bundle>i18n/ann-admin-portlet</resource-bundle>
-        
+
         <portlet-preferences>
             <preference>
                 <name>AdminAnnouncementController.allowOpenEndDate</name>
@@ -132,43 +146,43 @@
             <role-name>Portal_Administrators</role-name>
             <role-link>local.2</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Everyone</role-name>
             <role-link>local.0</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>All_Logged_In_Users</role-name>
             <role-link>pags.1</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Faculty</role-name>
             <role-link>local.23</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Staff</role-name>
             <role-link>local.33</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Students</role-name>
             <role-link>local.34</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Grad_Students</role-name>
             <role-link>local.26</role-link>
         </security-role-ref>
-        
+
     </portlet>
-    
+
     <portlet>
         <portlet-name>WhitelistAnnouncementsDisplay</portlet-name>
         <display-name xml:lang="en">Whitelist Announcements</display-name>
-        
+
         <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
         <init-param>
             <name>contextConfigLocation</name>
@@ -179,13 +193,13 @@
             <portlet-mode>view</portlet-mode>
             <portlet-mode>edit</portlet-mode>
         </supports>
-        
+
         <supported-locale>en</supported-locale>
         <supported-locale>sv</supported-locale>
         <supported-locale>fr</supported-locale>
-        
+
         <resource-bundle>i18n/ann-portlet</resource-bundle>
-        
+
         <portlet-preferences>
             <preference>
                 <name>PortletPreferencesTopicSubscriptionService.topicWhitelist</name>
@@ -202,44 +216,58 @@
                 <value>false</value>
                 <read-only>true</read-only>
             </preference>
+            <preference>
+                <!--
+                    Available Strategies:
+                    CREATE_DATE_ASCENDING
+                    CREATE_DATE_DESCENDING
+                    START_DISPLAY_DATE_ASCENDING
+                    START_DISPLAY_DATE_DESCENDING
+                    END_DISPLAY_DATE_ASCENDING
+                    END_DISPLAY_DATE_DESCENDING
+                 -->
+                <name>AdminTopicController.AnnouncementSortStrategy</name>
+                <value>START_DISPLAY_DATE_DESCENDING</value>
+                <read-only>false</read-only>
+            </preference>
         </portlet-preferences>
-        
+
         <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
         <security-role-ref>
             <role-name>Portal_Administrators</role-name>
             <role-link>local.2</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Everyone</role-name>
             <role-link>local.0</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>All_Logged_In_Users</role-name>
             <role-link>pags.1</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Faculty</role-name>
             <role-link>local.23</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Staff</role-name>
             <role-link>local.33</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Students</role-name>
             <role-link>local.34</role-link>
         </security-role-ref>
-        
+
         <security-role-ref>
             <role-name>Grad_Students</role-name>
             <role-link>local.26</role-link>
         </security-role-ref>
-        
+
     </portlet>
 
 </portlet-app>
