@@ -66,7 +66,7 @@
     <bean id="adminRoleSetController" class="org.jasig.portlet.announcements.controller.AdminRoleSetController"/>
     <bean id="previewAnnouncementController" class="org.jasig.portlet.announcements.controller.PreviewAnnouncementController"/>
     <bean id="showHistoryController" class="org.jasig.portlet.announcements.controller.ShowHistoryController"/>
-
+    <bean id="adminHelpController" class="org.jasig.portlet.announcements.controller.AdminHelpController"/>
     <bean id="exceptionHandler" parent="defaultExceptionHandlerTemplate"/>
 
 </beans>
