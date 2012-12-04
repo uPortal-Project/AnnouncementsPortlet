@@ -24,6 +24,49 @@
 .<portlet:namespace/>-emerg a, .<portlet:namespace/>-emerg a:visited { text-decoration: none; color: #c00; }
 </style>
 
+<c:set var="n"><portlet:namespace/></c:set>
+<script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
+<script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/rs/jquery-tooltip/1.3/jquery.tooltip.js"/>" type="text/javascript"></script>
+<script type="text/javascript">
+    var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
+    ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
+
+    /*  runs when the document is finished loading.  This prevents things like the 'div' from being fully created */
+    ${n}.jQuery(function () {
+        var $ = ${n}.jQuery; //reassign $ for normal use of jQuery
+
+        <c:if test="${hideAbstract == 'true'}">
+            $(".announcement-link-tooltip").tooltip({
+                showURL: false,
+                position: { offset: "15 15" }
+            });
+        </c:if>
+    });
+
+</script>
+
+<style>
+    #tooltip {
+        padding:8px;
+        opacity: 0.85;
+        position:absolute;
+        z-index:9999;
+        -o-box-shadow: 0 0 5px #aaa;
+        -moz-box-shadow: 0 0 5px #aaa;
+        -webkit-box-shadow: 0 0 5px #aaa;
+        box-shadow: 0 0 5px #aaa;
+        max-width: 400px;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #111;
+        border-width:2px;
+        font-size: 11px;
+        font-family: inherit;
+    }
+    #tooltip h3, #tooltip div { margin: 0; }
+</style>
+
 <c:if test="${not empty emergency}">
 	<c:forEach items="${emergency}" var="announcement">
 		<div class="<portlet:namespace/>-emerg">
@@ -46,32 +89,38 @@
             </tr>
 
         <c:forEach items="${announcements}" var="announcement" varStatus="status">
+            <c:choose>
+                <c:when test="${status.index mod 2 == 0}">
+                    <c:set var="rowClass" value="${n}-row1color"/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="rowClass" value="${n}-row2color"/>
+                </c:otherwise>
+            </c:choose>
             <tr>
-                <c:choose>
-                    <c:when test="${status.index mod 2 == 0}">
-                        <td align="center" width="15%" class="<portlet:namespace/>-row1color">
-                    </c:when>
-                    <c:otherwise>
-                        <td align="center" width="15%" class="<portlet:namespace/>-row2color">
-                    </c:otherwise>
-                </c:choose>
+                <td align="center" width="15%" class="<c:out value="${rowClass}"/>">
                     <c:out value="${announcement.parent.title}"/>
                     <c:if test="${displayPublishDate}">
                         <br/>
                         <span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
                     </c:if>
                 </td>
-                <c:choose>
-                    <c:when test="${status.index mod 2 == 0}">
-                        <td class="<portlet:namespace/>-row1color">
-                    </c:when>
-                    <c:otherwise>
-                        <td class="<portlet:namespace/>-row2color">
-                    </c:otherwise>
-                </c:choose>
-                    <a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a>
-                    <br/><c:out value="${announcement.abstractText}"/>
+                <td class="<c:out value="${rowClass}"/>">
+                    <c:choose>
+                        <c:when test="${hideAbstract == 'true'}">
+                            <c:set var="annLinkTitle" value="${announcement.abstractText}"/>
+                            <c:set var="annLinkClass" value="announcement-link-tooltip"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="annLinkTitle"><spring:message code="display.title.fullannouncement"/></c:set>
+                            <c:set var="annLinkClass" value="announcement-link"/>
+                        </c:otherwise>
+                    </c:choose>
+                    <a title="<c:out value="${annLinkTitle}"/>" class="<c:out value="${annLinkClass}"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a>
                     <br/>
+                    <c:if test="${hideAbstract == 'false'}">
+                        <c:out value="${announcement.abstractText}"/><br/>
+                    </c:if>
                     <c:if test="${not empty announcement.link}">
                         <span class="portlet-section-text" style="font-size:0.9em; padding-top:0.2em;"><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></span>
                     </c:if>
