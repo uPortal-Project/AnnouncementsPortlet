@@ -18,23 +18,9 @@
  */
 package org.jasig.portlet.announcements.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletException;
-import javax.portlet.PortletMode;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
-import javax.portlet.RenderRequest;
-
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
-
 import org.apache.log4j.Logger;
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Announcement;
@@ -53,6 +39,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.portlet.PortletMode;
+import javax.portlet.PortletRequest;
+import javax.portlet.RenderRequest;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author eolsson
@@ -85,6 +84,7 @@ public class AnnouncementsViewController implements InitializingBean {
     public static final String PREFERENCE_DISABLE_EDIT = "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
     public static final String PREFERENCE_PAGE_SIZE = "AnnouncementsViewController.PAGE_SIZE";
     public static final String PREFERENCE_SORT_STRATEGY = "AnnouncementsViewController.AnnouncementSortStrategy";
+    public static final String PREFERENCE_HIDE_ABSTRACT = "AnnouncementsViewController.hideAbstract";
     public static final String DEFAULT_SORT_STRATEGY = "START_DISPLAY_DATE_ASCENDING";
 
     /**
@@ -197,7 +197,7 @@ public class AnnouncementsViewController implements InitializingBean {
         model.addAttribute("increment", new Integer(pageSize));
         model.addAttribute("announcements", announcementsShort);
         model.addAttribute("emergency", emergencyAnnouncements);
-
+        model.addAttribute("hideAbstract", Boolean.valueOf(prefs.getValue(PREFERENCE_HIDE_ABSTRACT,"false")));
         return viewNameSelector.select(request, "displayAnnouncements");
     }
 
@@ -214,6 +214,7 @@ public class AnnouncementsViewController implements InitializingBean {
     @RequestMapping("EDIT")
     public String editPreferences(Model model, RenderRequest request) throws PortletException {
 
+        PortletPreferences prefs = request.getPreferences();
         List<TopicSubscription> myTopics = tss.getTopicSubscriptionEdit(request);
 
         if (request.getRemoteUser() == null ||
@@ -224,14 +225,15 @@ public class AnnouncementsViewController implements InitializingBean {
         }
         model.addAttribute("topicSubscriptions", myTopics);
         model.addAttribute("topicsToUpdate", myTopics.size());
-
+        model.addAttribute("prefHideAbstract",Boolean.valueOf(prefs.getValue(PREFERENCE_HIDE_ABSTRACT,"false")));
         return viewNameSelector.select(request, "editDisplayPreferences");
     }
 
     @RequestMapping("EDIT")
     public void savePreferences(ActionRequest request, ActionResponse response,
-            @RequestParam("topicsToUpdate") Integer topicsToUpdate) throws PortletException {
+            @RequestParam("topicsToUpdate") Integer topicsToUpdate) throws PortletException,IOException {
 
+        PortletPreferences prefs = request.getPreferences();
         List<TopicSubscription> newSubscription = new ArrayList<TopicSubscription>();
 
         for (int i=0; i<topicsToUpdate; i++) {
@@ -269,6 +271,10 @@ public class AnnouncementsViewController implements InitializingBean {
                 logger.error("ERROR saving TopicSubscriptions for user "+request.getRemoteUser()+". Message: "+e.getMessage());
             }
         }
+
+        String hideAbstract = Boolean.valueOf(request.getParameter("hideAbstract")).toString();
+        prefs.setValue(PREFERENCE_HIDE_ABSTRACT,hideAbstract);
+        prefs.store();
 
         response.setPortletMode(PortletMode.VIEW);
         response.setRenderParameter("action", "displayAnnouncements");
