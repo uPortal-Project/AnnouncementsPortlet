@@ -139,6 +139,25 @@
                 <value></value>
                 <read-only>true</read-only>
             </preference>
+            <preference>
+                <!--
+                    Available Strategies:
+                    CREATE_DATE_ASCENDING
+                    CREATE_DATE_DESCENDING
+                    START_DISPLAY_DATE_ASCENDING
+                    START_DISPLAY_DATE_DESCENDING
+                    END_DISPLAY_DATE_ASCENDING
+                    END_DISPLAY_DATE_DESCENDING
+                 -->
+                <name>AdminTopicController.AnnouncementSortStrategy</name>
+                <value>START_DISPLAY_DATE_DESCENDING</value>
+                <read-only>false</read-only>
+            </preference>
+            <preference>
+                <name>AdminAnnouncementController.abstractTextMaxLength</name>
+                <value>255</value>
+                <read-only>false</read-only>
+            </preference>
         </portlet-preferences>
 
         <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
@@ -215,20 +234,6 @@
                 <name>AnnouncementsViewController.displayPublishDate</name>
                 <value>false</value>
                 <read-only>true</read-only>
-            </preference>
-            <preference>
-                <!--
-                    Available Strategies:
-                    CREATE_DATE_ASCENDING
-                    CREATE_DATE_DESCENDING
-                    START_DISPLAY_DATE_ASCENDING
-                    START_DISPLAY_DATE_DESCENDING
-                    END_DISPLAY_DATE_ASCENDING
-                    END_DISPLAY_DATE_DESCENDING
-                 -->
-                <name>AdminTopicController.AnnouncementSortStrategy</name>
-                <value>START_DISPLAY_DATE_DESCENDING</value>
-                <read-only>false</read-only>
             </preference>
         </portlet-preferences>
 

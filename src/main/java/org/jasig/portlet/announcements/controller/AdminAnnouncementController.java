@@ -22,11 +22,7 @@ import java.beans.PropertyEditor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletException;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
+import javax.portlet.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,6 +55,8 @@ import org.springframework.web.bind.support.SessionStatus;
 public class AdminAnnouncementController implements InitializingBean {
 
     public static final String PREFERENCE_ALLOW_OPEN_ENDDATE = "AdminAnnouncementController.allowOpenEndDate";
+    public static final String PREFERENCE_ABSTRACT_MAX_LENGTH = "AdminAnnouncementController.abstractTextMaxLength";
+    public static final String DEFAULT_ABSTRACT_MAX_LENGTH = "255";
 
 	@Autowired
 	private IAnnouncementService announcementService;
@@ -96,7 +94,10 @@ public class AdminAnnouncementController implements InitializingBean {
 	public String showAddAnnouncementForm(
 			@RequestParam(value="editId",required=false) Long editId,
 			@RequestParam(value="topicId",required=false) Long topicId,
+            RenderRequest request,
 			Model model) throws PortletException {
+
+        PortletPreferences prefs = request.getPreferences();
 
 		if (!model.containsAttribute("announcement")) {
 			Announcement ann = new Announcement();
@@ -126,17 +127,15 @@ public class AdminAnnouncementController implements InitializingBean {
 		}
 
 		model.addAttribute("datePickerFormat", datePickerFormat);
+        model.addAttribute("abstractMaxLength",prefs.getValue(PREFERENCE_ABSTRACT_MAX_LENGTH,DEFAULT_ABSTRACT_MAX_LENGTH));
 
-		return "addAnnouncement";
+        return "addAnnouncement";
 	}
 
 	/**
 	 * Saves the announcement
-	 * @param newAnn
-	 * @param topicIdStr
 	 * @param request
 	 * @param response
-	 * @param errors
 	 * @throws PortletException
 	 */
 	@RequestMapping(params="action=addAnnouncement")

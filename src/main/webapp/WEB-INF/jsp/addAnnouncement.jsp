@@ -32,6 +32,28 @@
 
     	$("#${n}datepickerstart").datepicker({dateFormat: 'yy-mm-dd'});
     	$("#${n}datepickerend").datepicker({dateFormat: 'yy-mm-dd'});
+
+        $("#${n}abstractText").bind('keyup input paste change',function(e){
+            //get the limit from maxlength attribute
+            var limit = parseInt("<c:out value="${abstractMaxLength}"/>");
+            //get the current text inside the textarea
+            var text = $(this).val();
+            //count the number of characters in the text
+            var chars = text.length;
+            var charsLeft = limit - text.length;
+
+            //check if there are more characters then allowed
+            if(chars > limit){
+                //and if there are use substr to get the text before the limit
+                var new_text = text.substr(0, limit);
+                charsLeft = 0;
+                //and change the current text with the new text
+                $(this).val(new_text);
+            }
+
+            $("#${n}abstractTextRemaining").html(charsLeft + " characters remaining.");
+
+        });
     });
 
 </script>
@@ -61,7 +83,8 @@
 		</td>
 		<td>
 			<form:errors cssClass="portlet-msg-error" path="abstractText"/>
-			<form:textarea cssClass="portlet-form-input-field" path="abstractText" rows="2" cols="40" cssStyle="width:80%;" />
+			<form:textarea cssClass="portlet-form-input-field" path="abstractText" id="${n}abstractText" rows="2" cols="40" cssStyle="width:80%;" />
+            <div id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> characters remaining</div>
 		</td>
 	</tr>
 	<tr>
