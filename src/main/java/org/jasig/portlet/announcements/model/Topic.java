@@ -273,6 +273,19 @@ public class Topic {
 		return count;
 	}
 
+    public Set<Announcement> getPendingAnnouncements() {
+        Set<Announcement> announcementsFiltered = new HashSet<Announcement>();  // Don't use a TreeSet here... causes lost announcements
+        Date now = new Date();
+        if (this.announcements != null) {
+            for (Announcement ann : this.announcements) {
+                if (!ann.isPublished() && ann.getNullSafeEndDisplay().after(now) ) {
+                    announcementsFiltered.add(ann);
+                }
+            }
+        }
+        return announcementsFiltered;
+    }
+
 	/**
 	 * Get the current number of pending announcements
 	 * @return
