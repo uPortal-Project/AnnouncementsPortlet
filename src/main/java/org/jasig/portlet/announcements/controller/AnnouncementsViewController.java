@@ -40,7 +40,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.portlet.*;
+import javax.portlet.PortletMode;
+import javax.portlet.PortletRequest;
+import javax.portlet.RenderRequest;
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -191,7 +197,7 @@ public class AnnouncementsViewController implements InitializingBean {
         model.addAttribute("increment", new Integer(pageSize));
         model.addAttribute("announcements", announcementsShort);
         model.addAttribute("emergency", emergencyAnnouncements);
-        model.addAttribute("hideAbstract",prefs.getValue(PREFERENCE_HIDE_ABSTRACT,"false"));
+        model.addAttribute("hideAbstract", Boolean.valueOf(prefs.getValue(PREFERENCE_HIDE_ABSTRACT,"false")));
         return viewNameSelector.select(request, "displayAnnouncements");
     }
 
@@ -219,7 +225,7 @@ public class AnnouncementsViewController implements InitializingBean {
         }
         model.addAttribute("topicSubscriptions", myTopics);
         model.addAttribute("topicsToUpdate", myTopics.size());
-        model.addAttribute("prefHideAbstract",prefs.getValue(PREFERENCE_HIDE_ABSTRACT,"false"));
+        model.addAttribute("prefHideAbstract",Boolean.valueOf(prefs.getValue(PREFERENCE_HIDE_ABSTRACT,"false")));
         return viewNameSelector.select(request, "editDisplayPreferences");
     }
 
@@ -266,7 +272,7 @@ public class AnnouncementsViewController implements InitializingBean {
             }
         }
 
-        String hideAbstract = ("TRUE".equalsIgnoreCase(request.getParameter("hideAbstract"))) ? "true" : "false";
+        String hideAbstract = Boolean.valueOf(request.getParameter("hideAbstract")).toString();
         prefs.setValue(PREFERENCE_HIDE_ABSTRACT,hideAbstract);
         prefs.store();
 

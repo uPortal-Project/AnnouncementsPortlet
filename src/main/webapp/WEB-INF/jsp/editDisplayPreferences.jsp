@@ -91,7 +91,7 @@
         <tr>
             <td width="25">
                 <c:choose>
-                    <c:when test="${prefHideAbstract == 'false'}">
+                    <c:when test="${not prefHideAbstract}">
                         <input type="checkbox" value="true" name="hideAbstract"/>
                     </c:when>
                     <c:otherwise>
