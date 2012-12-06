@@ -1,0 +1,89 @@
+.anc-approvals .anc-approval-list-toggle {
+    display: inline-block;
+    padding-right: 10px;
+    text-decoration: none;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.anc-approvals .anc-approval-list-toggle:hover,
+.anc-approvals .anc-approval-list-toggle:active {
+    background: #778899;
+    color: #fff;
+}
+
+.anc-approvals .anc-approval-list-toggle span {
+    display: inline-block;
+    padding: 5px 10px;
+    font-weight: bold;
+    background: #778899;
+    color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.anc-approvals ul,
+.anc-approvals li {
+    margin: 0;
+    padding: 0;
+}
+
+.anc-approvals li {
+    list-style-type: none;
+    margin-bottom: 0.25em;
+    padding: 0.5em 12px;
+    background: #eee;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.anc-approvals li:hover,
+.anc-approvals li:active {
+    background: #e7e8e9;
+}
+
+.anc-approvals .anc-approval-list a {
+    display: inline-block;
+    margin-right: 5px;
+    padding: 0.25em 8px;
+    background: #fefefe;
+    background: rgba(255,255,255,0.5);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 80%;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.anc-approvals .anc-approval-list a:hover,
+.anc-approvals .anc-approval-list a:active {
+    background: #778899;
+    color: #fff;
+}
+
+.anc-approvals .anc-topic {
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+.anc-approvals .anc-topic:after {
+    content: ":";
+}
+
+.anc-approvals .hide {
+    display: none;
+}

@@ -18,11 +18,7 @@
  */
 package org.jasig.portlet.announcements.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.portlet.RenderRequest;
-
+import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
@@ -31,6 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.portlet.RenderRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author eolsson
@@ -57,11 +57,15 @@ public class AdminController {
 	public String showBaseView(RenderRequest request, Model model) {
 
 		List<Topic> allTopics = announcementService.getAllTopics();
+        List<Announcement> pendingAnnouncements = new ArrayList<Announcement>();
 
 		// add all topics for the portal admin
 		if (UserPermissionChecker.isPortalAdmin(request)) {
-			model.addAttribute("allTopics", announcementService.getAllTopics());
+			model.addAttribute("allTopics", allTopics);
 			model.addAttribute("portalAdmin", new Boolean(true));
+            for(Topic t : allTopics) {
+                pendingAnnouncements.addAll(t.getPendingAnnouncements());
+            }
 		}
 		else {
 			List<Topic> adminTopics = new ArrayList<Topic>();
@@ -72,9 +76,11 @@ public class AdminController {
 			    UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(request, t);
 			    if(upChecker.isAdmin()) {
 					adminTopics.add(t);
+                    pendingAnnouncements.addAll(t.getPendingAnnouncements());
 				}
 				else if (upChecker.isModerator()) {
 					otherTopics.add(t);
+                    pendingAnnouncements.addAll(t.getPendingAnnouncements());
 				}
 				else if (upChecker.isAuthor()) {
 					otherTopics.add(t);
@@ -86,6 +92,8 @@ public class AdminController {
 			model.addAttribute("portalAdmin", Boolean.FALSE);
 		}
 
+        model.addAttribute("pendingAnnouncements",pendingAnnouncements);
+        model.addAttribute("pendingAnnouncementCount",pendingAnnouncements.size());
 		return "baseAdmin";
 
 	}
