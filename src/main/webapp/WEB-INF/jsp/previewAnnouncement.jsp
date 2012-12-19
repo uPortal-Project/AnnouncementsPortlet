@@ -26,9 +26,9 @@
 .preview-section { background-color: #f3f3f3; padding: 5px; }
 </style>
 
-<div class="portlet-section-header">Preview</div>
+<div class="portlet-section-header"><spring:message code="preview.header"/></div>
 
-<div class="preview-section-header">Announcement List View</div>
+<div class="preview-section-header"><spring:message code="preview.listview"/></div>
 
 <div class="preview-section">
     <table width="100%" cellspacing="0" cellpadding="0" class="data">
@@ -50,7 +50,7 @@
     </table>
 </div>
 
-<div class="preview-section-header">Full Announcement View</div>
+<div class="preview-section-header"><spring:message code="preview.fullview"/></div>
 
 <div class="preview-section">
     <div class="portlet-section-header"><c:out value="${announcement.title}"/></div>
@@ -75,7 +75,7 @@
 </form>
 
 <p style="text-align:right">
-    <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view"><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ announcement.parent.id }"/></portlet:renderURL>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> Back to topic</a>
+    <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view"><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ announcement.parent.id }"/></portlet:renderURL>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.backtotopic"/></a>
     <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view"></portlet:renderURL>"><img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
 </p>
 
