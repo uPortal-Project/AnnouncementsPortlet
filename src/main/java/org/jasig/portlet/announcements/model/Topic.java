@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.jasig.portlet.announcements.service.UserPermissionChecker;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
@@ -64,33 +65,36 @@ public class Topic {
 
 
 	public Set<String> getGroup(String key) {
-		if (key.compareTo("admins") == 0) {
+		if (UserPermissionChecker.ADMIN_ROLE_NAME.equals(key)) {
 			return getAdmins();
 		}
-		else if (key.compareTo("moderators") == 0) {
+		else if (UserPermissionChecker.MODERATOR_ROLE_NAME.equals(key)) {
 			return getModerators();
 		}
-		else if (key.compareTo("authors") == 0) {
-			return getAuthors();
-		}
-		else {
-			return getAudience();
-		}
+        else if (UserPermissionChecker.AUTHOR_ROLE_NAME.equals(key)) {
+            return getAuthors();
+        }
+        else if (UserPermissionChecker.AUDIENCE_ROLE_NAME.equals(key)) {
+            return getAudience();
+        }
+		throw new RuntimeException("Role not found:  " + key);
 	}
 
 	public void setGroup(String key, Set<String> members) {
-		if (key.compareTo("admins") == 0) {
-			setAdmins(members);
-		}
-		else if (key.compareTo("moderators") == 0) {
-			setModerators(members);
-		}
-		else if (key.compareTo("authors") == 0) {
-			setAuthors(members);
-		}
-		else {
-			setAudience(members);
-		}
+        if (UserPermissionChecker.ADMIN_ROLE_NAME.equals(key)) {
+            setAdmins(members);
+        }
+        else if (UserPermissionChecker.MODERATOR_ROLE_NAME.equals(key)) {
+            setModerators(members);
+        }
+        else if (UserPermissionChecker.AUTHOR_ROLE_NAME.equals(key)) {
+            setAuthors(members);
+        }
+        else if (UserPermissionChecker.AUDIENCE_ROLE_NAME.equals(key)) {
+            setAudience(members);
+        } else {
+            throw new RuntimeException("Role not found:  " + key);
+        }
 	}
 
 	public boolean hasId() {
@@ -400,7 +404,5 @@ public class Topic {
 				+ ", moderators=" + moderators + ", subscriptionMethod="
 				+ subscriptionMethod + ", title=" + title + "]";
 	}
-
-
 
 }

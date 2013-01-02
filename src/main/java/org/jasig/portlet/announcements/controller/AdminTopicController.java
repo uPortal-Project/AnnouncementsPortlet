@@ -113,36 +113,40 @@ public class AdminTopicController {
 			BindingResult result, SessionStatus status, ActionRequest request,
 			ActionResponse response) throws PortletException {
 
-		new TopicValidator().validate(topic, result);
-		if (result.hasErrors()) {
-			if (log.isDebugEnabled())
-				log.debug("Error in form: "+ result.toString());
-			response.setRenderParameter("action", "addTopic");
-			return;
-		}
+        if(!UserPermissionChecker.isPortalAdmin(request)) {
+            throw new UnauthorizedException("You do not have access to create a topic");
+        }
 
-		if (!result.hasErrors() && topic != null) {
-			if (log.isDebugEnabled())
-				log.debug("No errors in form");
+        new TopicValidator().validate(topic, result);
+        if (result.hasErrors()) {
+            if (log.isDebugEnabled())
+                log.debug("Error in form: "+ result.toString());
+            response.setRenderParameter("action", "addTopic");
+            return;
+        }
 
-			// no id has been assigned by hibernate, so this must be a new topic
-			if ( !topic.hasId() ) {
-				topic.setCreator(request.getRemoteUser());
-			} else {
-				Long id = topic.getId();
-				Topic oldTopic = announcementService.getTopic(id);
+        if (!result.hasErrors() && topic != null) {
+            if (log.isDebugEnabled())
+                log.debug("No errors in form");
 
-				topic.setCreator(oldTopic.getCreator());
-				topic.setAdmins(oldTopic.getAdmins());
-				topic.setAudience(oldTopic.getAudience());
-				topic.setModerators(oldTopic.getModerators());
-				topic.setAuthors(oldTopic.getAuthors());
-			}
-			announcementService.addOrSaveTopic(topic);
-			status.setComplete();
+            // no id has been assigned by hibernate, so this must be a new topic
+            if ( !topic.hasId() ) {
+                topic.setCreator(request.getRemoteUser());
+            } else {
+                Long id = topic.getId();
+                Topic oldTopic = announcementService.getTopic(id);
 
-			response.setRenderParameter("action", "baseAdmin");
-		}
+                topic.setCreator(oldTopic.getCreator());
+                topic.setAdmins(oldTopic.getAdmins());
+                topic.setAudience(oldTopic.getAudience());
+                topic.setModerators(oldTopic.getModerators());
+                topic.setAuthors(oldTopic.getAuthors());
+            }
+            announcementService.addOrSaveTopic(topic);
+            status.setComplete();
+
+            response.setRenderParameter("action", "baseAdmin");
+        }
 
 	}
 

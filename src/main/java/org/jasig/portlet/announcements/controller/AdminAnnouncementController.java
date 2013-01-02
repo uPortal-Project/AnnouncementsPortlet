@@ -145,29 +145,35 @@ public class AdminAnnouncementController implements InitializingBean {
 			@ModelAttribute("announcement") Announcement announcement,
 			BindingResult result,
 			SessionStatus status) throws PortletException {
+	    
+        // First verify the user has AUTHOR permission for this topic
+        UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(request, announcement.getParent());
+        if(!(upChecker.isAdmin() || upChecker.isModerator() || upChecker.isAuthor())) {
+            throw new UnauthorizedException("You do not have permission to create an announcement in this topic");
+        }
 
-		new AnnouncementValidator(getAllowOpenEndDate(request)).validate(announcement, result);
-		if (result.hasErrors()) {
-			response.setRenderParameter("action", "addAnnouncement");
-			return;
-		}
+        // Next validate the announcement
+        new AnnouncementValidator(getAllowOpenEndDate(request)).validate(announcement, result);
+        if (result.hasErrors()) {
+            response.setRenderParameter("action", "addAnnouncement");
+            return;
+        }
 
-		if (!result.hasErrors()) {
+        if (!result.hasErrors()) {
 
-			if (!announcement.hasId()) {
-				// add the automatic data
-				announcement.setAuthor( request.getRemoteUser() );
-				announcement.setCreated( new Date() );
+            if (!announcement.hasId()) {
+                // add the automatic data
+                announcement.setAuthor( request.getRemoteUser() );
+                announcement.setCreated( new Date() );
+                announcementService.addOrSaveAnnouncement(announcement);
+            } else {
+                announcementService.mergeAnnouncement(announcement);
+            }
 
-				announcementService.addOrSaveAnnouncement(announcement);
-			} else {
-				announcementService.mergeAnnouncement(announcement);
-			}
-
-			status.setComplete();
-			response.setRenderParameter("topicId", announcement.getParent().getId().toString());
-			response.setRenderParameter("action", "showTopic");
-		}
+            status.setComplete();
+            response.setRenderParameter("topicId", announcement.getParent().getId().toString());
+            response.setRenderParameter("action", "showTopic");
+        }
 
 	}
 
@@ -183,19 +189,19 @@ public class AdminAnnouncementController implements InitializingBean {
 			@RequestParam("annId") Long annId, ActionRequest request,
 			ActionResponse response) throws PortletException {
 
-		Topic topic = announcementService.getTopic(topicId);
-		Announcement ann = announcementService.getAnnouncement(annId);
+        Topic topic = announcementService.getTopic(topicId);
+        Announcement ann = announcementService.getAnnouncement(annId);
 
-		UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(request, topic);
-		if(upChecker.isAdmin() || upChecker.isModerator() || (upChecker.isAuthor() && ann.getAuthor() == request.getRemoteUser())) {
-		    // the person deleting the announcement must be the author, a moderator or an admin
+        UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(request, topic);
+        if(upChecker.isAdmin() || upChecker.isModerator() || (upChecker.isAuthor() && ann.getAuthor() == request.getRemoteUser())) {
+            // the person deleting the announcement must be the author, a moderator or an admin
             announcementService.deleteAnnouncement(ann);
-		} else {
-			throw new UnauthorizedException("You do not have access to this topic!");
-		}
+        } else {
+            throw new UnauthorizedException("You do not have permission to delete this announcement");
+        }
 
-		response.setRenderParameter("topicId", topicId.toString());
-		response.setRenderParameter("action", "showTopic");
+        response.setRenderParameter("topicId", topicId.toString());
+        response.setRenderParameter("action", "showTopic");
 	}
 
 	public boolean getAllowOpenEndDate(PortletRequest req) {

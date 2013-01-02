@@ -40,7 +40,7 @@ import org.jasig.portlet.announcements.model.Topic;
 public final class UserPermissionChecker {
 
     public static final String PORTAL_ADMIN_ROLE_NAME = "Portal_Administrators";
-    public static final String ADMIN_ROLE_NAME = "admins";
+    public static final String ADMIN_ROLE_NAME = "admin";
     public static final String MODERATOR_ROLE_NAME = "moderator";
     public static final String AUTHOR_ROLE_NAME = "author";
     public static final String AUDIENCE_ROLE_NAME = "audience";
@@ -97,7 +97,7 @@ public final class UserPermissionChecker {
         String userName = isGuest ? GUEST_USERNAME : request.getRemoteUser();
 
         Set<String> group = topic.getGroup(role);
-        for (String groupMember: group) {
+        for (String groupMember : group) {
             if (groupMember.startsWith("USER.")) {
                 String p[] = groupMember.split("\\.");
                 if (p[1].equalsIgnoreCase(userName)) {
