@@ -125,6 +125,7 @@
         <supports>
             <mime-type>text/html</mime-type>
             <portlet-mode>view</portlet-mode>
+            <portlet-mode>help</portlet-mode>
         </supports>
 
         <supported-locale>en</supported-locale>
