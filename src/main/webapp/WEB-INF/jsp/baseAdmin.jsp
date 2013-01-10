@@ -205,3 +205,9 @@
 	<img src="<c:url value="/icons/add.png"/>" border="0" height="16" width="16" style="vertical-align:middle;"/> <spring:message code="baseAdmin.addnew"/>
 	</a>
 </c:if>
+
+<div style="float:right;">
+    <a href="<portlet:renderURL portletMode='HELP' windowState='MAXIMIZED'/>" style="float:right;">
+        <img src="<c:url value='/icons/exclamation.png'/>" border="0" style="vertical-align: middle;"/><spring:message code="general.help"/>
+    </a>
+</div>
