@@ -107,12 +107,12 @@
 <!--<div class="portlet-section-header"><spring:message code="baseAdmin.topics"/></div>-->
 <c:if test="${pendingAnnouncementCount > 0}">
 <div class="anc-approvals">
-    <a class="anc-approval-list-toggle" href="#"><span id="${n}approval_count"><c:out value="${pendingAnnouncementCount}"/></span> Announcements waiting for your approval</a>
+    <a class="anc-approval-list-toggle" href="#"><span id="${n}approval_count"><c:out value="${pendingAnnouncementCount}"/></span> <spring:message code="baseAdmin.waitingapproval"/></a>
     <div class="anc-my-approvals hide">
-        <h3>My Approvals</h3>
+        <h3><spring:message code="baseAdmin.myapprovals"/></h3>
         <ul class="anc-approval-list">
             <c:forEach items="${pendingAnnouncements}" var="announcement">
-                <li><a class="anc-approve" href="<portlet:renderURL/>" onclick="javascript:${n}approval(this,${announcement.parent.id},${announcement.id});return false;;"><span>Approve</span></a><a class="anc-edit" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${announcement.id}"/></portlet:renderURL>"><span>Edit</span></a><span class="anc-topic"><c:out value="${announcement.parent.title}"/></span><span class="anc-title"><c:out value="${announcement.title}"/></span></li>
+                <li><a class="anc-approve" href="<portlet:renderURL/>" onclick="javascript:${n}approval(this,${announcement.parent.id},${announcement.id});return false;;"><span><spring:message code="baseAdmin.approve"/></span></a><a class="anc-edit" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${announcement.id}"/></portlet:renderURL>"><span><spring:message code="baseAdmin.edit"/></span></a><span class="anc-topic"><c:out value="${announcement.parent.title}"/></span><span class="anc-title"><c:out value="${announcement.title}"/></span></li>
             </c:forEach>
         </ul>
     </div>
