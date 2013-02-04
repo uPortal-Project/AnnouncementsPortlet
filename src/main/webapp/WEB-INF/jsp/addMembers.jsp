@@ -79,52 +79,5 @@
 		</form>
 	</div>
 </div>
-<!--
-<table border="0" cellspacing="5">	
-	<tr>
-	<td valign="top">
-		<form:form method="post" action="${actionUrl}" commandName="selection">
-			<table class="data">
-			  <tr>
-			  	<th><spring:message code="addMembers.availableRoles"/></th>
-			  </tr>
-			  <tr>
-			    <td>
-				  	<c:forEach items="${roles}" var="roleIter">
-						<c:if test="${not roleIter.person}">
-				  			<form:checkbox path="selectedRoles" value="${roleIter.name}" /> <c:out value="${roleIter.name}"/> <br/>
-						</c:if>
-				  	</c:forEach>
-				</td>
-			  </tr>
-			</table>
-			<button type="submit" class="portlet-form-button"><spring:message code="addMembers.update"/></button>
-		</form:form>
-	</td>
-	<td valign="top">
-		<form method="post" action="${actionUrlUser}">
-			<table class="data">
-			  <tr>
-			  	<th><spring:message code="addMembers.users"/></th>
-			  </tr>
-				<c:forEach items="${roles}" var="roleIter">
-					<c:if test="${roleIter.person}">
-				  		<tr>
-						  <td><c:out value="${roleIter.personName}"/> <a href="<portlet:actionURL><portlet:param name="userKey" value="${roleIter.name}"/><portlet:param name="action" value="deleteUser"/><portlet:param name="groupKey" value="${groupKey}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>" title="<spring:message code="addMembers.deleteUser"/>"><img alt="<spring:message code="addMembers.deleteUser"/>" src="<c:url value="/icons/delete.png"/>" height="16" width="16"/></a></td>
-						</tr>
-					</c:if>
-				</c:forEach>
-				<tr>
-			      <td>
-				  	<spring:message code="addMembers.addUser"/><br/>
-					<input type="text" name="userAdd" class="portlet-form-input-field" size="30" maxlength="128" />
-				  </td>
-			    </tr>
-			</table>
-			<button type="submit" class="portlet-form-button"><spring:message code="addMembers.addUserButton"/></button>
-		</form>
-	</td>
-	</tr>
-</table>-->
 
 
