@@ -126,8 +126,22 @@
     width: 30%;
 }
 
-input[type=text], input[type=checkbox], .announcements-portlet-sub-methods { 
+.announcements-portlet-permissions .announcements-portlet-col {
+    width: 50%;
+    float: left;
+}
 
+.announcements-portlet-permissions .announcements-portlet-col button {
+    display: block;
+    margin: 1em 0;
+}
+
+.announcements-portlet-permissions .announcements-portlet-col ul {
+    margin: 0;
+}
+.announcements-portlet-permissions .announcements-portlet-col ul li {
+    list-style: none;
+    margin-bottom: 0.5em;
 }
 
 .announcements-portlet-sub-methods { 
