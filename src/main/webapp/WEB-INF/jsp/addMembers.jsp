@@ -67,12 +67,14 @@
 			<ul>
 				<c:forEach items="${roles}" var="roleIter">
 					<c:if test="${roleIter.person}">
+					<li>
 						<c:out value="${roleIter.personName}"/> <a href="<portlet:actionURL><portlet:param name="userKey" value="${roleIter.name}"/><portlet:param name="action" value="deleteUser"/><portlet:param name="groupKey" value="${groupKey}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>" title="<spring:message code="addMembers.deleteUser"/>"><img alt="<spring:message code="addMembers.deleteUser"/>" src="<c:url value="/icons/delete.png"/>" height="16" width="16"/></a>
+					</li>
 					</c:if>
 				</c:forEach>
 			</ul>
-			<spring:message code="addMembers.addUser"/><br/>
-			<input type="text" name="userAdd" class="portlet-form-input-field" size="30" maxlength="128" />
+			<label for="add-username"><spring:message code="addMembers.addUser"/></label><br/>
+			<input id="add-username" type="text" name="userAdd" class="portlet-form-input-field" size="30" maxlength="128" />
 			<button type="submit" class="portlet-form-button"><spring:message code="addMembers.addUserButton"/></button>
 		</form>
 	</div>
