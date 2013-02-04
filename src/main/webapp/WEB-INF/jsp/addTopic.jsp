@@ -69,25 +69,33 @@
 <form:form commandName="topic" method="post" action="${actionUrl}">
 	<div class="announcements-portlet-row">
 		<label for="title"><spring:message code="addTopic.title"/></label>
-		<form:input cssClass="portlet-form-input-field" path="title" size="30" maxlength="80" /> 
-		<form:errors cssClass="portlet-msg-error" path="title"/>
+        <div class="announcements-portlet-col">
+            <form:errors cssClass="portlet-msg-error" path="title"/>
+    		<form:input cssClass="portlet-form-input-field" path="title" size="30" maxlength="80" /> 
+        </div>
 	</div>
 	<div class="announcements-portlet-row">
-		<label for="description"><spring:message code="addTopic.description"/></label> 
-		<form:input cssClass="portlet-form-input-field" path="description" size="30" maxlength="80" /> 
+		<label for="description"><spring:message code="addTopic.description"/></label>
+        <div class="announcements-portlet-col"> 
+		    <form:input cssClass="portlet-form-input-field" path="description" size="30" maxlength="80" />
+        </div> 
 	</div>
 	<div class="announcements-portlet-row">
 		<label for="allowRss1"><spring:message code="addTopic.publicrss"/></label>
-		<form:checkbox path="allowRss" cssClass="portlet-form-input-field"/>
+        <div class="announcements-portlet-col">
+		    <form:checkbox path="allowRss" cssClass="portlet-form-input-field"/>
+        </div>
 	</div>
 	<div class="announcements-portlet-row">
 		<label for="subscriptionMethod"><spring:message code="addTopic.submethod"/></label>
-		<form:errors cssClass="portlet-msg-error" path="subscriptionMethod"/>
-		<ul class="announcements-portlet-sub-methods">
-			<li><form:radiobutton path="subscriptionMethod" value="1"/> <label for="subscriptionMethod1" title="This method forces all audience members to be subscribed to this topic at all times. Audience members may not unsubscribe."><spring:message code="addTopic.pushedforced"/></label></li>
-			<li><form:radiobutton path="subscriptionMethod" value="2"/> <label for="subscriptionMethod2" title="This method puts this topic into all audience members' subscriptions, but allows them to unsubscribe if they wish."><spring:message code="addTopic.pushedoptional"/></label></li>
-			<li><form:radiobutton path="subscriptionMethod" value="3"/> <label for="subscriptionMethod3" title="This method makes this topic available to any audience member, but it is up to the user to manually subscribe the topic in order to view it."><spring:message code="addTopic.optional"/></label></li>
-		</ul>
+        <div class="announcements-portlet-col">
+    		<form:errors cssClass="portlet-msg-error" path="subscriptionMethod"/>
+    		<ul class="announcements-portlet-sub-methods">
+    			<li><form:radiobutton path="subscriptionMethod" value="1"/> <label for="subscriptionMethod1" title="This method forces all audience members to be subscribed to this topic at all times. Audience members may not unsubscribe."><spring:message code="addTopic.pushedforced"/></label></li>
+    			<li><form:radiobutton path="subscriptionMethod" value="2"/> <label for="subscriptionMethod2" title="This method puts this topic into all audience members' subscriptions, but allows them to unsubscribe if they wish."><spring:message code="addTopic.pushedoptional"/></label></li>
+    			<li><form:radiobutton path="subscriptionMethod" value="3"/> <label for="subscriptionMethod3" title="This method makes this topic available to any audience member, but it is up to the user to manually subscribe the topic in order to view it."><spring:message code="addTopic.optional"/></label></li>
+    		</ul>
+        </div>
 	</div>
 	<form:hidden path="id"/>
 	<form:hidden path="creator"/>

@@ -79,45 +79,56 @@
 <form:form commandName="announcement" method="post" action="${actionUrl}">
 	<div class="announcements-portlet-row">
 		<label for="title"><spring:message code="addAnnouncement.title"/></label>
-		<form:errors cssClass="portlet-msg-error" path="title"/>
- 		<form:input cssClass="portlet-form-input-field" path="title" size="30" maxlength="80"/>
+		<div class="announcements-portlet-col">
+			<form:errors cssClass="portlet-msg-error" path="title"/>
+	 		<form:input cssClass="portlet-form-input-field" path="title" size="30" maxlength="80"/>
+ 		</div>
 	</div>
 
 
 	<div class="announcements-portlet-row">
 		<label for="${n}abstractText"><spring:message code="addAnnouncement.abstract"/></label>
-		<form:errors cssClass="portlet-msg-error" path="abstractText"/>
-		<form:textarea cssClass="portlet-form-input-field" path="abstractText" id="${n}abstractText" rows="2" cols="40" />
-        <div style="margin-left: 30%;" id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> characters remaining</div>
+		<div class="announcements-portlet-col">
+			<form:errors cssClass="portlet-msg-error" path="abstractText"/>
+			<form:textarea cssClass="portlet-form-input-field" path="abstractText" id="${n}abstractText" rows="2" cols="40" />
+	        <div id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> characters remaining</div>
+    	</div>
 	</div>
 
 
 	<div class="announcements-portlet-row">
 		<label><spring:message code="addAnnouncement.message"/></label>
-		<form:errors cssClass="portlet-msg-error" path="message"/>
-		<form:textarea cssClass="portlet-form-input-field mceEditor" path="message" rows="5" cols="30" cssStyle="width: 70%;" />
+		<div class="announcements-portlet-col">
+			<form:errors cssClass="portlet-msg-error" path="message"/>
+			<form:textarea cssClass="portlet-form-input-field mceEditor" path="message" rows="5" cols="30" cssStyle="width: 70%;" />
+		</div>
 	</div>
 
 
 	<div class="announcements-portlet-row">
 		<label><spring:message code="addAnnouncement.link"/></label>
-		<form:errors cssClass="portlet-msg-error" path="link"/>
-		<form:input cssClass="portlet-form-input-field" path="link" size="30" maxlength="255"/>
+		<div class="announcements-portlet-col">
+			<form:errors cssClass="portlet-msg-error" path="link"/>
+			<form:input cssClass="portlet-form-input-field" path="link" size="30" maxlength="255"/>
+		</div>
 	</div>
 
 
 	<div class="announcements-portlet-row">
 		<label><spring:message code="addAnnouncement.start"/></label>
-
-		<form:errors cssClass="portlet-msg-error" path="startDisplay"/>
-		<form:input path="startDisplay" id="${n}datepickerstart"></form:input>
+		<div class="announcements-portlet-col">
+			<form:errors cssClass="portlet-msg-error" path="startDisplay"/>
+			<form:input path="startDisplay" id="${n}datepickerstart"></form:input>
+		</div>
 	</div>
 
 
 	<div class="announcements-portlet-row">
 		<label><spring:message code="addAnnouncement.end"/></label>
-		<form:errors cssClass="portlet-msg-error" path="endDisplay"/>
-		<form:input path="endDisplay" id="${n}datepickerend"></form:input>
+		<div class="announcements-portlet-col">
+			<form:errors cssClass="portlet-msg-error" path="endDisplay"/>
+			<form:input path="endDisplay" id="${n}datepickerend"></form:input>
+		</div>
 	</div>
 
 <form:hidden path="id"/>

@@ -109,7 +109,17 @@
     margin-bottom: 0; 
     padding: 6px 0; /* used padding instead of margin so box-shadow wont get cut */
 }
+
+.announcements-portlet-col {
+    float: left;
+    width:70%;
+}
     
+.announcements-portlet-col .portlet-msg-error {
+    display: block;
+    margin-bottom: 1em;
+}
+
 .announcements-portlet-row label { 
     display: block; 
     float: left; 
@@ -117,7 +127,7 @@
 }
 
 input[type=text], input[type=checkbox], .announcements-portlet-sub-methods { 
-    float: left; 
+
 }
 
 .announcements-portlet-sub-methods { 
