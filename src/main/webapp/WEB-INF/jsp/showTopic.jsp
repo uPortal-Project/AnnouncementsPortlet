@@ -20,7 +20,7 @@
 <c:if test="${includeJQuery}">
 <script type="text/javascript" src="<c:url value="/js/jquery-1.2.3.min.js"/>"></script>
 </c:if>
-
+<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
 <script type="text/javascript">
 var <portlet:namespace/> = <portlet:namespace/> || {};
 <portlet:namespace/>.jQuery = ${ includeJQuery ? 'jQuery.noConflict(true)' : 'jQuery' };
@@ -66,8 +66,14 @@ function <portlet:namespace/>approval(id, newValue) {
     );
 }
 </script>
-
-<div class="portlet-section-header"><spring:message code="show.annfor"/> <c:out value="${topic.title}"/></div>
+<div class="announcements-portlet-toolbar">
+    <a style="text-decoration:none; " class="button announcements-portlet-action" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>">
+    <img src="<c:url value="/icons/add.png"/>" height="16" width="16" style="vertical-align:middle" border="0"/> <spring:message code="show.addAnn"/></a>
+    <div class="announcements-portlet-secondary">
+        <a style="text-decoration:none;" href="<portlet:renderURL portletMode="view"></portlet:renderURL>"><img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
+    </div>
+</div>
+<div class="portlet-section-header"><h2 class="title" role="heading"><spring:message code="show.annfor"/> <c:out value="${topic.title}"/></h2></div>
 
 <table width="100%" class="data">
     <c:choose>
@@ -131,12 +137,6 @@ function <portlet:namespace/>approval(id, newValue) {
         </c:otherwise>
     </c:choose>
 </table>
-
-<br/>
-<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>">
-<img src="<c:url value="/icons/add.png"/>" height="16" width="16" style="vertical-align:middle" border="0"/> <spring:message code="show.addAnn"/></a>
-<br/>
-<div style="width:20px;float:left;">&nbsp;</div>
 <a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showHistory"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>">
 <spring:message code="show.history"/></a>
 <br/>
@@ -144,7 +144,7 @@ function <portlet:namespace/>approval(id, newValue) {
 
 <c:if test="${user.admin}">
 
-    <div class="portlet-section-header"><spring:message code="show.header.permissions"/> <c:out value="${topic.title}"/></div>
+    <div class="portlet-section-header"><h2 class="title" role="heading"><spring:message code="show.header.permissions"/> <c:out value="${topic.title}"/></h2></div>
 
     <table width="100%" class="data">
         <tr>
@@ -183,5 +183,3 @@ function <portlet:namespace/>approval(id, newValue) {
     <br/>
 
 </c:if>
-
-<a style="text-decoration:none;" href="<portlet:renderURL portletMode="view"></portlet:renderURL>"><img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>

@@ -1,3 +1,7 @@
+.anc-approvals {
+    margin-bottom: 1em;
+}
+
 .anc-approvals .anc-approval-list-toggle {
     display: inline-block;
     padding-right: 10px;
@@ -86,4 +90,82 @@
 
 .anc-approvals .hide {
     display: none;
+}
+
+/* cparaiso */
+
+.announcements-portlet-toolbar {
+    overflow: hidden;
+    margin-bottom: 1em;
+    line-height: 31px;
+}
+
+.announcements-portlet-secondary {
+    float: right;
+}
+/* add topic screen */
+.announcements-portlet-row { 
+    overflow: hidden; 
+    margin-bottom: 0; 
+    padding: 6px 0; /* used padding instead of margin so box-shadow wont get cut */
+}
+
+.announcements-portlet-col {
+    float: left;
+    width:70%;
+}
+    
+.announcements-portlet-col .portlet-msg-error {
+    display: block;
+    margin-bottom: 1em;
+}
+
+.announcements-portlet-row label { 
+    display: block; 
+    float: left; 
+    width: 30%;
+}
+
+.announcements-portlet-permissions .announcements-portlet-col {
+    width: 50%;
+    float: left;
+}
+
+.announcements-portlet-permissions .announcements-portlet-col button {
+    display: block;
+    margin: 1em 0;
+}
+
+.announcements-portlet-permissions .announcements-portlet-col ul {
+    margin: 0;
+}
+.announcements-portlet-permissions .announcements-portlet-col ul li {
+    list-style: none;
+    margin-bottom: 0.5em;
+}
+
+.announcements-portlet-sub-methods { 
+    margin: 0;
+}
+
+.announcements-portlet-sub-methods li { 
+    list-style-type: none; 
+    margin-bottom: 0.5em; 
+}
+
+.announcements-portlet-sub-methods label, .announcements-portlet-sub-methods input[type=checkbox] { 
+    float: none; 
+    display: inline; 
+}
+
+/* add announcement screen */
+.announcements-portlet-action {
+    line-height: 1.85em;
+    display: block; 
+    float: left;
+    margin-bottom: 1em;
+}
+
+.portlet-section-header {
+    clear: both;
 }
