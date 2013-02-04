@@ -1,7 +1,16 @@
 <%@ include file="/WEB-INF/jsp/include.jsp" %>
+<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
 
 <div id="<portlet:namespace/>">
-
+<div class="announcements-portlet-toolbar">
+    <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view"><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ topic.id }"/></portlet:renderURL>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> Back to topic</a>
+    <div class="announcements-portlet-secondary">
+	    <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>"><img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
+	</div>
+</div>
+<div class="portlet-section-header">
+	<h2 class="title" role="heading">History</h2>
+</div>
 <table width="100%" cellspacing="0" cellpadding="0" id="historyTable" class="tablesorter">
 <thead><tr><th>Topic</th><th>Announcement</th><th>Start Date</th><th>End Date</th><td>Repost</td><td>Delete</td></tr></thead>
 <tbody>
@@ -18,10 +27,7 @@
 </tbody>
 </table>
 
-<p style="text-align:right">
-    <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view"><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ topic.id }"/></portlet:renderURL>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> Back to topic</a>
-    <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>"><img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
-</p>
+
 
 <script type="text/javascript" src="https://webresources.uchicago.edu/js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="https://webresources.uchicago.edu/js/jquery.tablesorter.min.js"></script>

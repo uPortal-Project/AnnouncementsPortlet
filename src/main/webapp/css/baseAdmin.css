@@ -1,3 +1,7 @@
+.anc-approvals {
+    margin-bottom: 1em;
+}
+
 .anc-approvals .anc-approval-list-toggle {
     display: inline-block;
     padding-right: 10px;
@@ -86,4 +90,58 @@
 
 .anc-approvals .hide {
     display: none;
+}
+
+/* cparaiso */
+
+.announcements-portlet-toolbar {
+    overflow: hidden;
+    margin-bottom: 1em;
+    line-height: 31px;
+}
+
+.announcements-portlet-secondary {
+    float: right;
+}
+/* add topic screen */
+.announcements-portlet-row { 
+    overflow: hidden; 
+    margin-bottom: 0; 
+    padding: 6px 0; /* used padding instead of margin so box-shadow wont get cut */
+}
+    
+.announcements-portlet-row label { 
+    display: block; 
+    float: left; 
+    width: 30%;
+}
+
+input[type=text], input[type=checkbox], .announcements-portlet-sub-methods { 
+    float: left; 
+}
+
+.announcements-portlet-sub-methods { 
+    margin: 0;
+}
+
+.announcements-portlet-sub-methods li { 
+    list-style-type: none; 
+    margin-bottom: 0.5em; 
+}
+
+.announcements-portlet-sub-methods label, .announcements-portlet-sub-methods input[type=checkbox] { 
+    float: none; 
+    display: inline; 
+}
+
+/* add announcement screen */
+.announcements-portlet-action {
+    line-height: 1.85em;
+    display: block; 
+    float: left;
+    margin-bottom: 1em;
+}
+
+.portlet-section-header {
+    clear: both;
 }
