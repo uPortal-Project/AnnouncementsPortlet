@@ -18,6 +18,7 @@
     under the License.
 --%>
 <c:set var="n"><portlet:namespace/></c:set>
+<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
 <script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
 <script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
 <script type="text/javascript" src="<c:url value="/tinymce/tiny_mce.js"/>"></script>
@@ -63,80 +64,79 @@
 	<portlet:param name="action" value="addAnnouncement"/>
 	<portlet:param name="topicId" value="${announcement.parent.id}"/>
 </portlet:actionURL>
+<div class="announcements-portlet-toolbar">
+	<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${announcement.parent.id}"/></portlet:renderURL>">
+		<img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.backtotopic"/></a>
+	<div class="announcements-portlet-secondary">
+		
 
-<div class="portlet-section-header"><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></div>
+		<a style="text-decoration:none;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>">
+		<img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
+	</div>
+</div>
+<div class="portlet-section-header"><h2 class="title=" role="heading"><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></h2></div>
 
 <form:form commandName="announcement" method="post" action="${actionUrl}">
-<table width="100%" cellpadding="3">
-	<tr>
-		<td valign="top" width="20%">
-			<spring:message code="addAnnouncement.title"/>
-		</td>
-		<td>
+	<div class="announcements-portlet-row">
+		<label for="title"><spring:message code="addAnnouncement.title"/></label>
+		<div class="announcements-portlet-col">
 			<form:errors cssClass="portlet-msg-error" path="title"/>
 	 		<form:input cssClass="portlet-form-input-field" path="title" size="30" maxlength="80"/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top">
-			<spring:message code="addAnnouncement.abstract"/>
-		</td>
-		<td>
+ 		</div>
+	</div>
+
+
+	<div class="announcements-portlet-row">
+		<label for="${n}abstractText"><spring:message code="addAnnouncement.abstract"/></label>
+		<div class="announcements-portlet-col">
 			<form:errors cssClass="portlet-msg-error" path="abstractText"/>
-			<form:textarea cssClass="portlet-form-input-field" path="abstractText" id="${n}abstractText" rows="2" cols="40" cssStyle="width:80%;" />
-            <div id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> characters remaining</div>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top">
-			<spring:message code="addAnnouncement.message"/>
-		</td>
-		<td>
+			<form:textarea cssClass="portlet-form-input-field" path="abstractText" id="${n}abstractText" rows="2" cols="40" />
+	        <div id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> characters remaining</div>
+    	</div>
+	</div>
+
+
+	<div class="announcements-portlet-row">
+		<label><spring:message code="addAnnouncement.message"/></label>
+		<div class="announcements-portlet-col">
 			<form:errors cssClass="portlet-msg-error" path="message"/>
-			<form:textarea cssClass="portlet-form-input-field mceEditor" path="message" rows="5" cols="30" cssStyle="width:100%;"/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top">
-			<spring:message code="addAnnouncement.link"/>
-		</td>
-		<td>
+			<form:textarea cssClass="portlet-form-input-field mceEditor" path="message" rows="5" cols="30" cssStyle="width: 70%;" />
+		</div>
+	</div>
+
+
+	<div class="announcements-portlet-row">
+		<label><spring:message code="addAnnouncement.link"/></label>
+		<div class="announcements-portlet-col">
 			<form:errors cssClass="portlet-msg-error" path="link"/>
 			<form:input cssClass="portlet-form-input-field" path="link" size="30" maxlength="255"/>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top">
-			<spring:message code="addAnnouncement.start"/>
+		</div>
+	</div>
 
-		</td>
-		<td>
+
+	<div class="announcements-portlet-row">
+		<label><spring:message code="addAnnouncement.start"/></label>
+		<div class="announcements-portlet-col">
 			<form:errors cssClass="portlet-msg-error" path="startDisplay"/>
 			<form:input path="startDisplay" id="${n}datepickerstart"></form:input>
-		</td>
-	</tr>
-	<tr>
-		<td valign="top">
-			<spring:message code="addAnnouncement.end"/>
-		</td>
-		<td>
+		</div>
+	</div>
+
+
+	<div class="announcements-portlet-row">
+		<label><spring:message code="addAnnouncement.end"/></label>
+		<div class="announcements-portlet-col">
 			<form:errors cssClass="portlet-msg-error" path="endDisplay"/>
 			<form:input path="endDisplay" id="${n}datepickerend"></form:input>
-		</td>
-	</tr>
-</table>
+		</div>
+	</div>
+
 <form:hidden path="id"/>
 <form:hidden path="created"/>
 <form:hidden path="author"/>
 <form:hidden path="parent"/>
 <button type="submit" class="portlet-form-button"><spring:message code="addAnnouncement.save"/></button>
 </form:form>
-<br/>
-<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${announcement.parent.id}"/></portlet:renderURL>">
-<img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.backtotopic"/></a>
-&nbsp;&nbsp;
-<a style="text-decoration:none;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>">
-<img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
 
 <script type="text/javascript">
 <!--

@@ -91,7 +91,18 @@
         );
     }
 </script>
-<div class="portlet-section-header"><spring:message code="baseAdmin.topics"/></div>
+<!--<div class="portlet-section-header"><spring:message code="baseAdmin.topics"/></div>-->
+<div class="announcements-portlet-toolbar">
+    <a style="text-decoration:none;" class="button announcements-portlet-action" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/></portlet:renderURL>">
+        <img src="<c:url value="/icons/add.png"/>" border="0" height="16" width="16" style="vertical-align:middle;"/> <spring:message code="baseAdmin.addnew"/>
+    </a>
+    <div class="announcements-portlet-secondary">
+        <a href="<portlet:renderURL portletMode='HELP' windowState='MAXIMIZED'/>">
+            <img src="<c:url value='/icons/help.png'/>" border="0" style="vertical-align: middle;" alt="<spring:message code="general.help"/>"/>
+        </a>
+    </div>
+</div>
+<!--<div class="portlet-section-header"><spring:message code="baseAdmin.topics"/></div>-->
 <c:if test="${pendingAnnouncementCount > 0}">
 <div class="anc-approvals">
     <a class="anc-approval-list-toggle" href="#"><span id="${n}approval_count"><c:out value="${pendingAnnouncementCount}"/></span> Announcements waiting for your approval</a>
@@ -109,15 +120,22 @@
 <table cellpadding="0" cellspacing="0" class="data" width="100%">
 <c:choose>
 	<c:when test="${portalAdmin}">
+        <thead>
+            <th>Topics</th>
+            <th>Active, Scheduled, Pending</th>
+            <th>Subscription Method</th>
+            <th>Actions</th>
+        </thead>
 		<c:forEach items="${allTopics}" var="topic">
+
 		<tr>
 			<td>
 				<c:out value="${topic.title}"/>
 			</td>
-            <td>
+            <td style="text-align: center;">
 				( <span id="${n}displaying_count_${topic.id}"><c:out value="${topic.displayingAnnouncementCount}"/></span>, <span id="${n}scheduled_count_${topic.id}"><c:out value="${topic.scheduledAnnouncementCount}"/></span>, <span id="${n}pending_count_${topic.id}"><c:out value="${topic.pendingAnnouncementCount}"/></span> )
 			</td>
-			<td>
+			<td style="text-align: center;">
 			     <c:choose>
 			         <c:when test="${topic.subscriptionMethod == 1}">
 			             <spring:message code="addTopic.pushedforced"/>
@@ -130,7 +148,7 @@
 			         </c:when>
 			     </c:choose>
 			</td>
-			<td>
+			<td style="width: 20%;">
 				<a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.manage"/>"><img src="<c:url value="/icons/cog.png"/>" height="16" width="16" border="0" alt="<spring:message code="baseAdmin.manage"/>"/></a>&nbsp;&nbsp;
 				<c:if test="${topic.subscriptionMethod != 4}">
 					<a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><img src="<c:url value="/icons/pencil.png"/>" height="16" width="16" border="0" alt="<spring:message code="baseAdmin.edit"/>"/></a>&nbsp;&nbsp;
@@ -199,15 +217,3 @@
 
 </table>
 
-<c:if test="${portalAdmin}">
-	<br/>
-	<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/></portlet:renderURL>">
-	<img src="<c:url value="/icons/add.png"/>" border="0" height="16" width="16" style="vertical-align:middle;"/> <spring:message code="baseAdmin.addnew"/>
-	</a>
-</c:if>
-
-<div style="float:right;">
-    <a href="<portlet:renderURL portletMode='HELP' windowState='MAXIMIZED'/>" style="float:right;">
-        <img src="<c:url value='/icons/exclamation.png'/>" border="0" style="vertical-align: middle;"/><spring:message code="general.help"/>
-    </a>
-</div>
