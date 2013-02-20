@@ -63,7 +63,6 @@ public class AnnouncementsViewController implements InitializingBean {
     private static final String GUEST_USERNAME = "guest";
     private static final Logger logger = Logger.getLogger(AnnouncementsViewController.class);
     private Cache guestAnnouncementCache = null;
-    private Boolean showDate = Boolean.TRUE;
 
     @Autowired
     private ITopicSubscriptionService tss = null;
@@ -84,6 +83,8 @@ public class AnnouncementsViewController implements InitializingBean {
     public static final String PREFERENCE_DISABLE_EDIT = "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
     public static final String PREFERENCE_PAGE_SIZE = "AnnouncementsViewController.PAGE_SIZE";
     public static final String PREFERENCE_SORT_STRATEGY = "AnnouncementsViewController.AnnouncementSortStrategy";
+    public static final String PREFERENCE_USE_SCROLLING_DISPLAY = "AnnouncementsViewController.useScrollingDisplay";
+    public static final String PREFERENCE_SCROLLING_DISPLAY_HEIGHT_PIXELS = "AnnouncementsViewController.scrollingDisplayHeightPixels";
     public static final String PREFERENCE_HIDE_ABSTRACT = "AnnouncementsViewController.hideAbstract";
     public static final String DEFAULT_SORT_STRATEGY = "START_DISPLAY_DATE_ASCENDING";
 
@@ -105,18 +106,12 @@ public class AnnouncementsViewController implements InitializingBean {
             @RequestParam(value="to",required=false) Integer to)
         throws PortletException {
 
-        PortletPreferences prefs = request.getPreferences();
-        int pageSize = Integer.valueOf( prefs.getValue( PREFERENCE_PAGE_SIZE, "5" ) );;
-
         if (from == null || to == null) {
             from = 0;
-            to = pageSize;
+            to = (Integer) model.asMap().get("increment");
         }
 
-        boolean isGuest = (request.getRemoteUser() == null
-                          || request.getRemoteUser().equalsIgnoreCase(GUEST_USERNAME));
-        logger.debug("isGuest is: "+Boolean.toString(isGuest));
-        logger.debug("remoteUser is: "+request.getRemoteUser());
+        PortletPreferences prefs = request.getPreferences();
 
         List<Announcement> announcements;
         List<Announcement> emergencyAnnouncements;
@@ -126,6 +121,7 @@ public class AnnouncementsViewController implements InitializingBean {
         guestCacheElement = guestAnnouncementCache.get("guest");
         emergCacheElement = guestAnnouncementCache.get("emergency");
 
+        final boolean isGuest = Boolean.valueOf((Boolean) model.asMap().get("isGuest"));
         if (!isGuest || (guestCacheElement == null || emergCacheElement == null)) {
 
             // create a new announcement list
@@ -168,33 +164,18 @@ public class AnnouncementsViewController implements InitializingBean {
         }
 
         // create a shortened list
-        List<Announcement> announcementsShort = new ArrayList<Announcement>();
-
-        // if the announcement list is already short, then just reference it
-        if (announcements.size() < to - from) {
-            announcementsShort = announcements;
-        }
-        // otherwise, just take the range requested and pass it along to the view
-        else {
-            for (int i=from; i<to && announcements.size() > i; i++) {
-                if (announcements.get(i) != null) {
-                    announcementsShort.add(announcements.get(i));
-                }
-            }
-        }
-
-        // add a marker to the view to render different content for guest user
-        model.addAttribute("isGuest", Boolean.valueOf(isGuest));
+        final boolean useScrollingDisplay = Boolean.valueOf((Boolean) model.asMap().get("useScrollingDisplay"));
+        final List<Announcement> announcementsShort = useScrollingDisplay 
+                ? announcements
+                : paginateAnnouncements(announcements, from, to, model);
 
         // Disable the edit link where appropriate
         Boolean disableEdit = Boolean.valueOf(prefs.getValue(PREFERENCE_DISABLE_EDIT, "false"));
         model.addAttribute("disableEdit", disableEdit);
 
-        model.addAttribute("showDate", showDate);
         model.addAttribute("from", new Integer(from));
         model.addAttribute("to", new Integer(to));
-        model.addAttribute("hasMore", (announcements.size() > to));
-        model.addAttribute("increment", new Integer(pageSize));
+        model.addAttribute("hasMore", (!useScrollingDisplay && announcements.size() > to));
         model.addAttribute("announcements", announcementsShort);
         model.addAttribute("emergency", emergencyAnnouncements);
         model.addAttribute("hideAbstract", Boolean.valueOf(prefs.getValue(PREFERENCE_HIDE_ABSTRACT,"false")));
@@ -291,10 +272,6 @@ public class AnnouncementsViewController implements InitializingBean {
         this.tss = tss;
     }
 
-    public void setShowDate(Boolean showDate) {
-        this.showDate = showDate;
-    }
-
     @Override
     public void afterPropertiesSet() throws Exception {
         guestAnnouncementCache = cm.getCache("guestAnnouncementCache");
@@ -353,6 +330,72 @@ public class AnnouncementsViewController implements InitializingBean {
 
   		return viewNameSelector.select(request, "displayHistory");
   	}
+  	
+  	@ModelAttribute("increment")
+  	public int getPageSize(PortletRequest req) {
+        final PortletPreferences prefs = req.getPreferences();
+        int rslt = 5;  // default
+        try {
+            rslt = Integer.parseInt(prefs.getValue(PREFERENCE_PAGE_SIZE, "5"));
+        } catch (NumberFormatException nfe) {
+            // Log it, but roll on...
+            logger.warn("Non-integer value encountered for " 
+                    + PREFERENCE_PAGE_SIZE + ": " 
+                    + prefs.getValue(PREFERENCE_PAGE_SIZE, null));
+        }
+        return rslt;
+  	}
+  	
+  	@ModelAttribute("isGuest")
+  	public boolean isGuest(PortletRequest req) {
+        boolean rslt = (req.getRemoteUser() == null || req.getRemoteUser().equalsIgnoreCase(GUEST_USERNAME));
+        logger.debug("isGuest is: "+Boolean.toString(rslt));
+        logger.debug("remoteUser is: "+req.getRemoteUser());
+        return rslt;
+  	}
+  	
+  	@ModelAttribute("useScrollingDisplay")
+  	public boolean getUseScrollingDisplay(PortletRequest req) {
+  	  final PortletPreferences prefs = req.getPreferences();
+  	    return Boolean.valueOf(prefs.getValue(PREFERENCE_USE_SCROLLING_DISPLAY, "false"));  // default is false
+  	}
+  	
+    @ModelAttribute("scrollingDisplayHeightPixels")
+    public int getScrollingDisplayHeightPixels(PortletRequest req) {
+        final PortletPreferences prefs = req.getPreferences();
+        int rslt = 500;  // default
+        try {
+            rslt = Integer.parseInt(prefs.getValue(PREFERENCE_SCROLLING_DISPLAY_HEIGHT_PIXELS, "500"));
+        } catch (NumberFormatException nfe) {
+            // Log it, but roll on...
+            logger.warn("Non-integer value encountered for " 
+                    + PREFERENCE_SCROLLING_DISPLAY_HEIGHT_PIXELS + ": " 
+                    + prefs.getValue(PREFERENCE_SCROLLING_DISPLAY_HEIGHT_PIXELS, null));
+        }
+        return rslt;
+    }
+
+    /*
+  	 * Implementation
+  	 */
+    
+    private List<Announcement> paginateAnnouncements(final List<Announcement> announcements, Integer from, Integer to, Model model) {
+        List<Announcement> rslt;
+        // if the announcement list is already short, then just reference it
+        if (announcements.size() < to - from) {
+            rslt = announcements;
+        }
+        // otherwise, just take the range requested and pass it along to the view
+        else {
+            rslt = new ArrayList<Announcement>();
+            for (int i=from; i<to && announcements.size() > i; i++) {
+                if (announcements.get(i) != null) {
+                    rslt.add(announcements.get(i));
+                }
+            }
+        }
+        return rslt;
+    }
 
     private Announcement getAnnouncementById(PortletRequest request, String announcementId) throws Exception {
         Long annId = Long.valueOf(announcementId);

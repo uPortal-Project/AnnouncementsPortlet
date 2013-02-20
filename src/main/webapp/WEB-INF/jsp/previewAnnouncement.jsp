@@ -35,10 +35,8 @@
         <tr>
             <td align="center" width="15%" class="<portlet:namespace/>-row1color">
                 <c:out value="${announcement.parent.title}"/>
-                <c:if test="${showDate}">
-                    <br/>
-                    <span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
-                </c:if>
+                <br/>
+                <span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
             </td>
             <td class="<portlet:namespace/>-row1color">
                 <a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a>

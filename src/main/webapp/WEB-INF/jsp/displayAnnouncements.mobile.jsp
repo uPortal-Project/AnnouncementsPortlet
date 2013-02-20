@@ -29,7 +29,7 @@
                     <div class="announcement_inner">
                         <div class="titlebar">
                             <span class="category"><c:out value="${announcement.parent.title}"/></span>
-                            <c:if test="${showDate}">
+                            <c:if test="${displayPublishDate}">
                                 <span class="date"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
                             </c:if>
                             <h2><a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><img src="<c:url value="/icons/exclamation.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <c:out value="${announcement.title}"/></a></h2>
@@ -48,7 +48,7 @@
                 <div class="announcement_inner">
                     <div class="titlebar">
                         <span class="category"><c:out value="${announcement.parent.title}"/></span>
-                        <c:if test="${showDate}">
+                        <c:if test="${displayPublishDate}">
                             <span class="date"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
                         </c:if>
                         <h2><a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a></h2>

@@ -56,8 +56,7 @@
         <property name="emergencyTopic" ref="emergencyTopic"/>
     </bean>
 
-    <bean class="org.jasig.portlet.announcements.controller.AnnouncementsViewController" 
-    	p:showDate="${display.date.under.topic}">
+    <bean class="org.jasig.portlet.announcements.controller.AnnouncementsViewController">
     	<property name="cm" ref="cacheManager"/>
     </bean>
     

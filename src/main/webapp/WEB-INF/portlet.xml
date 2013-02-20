@@ -55,6 +55,21 @@
             <preference>
                 <name>AnnouncementsViewController.displayPublishDate</name>
                 <value>false</value>
+                <read-only>false</read-only>
+            </preference>
+            <!-- Allows the admin to disable user preferences settings like 
+                 subscribed topics and display options. -->
+            <preference>
+                <name>AnnouncementsViewController.PREFERENCE_DISABLE_EDIT</name>
+                <value>false</value>
+                <read-only>true</read-only>
+            </preference>
+            <!-- Allows the admin to set the number of items that appear in a 
+                 page in the display portlet;  has no effect if 
+                 AnnouncementsViewController.useScrollingDisplay=true. -->
+            <preference>
+                <name>AnnouncementsViewController.PAGE_SIZE</name>
+                <value>5</value>
                 <read-only>true</read-only>
             </preference>
             <preference>
@@ -71,42 +86,56 @@
                 <value>START_DISPLAY_DATE_DESCENDING</value>
                 <read-only>false</read-only>
             </preference>
+            <preference>
+                <name>AnnouncementsViewController.useScrollingDisplay</name>
+                <value>false</value>
+                <read-only>false</read-only>
+            </preference>
+            <!-- Allows the admin to specify the height of the announcements 
+                 list (non-emergency) in pixels;  has no effect if 
+                 AnnouncementsViewController.useScrollingDisplay=false. -->
+            <preference>
+                <name>AnnouncementsViewController.scrollingDisplayHeightPixels</name>
+                <value>500</value>
+                <read-only>false</read-only>
+            </preference>
+            <!-- Hides the abstract on the list view. -->
+            <preference>
+                <name>AnnouncementsViewController.hideAbstract</name>
+                <value>false</value>
+                <read-only>false</read-only>
+            </preference>
         </portlet-preferences>
 
         <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
         <security-role-ref>
             <role-name>Portal_Administrators</role-name>
-            <role-link>local.2</role-link>
+            <role-link>Portal Administrators</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Everyone</role-name>
-            <role-link>local.0</role-link>
+            <role-link>Everyone</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>All_Logged_In_Users</role-name>
-            <role-link>pags.1</role-link>
+            <role-link>Authenticated Users</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Faculty</role-name>
-            <role-link>local.23</role-link>
+            <role-link>Faculty</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Staff</role-name>
-            <role-link>local.33</role-link>
+            <role-link>Staff</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Students</role-name>
-            <role-link>local.34</role-link>
-        </security-role-ref>
-
-        <security-role-ref>
-            <role-name>Grad_Students</role-name>
-            <role-link>local.26</role-link>
+            <role-link>Students</role-link>
         </security-role-ref>
 
     </portlet>
@@ -164,37 +193,32 @@
         <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
         <security-role-ref>
             <role-name>Portal_Administrators</role-name>
-            <role-link>local.2</role-link>
+            <role-link>Portal Administrators</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Everyone</role-name>
-            <role-link>local.0</role-link>
+            <role-link>Everyone</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>All_Logged_In_Users</role-name>
-            <role-link>pags.1</role-link>
+            <role-link>Authenticated Users</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Faculty</role-name>
-            <role-link>local.23</role-link>
+            <role-link>Faculty</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Staff</role-name>
-            <role-link>local.33</role-link>
+            <role-link>Staff</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Students</role-name>
-            <role-link>local.34</role-link>
-        </security-role-ref>
-
-        <security-role-ref>
-            <role-name>Grad_Students</role-name>
-            <role-link>local.26</role-link>
+            <role-link>Students</role-link>
         </security-role-ref>
 
     </portlet>
@@ -255,37 +279,32 @@
         <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
         <security-role-ref>
             <role-name>Portal_Administrators</role-name>
-            <role-link>local.2</role-link>
+            <role-link>Portal Administrators</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Everyone</role-name>
-            <role-link>local.0</role-link>
+            <role-link>Everyone</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>All_Logged_In_Users</role-name>
-            <role-link>pags.1</role-link>
+            <role-link>Authenticated Users</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Faculty</role-name>
-            <role-link>local.23</role-link>
+            <role-link>Faculty</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Staff</role-name>
-            <role-link>local.33</role-link>
+            <role-link>Staff</role-link>
         </security-role-ref>
 
         <security-role-ref>
             <role-name>Students</role-name>
-            <role-link>local.34</role-link>
-        </security-role-ref>
-
-        <security-role-ref>
-            <role-name>Grad_Students</role-name>
-            <role-link>local.26</role-link>
+            <role-link>Students</role-link>
         </security-role-ref>
 
     </portlet>

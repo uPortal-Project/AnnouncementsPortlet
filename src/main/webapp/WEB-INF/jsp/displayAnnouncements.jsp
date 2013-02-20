@@ -22,6 +22,7 @@
 .<portlet:namespace/>-row2color { padding: 5px; background-color: #fff; }
 .<portlet:namespace/>-emerg { padding: 5px; margin-bottom:5px; color:#c00; background-color: #fff; border: 3px solid #cc3300; }
 .<portlet:namespace/>-emerg a, .<portlet:namespace/>-emerg a:visited { text-decoration: none; color: #c00; }
+.announcements-scrolling { overflow: auto; }
 </style>
 
 <c:set var="n"><portlet:namespace/></c:set>
@@ -77,17 +78,21 @@
 	</c:forEach>
 </c:if>
 
+<div<c:if test="${useScrollingDisplay}"> class="announcements-scrolling" style="height: ${scrollingDisplayHeightPixels}px;"</c:if>>
+
 <c:choose>
     <c:when test="${empty announcements}">
         <p><span class=""><spring:message code="display.no.announcements"/></span></p>
     </c:when>
     <c:otherwise>
         <table width="100%" cellspacing="0" cellpadding="0" class="data">
+          <thead>
             <tr>
                 <th width="15%"><spring:message code="display.header.topic"/></th>
                 <th><spring:message code="display.header.ann"/></th>
             </tr>
-
+          </thead>
+          <tbody>
         <c:forEach items="${announcements}" var="announcement" varStatus="status">
             <c:choose>
                 <c:when test="${status.index mod 2 == 0}">
@@ -127,9 +132,12 @@
                 </td>
             </tr>
         </c:forEach>
+          </tbody>
         </table>
     </c:otherwise>
 </c:choose>
+
+</div>
 
 <table border="0" width="100%">
   <tr>
