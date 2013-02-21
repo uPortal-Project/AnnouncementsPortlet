@@ -93,9 +93,11 @@
 </script>
 <!--<div class="portlet-section-header"><spring:message code="baseAdmin.topics"/></div>-->
 <div class="announcements-portlet-toolbar">
+    <c:if test="${portalAdmin}">
     <a style="text-decoration:none;" class="button announcements-portlet-action" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/></portlet:renderURL>">
         <img src="<c:url value="/icons/add.png"/>" border="0" height="16" width="16" style="vertical-align:middle;"/> <spring:message code="baseAdmin.addnew"/>
     </a>
+    </c:if>
     <div class="announcements-portlet-secondary">
         <a href="<portlet:renderURL portletMode='HELP' windowState='MAXIMIZED'/>">
             <img src="<c:url value='/icons/help.png'/>" border="0" style="vertical-align: middle;" alt="<spring:message code="general.help"/>"/>
