@@ -71,7 +71,7 @@
 <c:if test="${not empty emergency}">
 	<c:forEach items="${emergency}" var="announcement">
 		<div class="<portlet:namespace/>-emerg">
-			<strong><a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><img src="<c:url value="/icons/help.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <c:out value="${announcement.title}"/></a></strong> <span class="portlet-section-text" style="font-size:0.9em;">(<fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/>)</span>
+			<strong><a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><img src="<c:url value="/icons/exclamation.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <c:out value="${announcement.title}"/></a></strong> <span class="portlet-section-text" style="font-size:0.9em;">(<fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/>)</span>
 			<br/>
 			<c:out value="${announcement.abstractText}"/>
 		</div>
