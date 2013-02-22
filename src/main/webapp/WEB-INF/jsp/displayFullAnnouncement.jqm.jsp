@@ -20,8 +20,8 @@
 
 <div class="portlet annplt-content">
     <div data-role="header" class="news-reader-back-bar titlebar portlet-titlebar">
-        <a class="news-reader-back-link" href="<portlet:renderURL/>" data-role="button" data-icon="back" data-inline="true">Back</a>
-        <h2 class="title">Announcement</h2>
+        <a class="news-reader-back-link" href="<portlet:renderURL/>" data-role="button" data-icon="back" data-inline="true"><spring:message code="displayFull.back"/></a>
+        <h2 class="title"><spring:message code="displayFull.title"/></h2>
     </div>
 
     <div data-role="content" class="portlet-content">

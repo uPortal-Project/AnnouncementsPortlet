@@ -84,7 +84,7 @@
 	                <a class="annplt-form-button" href="<portlet:renderURL portletMode="view"/>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.cancelandreturn"/></a>
 	            </c:if>
 	            <c:if test="${isGuest}">
-	                <a class="annplt-form-button" href="<portlet:renderURL portletMode="view"/>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="displayFull.back"/></a>
+	                <a class="annplt-form-button" href="<portlet:renderURL portletMode="view"/>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="edit.back"/></a>
 	            </c:if>
 	        </div>
 

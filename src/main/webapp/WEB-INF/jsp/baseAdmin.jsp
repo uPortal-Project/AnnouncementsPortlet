@@ -120,16 +120,15 @@
 </c:if>
 
 <table cellpadding="0" cellspacing="0" class="data" width="100%">
+    <thead>
+        <th><spring:message code="baseAdmin.header.topics"/></th>
+        <th><spring:message code="baseAdmin.header.status"/></th>
+        <th><spring:message code="baseAdmin.header.subscriptionmethod"/></th>
+        <th><spring:message code="baseAdmin.header.actions"/></th>
+    </thead>
 <c:choose>
 	<c:when test="${portalAdmin}">
-        <thead>
-            <th>Topics</th>
-            <th>Active, Scheduled, Pending</th>
-            <th>Subscription Method</th>
-            <th>Actions</th>
-        </thead>
 		<c:forEach items="${allTopics}" var="topic">
-
 		<tr>
 			<td>
 				<c:out value="${topic.title}"/>
