@@ -26,8 +26,8 @@
 
 <div class="portlet annplt-content">
     <div data-role="header" class="news-reader-back-bar titlebar portlet-titlebar">
-        <a class="news-reader-back-link" href="<portlet:renderURL portletMode="view"/>" data-role="button" data-icon="back" data-inline="true">Back</a>
-        <h2 class="title">Preferences</h2>
+        <a class="news-reader-back-link" href="<portlet:renderURL portletMode="view"/>" data-role="button" data-icon="back" data-inline="true"><spring:message code="edit.back"/></a>
+        <h2 class="title"><spring:message code="edit.yoursubs"/></h2>
     </div>
 
     <div data-role="content" class="portlet-content">
@@ -75,7 +75,7 @@
 
             <c:if test="${not isGuest}">
                 <input type="hidden" name="topicsToUpdate" value="${topicsToUpdate}"/>
-                <button class="annplt-form-button" type="submit">Update</button>
+                <button class="annplt-form-button" type="submit"><spring:message code="edit.update"/></button>
             </c:if>
         
         </form>

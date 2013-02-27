@@ -54,7 +54,7 @@
 
     <c:if test="${not isGuest && not disableEdit}">
         <div class="utilities">
-            <a data-role="button" href="<portlet:renderURL portletMode='edit'/>">Preferences</a>
+            <a data-role="button" href="<portlet:renderURL portletMode='edit'/>"><spring:message code="display.link.edit"/></a>
         </div>
     </c:if>
 

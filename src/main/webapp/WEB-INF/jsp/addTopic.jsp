@@ -65,7 +65,7 @@
 	    <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>"><img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
 	</div>
 </div>
-<h2 class="title" role="heading">Add a Topic</h2>
+<h2 class="title" role="heading"><spring:message code="addTopic.heading"/></h2>
 <form:form commandName="topic" method="post" action="${actionUrl}">
 	<div class="announcements-portlet-row">
 		<label for="title"><spring:message code="addTopic.title"/></label>
@@ -91,9 +91,9 @@
         <div class="announcements-portlet-col">
     		<form:errors cssClass="portlet-msg-error" path="subscriptionMethod"/>
     		<ul class="announcements-portlet-sub-methods">
-    			<li><form:radiobutton path="subscriptionMethod" value="1"/> <label for="subscriptionMethod1" title="This method forces all audience members to be subscribed to this topic at all times. Audience members may not unsubscribe."><spring:message code="addTopic.pushedforced"/></label></li>
-    			<li><form:radiobutton path="subscriptionMethod" value="2"/> <label for="subscriptionMethod2" title="This method puts this topic into all audience members' subscriptions, but allows them to unsubscribe if they wish."><spring:message code="addTopic.pushedoptional"/></label></li>
-    			<li><form:radiobutton path="subscriptionMethod" value="3"/> <label for="subscriptionMethod3" title="This method makes this topic available to any audience member, but it is up to the user to manually subscribe the topic in order to view it."><spring:message code="addTopic.optional"/></label></li>
+    			<li><form:radiobutton path="subscriptionMethod" value="1"/> <label for="subscriptionMethod1" title="<spring:message code="addTopic.pushedforced.title"/>"><spring:message code="addTopic.pushedforced"/></label></li>
+    			<li><form:radiobutton path="subscriptionMethod" value="2"/> <label for="subscriptionMethod2" title="<spring:message code="addTopic.pushedoptional.title"/>"><spring:message code="addTopic.pushedoptional"/></label></li>
+    			<li><form:radiobutton path="subscriptionMethod" value="3"/> <label for="subscriptionMethod3" title="<spring:message code="addTopic.optional.title"/>"><spring:message code="addTopic.optional"/></label></li>
     		</ul>
         </div>
 	</div>
