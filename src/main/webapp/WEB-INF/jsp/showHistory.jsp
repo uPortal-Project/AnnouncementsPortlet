@@ -29,8 +29,8 @@
 
 
 
-<script type="text/javascript" src="https://webresources.uchicago.edu/js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="https://webresources.uchicago.edu/js/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="<c:url value="/js/jquery-1.3.2.min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/jquery.tablesorter.min.js"/>"></script>
 <script type="text/javascript">
 var <portlet:namespace/>  = jQuery.noConflict(true);
 <portlet:namespace/>(document).ready(function(){
