@@ -22,7 +22,11 @@
 <script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
 <script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
 <script type="text/javascript" src="<c:url value="/tinymce/tiny_mce.js"/>"></script>
-
+<!--script type="text/javascript" src="<c:url value="/tinymce/plugins/preview/jscripts/embed.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/tinymce/plugins/preview/editor_plugin.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/tinymce/plugins/paste/js/pastetext.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/tinymce/plugins/paste/js/pasteword.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/tinymce/plugins/paste/editor_plugin.js"/>"></script-->
 <script type="text/javascript">
     var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
     ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
@@ -144,9 +148,10 @@ tinyMCE.init({
 	mode : "textareas",
 	editor_selector : "mceEditor",
 	theme : "advanced",
-	theme_advanced_buttons1 : "bold,separator,bullist,numlist,undo,redo,link,unlink",
-	theme_advanced_buttons2 : "",
-	theme_advanced_buttons3 : "",
+	plugins : "paste,preview",
+	theme_advanced_buttons1 : "bold,italic,underline,strikethrough,separator,outdent,indent,blockquote,separator,fontselect,fontsizeselect",
+    theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,separator,bullist,numlist,separator,charmap,emotions",
+	theme_advanced_buttons3 : "undo,redo,separator,link,unlink,image,anchor,cleanup,help,separator,code,preview",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
 	extended_valid_elements : "a[name|href|target|title|onclick],span[class|align|style]"
