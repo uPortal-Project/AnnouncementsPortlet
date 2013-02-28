@@ -42,7 +42,7 @@
     </c:if>
     
     <div class="annplt-announcements">
-        <span class="title">Announcements</span>
+        <span class="title"><spring:message code="display.announcements.title"/></span>
         <c:forEach items="${announcements}" var="announcement" varStatus="status">
             <div class="annplt-announcement">
                 <div class="announcement_inner">

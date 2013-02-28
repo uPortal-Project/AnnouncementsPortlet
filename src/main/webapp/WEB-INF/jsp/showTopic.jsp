@@ -112,7 +112,7 @@ function <portlet:namespace/>approval(id, newValue) {
                         </c:otherwise>
                     </c:choose>
 
-                    <td><a  title="Click to Preview"  href="<portlet:renderURL><portlet:param name="action" value="previewAnnouncement"/><portlet:param name="annId" value="${ ann.id }"/></portlet:renderURL>"><c:out value="${ann.title}"/></a></td>
+                    <td><a  title="<spring:message code="show.preview"/>"  href="<portlet:renderURL><portlet:param name="action" value="previewAnnouncement"/><portlet:param name="annId" value="${ ann.id }"/></portlet:renderURL>"><c:out value="${ann.title}"/></a></td>
                     <td><fmt:formatDate value="${ann.startDisplay}" dateStyle="short"/> - <fmt:formatDate value="${ann.endDisplay}" dateStyle="short"/></td>
 
                     <td>

@@ -56,7 +56,7 @@
                 $(this).val(new_text);
             }
 
-            $("#${n}abstractTextRemaining").html(charsLeft + " characters remaining.");
+            $("#${n}abstractTextRemaining").html(charsLeft + ' <spring:message code="addAnnouncement.charactersremaining"/>');
 
         });
     });
@@ -95,7 +95,7 @@
 		<div class="announcements-portlet-col">
 			<form:errors cssClass="portlet-msg-error" path="abstractText"/>
 			<form:textarea cssClass="portlet-form-input-field" path="abstractText" id="${n}abstractText" rows="2" cols="40" />
-	        <div id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> characters remaining</div>
+	        <div id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> <spring:message code="addAnnouncement.charactersremaining"/></div>
     	</div>
 	</div>
 
