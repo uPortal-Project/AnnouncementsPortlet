@@ -59,7 +59,10 @@
     <bean class="org.jasig.portlet.announcements.controller.AnnouncementsViewController">
     	<property name="cm" ref="cacheManager"/>
     </bean>
-    
+
+    <bean class="org.jasig.portlet.announcements.controller.AnnouncementConfigurationController">
+        <property name="configService" ref="configService"/>
+    </bean>
     <!-- Portlet Mode handling -->
             
     <bean id="exceptionHandler" parent="defaultExceptionHandlerTemplate"/>

@@ -19,9 +19,11 @@
 package org.jasig.portlet.announcements.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
 import javax.portlet.RenderRequest;
 
 import org.apache.commons.logging.Log;
@@ -37,6 +39,9 @@ import org.jasig.portlet.announcements.model.TopicSubscription;
  * $LastChangedDate: 2010-01-12 14:39:53 -0700 (Tue, 12 Jan 2010) $
  */
 public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptionService {
+
+    public static final String PREFERENCE_FILTER_TYPE = AnnouncementPreferences.FILTER_TYPE.getKey();
+    public static final String PREFERENCE_FILTER_ITEMS = AnnouncementPreferences.FILTER_ITEMS.getKey();
 
 	private Log log = LogFactory.getLog(getClass());
 		
@@ -82,7 +87,13 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
         if (user == null) {
             user = "guest";
         }
-                
+
+        PortletPreferences prefs = request.getPreferences();
+        AnnouncementFilterType filterType =
+            AnnouncementFilterType.valueOf(prefs.getValue(PREFERENCE_FILTER_TYPE,AnnouncementFilterType.BLACKLIST.getKey()));
+
+        List<String> filterItems = Arrays.asList(prefs.getValues(PREFERENCE_FILTER_ITEMS,new String[0]));
+
         if (subSaved != null) {
             log.debug("Found DisplayPrefs for "+user);
             // we got some preferences from the database for this user, so
@@ -90,7 +101,16 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
             // or PUSHED_INITIAL show up, add them to the subscription
             
             for (Topic topic: allTopics) {
-                
+
+                final String title = topic.getTitle();
+                if(isFiltered(topic,filterType,filterItems))
+                {
+                    if (log.isDebugEnabled()) {
+                        log.debug("Topic " + title + " has been filtered from user " + user);
+                    }
+                    continue;
+                }
+
                 boolean allowedToViewTopic = false;
                 
                 // check that this user should be looking at this topic
@@ -215,6 +235,23 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 		log.debug("Emergency Topic assigned successfully.");
 	}
 
+    private boolean isFiltered(Topic topic,AnnouncementFilterType filterType,List<String> filterItems)
+    {
+        if(topic == null) return false;
+        if(filterItems ==  null) return false;
 
-	
+        String title = topic.getTitle();
+        switch(filterType)
+        {
+            case BLACKLIST:
+            {
+                return filterItems.contains(title);
+            }
+            case WHITELIST:
+            {
+                return !filterItems.contains(title);
+            }
+        }
+        return false;
+    }
 }

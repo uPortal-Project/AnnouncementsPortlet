@@ -127,6 +127,7 @@
         </property>
     </bean>
 
+    <bean id="configService" class="org.jasig.portlet.announcements.service.ConfigService"/>
     <bean id="groupService" class="org.jasig.portlet.announcements.service.PortletXMLGroupService" init-method="init" />
 
     <bean id="historyExpireThreshold" class="java.lang.Integer">
