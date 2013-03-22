@@ -41,6 +41,11 @@
         <property name="link" type="string" column="LINK"/>
         <property name="published" type="boolean" column="PUBLISHED" not-null="true"/>
 
+        <set name="attachments" table="ANNOUNCEMENT_ATTACHMENT" cascade="all">
+            <key column="ANNOUNCEMENT_ID" />
+            <element column="ATTACHMENT_ID" type="long"/>
+        </set>
+
         <many-to-one name="parent" column="PARENT_ID" lazy="proxy"/>
 
     </class>
