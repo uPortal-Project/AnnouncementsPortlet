@@ -21,6 +21,8 @@ package org.jasig.portlet.announcements.controller;
 import java.beans.PropertyEditor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.portlet.*;
 
@@ -140,11 +142,12 @@ public class AdminAnnouncementController implements InitializingBean {
 	 */
 	@RequestMapping(params="action=addAnnouncement")
 	public void actionAddAnnouncementForm(
-			ActionRequest request,
-			ActionResponse response,
+            @RequestParam(value="attachments",required=false) String[] attachments,
 			@ModelAttribute("announcement") Announcement announcement,
 			BindingResult result,
-			SessionStatus status) throws PortletException {
+			SessionStatus status,
+            ActionRequest request,
+            ActionResponse response) throws PortletException {
 	    
         // First verify the user has AUTHOR permission for this topic
         UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(request, announcement.getParent());
@@ -160,6 +163,15 @@ public class AdminAnnouncementController implements InitializingBean {
         }
 
         if (!result.hasErrors()) {
+            final Set<Long> attachmentSet = new HashSet<Long>();
+            if(attachments != null)
+            {
+                for(String attachmentId : attachments)
+                {
+                    attachmentSet.add(Long.valueOf(attachmentId));
+                }
+            }
+            announcement.setAttachments(attachmentSet);
 
             if (!announcement.hasId()) {
                 // add the automatic data

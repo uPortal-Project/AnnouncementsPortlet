@@ -19,6 +19,7 @@
 package org.jasig.portlet.announcements.model;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
@@ -48,6 +49,7 @@ public class Announcement implements Comparable<Announcement> {
 	private Boolean published = false;
 	private Topic parent;
 	private Long id;
+    private Set<Long> attachments;
 
 	/**
 	 * @return the published
@@ -208,6 +210,14 @@ public class Announcement implements Comparable<Announcement> {
 	public void setLink(String link) {
 		this.link = link;
 	}
+
+    public Set<Long> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(Set<Long> attachments) {
+        this.attachments = attachments;
+    }
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)

@@ -61,6 +61,42 @@
         });
     });
 
+    function ${n}attachmentCallback(result)
+    {
+        var $ = ${n}.jQuery;
+        ${n}addAttachment(result);
+        upAttachments.hide();
+    }
+
+    function ${n}addAttachment(result)
+    {
+        var $ = ${n}.jQuery;
+        var divId = "${n}attachment_" + result.attachmentId;
+        var div =  $('<div/>', {
+            id: divId
+        }).appendTo("#${n}attachments")
+
+        var del = $('<img/>', {
+            src: "<c:url value="/icons/delete.png"/>",
+            border: "0",
+            style: "height:14px;width:14px;vertical-align:middle;margin-right:5px;cursor:pointer;"
+        }).appendTo(div);
+
+        var txt = $('<span/>', {
+            text: result.attachmentFilename
+        }).appendTo(div);
+
+        var hidden = $("<input/>", {
+            name: "attachments",
+            type: "hidden",
+            value: result.attachmentId
+        }).appendTo(div);
+
+        del.click(function (event) {
+            var target = $(event.target);
+            target.parent().remove();
+        });
+    }
 </script>
 
 
@@ -135,6 +171,19 @@
 		</div>
 	</div>
 
+    <div class="announcements-portlet-row">
+        <label>
+            Attachment
+            <a style="text-decoration:none;" href="javascript:upAttachments.show(${n}attachmentCallback);">
+                <img src="<c:url value="/icons/add.png"/>" border="0" height="16" width="16" style="vertical-align:middle;"/>
+            </a>
+        </label>
+        <div id="${n}attachments" class="announcements-portlet-col">
+            <c:forEach items="${announcement.attachments}" var="attachment" varStatus="status" begin="0">
+                <script>upAttachments.info(${attachment},${n}addAttachment);</script>
+            </c:forEach>
+        </div>
+    </div>
 <form:hidden path="id"/>
 <form:hidden path="created"/>
 <form:hidden path="author"/>

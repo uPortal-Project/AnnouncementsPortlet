@@ -17,7 +17,33 @@
     specific language governing permissions and limitations
     under the License.    
 --%>
-<div class="portlet-section-header"><c:out value="${announcement.title}"/></div>
+<c:set var="n"><portlet:namespace/></c:set>
+<script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
+<script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
+    ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
+</script>
+
+<div class="portlet-section-header">
+    <c:out value="${announcement.title}"/>
+    <div style="float:right;">
+        <c:forEach items="${announcement.attachments}" var="attachment" varStatus="status">
+            <a href="javascript:;" style="text-decoration: none; border:none;" title="" onclick="javascript:upAttachments.download(${attachment})">
+                <img id="${n}att_img_${attachment}" src="<c:url value='/icons/download.png'/>" border="0" height="16" width="16" style="vertical-align: middle"/>
+            </a>
+            <script type="text/javascript">
+                upAttachments.info(${attachment},
+                    function(info) {
+                        var $ = ${n}.jQuery;
+                        $("#${n}att_img_${attachment}").attr("title",info.attachmentFilename);
+                    }
+                );
+            </script>
+        </c:forEach>
+    </div>
+</div>
 <p>
 <span class="portlet-section-text" style="font-size:0.8em;">
     <c:if test="${displayPublishDate}"><spring:message code="displayFull.displayBegin"/> <fmt:formatDate value="${announcement.startDisplay}" dateStyle="long"/><br/></c:if>
