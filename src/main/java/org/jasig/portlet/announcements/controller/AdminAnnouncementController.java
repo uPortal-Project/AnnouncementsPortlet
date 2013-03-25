@@ -142,7 +142,7 @@ public class AdminAnnouncementController implements InitializingBean {
 	 */
 	@RequestMapping(params="action=addAnnouncement")
 	public void actionAddAnnouncementForm(
-            @RequestParam(value="attachments") String[] attachments,
+            @RequestParam(value="attachments",required=false) String[] attachments,
 			@ModelAttribute("announcement") Announcement announcement,
 			BindingResult result,
 			SessionStatus status,
@@ -164,9 +164,12 @@ public class AdminAnnouncementController implements InitializingBean {
 
         if (!result.hasErrors()) {
             final Set<Long> attachmentSet = new HashSet<Long>();
-            for(String attachmentId : attachments)
+            if(attachments != null)
             {
-                attachmentSet.add(Long.valueOf(attachmentId));
+                for(String attachmentId : attachments)
+                {
+                    attachmentSet.add(Long.valueOf(attachmentId));
+                }
             }
             announcement.setAttachments(attachmentSet);
 
