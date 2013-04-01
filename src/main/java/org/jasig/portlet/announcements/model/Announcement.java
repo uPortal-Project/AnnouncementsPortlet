@@ -49,7 +49,7 @@ public class Announcement implements Comparable<Announcement> {
 	private Boolean published = false;
 	private Topic parent;
 	private Long id;
-    private Set<Long> attachments;
+    private Set<String> attachments;
 
 	/**
 	 * @return the published
@@ -211,11 +211,11 @@ public class Announcement implements Comparable<Announcement> {
 		this.link = link;
 	}
 
-    public Set<Long> getAttachments() {
+    public Set<String> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(Set<Long> attachments) {
+    public void setAttachments(Set<String> attachments) {
         this.attachments = attachments;
     }
 
