@@ -18,9 +18,13 @@
     under the License.
 --%>
 <c:set var="n"><portlet:namespace/></c:set>
+<portlet:defineObjects/>
 <link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
 <script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
 <script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/js/underscore-min.js"/>" type="text/javascript"></script>
+
+
 <script type="text/javascript" src="<c:url value="/tinymce/tiny_mce.js"/>"></script>
 <!--script type="text/javascript" src="<c:url value="/tinymce/plugins/preview/jscripts/embed.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/tinymce/plugins/preview/editor_plugin.js"/>"></script>
@@ -34,6 +38,7 @@
     /*  runs when the document is finished loading.  This prevents things like the 'div' from being fully created */
     ${n}.jQuery(function () {
         var $ = ${n}.jQuery; //reassign $ for normal use of jQuery
+        var _ = ${n}._;
 
     	$("#${n}datepickerstart").datepicker({dateFormat: 'yy-mm-dd'});
     	$("#${n}datepickerend").datepicker({dateFormat: 'yy-mm-dd'});
@@ -59,11 +64,15 @@
             $("#${n}abstractTextRemaining").html(charsLeft + ' <spring:message code="addAnnouncement.charactersremaining"/>');
 
         });
+
+        if(typeof upAttachments != "undefined")
+        {
+            $("#${n}attachment_add_section").show();
+        }
     });
 
-    function ${n}attachmentCallback(result)
+    function ${n}addAttachmentCallback(result)
     {
-        var $ = ${n}.jQuery;
         ${n}addAttachment(result);
         upAttachments.hide();
     }
@@ -71,34 +80,25 @@
     function ${n}addAttachment(result)
     {
         var $ = ${n}.jQuery;
-        var divId = "${n}attachment_" + result.attachmentId;
-        var div =  $('<div/>', {
-            id: divId
-        }).appendTo("#${n}attachments")
-
-        var del = $('<img/>', {
-            src: "<c:url value="/icons/delete.png"/>",
-            border: "0",
-            style: "height:14px;width:14px;vertical-align:middle;margin-right:5px;cursor:pointer;"
-        }).appendTo(div);
-
-        var txt = $('<span/>', {
-            text: result.attachmentFilename
-        }).appendTo(div);
-
-        var hidden = $("<input/>", {
-            name: "attachments",
-            type: "hidden",
-            value: result.attachmentId
-        }).appendTo(div);
-
-        del.click(function (event) {
-            var target = $(event.target);
-            target.parent().remove();
-        });
+        var _ = ${n}._;
+        _.templateSettings.variable = "attachment";
+        var template = $('#${n}template-attachment-add-item').html();
+        var compiled = _.template(template, result);
+        $("#${n}attachments").append(compiled);
     }
+
 </script>
 
+<script type="text/template" id="${n}template-attachment-add-item">
+    <div id="${n}attachment_add_${"<%="} attachment.id ${"%>"}" class="attachment-item">
+        <a href="javascript:;" onclick="$(this).parent().remove();">
+        <img id="attachment-delete" src="<c:url value="/icons/delete.png"/>" border="0" style="height:14px;width:14px;vertical-align:middle;margin-right:5px;cursor:pointer;"/>
+        </a>
+        <span>${"<%="} attachment.filename ${"%>"}</span>
+        <input type="hidden" name="attachments" value='${"<%="} JSON.stringify(attachment) ${"%>"}'/>
+
+    </div>
+</script>
 
 <portlet:actionURL var="actionUrl">
 	<portlet:param name="action" value="addAnnouncement"/>
@@ -171,16 +171,16 @@
 		</div>
 	</div>
 
-    <div class="announcements-portlet-row">
+    <div class="announcements-portlet-row" id="${n}attachment_add_section" style="display:none;">
         <label>
-            Attachment
-            <a style="text-decoration:none;" href="javascript:upAttachments.show(${n}attachmentCallback);">
+            <spring:message code="addAnnouncement.attachments"/>
+            <a style="text-decoration:none;" href="javascript:upAttachments.show(${n}addAttachmentCallback);">
                 <img src="<c:url value="/icons/add.png"/>" border="0" height="16" width="16" style="vertical-align:middle;"/>
             </a>
         </label>
         <div id="${n}attachments" class="announcements-portlet-col">
             <c:forEach items="${announcement.attachments}" var="attachment" varStatus="status" begin="0">
-                <script>upAttachments.info(${attachment},${n}addAttachment);</script>
+                <script>${n}addAttachment(${attachment});</script>
             </c:forEach>
         </div>
     </div>

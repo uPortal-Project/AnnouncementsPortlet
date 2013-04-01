@@ -163,12 +163,12 @@ public class AdminAnnouncementController implements InitializingBean {
         }
 
         if (!result.hasErrors()) {
-            final Set<Long> attachmentSet = new HashSet<Long>();
+            final Set<String> attachmentSet = new HashSet<String>();
             if(attachments != null)
             {
-                for(String attachmentId : attachments)
+                for(String attachment : attachments)
                 {
-                    attachmentSet.add(Long.valueOf(attachmentId));
+                    attachmentSet.add(attachment);
                 }
             }
             announcement.setAttachments(attachmentSet);

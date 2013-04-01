@@ -43,7 +43,7 @@
 
         <set name="attachments" table="ANNOUNCEMENT_ATTACHMENT" cascade="all">
             <key column="ANNOUNCEMENT_ID" />
-            <element column="ATTACHMENT_ID" type="long"/>
+            <element column="ATTACHMENT_INFO" type="string"/>
         </set>
 
         <many-to-one name="parent" column="PARENT_ID" lazy="proxy"/>
