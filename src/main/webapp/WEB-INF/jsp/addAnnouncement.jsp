@@ -32,8 +32,9 @@
 <script type="text/javascript" src="<c:url value="/tinymce/plugins/paste/js/pasteword.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/tinymce/plugins/paste/editor_plugin.js"/>"></script-->
 <script type="text/javascript">
-    var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
-    ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
+    var ${n} = ${n} || {}; // create a unique variable for our JS namespace
+    ${n}.jQuery = jQuery.noConflict(true); // assign jQuery to this namespace
+    ${n}._ = _.noConflict(); // assign underscore to this namespace
 
     /*  runs when the document is finished loading.  This prevents things like the 'div' from being fully created */
     ${n}.jQuery(function () {
@@ -65,27 +66,24 @@
 
         });
 
-        if(typeof upAttachments != "undefined")
+        // Display and use the attachments feature only if it's present
+        if(upAttachments)
         {
+            ${n}.addAttachmentCallback = function(result) {
+                ${n}.addAttachment(result);
+                upAttachments.hide();
+            };
+            ${n}.addAttachment = function(result) {
+                var $ = ${n}.jQuery;
+                var _ = ${n}._;
+                _.templateSettings.variable = "attachment";
+                var template = $('#${n}template-attachment-add-item').html();
+                var compiled = _.template(template, result);
+                $("#${n}attachments").append(compiled);
+            };
             $("#${n}attachment_add_section").show();
         }
     });
-
-    function ${n}addAttachmentCallback(result)
-    {
-        ${n}addAttachment(result);
-        upAttachments.hide();
-    }
-
-    function ${n}addAttachment(result)
-    {
-        var $ = ${n}.jQuery;
-        var _ = ${n}._;
-        _.templateSettings.variable = "attachment";
-        var template = $('#${n}template-attachment-add-item').html();
-        var compiled = _.template(template, result);
-        $("#${n}attachments").append(compiled);
-    }
 
 </script>
 
@@ -174,13 +172,13 @@
     <div class="announcements-portlet-row" id="${n}attachment_add_section" style="display:none;">
         <label>
             <spring:message code="addAnnouncement.attachments"/>
-            <a style="text-decoration:none;" href="javascript:upAttachments.show(${n}addAttachmentCallback);">
+            <a style="text-decoration:none;" href="javascript:upAttachments.show(${n}.addAttachmentCallback);">
                 <img src="<c:url value="/icons/add.png"/>" border="0" height="16" width="16" style="vertical-align:middle;"/>
             </a>
         </label>
         <div id="${n}attachments" class="announcements-portlet-col">
             <c:forEach items="${announcement.attachments}" var="attachment" varStatus="status" begin="0">
-                <script>${n}addAttachment(${attachment});</script>
+                <script>${n}.addAttachment(${attachment});</script>
             </c:forEach>
         </div>
     </div>
