@@ -67,7 +67,7 @@
         });
 
         // Display and use the attachments feature only if it's present
-        if(upAttachments)
+        if(typeof upAttachments != "undefined")
         {
             ${n}.addAttachmentCallback = function(result) {
                 ${n}.addAttachment(result);
