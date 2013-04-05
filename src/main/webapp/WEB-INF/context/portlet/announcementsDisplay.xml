@@ -26,9 +26,11 @@
     xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans 
-		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <context:annotation-config />
 
     <bean id="propertyConfigurer"
         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" 
@@ -49,20 +51,17 @@
         </property>
     </bean>
     
-    <context:annotation-config />
-    
     <bean id="topicSubscriptionService" class="org.jasig.portlet.announcements.service.UserConfiguredTopicSubscriptionService" init-method="init">
         <property name="announcementService" ref="announcementService"/>
         <property name="emergencyTopic" ref="emergencyTopic"/>
     </bean>
 
-    <bean class="org.jasig.portlet.announcements.controller.AnnouncementsViewController">
-    	<property name="cm" ref="cacheManager"/>
-    </bean>
+    <bean class="org.jasig.portlet.announcements.controller.AnnouncementsViewController" />
 
-    <bean class="org.jasig.portlet.announcements.controller.AnnouncementConfigurationController">
-        <property name="configService" ref="configService"/>
-    </bean>
+    <bean class="org.jasig.portlet.announcements.controller.AnnouncementConfigurationController" />
+
+    <bean class="org.jasig.portlet.announcements.controller.AnnouncementsPreferencesController" />
+
     <!-- Portlet Mode handling -->
             
     <bean id="exceptionHandler" parent="defaultExceptionHandlerTemplate"/>

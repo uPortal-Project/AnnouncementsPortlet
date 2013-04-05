@@ -31,6 +31,11 @@ import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
 import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;
+import org.jasig.portlet.notice.NotificationCategory;
+import org.jasig.portlet.notice.NotificationEntry;
+import org.jasig.portlet.notice.NotificationQuery;
+import org.jasig.portlet.notice.NotificationResponse;
+import org.jasig.portlet.notice.NotificationResult;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,25 +44,30 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.EventMapping;
+import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import javax.portlet.PortletMode;
+import javax.portlet.EventRequest;
+import javax.portlet.EventResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
-import java.io.IOException;
+import javax.xml.namespace.QName;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author eolsson
  *
  */
 @Controller
+@RequestMapping("VIEW")
 public class AnnouncementsViewController implements InitializingBean {
 
     private static final String GUEST_USERNAME = "guest";
@@ -86,8 +96,18 @@ public class AnnouncementsViewController implements InitializingBean {
     public static final String PREFERENCE_USE_SCROLLING_DISPLAY = "AnnouncementsViewController.useScrollingDisplay";
     public static final String PREFERENCE_SCROLLING_DISPLAY_HEIGHT_PIXELS = "AnnouncementsViewController.scrollingDisplayHeightPixels";
     public static final String PREFERENCE_HIDE_ABSTRACT = "AnnouncementsViewController.hideAbstract";
+    public static final String PREFERENCE_SYNDICATE_TOPICS_AS_NOTIFICATIONS = "AnnouncementsViewController.syndicateTopicsAsNotifications";
     public static final String DEFAULT_SORT_STRATEGY = "START_DISPLAY_DATE_ASCENDING";
-
+    
+    public static final String NOTIFICATION_NAMESPACE = "https://source.jasig.org/schemas/portlet/notification";
+    public static final String NOTIFICATION_QUERY_LOCAL_NAME = "NotificationQuery";
+    public static final QName NOTIFICATION_QUERY_QNAME = new QName(NOTIFICATION_NAMESPACE, NOTIFICATION_QUERY_LOCAL_NAME);
+    public static final String NOTIFICATION_QUERY_QNAME_STRING = "{" + NOTIFICATION_NAMESPACE + "}" + NOTIFICATION_QUERY_LOCAL_NAME;
+    public static final String NOTIFICATION_RESULT_LOCAL_NAME = "NotificationResult";
+    public static final QName NOTIFICATION_RESULT_QNAME = new QName(NOTIFICATION_NAMESPACE, NOTIFICATION_RESULT_LOCAL_NAME);
+    public static final String NOTIFICATION_RESULT_QNAME_STRING = "{" + NOTIFICATION_NAMESPACE + "}" + NOTIFICATION_RESULT_LOCAL_NAME;
+        
+    
     /**
      * Main method of this display controller. Calculates which topics should be shown to
      * this user and which announcements to show from those topics.
@@ -95,12 +115,11 @@ public class AnnouncementsViewController implements InitializingBean {
      * @param request
      * @param from
      * @param toimport java.util.Date;
-
      * @return
      * @throws PortletException
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping("VIEW")
+    @RenderMapping()
     public String mainView(Model model, RenderRequest request,
             @RequestParam(value="from",required=false) Integer from,
             @RequestParam(value="to",required=false) Integer to)
@@ -182,7 +201,7 @@ public class AnnouncementsViewController implements InitializingBean {
         return viewNameSelector.select(request, "displayAnnouncements");
     }
 
-    @RequestMapping(value="VIEW",params="action=displayFullAnnouncement")
+    @RenderMapping(params="action=displayFullAnnouncement")
     public String displayFullAnnouncement(Model model, RenderRequest request,
             @RequestParam("announcementId") String announcementId) throws Exception {
 
@@ -191,74 +210,94 @@ public class AnnouncementsViewController implements InitializingBean {
 
         return viewNameSelector.select(request, "displayFullAnnouncement");
     }
-
-    @RequestMapping("EDIT")
-    public String editPreferences(Model model, RenderRequest request) throws PortletException {
-
-        PortletPreferences prefs = request.getPreferences();
-        List<TopicSubscription> myTopics = tss.getTopicSubscriptionEdit(request);
-
-        if (request.getRemoteUser() == null ||
-                request.getRemoteUser().equalsIgnoreCase(GUEST_USERNAME)) {
-            model.addAttribute("isGuest", Boolean.TRUE);
-        } else {
-            model.addAttribute("isGuest", Boolean.FALSE);
+    
+    @EventMapping(NOTIFICATION_QUERY_QNAME_STRING)
+    public void syndicateAnnouncementsAsNotifications(final EventRequest req, final EventResponse res) throws PortletException {
+        
+        final PortletPreferences prefs = req.getPreferences();
+        final List<String> topicTitlesToSyndicate = Arrays.asList(
+                prefs.getValues(
+                        PREFERENCE_SYNDICATE_TOPICS_AS_NOTIFICATIONS, 
+                        new String[0]
+                )
+        );
+        
+        // Get out if we know there's nothing to do...
+        if (topicTitlesToSyndicate.isEmpty()) {
+            return;
         }
-        model.addAttribute("topicSubscriptions", myTopics);
-        model.addAttribute("topicsToUpdate", myTopics.size());
-        model.addAttribute("prefHideAbstract",Boolean.valueOf(prefs.getValue(PREFERENCE_HIDE_ABSTRACT,"false")));
-        return viewNameSelector.select(request, "editDisplayPreferences");
-    }
+        
+        final List<NotificationCategory> categories = new ArrayList<NotificationCategory>();
 
-    @RequestMapping("EDIT")
-    public void savePreferences(ActionRequest request, ActionResponse response,
-            @RequestParam("topicsToUpdate") Integer topicsToUpdate) throws PortletException,IOException {
-
-        PortletPreferences prefs = request.getPreferences();
-        List<TopicSubscription> newSubscription = new ArrayList<TopicSubscription>();
-
-        for (int i=0; i<topicsToUpdate; i++) {
-            Long topicId = Long.valueOf( request.getParameter("topicId_"+i) );
-
-            // Will be numeric for existing, persisted TopicSubscription
-            // instances;  blank (due to null id field) otherwise
-            String topicSubId = request.getParameter("topicSubId_"+i).trim();
-
-            Boolean subscribed = Boolean.valueOf( request.getParameter("subscribed_"+i) );
-            Topic topic = announcementService.getTopic(topicId);
-
-            // Make sure that any pushed_forced topics weren't sneakingly removed (by tweaking the URL, for example)
-            if (topic.getSubscriptionMethod() == Topic.PUSHED_FORCED) {
-                subscribed = new Boolean(true);
+        // fetch the user's topic subscription from the database
+        final List<TopicSubscription> myTopics = tss.getTopicSubscription(req);
+        for (TopicSubscription topicSub : myTopics) {
+            
+            final Topic topic = topicSub.getTopic();
+            
+            // We only want the white-listed ones...
+            if (!topicTitlesToSyndicate.contains(topic.getTitle())) {
+                continue;
             }
-
-            TopicSubscription ts = new TopicSubscription(request.getRemoteUser(), topic, subscribed);
-            if (topicSubId.length() > 0) {
-                // This TopicSubscription represents an existing, persisted entity
-                try {
-                    ts.setId(Long.valueOf(topicSubId));
-                } catch (NumberFormatException nfe) {
-                    logger.debug(nfe.getMessage(), nfe);
-                }
+            
+            final Set<Announcement> announcements = topic.getPublishedAnnouncements();
+            
+            // Ignore any that are empty...
+            if (announcements.isEmpty()) {
+                continue;
             }
-
-            newSubscription.add(ts);
+            
+            final List<NotificationEntry> entries = new ArrayList<NotificationEntry>();
+            for (Announcement ann : announcements) {
+                final NotificationEntry entry = new NotificationEntry();
+                entry.setTitle(ann.getTitle());
+                entry.setBody(ann.getAbstractText());  // Use abstract for body b/c notifications are intended to be smaller
+                entry.setSource("Announcements");  // TODO:  Don't hard-code
+                /*
+                 * TODO:  This area (building a URL) needs to be "factored out" 
+                 * to an interface-based approach that supports pluggable, 
+                 * configurable strategies.  Ideally, furthermore, the strategy 
+                 * for uPortal would leverage features that are not yet written -- 
+                 * like the ability to get at uP's context name and the portlet's 
+                 * fname -- or simply leverage a URL-generating API (which could 
+                 * be added to the uPortal Platform API).
+                 * 
+                 * EXAMPLE=/uPortal/p/AnnouncementsDisplay/max/render.uP?pP_action=displayFullAnnouncement&pP_announcementId=2
+                 */
+                final StringBuilder url = new StringBuilder();  
+                url.append("/uPortal")  // TODO:  Don't hard-code
+                        .append("/p/")
+                        .append("AnnouncementsDisplay")  // TODO:  Don't hard-code
+                        .append("/max/render.uP?pP_action=displayFullAnnouncement&pP_announcementId=")
+                        .append(ann.getId());
+                entry.setUrl(url.toString());
+                entries.add(entry);
+            }
+            
+            final NotificationCategory category = new NotificationCategory();
+            category.setTitle(topic.getTitle());
+            category.setEntries(entries);
+            
+            categories.add(category);
+            
+        }
+        
+        // We can bail if we haven't collected anything to share at this point...
+        if (categories.isEmpty()) {
+            return;
         }
 
-        if (newSubscription.size() > 0) {
-            try {
-                announcementService.addOrSaveTopicSubscription(newSubscription);
-            } catch (Exception e) {
-                logger.error("ERROR saving TopicSubscriptions for user "+request.getRemoteUser()+". Message: "+e.getMessage());
-            }
-        }
+        final NotificationQuery query = (NotificationQuery) req.getEvent().getValue();
+         
+        final NotificationResponse response = new NotificationResponse();
+        response.setCategories(categories);
 
-        String hideAbstract = Boolean.valueOf(request.getParameter("hideAbstract")).toString();
-        prefs.setValue(PREFERENCE_HIDE_ABSTRACT,hideAbstract);
-        prefs.store();
-
-        response.setPortletMode(PortletMode.VIEW);
-        response.setRenderParameter("action", "displayAnnouncements");
+        final NotificationResult result = new NotificationResult();
+        result.setQueryWindowId(query.getQueryWindowId());
+        result.setResultWindowId(req.getWindowID());
+        result.setNotificationResponse(response);
+         
+        res.setEvent(NOTIFICATION_RESULT_QNAME, result);
 
     }
 
@@ -287,7 +326,7 @@ public class AnnouncementsViewController implements InitializingBean {
         this.cm = cm;
     }
 
-  	@RequestMapping(value = "VIEW", params = "action=displayFullAnnouncementHistory")
+  	@RenderMapping(params = "action=displayFullAnnouncementHistory")
   	public String displayFullAnnouncementHistory(Model model,
   			RenderRequest request,
   			@RequestParam("announcementId") String announcementId)
@@ -299,7 +338,7 @@ public class AnnouncementsViewController implements InitializingBean {
   		return viewNameSelector.select(request, "displayFullAnnouncementHistory");
   	}
 
-  	@RequestMapping(value = "VIEW", params = "action=displayHistory")
+  	@RenderMapping(params = "action=displayHistory")
   	public String displayHistory(Model model, RenderRequest request)
   			throws Exception {
 

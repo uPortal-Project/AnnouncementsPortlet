@@ -30,7 +30,7 @@
 		<td><fmt:formatDate value="${ann.startDisplay}" dateStyle="short"/></td>
 		<td><fmt:formatDate value="${ann.endDisplay}" dateStyle="short"/></td>
 		<td><a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="showHistory.viewedit"/>"><img alt="<spring:message code="showHistory.viewedit"/>" src="<c:url value="/icons/pencil.png"/>" border="0" height="16" width="16"/></a></td>
-		<td><a href="#" onclick="<portlet:namespace/>_delete('<portlet:actionURL><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="showHistory.delete"/>"><img border="0" alt="<spring:message code="showHistory.delete"/>" src="<c:url value="/icons/bin_empty.png"/>" height="16" width="16"/></a></td>
+		<td><a href="#" onclick="<portlet:namespace/>_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="showHistory.delete"/>"><img border="0" alt="<spring:message code="showHistory.delete"/>" src="<c:url value="/icons/bin_empty.png"/>" height="16" width="16"/></a></td>
 	</tr>
 </c:forEach>
 </tbody>

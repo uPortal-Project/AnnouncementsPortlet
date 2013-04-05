@@ -20,11 +20,10 @@
 
 -->
 
-<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd
-    http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
-    version="1.0">
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+ version="2.0">
 
     <!-- IMPORTANT: For this portlet to work, you must mirror all <security-role-ref> elements in both portlet sections!! -->
 
@@ -106,6 +105,14 @@
                 <value>false</value>
                 <read-only>false</read-only>
             </preference>
+            <!-- Listed topics (by title) will be broadcast as notifications for 
+                 display in the Apereo NotificationPortlet.  The NotificationPortlet 
+                 infrastructure underpins both Notification and EmergencyAlert portlets.  -->
+            <preference>
+                <name>AnnouncementsViewController.syndicateTopicsAsNotifications</name>
+                <value>EMERGENCY</value>
+                <read-only>false</read-only>
+            </preference>
         </portlet-preferences>
 
         <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
@@ -139,6 +146,12 @@
             <role-link>Students</role-link>
         </security-role-ref>
 
+        <supported-processing-event>
+            <qname xmlns:x="https://source.jasig.org/schemas/portlet/notification">x:NotificationQuery</qname>
+        </supported-processing-event>
+        <supported-publishing-event>
+            <qname xmlns:x="https://source.jasig.org/schemas/portlet/notification">x:NotificationResult</qname>
+        </supported-publishing-event>
     </portlet>
 
     <portlet>
@@ -223,4 +236,14 @@
         </security-role-ref>
 
     </portlet>
+
+    <event-definition>
+        <qname xmlns:x="https://source.jasig.org/schemas/portlet/notification">x:NotificationQuery</qname>
+        <value-type>org.jasig.portlet.notice.NotificationQuery</value-type>
+    </event-definition>
+    <event-definition>
+        <qname xmlns:x="https://source.jasig.org/schemas/portlet/notification">x:NotificationResult</qname>
+        <value-type>org.jasig.portlet.notice.NotificationResult</value-type>
+    </event-definition>
+
 </portlet-app>

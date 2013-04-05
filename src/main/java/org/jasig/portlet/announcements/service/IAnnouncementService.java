@@ -21,7 +21,7 @@ package org.jasig.portlet.announcements.service;
 import java.util.List;
 
 import javax.portlet.PortletException;
-import javax.portlet.RenderRequest;
+import javax.portlet.PortletRequest;
 
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
@@ -58,7 +58,7 @@ public interface IAnnouncementService {
 
 	public void deleteAnnouncementsPastExpirationThreshold(int numDays);
 
-	public List<TopicSubscription> getTopicSubscriptionFor(RenderRequest request) throws PortletException;
+	public List<TopicSubscription> getTopicSubscriptionFor(PortletRequest request) throws PortletException;
 
 	public void addOrSaveTopicSubscription(List<TopicSubscription> subs);
 

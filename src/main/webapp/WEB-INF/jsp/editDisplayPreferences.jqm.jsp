@@ -18,7 +18,7 @@
     under the License.    
 --%>
 
-<portlet:actionURL var="actionUrl">
+<portlet:actionURL var="actionUrl" escapeXml="false">
     <portlet:param name="action" value="editDisplayPreferences"/>
 </portlet:actionURL>
 

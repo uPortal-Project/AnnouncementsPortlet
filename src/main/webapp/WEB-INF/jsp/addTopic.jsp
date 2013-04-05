@@ -19,7 +19,7 @@
    
 --%>
 <c:set var="n"><portlet:namespace/></c:set>
-<portlet:actionURL var="actionUrl">
+<portlet:actionURL var="actionUrl" escapeXml="false">
 	<portlet:param name="action" value="addTopic"/>
 </portlet:actionURL>
 <link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />

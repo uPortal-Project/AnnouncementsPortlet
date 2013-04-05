@@ -35,8 +35,7 @@ public class TopicValidator implements Validator {
 	/* (non-Javadoc)
 	 * @see org.springframework.validation.Validator#supports(java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
-	public boolean supports(Class clazz) {
+	public boolean supports(Class<?> clazz) {
 		return Topic.class.isAssignableFrom(clazz);
 	}
 

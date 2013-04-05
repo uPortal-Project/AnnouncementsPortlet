@@ -51,8 +51,7 @@ public class AnnouncementValidator implements Validator {
 	/* (non-Javadoc)
 	 * @see org.springframework.validation.Validator#supports(java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
-	public boolean supports(Class clazz) {
+	public boolean supports(Class<?> clazz) {
 		return Announcement.class.isAssignableFrom(clazz);
 	}
 

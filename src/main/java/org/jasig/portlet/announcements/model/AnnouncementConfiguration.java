@@ -55,6 +55,7 @@ public class AnnouncementConfiguration implements Serializable {
         this.filterItems = filterItems;
     }
 
+    @SuppressWarnings("unchecked")
     public void setFilterItems(String[] filterArray)
     {
         this.filterItems = Arrays.asList(filterArray);
@@ -71,6 +72,7 @@ public class AnnouncementConfiguration implements Serializable {
     }
 
 
+    @SuppressWarnings("unchecked")
     public void setFilterContent(String filterContent)
     {
         if(filterContent != null)

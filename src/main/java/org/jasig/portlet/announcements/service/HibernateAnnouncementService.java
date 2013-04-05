@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.portlet.PortletException;
-import javax.portlet.RenderRequest;
+import javax.portlet.PortletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -243,7 +243,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
 	 * @throws PortletException
 	 */
 	@SuppressWarnings("unchecked")
-	public List<TopicSubscription> getTopicSubscriptionFor(RenderRequest request) throws PortletException {
+	public List<TopicSubscription> getTopicSubscriptionFor(PortletRequest request) throws PortletException {
 		List<TopicSubscription> result = null;
 
 		try {

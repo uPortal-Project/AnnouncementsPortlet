@@ -81,6 +81,9 @@
                 var compiled = _.template(template, result);
                 $("#${n}attachments").append(compiled);
             };
+            <c:forEach items="${announcement.attachments}" var="attachment">
+            ${n}.addAttachment(${attachment});
+            </c:forEach>
             $("#${n}attachment_add_section").show();
         }
     });
@@ -98,7 +101,7 @@
     </div>
 </script>
 
-<portlet:actionURL var="actionUrl">
+<portlet:actionURL var="actionUrl" escapeXml="false">
 	<portlet:param name="action" value="addAnnouncement"/>
 	<portlet:param name="topicId" value="${announcement.parent.id}"/>
 </portlet:actionURL>
@@ -177,9 +180,6 @@
             </a>
         </label>
         <div id="${n}attachments" class="announcements-portlet-col">
-            <c:forEach items="${announcement.attachments}" var="attachment" varStatus="status" begin="0">
-                <script>${n}.addAttachment(${attachment});</script>
-            </c:forEach>
         </div>
     </div>
 <form:hidden path="id"/>

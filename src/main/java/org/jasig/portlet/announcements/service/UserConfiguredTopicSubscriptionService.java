@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 
 import org.apache.commons.logging.Log;
@@ -65,7 +66,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 		}
 	}
 
-    public List<TopicSubscription> getTopicSubscription(RenderRequest request, boolean includeEmergency) throws PortletException {
+    public List<TopicSubscription> getTopicSubscription(PortletRequest request, boolean includeEmergency) throws PortletException {
         
         List<TopicSubscription> subscriptions = new ArrayList<TopicSubscription>();
         List<TopicSubscription> subSaved = null;
@@ -196,7 +197,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 		return getTopicSubscription(request, false);
 	}
 	
-	public List<TopicSubscription> getTopicSubscription(RenderRequest request) throws PortletException {
+	public List<TopicSubscription> getTopicSubscription(PortletRequest request) throws PortletException {
 		return getTopicSubscription(request, true);
 	}
 	

@@ -22,6 +22,7 @@ package org.jasig.portlet.announcements.service;
 import java.util.List;
 
 import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
 
 import org.jasig.portlet.announcements.model.TopicSubscription;
@@ -35,10 +36,10 @@ import org.jasig.portlet.announcements.model.TopicSubscription;
  */
 public interface ITopicSubscriptionService {
     
-    List<TopicSubscription> getTopicSubscription(RenderRequest request, boolean includeEmergency) throws PortletException;
+    List<TopicSubscription> getTopicSubscription(PortletRequest request, boolean includeEmergency) throws PortletException;
     
     List<TopicSubscription> getTopicSubscriptionEdit(RenderRequest request) throws PortletException;
     
-    List<TopicSubscription> getTopicSubscription(RenderRequest request) throws PortletException;
+    List<TopicSubscription> getTopicSubscription(PortletRequest request) throws PortletException;
 
 }
