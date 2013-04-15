@@ -18,12 +18,17 @@
  */
 package org.jasig.portlet.announcements.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
  * 
  * $LastChangedBy$
  * $LastChangedDate$
  */
+@XmlRootElement(name="topicSubscription")
 public class TopicSubscription {
 
 	private Topic topic;
@@ -42,6 +47,7 @@ public class TopicSubscription {
 	/**
 	 * @return the id
 	 */
+    @XmlTransient
 	public Long getId() {
 		return id;
 	}
@@ -56,6 +62,7 @@ public class TopicSubscription {
 	/**
 	 * @return the owner
 	 */
+    @XmlElement(name="owner")
 	public String getOwner() {
 		return owner;
 	}
@@ -70,12 +77,14 @@ public class TopicSubscription {
 	/**
 	 * @return the topic
 	 */
+    @XmlTransient
 	public Topic getTopic() {
 		return topic;
 	}
 	/**
 	 * @return the subscribed
 	 */
+    @XmlElement(name="subscribed")
 	public Boolean getSubscribed() {
 		return subscribed;
 	}

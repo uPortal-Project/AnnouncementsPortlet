@@ -54,42 +54,6 @@
         </property>
     </bean>
 
-    <!-- Database configuration beans -->
-    <!-- DATASOURCE CONNECTIONS BEANS -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName">
-            <value>${driver.class}</value>
-        </property>
-        <property name="url">
-            <value>${driver.url}</value>
-        </property>
-        <property name="username">
-            <value>${driver.username}</value>
-        </property>
-        <property name="password">
-            <value>${driver.password}</value>
-        </property>
-        <property name="validationQuery">
-            <value>${driver.validationQuery}</value>
-        </property>
-        <property name="testOnBorrow" value="true"/>
-        <property name="testWhileIdle" value="true"/>
-        <property name="minEvictableIdleTimeMillis" value="60000"/>
-        <property name="timeBetweenEvictionRunsMillis" value="10000"/>
-        <property name="initialSize" value="3"/>
-        <property name="maxActive" value="10"/>
-    </bean>
-
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-            </props>
-        </property>
-    </bean>
-
     <bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="flushModeName">
@@ -120,16 +84,6 @@
         </property>
     </bean>
 
-    <!-- DAO creation for both portlets -->
-    <bean id="announcementService" class="org.jasig.portlet.announcements.service.HibernateAnnouncementService">
-        <property name="sessionFactory">
-            <ref bean="sessionFactory"/>
-        </property>
-    </bean>
-
-    <bean id="configService" class="org.jasig.portlet.announcements.service.ConfigService"/>
-    <bean id="groupService" class="org.jasig.portlet.announcements.service.PortletXMLGroupService" init-method="init" />
-
     <bean id="historyExpireThreshold" class="java.lang.Integer">
         <constructor-arg value="${history.expire.threshold}"/>
     </bean>
@@ -140,25 +94,6 @@
         <property name="hourToCheck" value="3"/>
         <property name="minuteToCheck" value="0"/>
         <property name="expireThreshold" ref="historyExpireThreshold"/>
-    </bean>
-
-    <!-- Emergency Topic Definition -->
-    <bean id="emergencyTopic" class="org.jasig.portlet.announcements.model.Topic">
-        <property name="creator"><value>automatic</value></property>
-        <property name="title"><value>EMERGENCY</value></property>
-        <property name="description"><value>Do not edit this topic!</value></property>
-        <property name="allowRss"><value>false</value></property>
-        <property name="subscriptionMethod"><value>4</value></property>
-        <property name="audience">
-            <set>
-                <value>Everyone</value>
-            </set>
-        </property>
-        <property name="admins">
-            <set>
-                <value>Portal_Administrators</value>
-            </set>
-        </property>
     </bean>
 
     <bean id="cacheManager" class="net.sf.ehcache.CacheManager" destroy-method="shutdown">

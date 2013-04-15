@@ -20,6 +20,11 @@ package org.jasig.portlet.announcements.model;
 
 import java.util.Date;
 import java.util.Set;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
@@ -27,6 +32,7 @@ import java.util.Set;
  * $LastChangedBy$
  * $LastChangedDate$
  */
+@XmlRootElement(name="announcement")
 public class Announcement implements Comparable<Announcement> {
 
     /**
@@ -54,6 +60,7 @@ public class Announcement implements Comparable<Announcement> {
 	/**
 	 * @return the published
 	 */
+    @XmlTransient
 	public Boolean isPublished() {
 		return published;
 	}
@@ -61,6 +68,7 @@ public class Announcement implements Comparable<Announcement> {
 	/**
 	 * @return the published
 	 */
+    @XmlElement(name="published")
 	public Boolean getPublished() {
 		return isPublished();
 	}
@@ -79,6 +87,7 @@ public class Announcement implements Comparable<Announcement> {
 	/**
 	 * @return the id
 	 */
+    @XmlTransient
 	public Long getId() {
 		return id;
 	}
@@ -93,6 +102,7 @@ public class Announcement implements Comparable<Announcement> {
 	/**
 	 * @return the parent
 	 */
+    @XmlTransient
 	public Topic getParent() {
 		return parent;
 	}
@@ -107,6 +117,7 @@ public class Announcement implements Comparable<Announcement> {
 	/**
 	 * @return the title
 	 */
+    @XmlElement(name="title")
 	public String getTitle() {
 		return title;
 	}
@@ -114,22 +125,26 @@ public class Announcement implements Comparable<Announcement> {
 	/**
 	 * @return the published
 	 */
+    @XmlElement(name="created")
 	public Date getCreated() {
 		return created;
 	}
 	/**
 	 * @return the startDisplay
 	 */
+    @XmlElement(name="startDisplay")
 	public Date getStartDisplay() {
 		return startDisplay;
 	}
 	/**
 	 * @return the endDisplay
 	 */
+    @XmlElement(name="endDisplay")
 	public Date getEndDisplay() {
 	    return endDisplay;
 	}
 
+    @XmlTransient
 	public Date getNullSafeEndDisplay() {
 	    // Unspecified end date means the announcement does not expire;  we
 	    // will substitute a date in the future each time this item is
@@ -140,6 +155,7 @@ public class Announcement implements Comparable<Announcement> {
 	/**
 	 * @return the message
 	 */
+    @XmlElement(name="message")
 	public String getMessage() {
 		return message;
 	}
@@ -177,18 +193,21 @@ public class Announcement implements Comparable<Announcement> {
 	/**
 	 * @return the abstractText
 	 */
+    @XmlElement(name="abstract")
 	public String getAbstractText() {
 		return abstractText;
 	}
 	/**
 	 * @return the author
 	 */
+    @XmlElement(name="author")
 	public String getAuthor() {
 		return author;
 	}
 	/**
 	 * @return the link
 	 */
+    @XmlElement(name="link")
 	public String getLink() {
 		return link;
 	}
@@ -211,6 +230,8 @@ public class Announcement implements Comparable<Announcement> {
 		this.link = link;
 	}
 
+    @XmlElementWrapper(name="attachments")
+    @XmlElement(name="attachment")
     public Set<String> getAttachments() {
         return attachments;
     }

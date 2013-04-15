@@ -24,6 +24,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.apache.log4j.Logger;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
 
@@ -33,6 +38,7 @@ import org.jasig.portlet.announcements.service.UserPermissionChecker;
  * $LastChangedBy$
  * $LastChangedDate$
  */
+@XmlRootElement(name="topic")
 public class Topic {
 													/* Announcements for this topic are... */
 	public static final int PUSHED_FORCED = 1;		/* ...Pushed to the audience members and they cannot unsubscribe */
@@ -43,6 +49,8 @@ public class Topic {
 	private static final org.apache.log4j.Logger logger = Logger.getLogger(Topic.class);
 
 	private Set<Announcement> announcements;
+
+    private Set<TopicSubscription> subscriptions;
 
 	private Set<String> admins;
 	private Set<String> moderators;
@@ -57,6 +65,7 @@ public class Topic {
 	private Long id;
 
 	public Topic() {
+        subscriptions = new HashSet<TopicSubscription>();
 		admins = new TreeSet<String>();
 		moderators = new TreeSet<String>();
 		authors = new TreeSet<String>();
@@ -104,30 +113,35 @@ public class Topic {
 	/**
 	 * @return the moderators
 	 */
+    @XmlList
 	public Set<String> getModerators() {
 		return moderators;
 	}
 	/**
 	 * @return the creator
 	 */
+    @XmlElement(name="creator")
 	public String getCreator() {
 		return creator;
 	}
 	/**
 	 * @return the title
 	 */
+    @XmlElement(name="title")
 	public String getTitle() {
 		return title;
 	}
 	/**
 	 * @return the description
 	 */
+    @XmlElement(name="description")
 	public String getDescription() {
 		return description;
 	}
 	/**
 	 * @return the allowRss
 	 */
+    @XmlElement(name="allowRss")
 	public boolean isAllowRss() {
 		return allowRss;
 	}
@@ -163,10 +177,22 @@ public class Topic {
 		this.allowRss = allowRss;
 	}
 
+    @XmlElementWrapper(name="subscriptions")
+    @XmlElement(name="subscription")
+    public Set<TopicSubscription> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(Set<TopicSubscription> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
 	/**
 	 * Returns a list of all announcements in this topic, regardless of status.
 	 * @return the announcements
 	 */
+    @XmlElementWrapper(name="announcements")
+    @XmlElement(name="announcement")
 	public Set<Announcement> getAnnouncements() {
 		return announcements;
 	}
@@ -176,6 +202,7 @@ public class Topic {
 	 * list, they must also be within their specified display period.
 	 * @return the announcements
 	 */
+    @XmlTransient
 	public Set<Announcement> getPublishedAnnouncements() {
 		Set<Announcement> announcementsFiltered = new HashSet<Announcement>();  // Don't use a TreeSet here... causes lost announcements
 		Date now = new Date();
@@ -209,6 +236,7 @@ public class Topic {
      * than a day ago.
      * @return the announcements
      */
+    @XmlTransient
 	public Set<Announcement> getNonHistoricAnnouncements() {
 	    Set<Announcement> announcementsFiltered = new HashSet<Announcement>();  // Don't use a TreeSet here... causes lost announcements
         Calendar cal = Calendar.getInstance();
@@ -232,6 +260,7 @@ public class Topic {
 	 * Returns a list of all historic announcements in this topic.
 	 * @return the announcements
 	 */
+    @XmlTransient
 	public Set<Announcement> getHistoricAnnouncements() {
 		Set<Announcement> announcementsFiltered = new HashSet<Announcement>();  // Don't use a TreeSet here... causes lost announcements
 		Calendar cal = Calendar.getInstance();
@@ -255,6 +284,7 @@ public class Topic {
 	 * Get the current number of displaying announcements
 	 * @return
 	 */
+    @XmlTransient
 	public int getDisplayingAnnouncementCount() {
 		return getPublishedAnnouncements().size();
 	}
@@ -263,6 +293,7 @@ public class Topic {
 	 * Get the current number of approved & scheduled announcements
 	 * @return
 	 */
+    @XmlTransient
 	public int getScheduledAnnouncementCount() {
 		int count = 0;
 		Date now = new Date();
@@ -277,6 +308,7 @@ public class Topic {
 		return count;
 	}
 
+    @XmlTransient
     public Set<Announcement> getPendingAnnouncements() {
         Set<Announcement> announcementsFiltered = new HashSet<Announcement>();  // Don't use a TreeSet here... causes lost announcements
         Date now = new Date();
@@ -294,6 +326,7 @@ public class Topic {
 	 * Get the current number of pending announcements
 	 * @return
 	 */
+    @XmlTransient
 	public int getPendingAnnouncementCount() {
 		int count = 0;
 		if (this.announcements != null) {
@@ -309,6 +342,7 @@ public class Topic {
 	/**
 	 * @return the id
 	 */
+    @XmlTransient
 	public Long getId() {
 		return id;
 	}
@@ -331,6 +365,8 @@ public class Topic {
 	/**
 	 * @return the authors
 	 */
+    @XmlList
+    @XmlElement(name="authors")
 	public Set<String> getAuthors() {
 		return authors;
 	}
@@ -345,6 +381,8 @@ public class Topic {
 	/**
 	 * @return the admins
 	 */
+    @XmlList
+    @XmlElement(name="admins")
 	public Set<String> getAdmins() {
 		return admins;
 	}
@@ -352,6 +390,8 @@ public class Topic {
 	/**
 	 * @return the audience
 	 */
+    @XmlList
+    @XmlElement(name="audience")
 	public Set<String> getAudience() {
 		return audience;
 	}
@@ -373,6 +413,7 @@ public class Topic {
 	/**
 	 * @return the subscriptionMethod
 	 */
+    @XmlElement(name="subscriptionMethod")
 	public int getSubscriptionMethod() {
 		return subscriptionMethod;
 	}

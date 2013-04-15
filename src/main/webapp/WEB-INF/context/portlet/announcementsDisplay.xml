@@ -50,11 +50,6 @@
             </list>
         </property>
     </bean>
-    
-    <bean id="topicSubscriptionService" class="org.jasig.portlet.announcements.service.UserConfiguredTopicSubscriptionService" init-method="init">
-        <property name="announcementService" ref="announcementService"/>
-        <property name="emergencyTopic" ref="emergencyTopic"/>
-    </bean>
 
     <bean class="org.jasig.portlet.announcements.controller.AnnouncementsViewController" />
 
