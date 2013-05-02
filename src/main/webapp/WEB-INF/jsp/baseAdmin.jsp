@@ -1,5 +1,5 @@
-<%@ include file="/WEB-INF/jsp/include.jsp" %>
 <%--
+
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -16,7 +16,11 @@
     KIND, either express or implied. See the License for the
     specific language governing permissions and limitations
     under the License.
+
 --%>
+
+<jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
+
 <c:set var="n"><portlet:namespace/></c:set>
 <script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
 <script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>

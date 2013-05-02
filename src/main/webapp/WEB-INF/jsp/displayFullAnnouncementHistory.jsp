@@ -1,5 +1,5 @@
-<%@ include file="/WEB-INF/jsp/include.jsp" %>
 <%--
+
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
     for additional information regarding copyright ownership.
@@ -16,7 +16,11 @@
     KIND, either express or implied. See the License for the
     specific language governing permissions and limitations
     under the License.
+
 --%>
+
+<jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
+
 <div class="portlet-section-header"><c:out value="${announcement.title}"/></div>
 <p>
 <span class="portlet-section-text" style="font-size:0.8em;"><spring:message code="displayFull.displayEnd"/> <fmt:formatDate value="${announcement.endDisplay}" dateStyle="long"/></span>

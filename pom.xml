@@ -292,8 +292,10 @@
                     <header>${jasig-short-license-url}</header>
                     <aggregate>true</aggregate>
                     <excludes>
+                        <exclude>.gitignore</exclude>
                         <exclude>LICENSE</exclude>
                         <exclude>NOTICE</exclude>
+                        <exclude>**/src/main/webapp/js/**</exclude>
                         <exclude>**/src/main/webapp/rs/**</exclude>
                         <exclude>**/src/main/webapp/date-picker/**</exclude>
                         <exclude>**/src/main/webapp/tinymce/**</exclude>
@@ -339,13 +341,6 @@
                 <configuration>                
                     <workingDirectory>src/main/webapp</workingDirectory>                    
                 </configuration>          
-            </plugin>
-            <plugin>
-                <groupId>org.jasig.maven</groupId>
-                <artifactId>maven-notice-plugin</artifactId>                    
-                <configuration>
-                    <noticeTemplate>AnnouncementsPortlet.NOTICE.template</noticeTemplate>                        
-                </configuration>
             </plugin>
             <!-- Plug-in to add lifecycles to support db-init, data-import, and data-export -->
             <plugin>
