@@ -96,6 +96,25 @@
         <property name="expireThreshold" ref="historyExpireThreshold"/>
     </bean>
 
+    <!-- Emergency Topic Definition -->
+    <bean id="emergencyTopic" class="org.jasig.portlet.announcements.model.Topic">
+        <property name="creator"><value>automatic</value></property>
+        <property name="title"><value>EMERGENCY</value></property>
+        <property name="description"><value>Do not edit this topic!</value></property>
+        <property name="allowRss"><value>false</value></property>
+        <property name="subscriptionMethod"><value>4</value></property>
+        <property name="audience">
+            <set>
+                <value>Everyone</value>
+            </set>
+        </property>
+        <property name="admins">
+            <set>
+                <value>Portal_Administrators</value>
+            </set>
+        </property>
+    </bean>
+
     <bean id="cacheManager" class="net.sf.ehcache.CacheManager" destroy-method="shutdown">
         <constructor-arg type="java.net.URL" value="classpath:ehcache-nondb.xml" />
     </bean>
