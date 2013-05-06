@@ -78,8 +78,6 @@
                 upAttachments.hide();
             };
             ${n}.addAttachment = function(result) {
-                var $ = ${n}.jQuery;
-                var _ = ${n}._;
                 _.templateSettings.variable = "attachment";
                 var template = $('#${n}template-attachment-add-item').html();
                 var compiled = _.template(template, result);
