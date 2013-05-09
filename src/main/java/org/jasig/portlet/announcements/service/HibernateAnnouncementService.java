@@ -212,27 +212,13 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DATE,(numDays *-1));
 
-            Query q = this.getSession().createQuery("from Announcement where END_DISPLAY < :date");
+            Query q = this.getSession().createQuery("delete from Announcement where END_DISPLAY < :date");
             q.setCalendarDate("date", cal);
-            result = (List<Announcement>)q.list();
-            if (result == null || result.size() == 0) {
-                return;
-            }
+            int count = q.executeUpdate();
+            getHibernateTemplate().flush();
+            log.info("Deleted " + count + " expired announcements.");
         } catch (HibernateException ex) {
             throw convertHibernateAccessException(ex);
-        }
-
-        if (result.size() > 0) {
-            log.info("Deleting "+result.size()+" expired announcements.");
-
-            try {
-                for (Announcement a: result) {
-                    getHibernateTemplate().delete(a);
-                }
-                getHibernateTemplate().flush();
-            } catch (HibernateException ex) {
-                throw convertHibernateAccessException(ex);
-            }
         }
 	}
 
