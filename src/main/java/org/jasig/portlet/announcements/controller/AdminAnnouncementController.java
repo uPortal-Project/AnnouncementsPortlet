@@ -21,8 +21,6 @@ package org.jasig.portlet.announcements.controller;
 import java.beans.PropertyEditor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.portlet.*;
 
@@ -78,15 +76,16 @@ public class AdminAnnouncementController implements InitializingBean {
 	@Autowired
 	private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
-	@InitBinder("announcement")
-	public void initBinder(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(customDateFormat);
-		dateFormat.setLenient(false);
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-	    binder.registerCustomEditor(Topic.class, topicEditor);
-	    binder.setAllowedFields(new String[] {"id","created","author","title","abstractText","message",
-	    		"link","startDisplay","endDisplay", "parent", "action"});
-	}
+    @InitBinder("announcement")
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(customDateFormat);
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+        binder.registerCustomEditor(Topic.class, topicEditor);
+        binder.setAllowedFields(new String[] {"id","created","author","title",
+                "abstractText","message", "link","startDisplay","endDisplay", 
+                "parent", "action", "attachments"});
+    }
 
 
 	/**
@@ -134,48 +133,34 @@ public class AdminAnnouncementController implements InitializingBean {
         return "addAnnouncement";
 	}
 
-	/**
-	 * Saves the announcement
-	 * @param request
-	 * @param response
-	 * @throws PortletException
-	 */
-	@RequestMapping(params="action=addAnnouncement")
-	public void actionAddAnnouncementForm(
-            @RequestParam(value="attachments",required=false) String[] attachments,
-			@ModelAttribute("announcement") Announcement announcement,
-			BindingResult result,
-			SessionStatus status,
-            ActionRequest request,
-            ActionResponse response) throws PortletException {
-	    
+    /**
+     * Saves the announcement
+     * @param req
+     * @param res
+     * @throws PortletException
+     */
+    @RequestMapping(params="action=addAnnouncement")
+    public void actionAddAnnouncementForm(@ModelAttribute("announcement") Announcement announcement,
+            BindingResult result, SessionStatus status, ActionRequest req,
+            ActionResponse res) throws PortletException {
+
         // First verify the user has AUTHOR permission for this topic
-        UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(request, announcement.getParent());
+        UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(req, announcement.getParent());
         if(!(upChecker.isAdmin() || upChecker.isModerator() || upChecker.isAuthor())) {
             throw new UnauthorizedException("You do not have permission to create an announcement in this topic");
         }
 
         // Next validate the announcement
-        new AnnouncementValidator(getAllowOpenEndDate(request)).validate(announcement, result);
+        new AnnouncementValidator(getAllowOpenEndDate(req)).validate(announcement, result);
         if (result.hasErrors()) {
-            response.setRenderParameter("action", "addAnnouncement");
+            res.setRenderParameter("action", "addAnnouncement");
             return;
         }
 
         if (!result.hasErrors()) {
-            final Set<String> attachmentSet = new HashSet<String>();
-            if(attachments != null)
-            {
-                for(String attachment : attachments)
-                {
-                    attachmentSet.add(attachment);
-                }
-            }
-            announcement.setAttachments(attachmentSet);
-
             if (!announcement.hasId()) {
                 // add the automatic data
-                announcement.setAuthor( request.getRemoteUser() );
+                announcement.setAuthor( req.getRemoteUser() );
                 announcement.setCreated( new Date() );
                 announcementService.addOrSaveAnnouncement(announcement);
             } else {
@@ -183,11 +168,11 @@ public class AdminAnnouncementController implements InitializingBean {
             }
 
             status.setComplete();
-            response.setRenderParameter("topicId", announcement.getParent().getId().toString());
-            response.setRenderParameter("action", "showTopic");
+            res.setRenderParameter("topicId", announcement.getParent().getId().toString());
+            res.setRenderParameter("action", "showTopic");
         }
 
-	}
+    }
 
 	/**
 	 * Handles deletion of announcements

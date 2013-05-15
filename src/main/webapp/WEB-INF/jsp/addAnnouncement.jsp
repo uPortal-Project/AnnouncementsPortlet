@@ -78,12 +78,14 @@
                 upAttachments.hide();
             };
             ${n}.addAttachment = function(result) {
-                var $ = ${n}.jQuery;
-                var _ = ${n}._;
                 _.templateSettings.variable = "attachment";
                 var template = $('#${n}template-attachment-add-item').html();
                 var compiled = _.template(template, result);
                 $("#${n}attachments").append(compiled);
+                var addedElement = $("#${n}attachments").find('.attachment-item:last');
+                addedElement.find('.remove-button').click(function() {
+                    addedElement.remove();
+                });
             };
             <c:forEach items="${announcement.attachments}" var="attachment">
             ${n}.addAttachment(${attachment});
@@ -96,8 +98,8 @@
 
 <script type="text/template" id="${n}template-attachment-add-item">
     <div id="${n}attachment_add_${"<%="} attachment.id ${"%>"}" class="attachment-item">
-        <a href="javascript:;" onclick="$(this).parent().remove();">
-        <img id="attachment-delete" src="<c:url value="/icons/delete.png"/>" border="0" style="height:14px;width:14px;vertical-align:middle;margin-right:5px;cursor:pointer;"/>
+        <a class="remove-button" href="javascript:void(0);">
+            <img id="attachment-delete" src="<c:url value="/icons/delete.png"/>" border="0" style="height:14px;width:14px;vertical-align:middle;margin-right:5px;cursor:pointer;"/>
         </a>
         <span>${"<%="} attachment.filename ${"%>"}</span>
         <input type="hidden" name="attachments" value='${"<%="} JSON.stringify(attachment) ${"%>"}'/>
