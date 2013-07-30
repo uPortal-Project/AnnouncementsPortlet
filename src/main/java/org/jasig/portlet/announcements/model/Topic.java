@@ -26,11 +26,12 @@ import java.util.TreeSet;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 import org.apache.log4j.Logger;
-import org.jasig.portlet.announcements.service.UserPermissionChecker;
+import org.jasig.portlet.announcements.xml.Namespaces;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
@@ -38,6 +39,7 @@ import org.jasig.portlet.announcements.service.UserPermissionChecker;
  * $LastChangedBy$
  * $LastChangedDate$
  */
+@XmlType(namespace = Namespaces.TOPIC_NAMESPACE)
 @XmlRootElement(name="topic")
 public class Topic {
 													/* Announcements for this topic are... */
@@ -74,32 +76,32 @@ public class Topic {
 
 
 	public Set<String> getGroup(String key) {
-		if (UserPermissionChecker.ADMIN_ROLE_NAME.equals(key)) {
+		if (UserRoles.ADMIN_ROLE_NAME.equals(key)) {
 			return getAdmins();
 		}
-		else if (UserPermissionChecker.MODERATOR_ROLE_NAME.equals(key)) {
+		else if (UserRoles.MODERATOR_ROLE_NAME.equals(key)) {
 			return getModerators();
 		}
-        else if (UserPermissionChecker.AUTHOR_ROLE_NAME.equals(key)) {
+        else if (UserRoles.AUTHOR_ROLE_NAME.equals(key)) {
             return getAuthors();
         }
-        else if (UserPermissionChecker.AUDIENCE_ROLE_NAME.equals(key)) {
+        else if (UserRoles.AUDIENCE_ROLE_NAME.equals(key)) {
             return getAudience();
         }
 		throw new RuntimeException("Role not found:  " + key);
 	}
 
 	public void setGroup(String key, Set<String> members) {
-        if (UserPermissionChecker.ADMIN_ROLE_NAME.equals(key)) {
+        if (UserRoles.ADMIN_ROLE_NAME.equals(key)) {
             setAdmins(members);
         }
-        else if (UserPermissionChecker.MODERATOR_ROLE_NAME.equals(key)) {
+        else if (UserRoles.MODERATOR_ROLE_NAME.equals(key)) {
             setModerators(members);
         }
-        else if (UserPermissionChecker.AUTHOR_ROLE_NAME.equals(key)) {
+        else if (UserRoles.AUTHOR_ROLE_NAME.equals(key)) {
             setAuthors(members);
         }
-        else if (UserPermissionChecker.AUDIENCE_ROLE_NAME.equals(key)) {
+        else if (UserRoles.AUDIENCE_ROLE_NAME.equals(key)) {
             setAudience(members);
         } else {
             throw new RuntimeException("Role not found:  " + key);
@@ -113,21 +115,22 @@ public class Topic {
 	/**
 	 * @return the moderators
 	 */
-    @XmlList
+    @XmlElementWrapper(name="moderators")
+    @XmlElement(name="moderator")
 	public Set<String> getModerators() {
 		return moderators;
 	}
 	/**
 	 * @return the creator
 	 */
-    @XmlElement(name="creator")
+    @XmlElement(name="creator", defaultValue = "system")
 	public String getCreator() {
 		return creator;
 	}
 	/**
 	 * @return the title
 	 */
-    @XmlElement(name="title")
+    @XmlElement(name="title", required=true)
 	public String getTitle() {
 		return title;
 	}
@@ -217,7 +220,7 @@ public class Topic {
                     long aYearFromNow = System.currentTimeMillis() + Announcement.MILLISECONDS_IN_A_YEAR;
                     endDisplay = new Date(aYearFromNow);
                 }
-                if (ann.isPublished() && startDisplay.before(now) && endDisplay.after(now) ) {
+                if (ann.getPublished() && startDisplay.before(now) && endDisplay.after(now) ) {
                     announcementsFiltered.add(ann);
                 }
 			}
@@ -299,7 +302,7 @@ public class Topic {
 		Date now = new Date();
 		if (this.announcements != null) {
 			for (Announcement ann: this.announcements) {
-				if (ann.isPublished() &&
+				if (ann.getPublished() &&
 						ann.getStartDisplay().after(now)) {
 					count++;
 				}
@@ -314,7 +317,7 @@ public class Topic {
         Date now = new Date();
         if (this.announcements != null) {
             for (Announcement ann : this.announcements) {
-                if (!ann.isPublished() && ann.getNullSafeEndDisplay().after(now) ) {
+                if (!ann.getPublished() && ann.getNullSafeEndDisplay().after(now) ) {
                     announcementsFiltered.add(ann);
                 }
             }
@@ -331,7 +334,7 @@ public class Topic {
 		int count = 0;
 		if (this.announcements != null) {
 			for (Announcement ann: this.announcements) {
-				if (!ann.isPublished()) {
+				if (!ann.getPublished()) {
 					count++;
 				}
 			}
@@ -365,8 +368,8 @@ public class Topic {
 	/**
 	 * @return the authors
 	 */
-    @XmlList
-    @XmlElement(name="authors")
+    @XmlElementWrapper(name="authors")
+    @XmlElement(name="author")
 	public Set<String> getAuthors() {
 		return authors;
 	}
@@ -381,8 +384,8 @@ public class Topic {
 	/**
 	 * @return the admins
 	 */
-    @XmlList
-    @XmlElement(name="admins")
+    @XmlElementWrapper(name="admins")
+    @XmlElement(name="admin")
 	public Set<String> getAdmins() {
 		return admins;
 	}
@@ -390,8 +393,8 @@ public class Topic {
 	/**
 	 * @return the audience
 	 */
-    @XmlList
-    @XmlElement(name="audience")
+    @XmlElementWrapper(name="audience")
+    @XmlElement(name="member")
 	public Set<String> getAudience() {
 		return audience;
 	}
@@ -413,7 +416,7 @@ public class Topic {
 	/**
 	 * @return the subscriptionMethod
 	 */
-    @XmlElement(name="subscriptionMethod")
+    @XmlElement(name="subscriptionMethod", required=true)
 	public int getSubscriptionMethod() {
 		return subscriptionMethod;
 	}
@@ -430,14 +433,23 @@ public class Topic {
 	 */
 	@Override
 	public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
 		Topic t = (Topic) obj;
 		return (t.getId().compareTo(this.id) == 0);
 	}
 
+    @Override
+    public int hashCode() {
+        int code = (title != null ? title : "").hashCode();
+        code += id != null && id > 0 ? id.intValue() : 0;
+        return code;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+    /* (non-Javadoc)
+         * @see java.lang.Object#toString()
+         */
 	@Override
 	public String toString() {
 		return "Topic [allowRss=" + allowRss + ", creator=" + creator

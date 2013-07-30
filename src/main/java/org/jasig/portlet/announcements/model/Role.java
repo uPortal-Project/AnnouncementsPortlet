@@ -28,7 +28,11 @@ public class Role {
 
 	private String name;
 	private Boolean selected;
-	
+
+    // No arg default constructor needed to get rid of error with jaxb2-maven-plugin:schemaGen
+    public Role() {
+    }
+
 	public Role(String name, boolean selected) {
 		this.name = name;
 		this.selected = new Boolean(selected);

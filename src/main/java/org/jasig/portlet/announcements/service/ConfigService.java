@@ -19,6 +19,7 @@
 package org.jasig.portlet.announcements.service;
 
 import org.jasig.portlet.announcements.model.AnnouncementConfiguration;
+import org.jasig.portlet.announcements.model.AnnouncementFilterType;
 import org.springframework.stereotype.Component;
 
 import javax.portlet.ActionRequest;
@@ -35,7 +36,7 @@ public class ConfigService implements IConfigService {
     {
         PortletPreferences prefs = request.getPreferences();
         AnnouncementConfiguration config = new AnnouncementConfiguration();
-        config.setFilterType(prefs.getValue(AnnouncementPreferences.FILTER_TYPE.getKey(),AnnouncementFilterType.BLACKLIST.getKey()));
+        config.setFilterType(prefs.getValue(AnnouncementPreferences.FILTER_TYPE.getKey(), AnnouncementFilterType.BLACKLIST.getKey()));
         config.setFilterItems(prefs.getValues(AnnouncementPreferences.FILTER_ITEMS.getKey(), new String[0]));
         return config;
     }

@@ -47,19 +47,19 @@ public class UserAgentViewNameSelector implements IViewNameSelector, Initializin
             throw new IllegalArgumentException(msg);
         }
         
-        String rslt = baseViewName;
+        StringBuilder rslt = new StringBuilder(baseViewName);
         
         String userAgent = req.getProperty("user-agent");
         if (userAgent != null && patterns.size() != 0) {
             for (Map.Entry<Pattern,String> y : patterns.entrySet()) {
                 if (y.getKey().matcher(userAgent).matches()) {
-                    rslt += y.getValue();
+                    rslt.append(y.getValue());
                     break;
                 }
             }
         }
 
-        return rslt;
+        return rslt.toString();
 
     }
     

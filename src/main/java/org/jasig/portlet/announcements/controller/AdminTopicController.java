@@ -36,6 +36,7 @@ import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.AnnouncementSortStrategy;
 import org.jasig.portlet.announcements.model.Topic;
+import org.jasig.portlet.announcements.model.UserRoles;
 import org.jasig.portlet.announcements.model.validators.TopicValidator;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
@@ -162,7 +163,7 @@ public class AdminTopicController {
 			ActionRequest request, ActionResponse response) throws NumberFormatException, PortletException {
 		Topic topic = announcementService.getTopic(Long.parseLong(topicId));
 
-		if(!UserPermissionChecker.inRoleForTopic(request, UserPermissionChecker.ADMIN_ROLE_NAME, topic)) {
+		if(!UserPermissionChecker.inRoleForTopic(request, UserRoles.ADMIN_ROLE_NAME, topic)) {
 			throw new UnauthorizedException("You do not have access to delete this topic!");
 		}
 

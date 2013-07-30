@@ -18,9 +18,12 @@
  */
 package org.jasig.portlet.announcements.model;
 
+import org.jasig.portlet.announcements.xml.Namespaces;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
@@ -28,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * $LastChangedBy$
  * $LastChangedDate$
  */
+@XmlType(namespace = Namespaces.TOPIC_SUBSCRIPTION_NAMESPACE)
 @XmlRootElement(name="topicSubscription")
 public class TopicSubscription {
 

@@ -19,6 +19,7 @@
 package org.jasig.portlet.announcements.service;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.portlet.PortletException;
@@ -109,6 +110,9 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
 
 	public void addOrSaveAnnouncement(Announcement ann) {
 		try {
+            if (ann.getCreated() == null) {
+                ann.setCreated(new Date());
+            }
 			log.debug("Insert or save announcement: [annId: "+(ann.getId()!=null ? ann.getId().toString() : "NEW")+"]");
 			getHibernateTemplate().saveOrUpdate(ann);
 			getHibernateTemplate().flush();

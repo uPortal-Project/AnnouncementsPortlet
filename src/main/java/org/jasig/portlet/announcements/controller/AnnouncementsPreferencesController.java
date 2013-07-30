@@ -105,7 +105,7 @@ public class AnnouncementsPreferencesController {
 
             // Make sure that any pushed_forced topics weren't sneakingly removed (by tweaking the URL, for example)
             if (topic.getSubscriptionMethod() == Topic.PUSHED_FORCED) {
-                subscribed = new Boolean(true);
+                subscribed = Boolean.TRUE;
             }
 
             TopicSubscription ts = new TopicSubscription(request.getRemoteUser(), topic, subscribed);

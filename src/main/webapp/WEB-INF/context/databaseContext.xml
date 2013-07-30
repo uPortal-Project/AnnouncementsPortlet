@@ -29,19 +29,19 @@
     <!-- DATASOURCE CONNECTIONS BEANS -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName">
-            <value>${driver.class}</value>
+            <value>${hibernate.connection.driver_class}</value>
         </property>
         <property name="url">
-            <value>${driver.url}</value>
+            <value>${hibernate.connection.url}</value>
         </property>
         <property name="username">
-            <value>${driver.username}</value>
+            <value>${hibernate.connection.username}</value>
         </property>
         <property name="password">
-            <value>${driver.password}</value>
+            <value>${hibernate.connection.password}</value>
         </property>
         <property name="validationQuery">
-            <value>${driver.validationQuery}</value>
+            <value>${hibernate.connection.validationQuery}</value>
         </property>
         <property name="testOnBorrow" value="true"/>
         <property name="testWhileIdle" value="true"/>
@@ -93,6 +93,8 @@
     </bean>
 
     <bean id="configService" class="org.jasig.portlet.announcements.service.ConfigService"/>
-    <bean id="groupService" class="org.jasig.portlet.announcements.service.PortletXMLGroupService" init-method="init" />
-
+    
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>

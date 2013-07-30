@@ -29,6 +29,7 @@ import javax.portlet.RenderRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jasig.portlet.announcements.model.AnnouncementFilterType;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 
@@ -56,7 +57,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 		try {
 			t = announcementService.getEmergencyTopic();
 		} catch (Exception ex) {
-			log.error("Could not load emergencyTopic from database: " + ex.getMessage());
+			log.warn("Could not load emergencyTopic from database (OK during unit tests or after dbinit): " + ex.getMessage());
 		}
 		
 		if (t == null && emergencyTopic != null) {
@@ -140,7 +141,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
                     if (!topicSubscriptionExists(topic, subSaved)) {
                         if (log.isDebugEnabled())
                             log.debug("Adding missing PUSHED_FORCED topic ["+topic.getId()+"] for "+user);
-                        subscriptions.add(new TopicSubscription(user, topic, new Boolean(true)));
+                        subscriptions.add(new TopicSubscription(user, topic, Boolean.TRUE));
                     }
                 }
                 else if (allowedToViewTopic && 
@@ -149,7 +150,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
                     // this is a PUSHED_INITIAL topic that we have not set a preference for yet
                     if (log.isDebugEnabled())
                         log.debug("Adding missing PUSHED_INITIAL topic ["+topic.getId()+"] for "+user);
-                    subscriptions.add(new TopicSubscription(user, topic, new Boolean(true)));
+                    subscriptions.add(new TopicSubscription(user, topic, Boolean.TRUE));
                 }
                 else if (allowedToViewTopic && 
                         topic.getSubscriptionMethod() == Topic.PULLED &&
@@ -157,7 +158,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
                     // must be an optional topic that's new and hasn't been seen before
                     if (log.isDebugEnabled())
                         log.debug("Adding missing PULLED topic ["+topic.getId()+"] for "+user);
-                    subscriptions.add(new TopicSubscription(user, topic, new Boolean(false)));
+                    subscriptions.add(new TopicSubscription(user, topic, Boolean.FALSE));
                 }
                 
                 // if the topic is present, but no longer in audience group, we must remove it
@@ -182,7 +183,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
             if (includeEmergency) {
                 // add the emergency topic for everyone, but don't save the topicsubscription to the database since it's implied
                 emergencyTopic = announcementService.getEmergencyTopic();
-                subscriptions.add(new TopicSubscription(user, emergencyTopic, new Boolean(true)));
+                subscriptions.add(new TopicSubscription(user, emergencyTopic, Boolean.TRUE));
             }
         
             return subscriptions;

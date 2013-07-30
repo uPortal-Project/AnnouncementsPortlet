@@ -139,32 +139,24 @@ public class PortletXMLGroupService implements ServletContextAware, IGroupServic
 	
 	private void parseXml() {
 			
-		URL portletXmlUrl = null;
 		try {
-			portletXmlUrl = context.getResource(PORTLET_XML_PATH);
-		} catch (MalformedURLException e) {
-			log.error(e.getMessage());
-		} finally {
-			
-			try {
-				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-				InputSource xmlInp = new InputSource(portletXmlUrl.openStream());
-				DocumentBuilder dbl = dbf.newDocumentBuilder();
-				doc = dbl.parse(xmlInp);
-			} catch (ParserConfigurationException e) {
-				log.error(e.getMessage());
-			} catch (java.io.IOException e) {
-				log.error(e.getMessage());
-	        } catch (org.xml.sax.SAXException e) {
-				log.error(e.getMessage());
-	        } catch (Exception e) {
-	        	log.error(e.getMessage());
-	        } finally {
-	        	log.debug("Finished parsing "+PORTLET_XML_PATH+".");
-	        }
-	        
-		}
-
+			URL portletXmlUrl = context.getResource(PORTLET_XML_PATH);
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            InputSource xmlInp = new InputSource(portletXmlUrl.openStream());
+            DocumentBuilder dbl = dbf.newDocumentBuilder();
+            doc = dbl.parse(xmlInp);
+            log.debug("Finished parsing "+PORTLET_XML_PATH+".");
+        } catch (MalformedURLException e) {
+            log.error(e.getMessage());
+        } catch (ParserConfigurationException e) {
+            log.error(e.getMessage());
+        } catch (java.io.IOException e) {
+            log.error(e.getMessage());
+        } catch (org.xml.sax.SAXException e) {
+            log.error(e.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
 	}
 
 	public void setServletContext(ServletContext context) {

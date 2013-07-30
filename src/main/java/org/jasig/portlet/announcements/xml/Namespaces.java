@@ -16,32 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.announcements.service;
+
+package org.jasig.portlet.announcements.xml;
 
 /**
- * @author Chris Waymire (chris@waymire.net)
+ * Namespaces to use for XML Schema generation and JAXB
+ *
+ * @author James Wennmacher, jwennmacher@unicon.net
  */
-public enum AnnouncementFilterType
-{
-    WHITELIST("WHITELIST"),
-    BLACKLIST("BLACKLIST"),
 
-    ;
+public interface Namespaces {
 
-    private final String key;
-
-    AnnouncementFilterType(String key)
-    {
-        this.key = key;
-    }
-
-    public String getKey()
-    {
-        return key;
-    }
-
-    public String toString()
-    {
-        return key;
-    }
+    public static final String TOPIC_NAMESPACE = "http://www.uPortal.org/schema/announcement/topic";
+    public static final String TOPIC_SUBSCRIPTION_NAMESPACE = "http://www.uPortal.org/schema/announcement/topicSubscription";
+    public static final String ANNOUNCEMENT_NAMESPACE = "http://www.uPortal.org/schema/announcement/announcement";
 }

@@ -27,6 +27,7 @@ import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.AnnouncementSortStrategy;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
+import org.jasig.portlet.announcements.model.UserRoles;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
@@ -140,7 +141,7 @@ public class AnnouncementsViewController implements InitializingBean {
         guestCacheElement = guestAnnouncementCache.get("guest");
         emergCacheElement = guestAnnouncementCache.get("emergency");
 
-        final boolean isGuest = Boolean.valueOf((Boolean) model.asMap().get("isGuest"));
+        final Boolean isGuest = (Boolean) model.asMap().get("isGuest");
         if (!isGuest || (guestCacheElement == null || emergCacheElement == null)) {
 
             // create a new announcement list
@@ -183,7 +184,7 @@ public class AnnouncementsViewController implements InitializingBean {
         }
 
         // create a shortened list
-        final boolean useScrollingDisplay = Boolean.valueOf((Boolean) model.asMap().get("useScrollingDisplay"));
+        final Boolean useScrollingDisplay = (Boolean) model.asMap().get("useScrollingDisplay");
         final List<Announcement> announcementsShort = useScrollingDisplay 
                 ? announcements
                 : paginateAnnouncements(announcements, from, to, model);
@@ -440,7 +441,7 @@ public class AnnouncementsViewController implements InitializingBean {
         Long annId = Long.valueOf(announcementId);
         Announcement announcement = announcementService.getAnnouncement(annId);
 
-        if (!UserPermissionChecker.inRoleForTopic(request, UserPermissionChecker.AUDIENCE_ROLE_NAME, announcement.getParent())) {
+        if (!UserPermissionChecker.inRoleForTopic(request, UserRoles.AUDIENCE_ROLE_NAME, announcement.getParent())) {
             throw new UnauthorizedException();
         }
 

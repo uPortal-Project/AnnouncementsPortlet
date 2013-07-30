@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
+<!--
  | Licensed to Jasig under one or more contributor license
  | agreements. See the NOTICE file distributed with this work
  | for additional information regarding copyright ownership.
@@ -7,15 +7,15 @@
  | Version 2.0 (the "License"); you may not use this file
  | except in compliance with the License. You may obtain a
  | copy of the License at:
- |  
+ |
  | http://www.apache.org/licenses/LICENSE-2.0
- |  
+ |
  | Unless required by applicable law or agreed to in writing,
  | software distributed under the License is distributed on
  | an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  | KIND, either express or implied. See the License for the
  | specific language governing permissions and limitations
- | under the License.   
+ | under the License.
  |-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
@@ -31,7 +31,7 @@
     <packaging>war</packaging>
     <name>Announcements Portlet</name>
     <version>2.0.0-SNAPSHOT</version>
-    
+
     <properties>
     	<resource-server.version>1.0.26</resource-server.version>
     	<spring.version>3.1.3.RELEASE</spring.version>
@@ -41,17 +41,17 @@
         <jdbc.artifactId>hsqldb</jdbc.artifactId>
         <jdbc.version>2.2.9</jdbc.version>
     </properties>
-    
+
     <url>http://www.ja-sig.org/wiki/display/PLT/Announcements+Portlet</url>
-    
+
     <description>A set of portlets that facilitate the authoring, editing, publishing, and
         displaying of portal announcements.</description>
-    
+
     <organization>
         <name>Jasig, Inc.</name>
         <url>http://www.jasig.org/</url>
     </organization>
-    
+
     <developers>
         <developer>
             <id>eolsson</id>
@@ -114,7 +114,7 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.jasig.portlet.notification</groupId>
             <artifactId>notification-portlet-api</artifactId>
@@ -126,7 +126,7 @@
             <artifactId>spring-beans</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -138,7 +138,7 @@
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
@@ -150,7 +150,7 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-       
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc-portlet</artifactId>
@@ -158,17 +158,23 @@
         </dependency>
         
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+         </dependency>
+
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>3.3.2.GA</version>
         </dependency>
-        
+
         <dependency><!-- java bytecode processor required by hibernate-->
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>3.4.GA</version>
         </dependency>
-        
+
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
@@ -181,13 +187,13 @@
             <version>1.2.14</version>
             <type>jar</type>
         </dependency>
-        
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.5.2</version>
         </dependency>
-        
+
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
@@ -204,23 +210,23 @@
         <!-- Switch to MySQL by removing the dependency above and uncommenting the one below.
          |   Other changes also required to the datasource.properties file. See the wiki.
          -->
-        
-        <!-- 
+
+        <!--
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.12</version>
             <type>jar</type>
         </dependency>
-        -->         
-                 
+        -->
+
         <dependency>
             <groupId>rome</groupId>
             <artifactId>rome</artifactId>
             <version>0.9</version>
             <type>jar</type>
         </dependency>
-        
+
         <dependency>
             <groupId>jdom</groupId>
             <artifactId>jdom</artifactId>
@@ -228,7 +234,7 @@
             <type>jar</type>
         </dependency>
 
-        <!-- ======= Provided ============== --> 
+        <!-- ======= Provided ============== -->
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -236,7 +242,7 @@
             <version>2.4</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>javax.portlet</groupId>
             <artifactId>portlet-api</artifactId>
@@ -245,21 +251,21 @@
         </dependency>
 
         <!-- ===== Test Dependencies ====================================== -->
-        
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.2</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.jasig.resourceserver</groupId>
             <artifactId>resource-server-content</artifactId>
             <version>${resource-server.version}</version>
             <type>war</type>
         </dependency>
-        
+
         <dependency>
             <groupId>org.jasig.resourceserver</groupId>
             <artifactId>resource-server-utils</artifactId>
@@ -282,13 +288,31 @@
     </dependencies>
 
     <build>
-        <finalName>${pom.artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
+        <!-- textResources makes context files available to Spring integration tests -->
+        <testResources>
+            <testResource>
+                <directory>src/main/webapp/WEB-INF</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                </includes>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
                 <configuration>
-                    <basedir>${basedir}</basedir>  
+                    <basedir>${basedir}</basedir>
                     <header>${jasig-short-license-url}</header>
                     <aggregate>true</aggregate>
                     <excludes>
@@ -306,7 +330,7 @@
                     </mapping>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
 
@@ -326,7 +350,7 @@
                         <overlay>
                             <groupId>org.jasig.resourceserver</groupId>
                             <artifactId>resource-server-content</artifactId>
-                            <includes>	
+                            <includes>
                             	<include>rs/jquery/1.6.4/</include>
                                 <include>rs/jqueryui/1.8.13/</include>
                             </includes>
@@ -338,9 +362,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>                
-                    <workingDirectory>src/main/webapp</workingDirectory>                    
-                </configuration>          
+                <version>2.15</version>
+                <configuration>
+                    <workingDirectory>src/main/webapp</workingDirectory>
+                </configuration>
             </plugin>
             <!-- Plug-in to add lifecycles to support db-init, data-import, and data-export -->
             <plugin>
@@ -352,7 +377,7 @@
             </plugin>
             <plugin>
                 <!--
-                 | Invoke this plugin as follows to drop and recreate the Calendar database tables...
+                 | Invoke this plugin as follows to drop and recreate the Announcements database tables...
                  |
                  |   >mvn db-init
                  +-->
@@ -369,7 +394,7 @@
                 </executions>
                 <configuration>
                     <componentProperties>
-                        <propertyfile>target/${project.artifactId}-${project.version}/WEB-INF/classes/datasource.properties</propertyfile>
+                        <propertyfile>target/${project.artifactId}/WEB-INF/classes/datasource.properties</propertyfile>
                         <drop>true</drop>
                     </componentProperties>
                 </configuration>
@@ -399,7 +424,7 @@
 
                                 <property name="runtime_classpath" refid="maven.runtime.classpath" />
                                 <property name="plugin_classpath" refid="maven.plugin.classpath" />
-                                <!-- Provided jars don't seem to be added to the runtime
+                                <!-- Provided jars aren't added to the runtime
                                      classpath, so we manually add in servlet.jar here  -->
                                 <property name="servlet.jar" value="${maven.dependency.javax.servlet.servlet-api.jar.path}" />
                                 <property name="portlet.jar" value="${maven.dependency.javax.portlet.portlet-api.jar.path}" />
@@ -420,6 +445,7 @@
                             </tasks>
                         </configuration>
                     </execution>
+                    <!-- Export not yet tested ... -->
                     <execution>
                         <id>data-export</id>
                         <phase>data-export</phase>
@@ -464,6 +490,66 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>schemagen</id>
+                        <goals>
+                            <goal>schemagen</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <transformSchemas>
+                        <!--
+                            Each schema element defines:
+
+                            a) A <<namespace uri>> for one of your namespaces.
+                               This namespace uri must be unique within the schemas element.
+
+                            b) A <<toPrefix>> that you want to use for the namespace.
+                               Should not contain whitespace or exotic characters.
+                               This yields a namespace definition on the form
+                               <xs:schema ... xmlns:[toPrefix]="[uri]" ... />
+
+                               (I.e: <xs:schema ... xmlns:some="http://some/namespace"
+                                                    xmlns:xs="http://www.w3.org/2001/XMLSchema"> )
+
+                               ... and transforms relevant xml schema elements to use the provided namespace prefix:
+
+                               <some:elementName ... />
+
+                            c) The desired <<toFile>> name of the generated XML schema definition file,
+                               excluding the ".xsd" suffix (which will be added automatically).
+                        -->
+                        <transformSchema>
+                            <uri>http://www.uPortal.org/schema/announcement/topic</uri>
+                            <toPrefix>topic</toPrefix>
+                            <toFile>topic.xsd</toFile>
+                        </transformSchema>
+                        <transformSchema>
+                            <uri>http://www.uPortal.org/schema/announcement/topicSubscription</uri>
+                            <toPrefix>subscription</toPrefix>
+                            <toFile>topicSubscription.xsd</toFile>
+                        </transformSchema>
+                        <transformSchema>
+                            <uri>http://www.uPortal.org/schema/announcement/announcement</uri>
+                            <toPrefix>announcement</toPrefix>
+                            <toFile>announcement.xsd</toFile>
+                        </transformSchema>
+                    </transformSchemas>
+                    <includes>
+                        <include>org/jasig/portlet/announcements/model/*.java</include>
+                        <include>org/jasig/portlet/announcements/xml/*.java</include>
+                    </includes>
+                    <outputDirectory>target/generated-schemas</outputDirectory>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 

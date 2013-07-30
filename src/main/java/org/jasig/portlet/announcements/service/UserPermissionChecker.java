@@ -24,6 +24,7 @@ import javax.portlet.PortletRequest;
 
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Topic;
+import org.jasig.portlet.announcements.model.UserRoles;
 
 
 /**
@@ -37,13 +38,7 @@ import org.jasig.portlet.announcements.model.Topic;
  * a specific Topic.
  *
  */
-public final class UserPermissionChecker {
-
-    public static final String PORTAL_ADMIN_ROLE_NAME = "Portal_Administrators";
-    public static final String ADMIN_ROLE_NAME = "admin";
-    public static final String MODERATOR_ROLE_NAME = "moderator";
-    public static final String AUTHOR_ROLE_NAME = "author";
-    public static final String AUDIENCE_ROLE_NAME = "audience";
+public final class UserPermissionChecker implements UserRoles {
 
     public static final String GUEST_USERNAME = "guest";
 
@@ -64,7 +59,7 @@ public final class UserPermissionChecker {
         guest = (request.getRemoteUser() == null);
         userName = guest ? GUEST_USERNAME : request.getRemoteUser();
 
-        if(request.isUserInRole(UserPermissionChecker.PORTAL_ADMIN_ROLE_NAME) || inRoleForTopic(request, ADMIN_ROLE_NAME, topic)) {
+        if(request.isUserInRole(UserRoles.PORTAL_ADMIN_ROLE_NAME) || inRoleForTopic(request, ADMIN_ROLE_NAME, topic)) {
             admin = moderator = author = true;
         } else if(inRoleForTopic(request, MODERATOR_ROLE_NAME, topic)) {
             admin = false;
@@ -111,7 +106,7 @@ public final class UserPermissionChecker {
     }
 
     public static boolean isPortalAdmin(PortletRequest request) {
-        return request.isUserInRole(UserPermissionChecker.PORTAL_ADMIN_ROLE_NAME);
+        return request.isUserInRole(UserRoles.PORTAL_ADMIN_ROLE_NAME);
     }
 
     public boolean isGuest() {

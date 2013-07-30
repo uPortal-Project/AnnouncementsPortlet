@@ -132,5 +132,7 @@
             </util:map>
         </property>
     </bean>
+    
+    <bean id="groupService" class="org.jasig.portlet.announcements.service.PortletXMLGroupService" init-method="init" />
 
 </beans>

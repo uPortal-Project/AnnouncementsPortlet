@@ -29,6 +29,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.portlet.RenderRequest;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class AdminController {
 	 * Base view mapping for the Admin portlet, fetches all the topics and figures out what permissions the
 	 * current user has on each.
 	 * @param request
-	 * @param model
+	 * @param model                    .
 	 * @return
 	 */
 	@RequestMapping
@@ -59,10 +61,10 @@ public class AdminController {
 		List<Topic> allTopics = announcementService.getAllTopics();
         List<Announcement> pendingAnnouncements = new ArrayList<Announcement>();
 
-		// add all topics for the portal admin
+        // add all topics for the portal admin
 		if (UserPermissionChecker.isPortalAdmin(request)) {
 			model.addAttribute("allTopics", allTopics);
-			model.addAttribute("portalAdmin", new Boolean(true));
+			model.addAttribute("portalAdmin", Boolean.TRUE);
             for(Topic t : allTopics) {
                 pendingAnnouncements.addAll(t.getPendingAnnouncements());
             }
