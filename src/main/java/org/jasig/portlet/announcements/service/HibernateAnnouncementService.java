@@ -182,36 +182,19 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
 
 	@SuppressWarnings("unchecked")
 	public void deleteAnnouncementsPastCurrentTime() {
-		List<Announcement> result = null;
-
 		try {
-			result = getHibernateTemplate().find("from Announcement where END_DISPLAY < current_timestamp()");
-			if (result == null || result.size() == 0) {
-				return;
-			}
+            Query q = this.getSession().createQuery("delete from Announcement where END_DISPLAY < current_timestamp()");
+            int count = q.executeUpdate();
+            getHibernateTemplate().flush();
+            log.info("Deleted " + count + " expired announcements that stopped displaying prior to now.");
 		} catch (HibernateException ex) {
 			throw convertHibernateAccessException(ex);
-		}
-
-		if (result.size() > 0) {
-			log.info("Deleting "+result.size()+" expired announcements.");
-
-			try {
-				for (Announcement a: result) {
-					getHibernateTemplate().delete(a);
-				}
-				getHibernateTemplate().flush();
-			} catch (HibernateException ex) {
-				throw convertHibernateAccessException(ex);
-			}
 		}
 
 	}
 
 	@SuppressWarnings("unchecked")
 	public void deleteAnnouncementsPastExpirationThreshold(int numDays) {
-	    List<Announcement> result = null;
-
         try {
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DATE,(numDays *-1));
@@ -220,7 +203,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
             q.setCalendarDate("date", cal);
             int count = q.executeUpdate();
             getHibernateTemplate().flush();
-            log.info("Deleted " + count + " expired announcements.");
+            log.info("Deleted " + count + " expired announcements that stopped displaying prior to " + cal.getTime());
         } catch (HibernateException ex) {
             throw convertHibernateAccessException(ex);
         }
