@@ -24,6 +24,7 @@ import java.util.Date;
 
 import javax.portlet.*;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.UnauthorizedException;
@@ -190,7 +191,8 @@ public class AdminAnnouncementController implements InitializingBean {
         Announcement ann = announcementService.getAnnouncement(annId);
 
         UserPermissionChecker upChecker = userPermissionCheckerFactory.createUserPermissionChecker(request, topic);
-        if(upChecker.isAdmin() || upChecker.isModerator() || (upChecker.isAuthor() && ann.getAuthor() == request.getRemoteUser())) {
+        if(upChecker.isAdmin() || upChecker.isModerator() ||
+                (upChecker.isAuthor() && ann.getAuthor() != null && ann.getAuthor().equals(request.getRemoteUser()))) {
             // the person deleting the announcement must be the author, a moderator or an admin
             announcementService.deleteAnnouncement(ann);
         } else {
