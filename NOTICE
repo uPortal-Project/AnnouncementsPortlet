@@ -33,6 +33,7 @@ This project includes:
   Ehcache Web Filters under The Apache Software License, Version 2.0
   FindBugs-jsr305 under The Apache Software License, Version 2.0
   Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
+  Hamcrest Core under New BSD License
   Hibernate Core under GNU Lesser General Public License
   HyperSQL Database under HSQLDB License, a BSD open source license
   Jackson under The Apache Software License, Version 2.0
@@ -66,6 +67,7 @@ This project includes:
   spring-expression under The Apache Software License, Version 2.0
   spring-jdbc under The Apache Software License, Version 2.0
   spring-orm under The Apache Software License, Version 2.0
+  spring-test under The Apache Software License, Version 2.0
   spring-tx under The Apache Software License, Version 2.0
   spring-web under The Apache Software License, Version 2.0
   spring-webmvc under The Apache Software License, Version 2.0
