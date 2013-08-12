@@ -57,25 +57,38 @@ public class AdminAnnouncementController implements InitializingBean {
 
     public static final String PREFERENCE_ALLOW_OPEN_ENDDATE = "AdminAnnouncementController.allowOpenEndDate";
     public static final String PREFERENCE_ABSTRACT_MAX_LENGTH = "AdminAnnouncementController.abstractTextMaxLength";
+    public static final String PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS = "AdminAnnouncementController.tinyMceInitializationOptions";
     public static final String DEFAULT_ABSTRACT_MAX_LENGTH = "255";
+    public static final String DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS = "mode:\"textareas\", " +
+                                                                         " editor_selector:\"mceEditor\", " +
+                                                                         " theme:\"advanced\", " +
+                                                                         " plugins:\"paste,preview\", " +
+                                                                         " theme_advanced_buttons1:\"bold,italic,underline,strikethrough,separator,outdent,indent,blockquote,separator,fontselect,fontsizeselect\", " +
+                                                                         " theme_advanced_buttons2:\"cut,copy,paste,pastetext,pasteword,separator,bullist,numlist,separator,charmap,emotions\", " +
+                                                                         " theme_advanced_buttons3:\"undo,redo,separator,link,unlink,image,anchor,cleanup,help,separator,code,preview\", " +
+                                                                         " theme_advanced_toolbar_location:\"top\", " +
+                                                                         " theme_advanced_toolbar_align:\"left\", " +
+                                                                         " extended_valid_elements:\"a[name|href|target|title|onclick],span[class|align|style]\", " +
+                                                                         " theme_advanced_path:false";
 
-	@Autowired
-	private IAnnouncementService announcementService;
 
-	private static final Log log = LogFactory.getLog(AdminController.class);
-	private PropertyEditor topicEditor;
+    @Autowired
+    private IAnnouncementService announcementService;
 
-	@Autowired
-	private String customDateFormat = "yyyy-MM-dd";
+    private static final Log log = LogFactory.getLog(AdminController.class);
+    private PropertyEditor topicEditor;
 
-	/**
-	 * CSS classes added to the start & end date input fields to enable the
-	 * jQuery UI datepicker
-	 */
-	private String datePickerFormat = "format-y-m-d divider-dash";
+    @Autowired
+    private String customDateFormat = "yyyy-MM-dd";
 
-	@Autowired
-	private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
+    /**
+     * CSS classes added to the start & end date input fields to enable the
+     * jQuery UI datepicker
+     */
+    private String datePickerFormat = "format-y-m-d divider-dash";
+
+    @Autowired
+    private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
     @InitBinder("announcement")
     public void initBinder(WebDataBinder binder) {
@@ -89,50 +102,50 @@ public class AdminAnnouncementController implements InitializingBean {
     }
 
 
-	/**
-	 * Does all the prep work before showing the form
-	 */
-	@RequestMapping(params="action=addAnnouncement")
-	public String showAddAnnouncementForm(
-			@RequestParam(value="editId",required=false) Long editId,
-			@RequestParam(value="topicId",required=false) Long topicId,
+    /**
+     * Does all the prep work before showing the form
+     */
+    @RequestMapping(params="action=addAnnouncement")
+    public String showAddAnnouncementForm(
+            @RequestParam(value="editId",required=false) Long editId,
+            @RequestParam(value="topicId",required=false) Long topicId,
             RenderRequest request,
-			Model model) throws PortletException {
+            Model model) throws PortletException {
 
         PortletPreferences prefs = request.getPreferences();
 
-		if (!model.containsAttribute("announcement")) {
-			Announcement ann = new Announcement();
-			Topic topic = null;
+        if (!model.containsAttribute("announcement")) {
+            Announcement ann = new Announcement();
+            Topic topic = null;
 
-			if (editId != null) {
-				try {
-					log.debug("editId found. This is an edit request for announcement Id "+editId.toString());
-					ann = announcementService.getAnnouncement(editId);
-					// return immediately when we have our announcement
+            if (editId != null) {
+                try {
+                    log.debug("editId found. This is an edit request for announcement Id "+editId.toString());
+                    ann = announcementService.getAnnouncement(editId);
+                    // return immediately when we have our announcement
 
-				} catch (NumberFormatException e) {
-					log.debug("No editId found. This is not an edit request");
-				}
-			}
+                } catch (NumberFormatException e) {
+                    log.debug("No editId found. This is not an edit request");
+                }
+            }
 
-			if (ann != null && ann.getParent() == null) {
-				try {
-					topic = announcementService.getTopic(topicId);
-					ann.setParent(topic);
-				} catch (NumberFormatException e) {
-					log.error("Unable to get topicId from request");
-				}
-			}
+            if (ann != null && ann.getParent() == null) {
+                try {
+                    topic = announcementService.getTopic(topicId);
+                    ann.setParent(topic);
+                } catch (NumberFormatException e) {
+                    log.error("Unable to get topicId from request");
+                }
+            }
 
             model.addAttribute("announcement", ann);
-		}
+        }
 
-		model.addAttribute("datePickerFormat", datePickerFormat);
+        model.addAttribute("datePickerFormat", datePickerFormat);
         model.addAttribute("abstractMaxLength",prefs.getValue(PREFERENCE_ABSTRACT_MAX_LENGTH,DEFAULT_ABSTRACT_MAX_LENGTH));
-
+        model.addAttribute("tinyMceInitializationOptions", prefs.getValue(PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS, DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS));
         return "addAnnouncement";
-	}
+    }
 
     /**
      * Saves the announcement
@@ -175,17 +188,17 @@ public class AdminAnnouncementController implements InitializingBean {
 
     }
 
-	/**
-	 * Handles deletion of announcements
-	 * @param topicId
-	 * @param annId
-	 * @param response
-	 * @throws PortletException
-	 */
-	@RequestMapping(params="action=deleteAnnouncement")
-	public void actionDeleteAnnouncement(@RequestParam("topicId") Long topicId,
-			@RequestParam("annId") Long annId, ActionRequest request,
-			ActionResponse response) throws PortletException {
+    /**
+     * Handles deletion of announcements
+     * @param topicId
+     * @param annId
+     * @param response
+     * @throws PortletException
+     */
+    @RequestMapping(params="action=deleteAnnouncement")
+    public void actionDeleteAnnouncement(@RequestParam("topicId") Long topicId,
+            @RequestParam("annId") Long annId, ActionRequest request,
+            ActionResponse response) throws PortletException {
 
         Topic topic = announcementService.getTopic(topicId);
         Announcement ann = announcementService.getAnnouncement(annId);
@@ -201,84 +214,84 @@ public class AdminAnnouncementController implements InitializingBean {
 
         response.setRenderParameter("topicId", topicId.toString());
         response.setRenderParameter("action", "showTopic");
-	}
+    }
 
-	public boolean getAllowOpenEndDate(PortletRequest req) {
-	    PortletPreferences prefs = req.getPreferences();
-	    return Boolean.parseBoolean(prefs.getValue(PREFERENCE_ALLOW_OPEN_ENDDATE, "false"));
-	}
+    public boolean getAllowOpenEndDate(PortletRequest req) {
+        PortletPreferences prefs = req.getPreferences();
+        return Boolean.parseBoolean(prefs.getValue(PREFERENCE_ALLOW_OPEN_ENDDATE, "false"));
+    }
 
-	/**
-	 * When a custom date format is set by Spring, this method converts it immediately to a string of two CSS classes
-	 * required by the date picker in the view.
-	 * @param customDateFormat
-	 */
-	public void setCustomDateFormat(String customDateFormat) {
-		this.customDateFormat = customDateFormat;
+    /**
+     * When a custom date format is set by Spring, this method converts it immediately to a string of two CSS classes
+     * required by the date picker in the view.
+     * @param customDateFormat
+     */
+    public void setCustomDateFormat(String customDateFormat) {
+        this.customDateFormat = customDateFormat;
 
-		if (log.isDebugEnabled()) {
-			log.debug("Trying to parse custom date input format: ["+customDateFormat+"]");
-		}
+        if (log.isDebugEnabled()) {
+            log.debug("Trying to parse custom date input format: ["+customDateFormat+"]");
+        }
 
-		String[] finalPieces = {"", "", ""};
-		String[] pieces = {"", "", ""};
-		String divider = null;
+        String[] finalPieces = {"", "", ""};
+        String[] pieces = {"", "", ""};
+        String divider = null;
 
-		// Ignore any custom date format requests if the requirements are not met
-		if (customDateFormat.contains("/") && !customDateFormat.contains("-") && !customDateFormat.contains(".")) {
-			pieces = customDateFormat.split("/");
-			divider = "slash";
-		}
-		else if (customDateFormat.contains("-") && !customDateFormat.contains("/") && !customDateFormat.contains(".")) {
-			pieces = customDateFormat.split("-");
-			divider = "dash";
-		}
-		else if (customDateFormat.contains(".") && !customDateFormat.contains("/") && !customDateFormat.contains("-")) {
-			pieces = customDateFormat.split("\\.");
-			divider = "dot";
-		}
-		else {
-			return;
-		}
+        // Ignore any custom date format requests if the requirements are not met
+        if (customDateFormat.contains("/") && !customDateFormat.contains("-") && !customDateFormat.contains(".")) {
+            pieces = customDateFormat.split("/");
+            divider = "slash";
+        }
+        else if (customDateFormat.contains("-") && !customDateFormat.contains("/") && !customDateFormat.contains(".")) {
+            pieces = customDateFormat.split("-");
+            divider = "dash";
+        }
+        else if (customDateFormat.contains(".") && !customDateFormat.contains("/") && !customDateFormat.contains("-")) {
+            pieces = customDateFormat.split("\\.");
+            divider = "dot";
+        }
+        else {
+            return;
+        }
 
-		// Ignore any custom date format requests if the requirements are not met
-		if (pieces.length > 3) {
-			return;
-		}
+        // Ignore any custom date format requests if the requirements are not met
+        if (pieces.length > 3) {
+            return;
+        }
 
-		if (log.isDebugEnabled()) {
-			log.debug("Custom date input format: ["+pieces[0]+" "+divider+" "+pieces[1]+" "+divider+" "+pieces[2]+"]");
-		}
+        if (log.isDebugEnabled()) {
+            log.debug("Custom date input format: ["+pieces[0]+" "+divider+" "+pieces[1]+" "+divider+" "+pieces[2]+"]");
+        }
 
-		for (int i=0; i<pieces.length; i++) {
-			if (pieces[i].equalsIgnoreCase("mm")) {
-				finalPieces[i] = "m";
-			}
-			else if (pieces[i].equalsIgnoreCase("dd")) {
-				finalPieces[i] = "d";
-			}
-			else if (pieces[i].equalsIgnoreCase("yyyy")) {
-				finalPieces[i] = "y";
-			}
-		}
+        for (int i=0; i<pieces.length; i++) {
+            if (pieces[i].equalsIgnoreCase("mm")) {
+                finalPieces[i] = "m";
+            }
+            else if (pieces[i].equalsIgnoreCase("dd")) {
+                finalPieces[i] = "d";
+            }
+            else if (pieces[i].equalsIgnoreCase("yyyy")) {
+                finalPieces[i] = "y";
+            }
+        }
 
-		datePickerFormat = "format-" + finalPieces[0] + "-" + finalPieces[1] + "-" + finalPieces[2] + " divider-" + divider;
+        datePickerFormat = "format-" + finalPieces[0] + "-" + finalPieces[1] + "-" + finalPieces[2] + " divider-" + divider;
 
-		if (log.isDebugEnabled()) {
-			log.debug("Custom date input format parsed as: ["+datePickerFormat+"]");
-		}
-	}
+        if (log.isDebugEnabled()) {
+            log.debug("Custom date input format parsed as: ["+datePickerFormat+"]");
+        }
+    }
 
-	/**
-	 * @param announcementService the announcementService to set
-	 */
-	public void setAnnouncementService(IAnnouncementService announcementService) {
-		this.announcementService = announcementService;
-	}
+    /**
+     * @param announcementService the announcementService to set
+     */
+    public void setAnnouncementService(IAnnouncementService announcementService) {
+        this.announcementService = announcementService;
+    }
 
 
-	public void afterPropertiesSet() throws Exception {
-		topicEditor = new TopicEditor(announcementService);
-	}
+    public void afterPropertiesSet() throws Exception {
+        topicEditor = new TopicEditor(announcementService);
+    }
 
 }
