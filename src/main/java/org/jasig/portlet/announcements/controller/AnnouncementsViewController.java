@@ -98,6 +98,7 @@ public class AnnouncementsViewController implements InitializingBean {
     public static final String PREFERENCE_SCROLLING_DISPLAY_HEIGHT_PIXELS = "AnnouncementsViewController.scrollingDisplayHeightPixels";
     public static final String PREFERENCE_HIDE_ABSTRACT = "AnnouncementsViewController.hideAbstract";
     public static final String PREFERENCE_SYNDICATE_TOPICS_AS_NOTIFICATIONS = "AnnouncementsViewController.syndicateTopicsAsNotifications";
+    public static final String PREFERENCE_SYNDICATE_TOPICS_ANNOUNCEMENTS_DISPLAY_FNAME = "AnnouncementsViewController.syndicateTopicsAnnouncementsDisplayFName";
     public static final String DEFAULT_SORT_STRATEGY = "START_DISPLAY_DATE_ASCENDING";
     
     public static final String NOTIFICATION_NAMESPACE = "https://source.jasig.org/schemas/portlet/notification";
@@ -211,10 +212,10 @@ public class AnnouncementsViewController implements InitializingBean {
 
         return viewNameSelector.select(request, "displayFullAnnouncement");
     }
-    
+
     @EventMapping(NOTIFICATION_QUERY_QNAME_STRING)
     public void syndicateAnnouncementsAsNotifications(final EventRequest req, final EventResponse res) throws PortletException {
-        
+
         final PortletPreferences prefs = req.getPreferences();
         final List<String> topicTitlesToSyndicate = Arrays.asList(
                 prefs.getValues(
@@ -222,32 +223,39 @@ public class AnnouncementsViewController implements InitializingBean {
                         new String[0]
                 )
         );
-        
+
         // Get out if we know there's nothing to do...
         if (topicTitlesToSyndicate.isEmpty()) {
             return;
         }
-        
+
+        /*
+         *  Obtain the FName of the targeted AnnouncementsDisplay portlet for 
+         *  building links.  TODO:  This logic needs to be moved to a pluggable 
+         *  link-building strategy.
+         */
+        final String announcementsDisplayFName = prefs.getValue(PREFERENCE_SYNDICATE_TOPICS_ANNOUNCEMENTS_DISPLAY_FNAME, "announcements");
+
         final List<NotificationCategory> categories = new ArrayList<NotificationCategory>();
 
         // fetch the user's topic subscription from the database
         final List<TopicSubscription> myTopics = tss.getTopicSubscription(req);
         for (TopicSubscription topicSub : myTopics) {
-            
+
             final Topic topic = topicSub.getTopic();
-            
+
             // We only want the white-listed ones...
             if (!topicTitlesToSyndicate.contains(topic.getTitle())) {
                 continue;
             }
-            
+
             final Set<Announcement> announcements = topic.getPublishedAnnouncements();
-            
+
             // Ignore any that are empty...
             if (announcements.isEmpty()) {
                 continue;
             }
-            
+
             final List<NotificationEntry> entries = new ArrayList<NotificationEntry>();
             for (Announcement ann : announcements) {
                 final NotificationEntry entry = new NotificationEntry();
@@ -268,28 +276,28 @@ public class AnnouncementsViewController implements InitializingBean {
                 final StringBuilder url = new StringBuilder();  
                 url.append("/uPortal")  // TODO:  Don't hard-code
                         .append("/p/")
-                        .append("AnnouncementsDisplay")  // TODO:  Don't hard-code
+                        .append(announcementsDisplayFName)
                         .append("/max/render.uP?pP_action=displayFullAnnouncement&pP_announcementId=")
                         .append(ann.getId());
                 entry.setUrl(url.toString());
                 entries.add(entry);
             }
-            
+
             final NotificationCategory category = new NotificationCategory();
             category.setTitle(topic.getTitle());
             category.setEntries(entries);
-            
+
             categories.add(category);
-            
+
         }
-        
+
         // We can bail if we haven't collected anything to share at this point...
         if (categories.isEmpty()) {
             return;
         }
 
         final NotificationQuery query = (NotificationQuery) req.getEvent().getValue();
-         
+
         final NotificationResponse response = new NotificationResponse();
         response.setCategories(categories);
 
@@ -297,7 +305,7 @@ public class AnnouncementsViewController implements InitializingBean {
         result.setQueryWindowId(query.getQueryWindowId());
         result.setResultWindowId(req.getWindowID());
         result.setNotificationResponse(response);
-         
+
         res.setEvent(NOTIFICATION_RESULT_QNAME, result);
 
     }

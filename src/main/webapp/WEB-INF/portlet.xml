@@ -113,6 +113,14 @@
                 <value>EMERGENCY</value>
                 <read-only>false</read-only>
             </preference>
+            <!-- Indicates the FName (unique identifier) for the published 
+                 AnnouncementsDisplay portlet that will show the full content 
+                 (via hyperlink) of announcements that are syndicated as notifications.  -->
+            <preference>
+                <name>AnnouncementsViewController.syndicateTopicsAnnouncementsDisplayFName</name>
+                <value>announcements</value>
+                <read-only>false</read-only>
+            </preference>
         </portlet-preferences>
 
         <!-- Do not change the role-name of this role, doing so may lock you out of your topics -->
