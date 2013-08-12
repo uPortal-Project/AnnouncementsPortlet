@@ -59,17 +59,17 @@ public class AdminAnnouncementController implements InitializingBean {
     public static final String PREFERENCE_ABSTRACT_MAX_LENGTH = "AdminAnnouncementController.abstractTextMaxLength";
     public static final String PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS = "AdminAnnouncementController.tinyMceInitializationOptions";
     public static final String DEFAULT_ABSTRACT_MAX_LENGTH = "255";
- public static final String DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS = "mode:\"textareas\", " +
-                                                                      " editor_selector:\"mceEditor\", " +
-                                                                      " theme:\"advanced\", " +
-                                                                      " plugins:\"paste,preview\", " +
-                                                                      " theme_advanced_buttons1:\"bold,italic,underline,strikethrough,separator,outdent,indent,blockquote,separator,fontselect,fontsizeselect\", " +
-                                                                      " theme_advanced_buttons2:\"cut,copy,paste,pastetext,pasteword,separator,bullist,numlist,separator,charmap,emotions\", " +
-                                                                      " theme_advanced_buttons3:\"undo,redo,separator,link,unlink,image,anchor,cleanup,help,separator,code,preview\", " +
-                                                                      " theme_advanced_toolbar_location:\"top\", " +
-                                                                      " theme_advanced_toolbar_align:\"left\", " +
-                                                                      " extended_valid_elements:\"a[name|href|target|title|onclick],span[class|align|style]\", " +
-                                                                      " theme_advanced_path:false";
+    public static final String DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS = "mode:\"textareas\", " +
+                                                                         " editor_selector:\"mceEditor\", " +
+                                                                         " theme:\"advanced\", " +
+                                                                         " plugins:\"paste,preview\", " +
+                                                                         " theme_advanced_buttons1:\"bold,italic,underline,strikethrough,separator,outdent,indent,blockquote,separator,fontselect,fontsizeselect\", " +
+                                                                         " theme_advanced_buttons2:\"cut,copy,paste,pastetext,pasteword,separator,bullist,numlist,separator,charmap,emotions\", " +
+                                                                         " theme_advanced_buttons3:\"undo,redo,separator,link,unlink,image,anchor,cleanup,help,separator,code,preview\", " +
+                                                                         " theme_advanced_toolbar_location:\"top\", " +
+                                                                         " theme_advanced_toolbar_align:\"left\", " +
+                                                                         " extended_valid_elements:\"a[name|href|target|title|onclick],span[class|align|style]\", " +
+                                                                         " theme_advanced_path:false";
 
 
     @Autowired
