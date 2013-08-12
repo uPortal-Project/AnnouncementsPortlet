@@ -45,8 +45,8 @@
         var $ = ${n}.jQuery; //reassign $ for normal use of jQuery
         var _ = ${n}._;
 
-    	$("#${n}datepickerstart").datepicker({dateFormat: 'yy-mm-dd'});
-    	$("#${n}datepickerend").datepicker({dateFormat: 'yy-mm-dd'});
+        $("#${n}datepickerstart").datepicker({dateFormat: 'yy-mm-dd'});
+        $("#${n}datepickerend").datepicker({dateFormat: 'yy-mm-dd'});
 
         $("#${n}abstractText").bind('keyup input paste change',function(e){
             //get the limit from maxlength attribute
@@ -108,75 +108,75 @@
 </script>
 
 <portlet:actionURL var="actionUrl" escapeXml="false">
-	<portlet:param name="action" value="addAnnouncement"/>
-	<portlet:param name="topicId" value="${announcement.parent.id}"/>
+    <portlet:param name="action" value="addAnnouncement"/>
+    <portlet:param name="topicId" value="${announcement.parent.id}"/>
 </portlet:actionURL>
 <div class="announcements-portlet-toolbar">
-	<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${announcement.parent.id}"/></portlet:renderURL>">
-		<img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.backtotopic"/></a>
-	<div class="announcements-portlet-secondary">
-		
+    <a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${announcement.parent.id}"/></portlet:renderURL>">
+        <img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.backtotopic"/></a>
+    <div class="announcements-portlet-secondary">
+        
 
-		<a style="text-decoration:none;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>">
-		<img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
-	</div>
+        <a style="text-decoration:none;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>">
+        <img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
+    </div>
 </div>
 <div class="portlet-section-header"><h2 class="title=" role="heading"><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></h2></div>
 
 <form:form commandName="announcement" method="post" action="${actionUrl}">
-	<div class="announcements-portlet-row">
-		<label for="title"><spring:message code="addAnnouncement.title"/></label>
-		<div class="announcements-portlet-col">
-			<form:errors cssClass="portlet-msg-error" path="title"/>
-	 		<form:input cssClass="portlet-form-input-field" path="title" size="30" maxlength="80"/>
- 		</div>
-	</div>
+    <div class="announcements-portlet-row">
+        <label for="title"><spring:message code="addAnnouncement.title"/></label>
+        <div class="announcements-portlet-col">
+            <form:errors cssClass="portlet-msg-error" path="title"/>
+             <form:input cssClass="portlet-form-input-field" path="title" size="30" maxlength="80"/>
+         </div>
+    </div>
 
 
-	<div class="announcements-portlet-row">
-		<label for="${n}abstractText"><spring:message code="addAnnouncement.abstract"/></label>
-		<div class="announcements-portlet-col">
-			<form:errors cssClass="portlet-msg-error" path="abstractText"/>
-			<form:textarea cssClass="portlet-form-input-field" path="abstractText" id="${n}abstractText" rows="2" cols="40" />
-	        <div id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> <spring:message code="addAnnouncement.charactersremaining"/></div>
-    	</div>
-	</div>
+    <div class="announcements-portlet-row">
+        <label for="${n}abstractText"><spring:message code="addAnnouncement.abstract"/></label>
+        <div class="announcements-portlet-col">
+            <form:errors cssClass="portlet-msg-error" path="abstractText"/>
+            <form:textarea cssClass="portlet-form-input-field" path="abstractText" id="${n}abstractText" rows="2" cols="40" />
+            <div id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> <spring:message code="addAnnouncement.charactersremaining"/></div>
+        </div>
+    </div>
 
 
-	<div class="announcements-portlet-row">
-		<label><spring:message code="addAnnouncement.message"/></label>
-		<div class="announcements-portlet-col">
-			<form:errors cssClass="portlet-msg-error" path="message"/>
-			<form:textarea cssClass="portlet-form-input-field mceEditor" path="message" rows="5" cols="30" cssStyle="width: 70%;" />
-		</div>
-	</div>
+    <div class="announcements-portlet-row">
+        <label><spring:message code="addAnnouncement.message"/></label>
+        <div class="announcements-portlet-col">
+            <form:errors cssClass="portlet-msg-error" path="message"/>
+            <form:textarea cssClass="portlet-form-input-field mceEditor" path="message" rows="5" cols="30" cssStyle="width: 70%;" />
+        </div>
+    </div>
 
 
-	<div class="announcements-portlet-row">
-		<label><spring:message code="addAnnouncement.link"/></label>
-		<div class="announcements-portlet-col">
-			<form:errors cssClass="portlet-msg-error" path="link"/>
-			<form:input cssClass="portlet-form-input-field" path="link" size="30" maxlength="255"/>
-		</div>
-	</div>
+    <div class="announcements-portlet-row">
+        <label><spring:message code="addAnnouncement.link"/></label>
+        <div class="announcements-portlet-col">
+            <form:errors cssClass="portlet-msg-error" path="link"/>
+            <form:input cssClass="portlet-form-input-field" path="link" size="30" maxlength="255"/>
+        </div>
+    </div>
 
 
-	<div class="announcements-portlet-row">
-		<label><spring:message code="addAnnouncement.start"/></label>
-		<div class="announcements-portlet-col">
-			<form:errors cssClass="portlet-msg-error" path="startDisplay"/>
-			<form:input path="startDisplay" id="${n}datepickerstart"></form:input>
-		</div>
-	</div>
+    <div class="announcements-portlet-row">
+        <label><spring:message code="addAnnouncement.start"/></label>
+        <div class="announcements-portlet-col">
+            <form:errors cssClass="portlet-msg-error" path="startDisplay"/>
+            <form:input path="startDisplay" id="${n}datepickerstart"></form:input>
+        </div>
+    </div>
 
 
-	<div class="announcements-portlet-row">
-		<label><spring:message code="addAnnouncement.end"/></label>
-		<div class="announcements-portlet-col">
-			<form:errors cssClass="portlet-msg-error" path="endDisplay"/>
-			<form:input path="endDisplay" id="${n}datepickerend"></form:input>
-		</div>
-	</div>
+    <div class="announcements-portlet-row">
+        <label><spring:message code="addAnnouncement.end"/></label>
+        <div class="announcements-portlet-col">
+            <form:errors cssClass="portlet-msg-error" path="endDisplay"/>
+            <form:input path="endDisplay" id="${n}datepickerend"></form:input>
+        </div>
+    </div>
 
     <div class="announcements-portlet-row" id="${n}attachment_add_section" style="display:none;">
         <label>
@@ -196,18 +196,7 @@
 </form:form>
 
 <script type="text/javascript">
-<!--
 tinyMCE.init({
-	mode : "textareas",
-	editor_selector : "mceEditor",
-	theme : "advanced",
-	plugins : "paste,preview",
-	theme_advanced_buttons1 : "bold,italic,underline,strikethrough,separator,outdent,indent,blockquote,separator,fontselect,fontsizeselect",
-    theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,separator,bullist,numlist,separator,charmap,emotions",
-	theme_advanced_buttons3 : "undo,redo,separator,link,unlink,image,anchor,cleanup,help,separator,code,preview",
-	theme_advanced_toolbar_location : "top",
-	theme_advanced_toolbar_align : "left",
-	extended_valid_elements : "a[name|href|target|title|onclick],span[class|align|style]"
+    <c:out value="${tinyMceInitializationOptions}" escapeXml="false"/>
 });
-//-->
 </script>
