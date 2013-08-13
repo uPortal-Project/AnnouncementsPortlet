@@ -59,7 +59,7 @@ public class AdminAnnouncementController implements InitializingBean {
     public static final String PREFERENCE_ABSTRACT_MAX_LENGTH = "AdminAnnouncementController.abstractTextMaxLength";
     public static final String PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS = "AdminAnnouncementController.tinyMceInitializationOptions";
     public static final String DEFAULT_ABSTRACT_MAX_LENGTH = "255";
-    public static final String DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS = "mode:\"textareas\", " +
+    public static final String[] DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS = {"mode:\"textareas\", " +
                                                                          " editor_selector:\"mceEditor\", " +
                                                                          " theme:\"advanced\", " +
                                                                          " plugins:\"paste,preview\", " +
@@ -69,7 +69,7 @@ public class AdminAnnouncementController implements InitializingBean {
                                                                          " theme_advanced_toolbar_location:\"top\", " +
                                                                          " theme_advanced_toolbar_align:\"left\", " +
                                                                          " extended_valid_elements:\"a[name|href|target|title|onclick],span[class|align|style]\", " +
-                                                                         " theme_advanced_path:false";
+                                                                         " theme_advanced_path:false"};
 
 
     @Autowired
@@ -140,11 +140,27 @@ public class AdminAnnouncementController implements InitializingBean {
 
             model.addAttribute("announcement", ann);
         }
-
+        String[] tinyMceInitializationParameters = prefs.getValues(PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS, DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS);
         model.addAttribute("datePickerFormat", datePickerFormat);
         model.addAttribute("abstractMaxLength",prefs.getValue(PREFERENCE_ABSTRACT_MAX_LENGTH,DEFAULT_ABSTRACT_MAX_LENGTH));
-        model.addAttribute("tinyMceInitializationOptions", prefs.getValue(PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS, DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS));
+        model.addAttribute("tinyMceInitializationOptions", decodeCommas(concatenateTinyMceInitialParameters(tinyMceInitializationParameters)));
         return "addAnnouncement";
+    }
+
+    private String decodeCommas(String original) {
+        return original.replaceAll("%2C", ",");
+    }
+
+    private String concatenateTinyMceInitialParameters(String[] tinyMceInitializationParameters) {
+        StringBuffer finalTinyMceInitializationParameters = new StringBuffer();
+        for( int i = 0; i <= tinyMceInitializationParameters.length - 1; i++) {
+            if (i == 0) {
+                finalTinyMceInitializationParameters.append(tinyMceInitializationParameters[i]);
+            } else {
+                finalTinyMceInitializationParameters.append(", ").append(tinyMceInitializationParameters[i]);
+            }
+        }
+        return finalTinyMceInitializationParameters.toString();
     }
 
     /**
