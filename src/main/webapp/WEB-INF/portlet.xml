@@ -87,6 +87,20 @@
                 <read-only>false</read-only>
             </preference>
             <preference>
+                <!--
+                    Available Strategies:
+                    CREATE_DATE_ASCENDING
+                    CREATE_DATE_DESCENDING
+                    START_DISPLAY_DATE_ASCENDING
+                    START_DISPLAY_DATE_DESCENDING
+                    END_DISPLAY_DATE_ASCENDING
+                    END_DISPLAY_DATE_DESCENDING
+                 -->
+                <name>AnnouncementsViewController.AnnouncementHistorySortStrategy</name>
+                <value>END_DISPLAY_DATE_DESCENDING</value>
+                <read-only>false</read-only>
+            </preference>
+            <preference>
                 <name>AnnouncementsViewController.useScrollingDisplay</name>
                 <value>false</value>
                 <read-only>false</read-only>
