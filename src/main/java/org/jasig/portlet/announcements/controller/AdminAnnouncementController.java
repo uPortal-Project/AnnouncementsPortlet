@@ -55,10 +55,12 @@ import org.springframework.web.bind.support.SessionStatus;
 @RequestMapping("VIEW")
 public class AdminAnnouncementController implements InitializingBean {
 
+    public static final String PREFERENCE_USE_ATTACHMENTS = "AdminAnnouncementController.useAttachments";
     public static final String PREFERENCE_ALLOW_OPEN_ENDDATE = "AdminAnnouncementController.allowOpenEndDate";
     public static final String PREFERENCE_ABSTRACT_MAX_LENGTH = "AdminAnnouncementController.abstractTextMaxLength";
     public static final String PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS = "AdminAnnouncementController.tinyMceInitializationOptions";
     public static final String DEFAULT_ABSTRACT_MAX_LENGTH = "255";
+    public static final String DEFAULT_USE_ATTACHMENTS = "true";
     public static final String DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS = "mode:\"textareas\", " +
                                                                          " editor_selector:\"mceEditor\", " +
                                                                          " theme:\"advanced\", " +
@@ -144,6 +146,7 @@ public class AdminAnnouncementController implements InitializingBean {
         model.addAttribute("datePickerFormat", datePickerFormat);
         model.addAttribute("abstractMaxLength",prefs.getValue(PREFERENCE_ABSTRACT_MAX_LENGTH,DEFAULT_ABSTRACT_MAX_LENGTH));
         model.addAttribute("tinyMceInitializationOptions", prefs.getValue(PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS, DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS));
+        model.addAttribute("useAttachments", Boolean.valueOf(prefs.getValue(PREFERENCE_USE_ATTACHMENTS, DEFAULT_USE_ATTACHMENTS)));
         return "addAnnouncement";
     }
 
