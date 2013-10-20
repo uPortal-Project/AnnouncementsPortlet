@@ -18,15 +18,18 @@
  */
 package org.jasig.portlet.announcements.model;
 
-import org.jasig.portlet.announcements.xml.Namespaces;
-
 import java.util.Date;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.jasig.portlet.announcements.xml.Namespaces;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
@@ -56,6 +59,7 @@ public class Announcement implements Comparable<Announcement> {
 	private String author;
 	private String link;
 	private Boolean published = false;
+	@JsonBackReference
 	private Topic parent;
 	private Long id;
     private Set<String> attachments;
