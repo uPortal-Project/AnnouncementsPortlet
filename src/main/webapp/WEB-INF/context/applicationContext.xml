@@ -62,6 +62,11 @@
     </bean>
 
     <!-- Default View Resolver -->
+    <bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="order" value="1"/>
+        <property name="location" value="/WEB-INF/context/views.xml"/>
+    </bean>
+    
     <bean id="viewResolver"
         class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="cache" value="true"/>
