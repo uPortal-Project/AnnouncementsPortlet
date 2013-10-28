@@ -68,6 +68,6 @@ a.annplt-form-button {text-decoration:none; width:230px; color:#fff !important; 
 
 /*Announcements Subscriptions*/
 ul.annplt-subscriptions {list-style-type: none;}
-.annplt-subscriptions li {margin:5px 5px 5px -35px; padding:10px; background-color:#ddd; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px}
+.annplt-subscriptions li {margin:5px 5px 5px -25px; padding:10px; background-color:#ddd; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px}
 .annplt-subscriptions a {display:block; text-align:right;}
 .annplt-subscriptions .description {display:block; font-size: .75em; color:#444;}
