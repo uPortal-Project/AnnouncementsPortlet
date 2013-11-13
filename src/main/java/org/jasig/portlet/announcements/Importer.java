@@ -21,6 +21,7 @@ package org.jasig.portlet.announcements;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
@@ -32,7 +33,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
@@ -40,61 +40,62 @@ import org.jasig.portlet.announcements.spring.PortletApplicationContextLocator;
 import org.springframework.context.ApplicationContext;
 
 public class Importer {
-    private static final String SESSION_FACTORY_BEAN_NAME = "sessionFactory";
+
     private static final String ANNOUNCEMENT_SVC_BEAN_NAME = "announcementService";
 
     private static final Logger log = Logger.getLogger(Importer.class);
 
-    private String dir;
-    private SessionFactory sessionFactory;
+    private File dataDirectory;
     private IAnnouncementService announcementService;
     private List<String> errors = new ArrayList<String>();
 
-    public Importer(String dir, SessionFactory sessionFactory, IAnnouncementService announcementService) {
-        this.dir = dir;
-        this.sessionFactory = sessionFactory;
+    public Importer(File dataDirectory, /*SessionFactory sessionFactory, */IAnnouncementService announcementService) {
+        this.dataDirectory = dataDirectory;
         this.announcementService = announcementService;
     }
 
-    public void setDir(String dir) {
-    	this.dir = dir;
-    }
-    
-    public void setSessionFactory(SessionFactory sessionFactory) {
-    	this.sessionFactory = sessionFactory;
-    }
-    
-    public void setAnnouncementService(IAnnouncementService announcementService) {
-    	this.announcementService = announcementService;
-    }
-    
     /**
-     * Imports topics and announcements into the database.
-     * arg0 - directory containing the files
-     * arg1 - spring context xml file
+     * Imports topics and announcements into the database from XML data files.
+     * <ul>
+     *   <li>args[0] -- <b>file system directory</b> containing XML data files to import</li>
+     *   <li>args[1] -- <b>classpath location</b> of the spring context XML config file, normally named importExportContext.xml</li>
+     * </ul>
      *
-     * @param args args to program
      * @throws Exception Various exceptions like JAXBException
      */
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) {
+
         if (args.length != 2) {
-            log.error("Invalid number of arguments. Command:\njava org.jasig.portlet.announcements.Importer <dir> <pathToSpringContextXmlFile");
+            log.error("Invalid number of arguments. Command:\n  $java org.jasig.portlet.announcements.Importer <dir> <classpathLocationOfSpringContextXmlFile>");
             System.exit(1);
         }
-        String dir = args[0];
-        String importExportContext = args[1];
-        ApplicationContext context = PortletApplicationContextLocator.getApplicationContext(importExportContext);
-        SessionFactory sessionFactory = context.getBean(SESSION_FACTORY_BEAN_NAME, SessionFactory.class);
-        IAnnouncementService announcementService = context.getBean(ANNOUNCEMENT_SVC_BEAN_NAME,IAnnouncementService.class);
 
-        Importer importer = new Importer(dir, sessionFactory, announcementService);
+        // dataDirectory
+        String dir = args[0];
+        File dataDirectory = new File(dir);
+        if (!dataDirectory.exists()) {
+            log.error("The specified dataDirectory does not exist:  " + dir);
+            System.exit(1);
+        }
+
+        // announcementService
+        String contextClasspathLocation = args[1];
+        URL u = Thread.currentThread().getContextClassLoader().getResource(contextClasspathLocation);
+        if (u == null) {
+            log.error("Spring context file for Import/Export not found on classpath:  " + contextClasspathLocation);
+            System.exit(1);
+        }
+        ApplicationContext context = PortletApplicationContextLocator.getApplicationContext(u.toString());
+        IAnnouncementService announcementService = context.getBean(ANNOUNCEMENT_SVC_BEAN_NAME, IAnnouncementService.class);
+
+        Importer importer = new Importer(dataDirectory, /*sessionFactory,*/ announcementService);
         importer.importData();
 
         if (importer.errors.size() > 0 ) {
             log.error("Import failed - see previous errors");
             System.exit(1);
         }
+
     }
 
     public void importData() {
@@ -107,11 +108,10 @@ public class Importer {
             JAXBContext jc = JAXBContext.newInstance(Topic.class);
             Unmarshaller unmarshaller = jc.createUnmarshaller();
 
-            File folder = new File(dir);
-            File[] files = folder.listFiles(new TopicImportFileFilter());
+            File[] files = dataDirectory.listFiles(new TopicImportFileFilter());
 
             if (files == null) {
-                errors.add("Directory " + dir + " is not a valid directory");
+                errors.add("Directory " + dataDirectory + " is not a valid directory");
             } else {
 
                 for(File f : files) {
@@ -152,11 +152,10 @@ public class Importer {
             JAXBContext jc = JAXBContext.newInstance(Announcement.class);
             Unmarshaller unmarshaller = jc.createUnmarshaller();
 
-            File folder = new File(dir);
-            File[] files = folder.listFiles(new AnnouncementImportFileFilter());
+            File[] files = dataDirectory.listFiles(new AnnouncementImportFileFilter());
 
             if (files == null) {
-                errors.add("Directory " + dir + " is not a valid directory");
+                errors.add("Directory " + dataDirectory + " is not a valid directory");
             } else {
 
                 for(File f : files) {
@@ -229,11 +228,13 @@ public class Importer {
     }
 
     private class ImportException extends RuntimeException {
-        public ImportException() {
-            super();
-        }
+
+        private static final long serialVersionUID = 1L;
+
         public ImportException(String message) {
             super(message);
         }
+
     }
+
 }

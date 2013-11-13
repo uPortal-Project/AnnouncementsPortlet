@@ -22,11 +22,12 @@ package org.jasig.portlet.announcements;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Resource;
@@ -44,28 +45,19 @@ import junit.framework.TestCase;
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
 @Transactional
 public class TestImporter extends TestCase {
-    private static final Logger log = Logger.getLogger(TestImporter.class);
-
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		
-	}
 
     @Resource
     SessionFactory sessionFactory;
-    
+
     @Resource
     IAnnouncementService announcementService;
-        
+
     @Test
-	public void testImporter() {
-		String basedir = System.getProperty("basedir", ".");
-		String dataDirectory = basedir + "/src/main/data";
-		
-        Importer importer = new Importer(dataDirectory, sessionFactory, announcementService);
+    public void testImporter() {
+        String basedir = System.getProperty("basedir", ".");
+        File dataDirectory = new File(basedir + "/src/main/data");
+
+        Importer importer = new Importer(dataDirectory, announcementService);
         importer.importData();
 
         // Clear the first level cache to remove the topics that are cached
@@ -73,7 +65,7 @@ public class TestImporter extends TestCase {
 
         List<Topic> updatedTopics = announcementService.getAllTopics();
         assertTrue("topic list should have 2 items, instead had "+ updatedTopics.size(), updatedTopics.size() == 2);
-        
+
         // verify data after import.
         Topic addedTopic = updatedTopics.get(1);
         if (!"Campus Services".equals(addedTopic.getTitle())) {
@@ -95,5 +87,5 @@ public class TestImporter extends TestCase {
         }
         assertTrue("Did not find first announcement", firstAnnFound);
         assertTrue("Did not find second announcement", secondAnnFound);
-	}
+    }
 }
