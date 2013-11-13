@@ -80,6 +80,9 @@ public class Importer {
 
         // announcementService
         String contextClasspathLocation = args[1];
+        // INPORTANT!  Must load from the context classpath, not the system 
+        // classpath, since the Importer will commonly run in a ClassLoader-enhanced 
+        // context, such as an Ant task.
         URL u = Thread.currentThread().getContextClassLoader().getResource(contextClasspathLocation);
         if (u == null) {
             log.error("Spring context file for Import/Export not found on classpath:  " + contextClasspathLocation);
