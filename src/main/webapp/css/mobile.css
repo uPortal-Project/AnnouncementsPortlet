@@ -24,7 +24,7 @@
 .annplt-toolbar ul,.annplt-toolbar li {text-align:center;}
 .annplt-toolbar ul {display:block; margin:0px; padding:3px 0;}
 .annplt-toolbar li {font-size:13px; margin:0px; font-weight:bold; display:inline-block; padding:8px 5px; text-transform:capitalize;}
-.annplt-toolbar li a {padding:8px 10px; display:inline:block; color:#fff; background: #3e537e url(../icons/mainbar_button_bg.png) top left repeat-x; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; box-shadow:inset 0 0 3px #000000; -moz-box-shadow:inset 0 0 3px #000000; -webkit-box-shadow:inset 0 0 3px #000000;}
+.annplt-toolbar li a {padding:8px 10px; display:inline-block; color:#fff; background: #3e537e url(../icons/mainbar_button_bg.png) top left repeat-x; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; box-shadow:inset 0 0 3px #000000; -moz-box-shadow:inset 0 0 3px #000000; -webkit-box-shadow:inset 0 0 3px #000000;}
 
 /*form buttons*/
 .annplt-form-button {font-size:1em; display:block; width:250px; margin-bottom:10px; margin-left:auto; margin-right:auto; text-align:center; padding:8px 10px; display:block; color:#fff; background: #3e537e url(../icons/mainbar_button_bg.png) top left repeat-x; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; box-shadow:inset 0 0 3px #000000; -moz-box-shadow:inset 0 0 3px #000000; -webkit-box-shadow:inset 0 0 3px #000000;}
@@ -50,7 +50,7 @@ a.annplt-form-button {text-decoration:none; width:230px; color:#fff !important; 
 .annplt-announcement p {margin:0; padding:0;}
 .annplt-announcement .titlebar {padding:10px 10px 5px 10px; }
 .annplt-announcement {background:#eee; padding:5px; border-top:#fff 1px solid; border-bottom:#999 1px dotted;}
-.annplt-announcement_inner {background:#fff; border-radius:5px; -moz-border-radius:5px; -webkit-border-radisu:5px;}
+.annplt-announcement_inner {background:#fff; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px;}
 .annplt-announcement h2, .annplt-announcement h2 a {font-size:1em;color:#333; margin:0; padding:0;}
 .annplt-announcements > span {padding:3px 5px; text-align:center; display:block; background-color:#ccc; font-size:14px; font-weight:bold; color:#333; border-top:#fff 1px solid; border-bottom:#999 1px solid;}
 
