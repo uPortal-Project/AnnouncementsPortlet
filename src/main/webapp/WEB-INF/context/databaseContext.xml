@@ -49,19 +49,22 @@
         <property name="timeBetweenEvictionRunsMillis" value="10000"/>
         <property name="initialSize" value="3"/>
         <property name="maxActive" value="10"/>
-    </bean>
+        <!-- MaxWait probably not needed since uPortal will interrupt thread if it runs too long, but IMHO always good to
+             specify a max to avoid losing resources.  -->
+        <property name="maxWait" value="60000"/>
+</bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-            </props>
-        </property>
-    </bean>
+<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+    <property name="hibernateProperties">
+        <props>
+            <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+        </props>
+    </property>
+</bean>
 
-    <!-- DAO creation for both portlets -->
+<!-- DAO creation for both portlets -->
     <bean id="announcementService" class="org.jasig.portlet.announcements.service.HibernateAnnouncementService">
         <property name="sessionFactory">
             <ref bean="sessionFactory"/>
