@@ -31,19 +31,19 @@
 </style>
 
 <table width="100%" cellspacing="0" cellpadding="0" class="data">
-	<tr>
-		<th width="15%"><spring:message code="display.header.topic"/></th>
-		<th><spring:message code="display.header.ann"/></th>
-		<th><spring:message code="display.header.start"/></th>
-		<th><spring:message code="display.header.end"/></th>
-	</tr>
+    <tr>
+        <th width="15%"><spring:message code="display.header.topic"/></th>
+        <th><spring:message code="display.header.ann"/></th>
+        <th><spring:message code="display.header.start"/></th>
+        <th><spring:message code="display.header.end"/></th>
+    </tr>
 
-	<c:forEach items="${announcements}" var="announcement" varStatus="status">
-		<tr>
-			<c:choose>
-				<c:when test="${status.index mod 2 == 0}">
-				    <c:set var="rowClass" value="${n}-row1color"/>
-				</c:when>
+    <c:forEach items="${announcements}" var="announcement" varStatus="status">
+        <tr>
+            <c:choose>
+                <c:when test="${status.index mod 2 == 0}">
+                    <c:set var="rowClass" value="${n}-row1color"/>
+                </c:when>
                 <c:otherwise>
                     <c:set var="rowClass" value="${n}-row2color"/>
                 </c:otherwise>
@@ -52,26 +52,40 @@
             <td align="center" width="15%" class="<c:out value="${rowClass}"/>">
                 <c:out value="${announcement.parent.title}"/>
             </td>
-            <td align="center" width="15%" class="<c:out value="${rowClass}"/>">
+            <td align="left" class="<c:out value="${rowClass}"/>">
                 <a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncementHistory"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a>
-				<br /><c:out value="${announcement.abstractText}"/>
-				<br />
-				<c:if test="${not empty announcement.link}">
-					<span class="portlet-section-text" style="font-size:0.9em; padding-top:0.2em;"><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></span>
-				</c:if>
-			</td>
-			<td align="center" width="15%" class="<c:out value="${rowClass}"/>">
-				<span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
-			</td>
-			<td align="center" width="15%" class="<c:out value="${rowClass}"/>">
-				<span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.endDisplay}" dateStyle="medium"/></span>
-			</td>
-		</tr>
+                <br /><c:out value="${announcement.abstractText}"/>
+                <br />
+                <c:if test="${not empty announcement.link}">
+                    <span class="portlet-section-text" style="font-size:0.9em; padding-top:0.2em;"><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></span>
+                </c:if>
+            </td>
+            <td align="center" width="15%" class="<c:out value="${rowClass}"/>">
+                <span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
+            </td>
+            <td align="center" width="15%" class="<c:out value="${rowClass}"/>">
+                <span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.endDisplay}" dateStyle="medium"/></span>
+            </td>
+        </tr>
 
-	</c:forEach>
+    </c:forEach>
 </table>
 
-<p align="right" style="font-size:0.9em; padding-top:0.5em;">
-<a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view"/>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="display.back"/></a>
-</p>
+<table border="0" width="100%">
+  <tr>
+    <td align="left" style="font-size:0.9em; padding-top:0.5em;">
+        <c:if test="${not (historyFrom == 0)}">
+            <a href="<portlet:renderURL portletMode="view"><portlet:param name="action" value="displayHistory"/><portlet:param name="historyFrom" value="${historyFrom - increment}"/><portlet:param name="historyTo" value="${historyTo - increment}"/></portlet:renderURL>"><spring:message code="display.link.prev"/> <c:out value="${increment}"/></a>
+        </c:if>
+        <c:if test="${(not (historyFrom == 0)) and hasMoreHistory}">&nbsp;&mdash;&nbsp;</c:if>
+        <c:if test="${hasMoreHistory}">
+            <a href="<portlet:renderURL portletMode="view"><portlet:param name="action" value="displayHistory"/><portlet:param name="historyFrom" value="${historyFrom + increment}"/><portlet:param name="historyTo" value="${historyTo + increment}"/></portlet:renderURL>"><spring:message code="display.link.next"/> <c:out value="${increment}"/></a>
+        </c:if>
+    </td>
+    <td align="right" style="font-size:0.9em; padding-top:0.5em;">
+        <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view"/>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="display.back"/></a>
+    </td>
+  </tr>
+</table>
+
 

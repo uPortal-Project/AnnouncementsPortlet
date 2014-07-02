@@ -94,11 +94,13 @@ public class AnnouncementsViewController implements InitializingBean {
     public static final String PREFERENCE_DISABLE_EDIT = "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
     public static final String PREFERENCE_PAGE_SIZE = "AnnouncementsViewController.PAGE_SIZE";
     public static final String PREFERENCE_SORT_STRATEGY = "AnnouncementsViewController.AnnouncementSortStrategy";
+    public static final String PREFERENCE_HISTORY_SORT_STRATEGY = "AnnouncementsViewController.AnnouncementHistorySortStrategy";
     public static final String PREFERENCE_USE_SCROLLING_DISPLAY = "AnnouncementsViewController.useScrollingDisplay";
     public static final String PREFERENCE_SCROLLING_DISPLAY_HEIGHT_PIXELS = "AnnouncementsViewController.scrollingDisplayHeightPixels";
     public static final String PREFERENCE_HIDE_ABSTRACT = "AnnouncementsViewController.hideAbstract";
     public static final String PREFERENCE_SYNDICATE_TOPICS_AS_NOTIFICATIONS = "AnnouncementsViewController.syndicateTopicsAsNotifications";
     public static final String PREFERENCE_SYNDICATE_TOPICS_ANNOUNCEMENTS_DISPLAY_FNAME = "AnnouncementsViewController.syndicateTopicsAnnouncementsDisplayFName";
+    public static final String DEFAULT_HISTORY_SORT_STRATEGY = "END_DISPLAY_DATE_DESCENDING";
     public static final String DEFAULT_SORT_STRATEGY = "START_DISPLAY_DATE_ASCENDING";
     
     public static final String NOTIFICATION_NAMESPACE = "https://source.jasig.org/schemas/portlet/notification";
@@ -188,7 +190,7 @@ public class AnnouncementsViewController implements InitializingBean {
         final Boolean useScrollingDisplay = (Boolean) model.asMap().get("useScrollingDisplay");
         final List<Announcement> announcementsShort = useScrollingDisplay 
                 ? announcements
-                : paginateAnnouncements(announcements, from, to, model);
+                : paginateAnnouncements(announcements, from, to);
 
         // Disable the edit link where appropriate
         Boolean disableEdit = Boolean.valueOf(prefs.getValue(PREFERENCE_DISABLE_EDIT, "false"));
@@ -212,10 +214,10 @@ public class AnnouncementsViewController implements InitializingBean {
 
         return viewNameSelector.select(request, "displayFullAnnouncement");
     }
-
+    
     @EventMapping(NOTIFICATION_QUERY_QNAME_STRING)
     public void syndicateAnnouncementsAsNotifications(final EventRequest req, final EventResponse res) throws PortletException {
-
+        
         final PortletPreferences prefs = req.getPreferences();
         final List<String> topicTitlesToSyndicate = Arrays.asList(
                 prefs.getValues(
@@ -223,7 +225,7 @@ public class AnnouncementsViewController implements InitializingBean {
                         new String[0]
                 )
         );
-
+        
         // Get out if we know there's nothing to do...
         if (topicTitlesToSyndicate.isEmpty()) {
             return;
@@ -241,21 +243,21 @@ public class AnnouncementsViewController implements InitializingBean {
         // fetch the user's topic subscription from the database
         final List<TopicSubscription> myTopics = tss.getTopicSubscription(req);
         for (TopicSubscription topicSub : myTopics) {
-
+            
             final Topic topic = topicSub.getTopic();
-
+            
             // We only want the white-listed ones...
             if (!topicTitlesToSyndicate.contains(topic.getTitle())) {
                 continue;
             }
-
+            
             final Set<Announcement> announcements = topic.getPublishedAnnouncements();
-
+            
             // Ignore any that are empty...
             if (announcements.isEmpty()) {
                 continue;
             }
-
+            
             final List<NotificationEntry> entries = new ArrayList<NotificationEntry>();
             for (Announcement ann : announcements) {
                 final NotificationEntry entry = new NotificationEntry();
@@ -282,22 +284,22 @@ public class AnnouncementsViewController implements InitializingBean {
                 entry.setUrl(url.toString());
                 entries.add(entry);
             }
-
+            
             final NotificationCategory category = new NotificationCategory();
             category.setTitle(topic.getTitle());
             category.setEntries(entries);
-
+            
             categories.add(category);
-
+            
         }
-
+        
         // We can bail if we haven't collected anything to share at this point...
         if (categories.isEmpty()) {
             return;
         }
 
         final NotificationQuery query = (NotificationQuery) req.getEvent().getValue();
-
+         
         final NotificationResponse response = new NotificationResponse();
         response.setCategories(categories);
 
@@ -305,7 +307,7 @@ public class AnnouncementsViewController implements InitializingBean {
         result.setQueryWindowId(query.getQueryWindowId());
         result.setResultWindowId(req.getWindowID());
         result.setNotificationResponse(response);
-
+         
         res.setEvent(NOTIFICATION_RESULT_QNAME, result);
 
     }
@@ -335,52 +337,60 @@ public class AnnouncementsViewController implements InitializingBean {
         this.cm = cm;
     }
 
-  	@RenderMapping(params = "action=displayFullAnnouncementHistory")
-  	public String displayFullAnnouncementHistory(Model model,
-  			RenderRequest request,
-  			@RequestParam("announcementId") String announcementId)
-  			throws Exception {
+      @RenderMapping(params = "action=displayFullAnnouncementHistory")
+      public String displayFullAnnouncementHistory(Model model,
+              RenderRequest request,
+              @RequestParam("announcementId") String announcementId)
+              throws Exception {
 
-  		Announcement announcement = getAnnouncementById(request,announcementId);
-  		model.addAttribute("announcement", announcement);
+          Announcement announcement = getAnnouncementById(request,announcementId);
+          model.addAttribute("announcement", announcement);
 
-  		return viewNameSelector.select(request, "displayFullAnnouncementHistory");
-  	}
+          return viewNameSelector.select(request, "displayFullAnnouncementHistory");
+      }
 
-  	@RenderMapping(params = "action=displayHistory")
-  	public String displayHistory(Model model, RenderRequest request)
-  			throws Exception {
+      @RenderMapping(params = "action=displayHistory")
+      public String displayHistory(Model model, RenderRequest request,
+            @RequestParam(value="historyFrom",required=false) Integer historyFrom,
+            @RequestParam(value="historyTo",required=false) Integer historyTo)
+              throws Exception {
 
-  		List<Announcement> announcements = new ArrayList<Announcement>();
+          if (historyFrom == null || historyTo == null) {
+              historyFrom = 0;
+              historyTo = (Integer) model.asMap().get("increment");
+          }
+        
+          PortletPreferences prefs = request.getPreferences();
+          List<Announcement> announcements = new ArrayList<Announcement>();
 
-  		// fetch the user's topic subscription from the database
-  		List<TopicSubscription> myTopics = tss.getTopicSubscription(request);
+          // fetch the user's topic subscription from the database
+          List<TopicSubscription> myTopics = tss.getTopicSubscription(request);
 
-  		// add all the published announcements of each subscribed topic to the
-  		// announcement list
-  		for (TopicSubscription ts : myTopics) {
-  			if (ts.getSubscribed() && ts.getTopic().getSubscriptionMethod() != Topic.EMERGENCY) {
-  				announcements.addAll(ts.getTopic().getHistoricAnnouncements());
-  			}
-  		}
-
-  		// sort the list by end display date descending (since they are not
-  		// sorted from the database)
-  		Collections.sort(announcements, new Comparator<Announcement>() {
-  			@Override
-            public int compare(Announcement s, Announcement s2) {
-  				return s2.getEndDisplay().compareTo(s.getEndDisplay());
-  			}
-
-  		});
-
-  		model.addAttribute("announcements", announcements);
-
-  		return viewNameSelector.select(request, "displayHistory");
-  	}
-  	
-  	@ModelAttribute("increment")
-  	public int getPageSize(PortletRequest req) {
+          // add all the published announcements of each subscribed topic to the
+          // announcement list
+          for (TopicSubscription ts : myTopics) {
+              if (ts.getSubscribed() && ts.getTopic().getSubscriptionMethod() != Topic.EMERGENCY) {
+                  announcements.addAll(ts.getTopic().getHistoricAnnouncements());
+              }
+          }
+          // sort the list (since they are not sorted from the database)
+          Comparator<Announcement> sortStrategy = AnnouncementSortStrategy.getStrategy(prefs.getValue(PREFERENCE_HISTORY_SORT_STRATEGY,DEFAULT_HISTORY_SORT_STRATEGY));
+          Collections.sort(announcements,sortStrategy);
+          // create a shortened list
+          final Boolean useScrollingDisplay = (Boolean) model.asMap().get("useScrollingDisplay");
+          final List<Announcement> announcementsShort = useScrollingDisplay 
+              ? announcements
+              : paginateAnnouncements(announcements, historyFrom, historyTo);
+        
+          model.addAttribute("announcements", announcementsShort);
+          model.addAttribute("historyFrom", new Integer(historyFrom));
+          model.addAttribute("historyTo", new Integer(historyTo));
+          model.addAttribute("hasMoreHistory", (!useScrollingDisplay && announcements.size() > historyTo));
+          return viewNameSelector.select(request, "displayHistory");
+      }
+      
+      @ModelAttribute("increment")
+      public int getPageSize(PortletRequest req) {
         final PortletPreferences prefs = req.getPreferences();
         int rslt = 5;  // default
         try {
@@ -392,22 +402,22 @@ public class AnnouncementsViewController implements InitializingBean {
                     + prefs.getValue(PREFERENCE_PAGE_SIZE, null));
         }
         return rslt;
-  	}
-  	
-  	@ModelAttribute("isGuest")
-  	public boolean isGuest(PortletRequest req) {
+      }
+      
+      @ModelAttribute("isGuest")
+      public boolean isGuest(PortletRequest req) {
         boolean rslt = (req.getRemoteUser() == null || req.getRemoteUser().equalsIgnoreCase(GUEST_USERNAME));
         logger.debug("isGuest is: "+Boolean.toString(rslt));
         logger.debug("remoteUser is: "+req.getRemoteUser());
         return rslt;
-  	}
-  	
-  	@ModelAttribute("useScrollingDisplay")
-  	public boolean getUseScrollingDisplay(PortletRequest req) {
-  	  final PortletPreferences prefs = req.getPreferences();
-  	    return Boolean.valueOf(prefs.getValue(PREFERENCE_USE_SCROLLING_DISPLAY, "false"));  // default is false
-  	}
-  	
+      }
+      
+      @ModelAttribute("useScrollingDisplay")
+      public boolean getUseScrollingDisplay(PortletRequest req) {
+        final PortletPreferences prefs = req.getPreferences();
+          return Boolean.valueOf(prefs.getValue(PREFERENCE_USE_SCROLLING_DISPLAY, "false"));  // default is false
+      }
+      
     @ModelAttribute("scrollingDisplayHeightPixels")
     public int getScrollingDisplayHeightPixels(PortletRequest req) {
         final PortletPreferences prefs = req.getPreferences();
@@ -424,10 +434,10 @@ public class AnnouncementsViewController implements InitializingBean {
     }
 
     /*
-  	 * Implementation
-  	 */
-    
-    private List<Announcement> paginateAnnouncements(final List<Announcement> announcements, Integer from, Integer to, Model model) {
+     * Implementation
+     */
+
+    private List<Announcement> paginateAnnouncements(final List<Announcement> announcements, Integer from, Integer to) {
         List<Announcement> rslt;
         // if the announcement list is already short, then just reference it
         if (announcements.size() < to - from) {
