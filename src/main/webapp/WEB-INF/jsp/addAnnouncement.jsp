@@ -178,16 +178,18 @@
         </div>
     </div>
 
-    <div class="announcements-portlet-row" id="${n}attachment_add_section" style="display:none;">
-        <label>
-            <spring:message code="addAnnouncement.attachments"/>
-            <a style="text-decoration:none;" href="javascript:upAttachments.show(${n}.addAttachmentCallback);">
-                <img src="<c:url value="/icons/add.png"/>" border="0" height="16" width="16" style="vertical-align:middle;"/>
-            </a>
-        </label>
-        <div id="${n}attachments" class="announcements-portlet-col">
-        </div>
-    </div>
+	<c:if test="${useAttachments}">
+		<div class="announcements-portlet-row" id="${n}attachment_add_section" style="display:none;">
+			<label>
+				<spring:message code="addAnnouncement.attachments"/>
+				<a style="text-decoration:none;" href="javascript:upAttachments.show(${n}.addAttachmentCallback);">
+					<img src="<c:url value="/icons/add.png"/>" border="0" height="16" width="16" style="vertical-align:middle;"/>
+				</a>
+			</label>
+			<div id="${n}attachments" class="announcements-portlet-col">
+			</div>
+		</div>
+	</c:if>
 <form:hidden path="id"/>
 <form:hidden path="created"/>
 <form:hidden path="author"/>
