@@ -318,6 +318,8 @@
                     <aggregate>true</aggregate>
                     <excludes>
                         <exclude>.gitignore</exclude>
+                        <exclude>.idea/**</exclude>  <!-- for intelliJ Idea -->
+                        <exclude>overlays/**</exclude>  <!-- for intelliJ Idea -->
                         <exclude>LICENSE</exclude>
                         <exclude>NOTICE</exclude>
                         <exclude>**/src/main/webapp/js/**</exclude>
