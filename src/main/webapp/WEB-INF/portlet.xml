@@ -188,7 +188,12 @@
         <portlet-preferences>
             <preference>
                 <name>AdminAnnouncementController.allowOpenEndDate</name>
-                <value></value>
+                <value>false</value>
+                <read-only>true</read-only>
+            </preference>
+            <preference>
+                <name>AdminAnnouncementController.allowEmptyMessage</name>
+                <value>false</value>
                 <read-only>true</read-only>
             </preference>
             <preference>

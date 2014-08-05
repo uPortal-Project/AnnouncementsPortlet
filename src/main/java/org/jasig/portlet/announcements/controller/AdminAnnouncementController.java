@@ -56,6 +56,7 @@ import org.springframework.web.bind.support.SessionStatus;
 public class AdminAnnouncementController implements InitializingBean {
 
     public static final String PREFERENCE_ALLOW_OPEN_ENDDATE = "AdminAnnouncementController.allowOpenEndDate";
+    public static final String PREFERENCE_ALLOW_EMPTY_MESSAGE = "AdminAnnouncementController.allowEmptyMessage";
     public static final String PREFERENCE_ABSTRACT_MAX_LENGTH = "AdminAnnouncementController.abstractTextMaxLength";
     public static final String PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS = "AdminAnnouncementController.tinyMceInitializationOptions";
     public static final String DEFAULT_ABSTRACT_MAX_LENGTH = "255";
@@ -165,7 +166,7 @@ public class AdminAnnouncementController implements InitializingBean {
         }
 
         // Next validate the announcement
-        new AnnouncementValidator(getAllowOpenEndDate(req)).validate(announcement, result);
+        new AnnouncementValidator(getAllowOpenEndDate(req), getAllowEmptyMessage(req)).validate(announcement, result);
         if (result.hasErrors()) {
             res.setRenderParameter("action", "addAnnouncement");
             return;
@@ -219,6 +220,11 @@ public class AdminAnnouncementController implements InitializingBean {
     public boolean getAllowOpenEndDate(PortletRequest req) {
         PortletPreferences prefs = req.getPreferences();
         return Boolean.parseBoolean(prefs.getValue(PREFERENCE_ALLOW_OPEN_ENDDATE, "false"));
+    }
+
+    public boolean getAllowEmptyMessage(PortletRequest req) {
+        PortletPreferences prefs = req.getPreferences();
+        return Boolean.parseBoolean(prefs.getValue(PREFERENCE_ALLOW_EMPTY_MESSAGE, "false"));
     }
 
     /**

@@ -39,13 +39,15 @@ import org.springframework.validation.Validator;
 public class AnnouncementValidator implements Validator {
     
     private final boolean allowOpenEndDate;
+    private final boolean allowEmptyMessage;
     
     public AnnouncementValidator() {
-        this(false);
+        this(false, false);
     }
 
-    public AnnouncementValidator(boolean allowOpenEndDate) {
+    public AnnouncementValidator(boolean allowOpenEndDate, boolean allowEmptyMessage) {
         this.allowOpenEndDate = allowOpenEndDate;
+        this.allowEmptyMessage = allowEmptyMessage;
     }
 
 	/* (non-Javadoc)
@@ -60,8 +62,10 @@ public class AnnouncementValidator implements Validator {
 	 */
 	public void validate(Object obj, Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "addAnn.title.required.error");	
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "abstractText", "addAnn.abstract.required.error");	
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "message", "addAnn.message.required.error");	
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "abstractText", "addAnn.abstract.required.error");
+        if (!allowEmptyMessage) {
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "message", "addAnn.message.required.error");
+        }
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startDisplay", "addAnn.start.required.error");
 		if (!allowOpenEndDate) {
 	        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "endDisplay", "addAnn.end.required.error");   
