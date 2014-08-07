@@ -116,7 +116,6 @@ public class AnnouncementsViewController implements InitializingBean {
      * @param model
      * @param request
      * @param from
-     * @param toimport java.util.Date;
      * @return
      * @throws PortletException
      */
@@ -216,6 +215,9 @@ public class AnnouncementsViewController implements InitializingBean {
     @EventMapping(NOTIFICATION_QUERY_QNAME_STRING)
     public void syndicateAnnouncementsAsNotifications(final EventRequest req, final EventResponse res) throws PortletException {
 
+        final NotificationQuery query = (NotificationQuery) req.getEvent().getValue();
+        logger.debug("Syndicating announcements for Notification portlet with windowId=" + query.getQueryWindowId());
+
         final PortletPreferences prefs = req.getPreferences();
         final List<String> topicTitlesToSyndicate = Arrays.asList(
                 prefs.getValues(
@@ -226,6 +228,7 @@ public class AnnouncementsViewController implements InitializingBean {
 
         // Get out if we know there's nothing to do...
         if (topicTitlesToSyndicate.isEmpty()) {
+            logger.debug("No topics are defined for syndication with the Notification portlet");
             return;
         }
 
@@ -235,6 +238,7 @@ public class AnnouncementsViewController implements InitializingBean {
          *  link-building strategy.
          */
         final String announcementsDisplayFName = prefs.getValue(PREFERENCE_SYNDICATE_TOPICS_ANNOUNCEMENTS_DISPLAY_FNAME, "announcements");
+        logger.debug("Using announcementsDisplayFName=" + announcementsDisplayFName);
 
         final List<NotificationCategory> categories = new ArrayList<NotificationCategory>();
 
@@ -248,6 +252,7 @@ public class AnnouncementsViewController implements InitializingBean {
             if (!topicTitlesToSyndicate.contains(topic.getTitle())) {
                 continue;
             }
+            logger.debug("Considering topic '" + topic.getTitle() + "' for remoteUser=" + req.getRemoteUser());
 
             final Set<Announcement> announcements = topic.getPublishedAnnouncements();
 
@@ -291,12 +296,12 @@ public class AnnouncementsViewController implements InitializingBean {
 
         }
 
+        logger.debug("Found the following categories for remoteUser '" + req.getRemoteUser() + "':  " + categories);
+
         // We can bail if we haven't collected anything to share at this point...
         if (categories.isEmpty()) {
             return;
         }
-
-        final NotificationQuery query = (NotificationQuery) req.getEvent().getValue();
 
         final NotificationResponse response = new NotificationResponse();
         response.setCategories(categories);
