@@ -22,8 +22,10 @@
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
 <c:set var="n"><portlet:namespace/></c:set>
-<script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
-<script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
+
+<rs:aggregatedResources path="skin.xml"/>
+<rs:aggregatedResources path="skin-jquery.xml"/>
+
 <script src="<c:url value="/js/underscore-min.js"/>" type="text/javascript"></script>
 
 <script type="text/template" id="${n}template-attachment-display-item">

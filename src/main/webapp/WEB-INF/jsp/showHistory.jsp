@@ -21,7 +21,7 @@
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
-<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
+<rs:aggregatedResources path="skin.xml"/>
 
 <div id="<portlet:namespace/>">
 <div class="announcements-portlet-toolbar">
@@ -60,8 +60,8 @@
 
 
 
-<script type="text/javascript" src="<c:url value="/js/jquery-1.3.2.min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery.tablesorter.min.js"/>"></script>
+<rs:aggregatedResources path="skin-jquery.xml"/>
+<script type="text/javascript" src="<c:url value="/js/jquery.tablesorter.js"/>"></script>
 <script type="text/javascript">
 var <portlet:namespace/>  = jQuery.noConflict(true);
 <portlet:namespace/>(document).ready(function(){

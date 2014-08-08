@@ -67,9 +67,6 @@ public class AdminTopicController {
 	private IAnnouncementService announcementService;
 
 	@Autowired
-	private Boolean includeJQuery;
-
-	@Autowired
 	private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
 	/**
@@ -205,7 +202,6 @@ public class AdminTopicController {
 		model.addAttribute("topic", topic);
 		model.addAttribute("announcements", annList);
 		model.addAttribute("now", new Date());
-		model.addAttribute("includeJQuery", includeJQuery);
 
 		return "showTopic";
 	}
@@ -216,13 +212,4 @@ public class AdminTopicController {
 	public void setAnnouncementService(IAnnouncementService announcementService) {
 		this.announcementService = announcementService;
 	}
-
-	/**
-	 * @param includeJQuery the includeJQuery to set
-	 */
-	public void setIncludeJQuery(Boolean includeJQuery) {
-		this.includeJQuery = includeJQuery;
-	}
-
-
 }

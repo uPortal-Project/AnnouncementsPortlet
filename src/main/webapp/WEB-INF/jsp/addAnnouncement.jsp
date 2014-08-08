@@ -23,11 +23,11 @@
 
 <c:set var="n"><portlet:namespace/></c:set>
 <portlet:defineObjects/>
-<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
-<script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
-<script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
-<script src="<c:url value="/js/underscore-min.js"/>" type="text/javascript"></script>
 
+<rs:aggregatedResources path="skin.xml"/>
+<rs:aggregatedResources path="skin-jquery.xml"/>
+
+<script src="<c:url value="/js/underscore-min.js"/>" type="text/javascript"></script>
 
 <script type="text/javascript" src="<c:url value="/tinymce/tiny_mce.js"/>"></script>
 <!--script type="text/javascript" src="<c:url value="/tinymce/plugins/preview/jscripts/embed.js"/>"></script>

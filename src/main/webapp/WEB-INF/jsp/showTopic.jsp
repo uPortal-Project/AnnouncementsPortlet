@@ -21,54 +21,66 @@
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
-<c:if test="${includeJQuery}">
-<script type="text/javascript" src="<c:url value="/js/jquery-1.2.3.min.js"/>"></script>
-</c:if>
-<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
-<script type="text/javascript">
-var <portlet:namespace/> = <portlet:namespace/> || {};
-<portlet:namespace/>.jQuery = ${ includeJQuery ? 'jQuery.noConflict(true)' : 'jQuery' };
-function <portlet:namespace/>_delete(url) {
-    var response = window.confirm('<spring:message code="show.deleteAnn"/>');
-    if (response) {
-        window.location = url;
-    }
-}
-function <portlet:namespace/>approval(id, newValue) {
-    var $ = <portlet:namespace/>.jQuery;
-    var messages = new Array("<spring:message code="show.scheduled"/>",
-            "<spring:message code="show.expired"/>",
-            "<spring:message code="show.showing"/>",
-            "<spring:message code="show.pending"/>",
-            "<spring:message code="show.unpublish"/>",
-            "<spring:message code="show.publish"/>",
-            "<c:url value="/icons/stop.png"/>",
-            "<c:url value="/icons/accept.png"/>");
-    var colors = new Array("#070", "#c00", "#070", "#c00");
+<c:set var="n"><portlet:namespace/></c:set>
+<portlet:defineObjects/>
 
-    $.post("<c:url value="/ajaxApprove"/>",
+<c:if test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
+    <rs:aggregatedResources path="skin-jquery.xml"/>
+</c:if>
+<rs:aggregatedResources path="skin.xml"/>
+
+<script type="text/javascript">
+    var ${n} = ${n} || {};
+    <c:choose>
+        <c:when test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
+            ${n}.jQuery = jQuery.noConflict(true)
+        </c:when>
+        <c:otherwise>
+            ${n}.jQuery = up.jQuery;
+        </c:otherwise>
+    </c:choose>
+
+    function ${n}_delete(url) {
+        var response = window.confirm('<spring:message code="show.deleteAnn"/>');
+        if (response) {
+            window.location = url;
+        }
+    }
+    function ${n}approval(id, newValue) {
+        var $ = ${n}.jQuery;
+        var messages = new Array("<spring:message code="show.scheduled"/>",
+                "<spring:message code="show.expired"/>",
+                "<spring:message code="show.showing"/>",
+                "<spring:message code="show.pending"/>",
+                "<spring:message code="show.unpublish"/>",
+                "<spring:message code="show.publish"/>",
+                "<c:url value="/icons/stop.png"/>",
+                "<c:url value="/icons/accept.png"/>");
+        var colors = new Array("#070", "#c00", "#070", "#c00");
+
+        $.post("<c:url value="/ajaxApprove"/>",
             {
                 annId: id,
                 approval: newValue
             },
             function(data) {
                 if (newValue == 'true') {
-                    $("#<portlet:namespace/>annSwitch-"+id+" > img").attr("src", messages[6]);
-                    $("#<portlet:namespace/>annSwitch-"+id+" > img").attr("alt", messages[4]);
-                    $("#<portlet:namespace/>annSwitch-"+id).attr("title", messages[4]);
-                    $("#<portlet:namespace/>annSwitch-"+id).attr("href", "javascript:<portlet:namespace/>approval("+id+",'false');");
+                    $("#${n}annSwitch-"+id+" > img").attr("src", messages[6]);
+                    $("#${n}annSwitch-"+id+" > img").attr("alt", messages[4]);
+                    $("#${n}annSwitch-"+id).attr("title", messages[4]);
+                    $("#${n}annSwitch-"+id).attr("href", "javascript:${n}approval("+id+",'false');");
                 } else {
-                    $("#<portlet:namespace/>annSwitch-"+id+" > img").attr("src", messages[7]);
-                    $("#<portlet:namespace/>annSwitch-"+id+" > img").attr("alt", messages[5]);
-                    $("#<portlet:namespace/>annSwitch-"+id).attr("title", messages[5]);
-                    $("#<portlet:namespace/>annSwitch-"+id).attr("href", "javascript:<portlet:namespace/>approval("+id+",'true');");
+                    $("#${n}annSwitch-"+id+" > img").attr("src", messages[7]);
+                    $("#${n}annSwitch-"+id+" > img").attr("alt", messages[5]);
+                    $("#${n}annSwitch-"+id).attr("title", messages[5]);
+                    $("#${n}annSwitch-"+id).attr("href", "javascript:${n}approval("+id+",'true');");
                 }
-                $("#<portlet:namespace/>annStatus-"+id).css("background-color", colors[data.status]);
-                $("#<portlet:namespace/>annStatus-"+id).empty().append(messages[data.status]);
+                $("#${n}annStatus-"+id).css("background-color", colors[data.status]);
+                $("#${n}annStatus-"+id).empty().append(messages[data.status]);
             },
             "json"
-    );
-}
+        );
+    }
 </script>
 <div class="announcements-portlet-toolbar">
     <a style="text-decoration:none; " class="button announcements-portlet-action" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>">

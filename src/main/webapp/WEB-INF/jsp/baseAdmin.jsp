@@ -22,9 +22,9 @@
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
 <c:set var="n"><portlet:namespace/></c:set>
-<script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
-<script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
-<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
+
+<rs:aggregatedResources path="skin.xml"/>
+<rs:aggregatedResources path="skin-jquery.xml"/>
 
 <c:if test="${portalAdmin}">
 <script type="text/javascript">

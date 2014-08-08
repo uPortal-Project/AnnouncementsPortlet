@@ -38,9 +38,6 @@ public class PreviewAnnouncementController {
     @Autowired
     private IAnnouncementService announcementService = null;
 
-    @Autowired
-    private Boolean includeJQuery;
-
     @Autowired(required=true)
     private final IViewNameSelector viewNameSelector = null;
 
@@ -58,7 +55,6 @@ public class PreviewAnnouncementController {
 
         model.addAttribute("announcement", ann);
         model.addAttribute("user", upChecker);
-        model.addAttribute("includeJQuery", includeJQuery);
         return viewNameSelector.select(request, "previewAnnouncement");
     }
 }

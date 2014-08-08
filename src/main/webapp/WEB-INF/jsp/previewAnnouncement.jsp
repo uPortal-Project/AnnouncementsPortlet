@@ -21,10 +21,14 @@
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
-<c:if test="${includeJQuery}">
-<script type="text/javascript" src="<c:url value="/js/jquery-1.2.3.min.js"/>"></script>
+<c:set var="n"><portlet:namespace/></c:set>
+<portlet:defineObjects/>
+
+<c:if test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
+    <rs:aggregatedResources path="skin-jquery.xml"/>
 </c:if>
 
+<rs:aggregatedResources path="skin.xml"/>
 <style type="text/css">
 .preview-section-header { font-weight: bold; margin-top: 10px; margin-bottom: 5px; }
 .preview-section { background-color: #f3f3f3; padding: 5px; }
@@ -83,25 +87,35 @@
     <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view"></portlet:renderURL>"><img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
 </p>
 
-<script type="text/javascript">
-var <portlet:namespace/> = <portlet:namespace/> || {};
-<portlet:namespace/>.jQuery = ${ includeJQuery ? 'jQuery.noConflict(true)' : 'jQuery' };
-<portlet:namespace/>.jQuery(function(){
-   var $ = <portlet:namespace/>.jQuery;
+<script type="text/javascript"><rs:compressJs>
+    var ${n} = ${n} || {};
 
-   $(document).ready(function(){
-       $("#<portlet:namespace/>Form").submit(function(){
-           $.post("<c:url value="/ajaxApprove"/>",
-               {
-                   annId: "${announcement.id}",
-                   approval: true
-               },
-               function(){
-                   window.location = "<portlet:renderURL portletMode="view"><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ announcement.parent.id }"/></portlet:renderURL>";
-                   return false;
-               }
-           );
-       });
-   });
-});
-</script>
+    <c:choose>
+        <c:when test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
+            ${n}.jQuery = jQuery.noConflict(true)
+        </c:when>
+        <c:otherwise>
+            ${n}.jQuery = up.jQuery;
+        </c:otherwise>
+    </c:choose>
+
+    ${n}.jQuery(function() {
+        var $ = ${n}.jQuery;
+
+        $(document).ready(function(){
+            $("#${n}Form").submit(function(){
+                $.post("<c:url value="/ajaxApprove"/>",
+                        {
+                            annId: "${announcement.id}",
+                            approval: true
+                        },
+                        function(){
+                            window.location = "<portlet:renderURL portletMode="view"><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ announcement.parent.id }"/></portlet:renderURL>";
+                            return false;
+                        }
+                );
+            });
+        });
+    });
+
+</rs:compressJs></script>
