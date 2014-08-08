@@ -25,6 +25,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 </c:if>
 
+<rs:aggregatedResources path="skin.xml"/>
 <style type="text/css">
 .preview-section-header { font-weight: bold; margin-top: 10px; margin-bottom: 5px; }
 .preview-section { background-color: #f3f3f3; padding: 5px; }

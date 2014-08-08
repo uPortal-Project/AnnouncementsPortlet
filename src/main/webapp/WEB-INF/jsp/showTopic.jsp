@@ -24,7 +24,10 @@
 <c:if test="${includeJQuery}">
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 </c:if>
+
+<rs:aggregatedResources path="skin.xml"/>
 <link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript">
 var <portlet:namespace/> = <portlet:namespace/> || {};
 <portlet:namespace/>.jQuery = ${ includeJQuery ? 'jQuery.noConflict(true)' : 'jQuery' };

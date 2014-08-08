@@ -21,6 +21,8 @@
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
+<rs:aggregatedResources path="skin.xml"/>
+
 <style type="text/css">
 .<portlet:namespace/>-row1color { padding: 5px; background-color: #eee; }
 .<portlet:namespace/>-row2color { padding: 5px; background-color: #fff; }
@@ -33,7 +35,7 @@
 
 <c:if test="${hideAbstract}">
     <script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
     <script src="<c:url value="/rs/jquery-tooltip/1.3/jquery.tooltip.js"/>" type="text/javascript"></script>
     <script type="text/javascript">

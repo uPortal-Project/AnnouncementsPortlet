@@ -23,6 +23,8 @@
 
 <c:set var="n"><portlet:namespace/></c:set>
 
+<rs:aggregatedResources path="skin.xml"/>
+
 <style type="text/css">
 .<portlet:namespace/>-row1color { padding: 5px; background-color: #eee; }
 .<portlet:namespace/>-row2color { padding: 5px; background-color: #fff; }
