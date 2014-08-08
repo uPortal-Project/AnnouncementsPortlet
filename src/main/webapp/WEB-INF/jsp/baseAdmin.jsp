@@ -22,8 +22,9 @@
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
 <c:set var="n"><portlet:namespace/></c:set>
-<script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
-<script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
 <link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
 
 <c:if test="${portalAdmin}">
