@@ -27,9 +27,8 @@
 </portlet:actionURL>
 
 <rs:aggregatedResources path="skin.xml"/>
-<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
-<script src="<rs:resourceURL value="/rs/jquery/1.6.4/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
-<script src="<rs:resourceURL value="/rs/jqueryui/1.8.13/jquery-ui-1.8.13.min.js"/>" type="text/javascript"></script>
+<rs:aggregatedResources path="skin-jquery.xml"/>
+
 <script src="<c:url value="/rs/jquery-tooltip/1.3/jquery.tooltip.js"/>" type="text/javascript"></script>
 <script type="text/javascript">
     var ${n} = ${n} || {}; //create a unique variable to assign our namespace too

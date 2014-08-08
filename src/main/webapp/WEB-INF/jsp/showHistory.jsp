@@ -22,7 +22,6 @@
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
 <rs:aggregatedResources path="skin.xml"/>
-<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
 
 <div id="<portlet:namespace/>">
 <div class="announcements-portlet-toolbar">

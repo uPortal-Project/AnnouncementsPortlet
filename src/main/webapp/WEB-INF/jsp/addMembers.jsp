@@ -34,7 +34,6 @@
 </portlet:actionURL>
 
 <rs:aggregatedResources path="skin.xml"/>
-<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
 
 <div class="announcements-portlet-toolbar">
 	<a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>">

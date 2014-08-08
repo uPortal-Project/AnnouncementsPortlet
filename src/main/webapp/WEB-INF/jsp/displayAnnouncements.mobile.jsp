@@ -21,8 +21,7 @@
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
-<rs:aggregatedResources path="skin.xml"/>
-<link type="text/css" rel="stylesheet" href="<c:url value="/css/mobile.css"/>"/>
+<rs:aggregatedResources path="skin-mobile.xml"/>
 
 <div class="content annplt-content">
 

@@ -24,11 +24,7 @@
 <c:set var="n"><portlet:namespace/></c:set>
 
 <rs:aggregatedResources path="skin.xml"/>
-<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
-
-<script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+<rs:aggregatedResources path="skin-jquery.xml"/>
 
 <c:if test="${portalAdmin}">
 <script type="text/javascript">

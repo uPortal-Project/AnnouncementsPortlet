@@ -24,10 +24,8 @@
 <c:set var="n"><portlet:namespace/></c:set>
 
 <rs:aggregatedResources path="skin.xml"/>
+<rs:aggregatedResources path="skin-jquery.xml"/>
 
-<script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
 <script src="<c:url value="/js/underscore-min.js"/>" type="text/javascript"></script>
 
 <script type="text/template" id="${n}template-attachment-display-item">
