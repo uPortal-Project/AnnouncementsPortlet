@@ -361,11 +361,38 @@
             </plugin>
 
             <plugin>
+                <groupId>org.jasig.resourceserver</groupId>
+                <artifactId>resource-server-plugin</artifactId>
+                <version>${resource-server.version}</version>
+                <executions>
+                    <execution>
+                        <id>aggregate-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>batch-aggregate</goal>
+                        </goals>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <displayJsWarnings>false</displayJsWarnings>
+                            <useGeneratedSources>true</useGeneratedSources>
+                            <includes>
+                                <include>skin.xml</include>
+                                <include>skin-mobile.xml</include>
+                                <include>skin-jquery.xml</include>
+                            </includes>
+                            <sharedJavaScriptDirectory>scripts/</sharedJavaScriptDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
 
                 <configuration>
                     <warName>Announcements</warName>
+                    <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
                     <overlays>
                         <overlay>
                             <groupId>org.jasig.resourceserver</groupId>
