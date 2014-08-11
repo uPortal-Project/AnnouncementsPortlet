@@ -22,9 +22,10 @@
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
 <c:if test="${includeJQuery}">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <rs:aggregatedResources path="skin-jquery.xml"/>
 </c:if>
 
+<rs:aggregatedResources path="skin.xml"/>
 <style type="text/css">
 .preview-section-header { font-weight: bold; margin-top: 10px; margin-bottom: 5px; }
 .preview-section { background-color: #f3f3f3; padding: 5px; }

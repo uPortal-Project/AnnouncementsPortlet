@@ -22,12 +22,14 @@
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
 <c:if test="${includeJQuery}">
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <rs:aggregatedResources path="skin-jquery.xml"/>
 </c:if>
-<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
+
+<rs:aggregatedResources path="skin.xml"/>
+
 <script type="text/javascript">
 var <portlet:namespace/> = <portlet:namespace/> || {};
-<portlet:namespace/>.jQuery = ${ includeJQuery ? 'jQuery.noConflict(true)' : 'jQuery' };
+<portlet:namespace/>.jQuery = ${ includeJQuery ? 'jQuery.noConflict(true)' : 'up.jQuery' };
 function <portlet:namespace/>_delete(url) {
     var response = window.confirm('<spring:message code="show.deleteAnn"/>');
     if (response) {

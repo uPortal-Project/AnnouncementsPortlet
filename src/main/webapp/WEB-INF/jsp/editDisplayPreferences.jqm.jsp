@@ -25,7 +25,7 @@
     <portlet:param name="action" value="editDisplayPreferences"/>
 </portlet:actionURL>
 
-<link type="text/css" rel="stylesheet" href="<c:url value="/css/mobile.css"/>"/>
+<rs:aggregatedResources path="skin-mobile.xml"/>
 
 <div class="portlet annplt-content">
     <div data-role="header" class="news-reader-back-bar titlebar portlet-titlebar">

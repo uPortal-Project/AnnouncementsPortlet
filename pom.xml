@@ -33,8 +33,8 @@
     <version>2.0.2-SNAPSHOT</version>
 
     <properties>
-    	<resource-server.version>1.0.26</resource-server.version>
-    	<spring.version>3.1.3.RELEASE</spring.version>
+        <resource-server.version>1.0.41</resource-server.version>
+        <spring.version>3.1.3.RELEASE</spring.version>
 
         <!-- The JDBC Driver used by the portlet -->
         <jdbc.groupId>org.hsqldb</jdbc.groupId>
@@ -65,8 +65,8 @@
         <connection>scm:git:git://github.com/Jasig/AnnouncementsPortlet.git</connection>
         <developerConnection>scm:git:git@github.com:Jasig/AnnouncementsPortlet.git</developerConnection>
         <url>https://github.com/Jasig/AnnouncementsPortlet</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <repositories>
         <repository>
@@ -284,6 +284,10 @@
             		<groupId>org.springframework</groupId>
             		<artifactId>spring-core</artifactId>
             	</exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
     </dependencies>
@@ -357,16 +361,45 @@
             </plugin>
 
             <plugin>
+                <groupId>org.jasig.resourceserver</groupId>
+                <artifactId>resource-server-plugin</artifactId>
+                <version>${resource-server.version}</version>
+                <executions>
+                    <execution>
+                        <id>aggregate-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>batch-aggregate</goal>
+                        </goals>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <displayJsWarnings>false</displayJsWarnings>
+                            <useGeneratedSources>true</useGeneratedSources>
+                            <includes>
+                                <include>skin.xml</include>
+                                <include>skin-mobile.xml</include>
+                                <include>skin-jquery.xml</include>
+                            </includes>
+                            <sharedJavaScriptDirectory>scripts/</sharedJavaScriptDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
 
                 <configuration>
                     <warName>Announcements</warName>
+                    <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
                     <overlays>
                         <overlay>
                             <groupId>org.jasig.resourceserver</groupId>
                             <artifactId>resource-server-content</artifactId>
                             <includes>
+                                <include>rs/bootstrap-namespaced/3.1.1/</include>
+                                <include>rs/fontawesome/4.0.3/</include>
                             </includes>
                         </overlay>
                     </overlays>
@@ -565,6 +598,26 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.lesscss</groupId>
+                <artifactId>lesscss-maven-plugin</artifactId>
+                <version>1.3.3</version>
+                <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/webapp/css/less</sourceDirectory>
+                    <outputDirectory>${project.build.directory}/${project.build.finalName}/css</outputDirectory>
+                    <compress>true</compress>
+                    <includes>
+                        <include>**/*.less</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
