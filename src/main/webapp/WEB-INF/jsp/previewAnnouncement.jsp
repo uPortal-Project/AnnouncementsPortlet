@@ -22,7 +22,7 @@
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
 <c:if test="${includeJQuery}">
-<script type="text/javascript" src="<c:url value="/js/jquery-1.2.3.min.js"/>"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 </c:if>
 
 <style type="text/css">
