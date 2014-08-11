@@ -60,8 +60,7 @@
 
 
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<rs:aggregatedResources path="skin-jquery.xml"/>
 <script type="text/javascript" src="<c:url value="/js/jquery.tablesorter.js"/>"></script>
 <script type="text/javascript">
 var <portlet:namespace/>  = jQuery.noConflict(true);

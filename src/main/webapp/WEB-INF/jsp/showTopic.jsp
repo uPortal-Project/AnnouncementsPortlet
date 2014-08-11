@@ -29,7 +29,7 @@
 
 <script type="text/javascript">
 var <portlet:namespace/> = <portlet:namespace/> || {};
-<portlet:namespace/>.jQuery = ${ includeJQuery ? 'jQuery.noConflict(true)' : 'jQuery' };
+<portlet:namespace/>.jQuery = ${ includeJQuery ? 'jQuery.noConflict(true)' : 'up.jQuery' };
 function <portlet:namespace/>_delete(url) {
     var response = window.confirm('<spring:message code="show.deleteAnn"/>');
     if (response) {
