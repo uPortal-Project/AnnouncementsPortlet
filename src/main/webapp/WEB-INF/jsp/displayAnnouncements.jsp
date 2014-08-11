@@ -1,4 +1,4 @@
-<%--
+    <%--
 
     Licensed to Jasig under one or more contributor license
     agreements. See the NOTICE file distributed with this work
@@ -20,14 +20,9 @@
 --%>
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
-
-<style type="text/css">
-.<portlet:namespace/>-row1color { padding: 5px; background-color: #eee; }
-.<portlet:namespace/>-row2color { padding: 5px; background-color: #fff; }
-.<portlet:namespace/>-emerg { padding: 5px; margin-bottom:5px; color:#c00; background-color: #fff; border: 3px solid #cc3300; }
-.<portlet:namespace/>-emerg a, .<portlet:namespace/>-emerg a:visited { text-decoration: none; color: #c00; }
-.announcements-scrolling { overflow: auto; }
-</style>
+<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
+<link rel="stylesheet" href="<rs:resourceURL value='/rs/fontawesome/4.0.3/css/font-awesome.css'/>" type="text/css"/>
+<link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
 <c:set var="n"><portlet:namespace/></c:set>
 
@@ -73,93 +68,129 @@
     </style>
 </c:if>
 
-<c:if test="${not empty emergency}">
-	<c:forEach items="${emergency}" var="announcement">
-		<div class="<portlet:namespace/>-emerg">
-			<strong><a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><img src="<c:url value="/icons/exclamation.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <c:out value="${announcement.title}"/></a></strong> <span class="portlet-section-text" style="font-size:0.9em;">(<fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/>)</span>
-			<br/>
-			<c:out value="${announcement.abstractText}"/>
-		</div>
-	</c:forEach>
-</c:if>
+    <div class="container-fluid announcements-container">
+        <div class="row announcements-portlet-toolbar">
+            <div class="col-md-12 no-col-padding">
+                <div class="nav-links">
+                    <c:if test="${not isGuest && not disableEdit}">
+                        <a href="<portlet:renderURL portletMode="edit" windowState="normal"/>"><i class="fa fa-edit"></i> <spring:message code="display.link.edit"/></a>
+                    </c:if> |
+                    <a href="<portlet:renderURL portletMode="view" ><portlet:param name="action" value="displayHistory"/></portlet:renderURL>"><i class="fa fa-archive"></i> <spring:message code="display.link.history"/></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <c:if test="${not empty emergency}">
+                    <c:forEach items="${emergency}" var="announcement">
+                        <div class="alert alert-danger" role="alert">
+                            <strong><a class="alert-link" title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><i class="fa fa-exclamation-triangle"></i> <c:out value="${announcement.title}"/></a></strong>
+                            <span class="pull-right"><small><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></small></span>
+                        <p><c:out value="${announcement.abstractText}"/></p>
+                        </div>
+                    </c:forEach>
+                </c:if>
+            </div>
+        </div>
+        <div class="row announcements-summary-row">
+            <div class="col-lg-12">
+                <c:choose>
+                    <c:when test="${useScrollingDisplay}">
+                        <div class="announcements-scrolling">
+                    </c:when>
+                    <c:otherwise>
+                        <div></div>
+                    </c:otherwise>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${empty announcements}">
+                        <div class="alert alert-warning"><spring:message code="display.no.announcements"/></div>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach items="${announcements}" var="announcement" varStatus="status">
+                            <div class="ann-display-item-summary">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="ann-item-header">
+                                            <div class="ann-item-topic">
+                                                <i class="fa fa-list-alt"></i> <c:out value="${announcement.parent.title}"/>
+                                            </div>
+                                            <c:if test="${displayPublishDate}">
+                                                <div class="ann-item-date"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></div>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h1><a title="<c:out value="${annLinkTitle}"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a></h1>
+                                        <c:choose>
+                                            <c:when test="${hideAbstract}">
+                                                <c:set var="annLinkTitle" value="${announcement.abstractText}"/>
+                                                <c:set var="annLinkClass" value="announcement-link-tooltip"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:set var="annLinkTitle"><spring:message code="display.title.fullannouncement"/></c:set>
+                                                <c:set var="annLinkClass" value="announcement-link"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <c:if test="${not hideAbstract}">
+                                            <p><c:out value="${announcement.abstractText}"/></p>
+                                        </c:if>
+                                        <c:if test="${not empty announcement.link}">
+                                            <p ><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></p>
+                                        </c:if>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </div>
+        <div class="row announcement-list-nav">
+            <div class="col-md-12">
+                <c:if test="${not (from == 0)}">
+                    <a class="btn btn-default" href="<portlet:renderURL portletMode="view" windowState="normal"><portlet:param name="from" value="${from - increment}"/><portlet:param name="to" value="${to - increment}"/></portlet:renderURL>"><i class="fa fa-hand-o-left"></i> <spring:message code="display.link.prev"/> <c:out value="${increment}"/></a>
+                </c:if>
+                <c:if test="${(not (from == 0)) and hasMore}">&nbsp;&mdash;&nbsp;</c:if>
+                <c:if test="${hasMore}">
+                    <span class="pull-right"><a class="btn btn-default" href="<portlet:renderURL portletMode="view" windowState="normal"><portlet:param name="from" value="${from + increment}"/><portlet:param name="to" value="${to + increment}"/></portlet:renderURL>"><spring:message code="display.link.next"/> <c:out value="${increment}"/> <i class="fa fa-hand-o-right"></i></a></span>
+                </c:if>
+            </div>
+        </div>
+    </div>
 
-<div<c:if test="${useScrollingDisplay}"> class="announcements-scrolling" style="height: ${scrollingDisplayHeightPixels}px;"</c:if>>
+    <script type="text/javascript">
+        // For announcement display, the following code watches the div size of the
+        // announcements container and readjust the size of the announcements div
+        // to match the width of uPortal customize drawer layout width
+        var watchingDiv = $(".announcements-container");
+        var changingDiv = $(".announcements-summary-row > div");
+        var classToRemove = "col-lg-6";
+        var classToAdd = "col-lg-12";
 
-<c:choose>
-    <c:when test="${empty announcements}">
-        <p><span class=""><spring:message code="display.no.announcements"/></span></p>
-    </c:when>
-    <c:otherwise>
-        <table width="100%" cellspacing="0" cellpadding="0" class="data">
-          <thead>
-            <tr>
-                <th width="15%"><spring:message code="display.header.topic"/></th>
-                <th><spring:message code="display.header.ann"/></th>
-            </tr>
-          </thead>
-          <tbody>
-        <c:forEach items="${announcements}" var="announcement" varStatus="status">
-            <c:choose>
-                <c:when test="${status.index mod 2 == 0}">
-                    <c:set var="rowClass" value="${n}-row1color"/>
-                </c:when>
-                <c:otherwise>
-                    <c:set var="rowClass" value="${n}-row2color"/>
-                </c:otherwise>
-            </c:choose>
-            <tr>
-                <td align="center" width="15%" class="<c:out value="${rowClass}"/>">
-                    <c:out value="${announcement.parent.title}"/>
-                    <c:if test="${displayPublishDate}">
-                        <br/>
-                        <span class="portlet-section-text" style="font-size:0.9em;"><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></span>
-                    </c:if>
-                </td>
-                <td class="<c:out value="${rowClass}"/>">
-                    <c:choose>
-                        <c:when test="${hideAbstract}">
-                            <c:set var="annLinkTitle" value="${announcement.abstractText}"/>
-                            <c:set var="annLinkClass" value="announcement-link-tooltip"/>
-                        </c:when>
-                        <c:otherwise>
-                            <c:set var="annLinkTitle"><spring:message code="display.title.fullannouncement"/></c:set>
-                            <c:set var="annLinkClass" value="announcement-link"/>
-                        </c:otherwise>
-                    </c:choose>
-                    <a title="<c:out value="${annLinkTitle}"/>" class="<c:out value="${annLinkClass}"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncement"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a>
-                    <br/>
-                    <c:if test="${not hideAbstract}">
-                        <c:out value="${announcement.abstractText}"/><br/>
-                    </c:if>
-                    <c:if test="${not empty announcement.link}">
-                        <span class="portlet-section-text" style="font-size:0.9em; padding-top:0.2em;"><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></span>
-                    </c:if>
-                </td>
-            </tr>
-        </c:forEach>
-          </tbody>
-        </table>
-    </c:otherwise>
-</c:choose>
+        // Watch a div and return the width of it
+        function watchDivSize (div) {
+            var divSize = div.width();
 
-</div>
+            return divSize;
+        }
 
-<table border="0" width="100%">
-  <tr>
-	<td align="left" style="font-size:0.9em; padding-top:0.5em;">
-		<c:if test="${not (from == 0)}">
-			<a href="<portlet:renderURL portletMode="view" windowState="normal"><portlet:param name="from" value="${from - increment}"/><portlet:param name="to" value="${to - increment}"/></portlet:renderURL>"><spring:message code="display.link.prev"/> <c:out value="${increment}"/></a>
-		</c:if>
-		<c:if test="${(not (from == 0)) and hasMore}">&nbsp;&mdash;&nbsp;</c:if>
-		<c:if test="${hasMore}">
-			<a href="<portlet:renderURL portletMode="view" windowState="normal"><portlet:param name="from" value="${from + increment}"/><portlet:param name="to" value="${to + increment}"/></portlet:renderURL>"><spring:message code="display.link.next"/> <c:out value="${increment}"/></a>
-		</c:if>
-		<a href="<portlet:renderURL portletMode="view" ><portlet:param name="action" value="displayHistory"/></portlet:renderURL>"><spring:message code="display.link.history"/></a>
-	</td>
-	<td align="right" style="font-size:0.9em; padding-top:0.5em;">
-		<c:if test="${not isGuest && not disableEdit}">
-			<a style="text-decoration:none;" href="<portlet:renderURL portletMode="edit" windowState="normal"/>"><img src="<c:url value="/icons/pencil.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="display.link.edit"/></a>
-		</c:if>
-	</td>
-  </tr>
-</table>
+        // If the width is less than 970 pixels, swap out Bootstrap classes
+        function adjustAnnDisplay(divWidth) {
+            if(divWidth < 970) {
+                changingDiv.removeClass(classToRemove);
+                changingDiv.addClass(classToAdd);
+            }
+        }
+
+        // Make the initial watch and adjustment
+        adjustAnnDisplay(watchDivSize(watchingDiv));
+
+        $(document).ready(function() {
+            $(window).resize(function() {
+                //adjustAnnDisplay(watchDivSize(watchingDiv));
+            });
+        });
+    </script>

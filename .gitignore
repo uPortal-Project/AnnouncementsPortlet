@@ -12,3 +12,7 @@ target
 overlays/
 pom.xml.versionsBackup
 /bin
+
+/node_modules
+Gruntfile.js
+package.json

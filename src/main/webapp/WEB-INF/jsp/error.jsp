@@ -21,9 +21,24 @@
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
-<div class="portlet-section-header"><spring:message code="error.header"/></div>
+<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
+<link rel="stylesheet" href="<rs:resourceURL value='/rs/fontawesome/4.0.3/css/font-awesome.css'/>" type="text/css"/>
+<link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
-<c:out value="${exception.message}"/>
+    <div class="container-fluid announcements-container">
+        <div class="row announcements-portlet-toolbar">
+            <div class="col-md-12 no-col-padding">
+                <h4><spring:message code="error.header"/></h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-danger" role="alert">
+                    <p><i class="fa fa-exclamation-triangle"></i> <c:out value="${exception.message}"/></p>
+                    <p><a class="alert-link" href='<portlet:renderURL portletMode="view" windowState="normal"/>'><spring:message code="error.goback"/></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<br/><br/>
-<a href="<portlet:renderURL portletMode="view" windowState="normal"/>"><spring:message code="error.goback"/></a>
+

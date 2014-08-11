@@ -1,0 +1,88 @@
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+.announcements-container .announcements-portlet-toolbar {
+  border-bottom: 1px solid #eee;
+  margin: 0 0 10px 0;
+  height: 100%;
+}
+.announcements-container .announcements-portlet-toolbar .nav-links {
+  height: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: right;
+}
+.announcements-container .announcements-table thead {
+  text-align: center;
+  background-color: #dfefff;
+}
+.announcements-container .announcements-table .action-icon-table {
+  width: 100%;
+}
+.announcements-container .announcements-table .action-icon-table .action-icon {
+  padding: 6px;
+}
+.announcements-container form input[type="text"],
+.announcements-container form input[type="password"],
+.announcements-container form textarea {
+  width: 100%;
+}
+.announcements-container form .announcements-error {
+  margin-top: 10px;
+  display: block;
+  text-align: left;
+  padding: .5em .8em;
+  font-size: 85%;
+}
+.announcements-container form .mceLayout {
+  border: 1px solid #ccc !important;
+}
+.announcements-container .ann-display-item-summary,
+.announcements-container .ann-display-item-full {
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+.announcements-container .ann-display-item-summary .ann-item-header,
+.announcements-container .ann-display-item-full .ann-item-header {
+  font-weight: bold;
+  height: 100%;
+  display: block;
+}
+.announcements-container .ann-display-item-summary .ann-item-header .ann-item-topic,
+.announcements-container .ann-display-item-full .ann-item-header .ann-item-topic {
+  float: left;
+}
+.announcements-container .ann-display-item-summary .ann-item-header .ann-item-date,
+.announcements-container .ann-display-item-full .ann-item-header .ann-item-date {
+  text-align: right;
+}
+.announcements-container .ann-display-item-summary h1,
+.announcements-container .ann-display-item-full h1 {
+  font-size: 135%;
+  margin-top: 6px;
+  border-bottom: none;
+}
+.announcements-container .ann-display-item-summary {
+  border-bottom: 1px solid #eee;
+}
+.announcements-container .announcement-list-nav {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.announcements-container .permissions-group-padding {
+  padding: 3px;
+}
+.announcements-container .permissions-group-container {
+  width: 25%;
+  padding: 5px;
+  border: 1px solid #eee;
+}
+.announcements-container .announcements-scrolling {
+  overflow: auto;
+}
+.announcements-container .no-col-padding {
+  padding: 0;
+}

@@ -20,21 +20,19 @@
 --%>
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
+<portlet:defineObjects/>
 
 <c:set var="n"><portlet:namespace/></c:set>
-<portlet:defineObjects/>
-<link href="<c:url value="/css/baseAdmin.css"/>" rel="stylesheet" type="text/css" />
 <script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
 <script src="<c:url value="/js/underscore-min.js"/>" type="text/javascript"></script>
 
+<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
+<link rel="stylesheet" href="<rs:resourceURL value='/rs/fontawesome/4.0.3/css/font-awesome.css'/>" type="text/css"/>
+<link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
+
 <script type="text/javascript" src="<c:url value="/tinymce/tiny_mce.js"/>"></script>
-<!--script type="text/javascript" src="<c:url value="/tinymce/plugins/preview/jscripts/embed.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/tinymce/plugins/preview/editor_plugin.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/tinymce/plugins/paste/js/pastetext.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/tinymce/plugins/paste/js/pasteword.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/tinymce/plugins/paste/editor_plugin.js"/>"></script-->
 <script type="text/javascript">
     var ${n} = ${n} || {}; // create a unique variable for our JS namespace
     ${n}.jQuery = jQuery.noConflict(true); // assign jQuery to this namespace
@@ -103,7 +101,6 @@
         </a>
         <span>${"<%="} attachment.filename ${"%>"}</span>
         <input type="hidden" name="attachments" value='${"<%="} JSON.stringify(attachment) ${"%>"}'/>
-
     </div>
 </script>
 
@@ -111,89 +108,90 @@
     <portlet:param name="action" value="addAnnouncement"/>
     <portlet:param name="topicId" value="${announcement.parent.id}"/>
 </portlet:actionURL>
-<div class="announcements-portlet-toolbar">
-    <a style="text-decoration:none;" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${announcement.parent.id}"/></portlet:renderURL>">
-        <img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.backtotopic"/></a>
-    <div class="announcements-portlet-secondary">
-        
 
-        <a style="text-decoration:none;" href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>">
-        <img src="<c:url value="/icons/house.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
-    </div>
-</div>
-<div class="portlet-section-header"><h2 class="title=" role="heading"><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></h2></div>
-
-<form:form commandName="announcement" method="post" action="${actionUrl}">
-    <div class="announcements-portlet-row">
-        <label for="title"><spring:message code="addAnnouncement.title"/></label>
-        <div class="announcements-portlet-col">
-            <form:errors cssClass="portlet-msg-error" path="title"/>
-             <form:input cssClass="portlet-form-input-field" path="title" size="30" maxlength="80"/>
-         </div>
-    </div>
-
-
-    <div class="announcements-portlet-row">
-        <label for="${n}abstractText"><spring:message code="addAnnouncement.abstract"/></label>
-        <div class="announcements-portlet-col">
-            <form:errors cssClass="portlet-msg-error" path="abstractText"/>
-            <form:textarea cssClass="portlet-form-input-field" path="abstractText" id="${n}abstractText" rows="2" cols="40" />
-            <div id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> <spring:message code="addAnnouncement.charactersremaining"/></div>
+    <div class="container-fluid announcements-container">
+        <div class="row announcements-portlet-toolbar">
+            <div class="col-md-6 no-col-padding">
+                <h4 role="heading"><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></h4>
+            </div>
+            <div class="col-md-6 no-col-padding">
+                <div class="nav-links">
+                    <a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${announcement.parent.id}"/></portlet:renderURL>"><i class="fa fa-arrow-left"></i> <spring:message code="general.backtotopic"/></a> |
+                    <a href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>"><i class="fa fa-home"></i> <spring:message code="general.adminhome"/></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form:form commandName="announcement" method="post" action="${actionUrl}" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="title" class="col-sm-3 control-label"><spring:message code="addAnnouncement.title"/></label>
+                        <div class="col-sm-9">
+                            <form:input cssClass="form-control" path="title"/>
+                            <form:errors cssClass="announcements-error label label-danger" path="title"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="${n}abstractText" class="col-sm-3 control-label"><spring:message code="addAnnouncement.abstract"/></label>
+                        <div class="col-sm-9">
+                            <form:textarea cssClass="form-control" path="abstractText" id="${n}abstractText"/>
+                            <form:errors cssClass="announcements-error label label-danger" path="abstractText"/>
+                            <div id="${n}abstractTextRemaining"><c:out value="${abstractMaxLength}"/> <spring:message code="addAnnouncement.charactersremaining"/></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.message"/></label>
+                        <div class="col-sm-9">
+                            <form:textarea cssClass="form-control mceEditor" path="message"/>
+                            <form:errors cssClass="announcements-error label label-danger" path="message"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.link"/></label>
+                        <div class="col-sm-9">
+                            <form:errors cssClass="announcements-error label label-danger" path="link"/>
+                            <form:input cssClass="form-control" path="link"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.start"/></label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <form:input path="startDisplay" cssClass="form-control" id="${n}datepickerstart"/>
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <form:errors cssClass="announcements-error label label-danger" path="startDisplay"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.end"/></label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <form:input path="endDisplay" cssClass="form-control" id="${n}datepickerend"/>
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            </div>
+                            <form:errors cssClass="announcements-error label label-danger" path="endDisplay"/>
+                        </div>
+                    </div>
+                    <div class="form-group" id="${n}attachment_add_section" style="display:none;">
+                        <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.attachments"/>:</label>
+                        <div class="col-sm-9">
+                            <a class="btn btn-default btn-sm" href="javascript:upAttachments.show(${n}.addAttachmentCallback);"><i class="fa fa-folder-open-o"></i> Browse...</a>
+                        </div>
+                    </div>
+                    <form:hidden path="id"/>
+                    <form:hidden path="created"/>
+                    <form:hidden path="author"/>
+                    <form:hidden path="parent"/>
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button type="submit" class="btn btn-primary"><spring:message code="addAnnouncement.save"/></button>
+                        </div>
+                    </div>
+                </form:form>
+            </div>
         </div>
     </div>
-
-
-    <div class="announcements-portlet-row">
-        <label><spring:message code="addAnnouncement.message"/></label>
-        <div class="announcements-portlet-col">
-            <form:errors cssClass="portlet-msg-error" path="message"/>
-            <form:textarea cssClass="portlet-form-input-field mceEditor" path="message" rows="5" cols="30" cssStyle="width: 70%;" />
-        </div>
-    </div>
-
-
-    <div class="announcements-portlet-row">
-        <label><spring:message code="addAnnouncement.link"/></label>
-        <div class="announcements-portlet-col">
-            <form:errors cssClass="portlet-msg-error" path="link"/>
-            <form:input cssClass="portlet-form-input-field" path="link" size="30" maxlength="255"/>
-        </div>
-    </div>
-
-
-    <div class="announcements-portlet-row">
-        <label><spring:message code="addAnnouncement.start"/></label>
-        <div class="announcements-portlet-col">
-            <form:errors cssClass="portlet-msg-error" path="startDisplay"/>
-            <form:input path="startDisplay" id="${n}datepickerstart"></form:input>
-        </div>
-    </div>
-
-
-    <div class="announcements-portlet-row">
-        <label><spring:message code="addAnnouncement.end"/></label>
-        <div class="announcements-portlet-col">
-            <form:errors cssClass="portlet-msg-error" path="endDisplay"/>
-            <form:input path="endDisplay" id="${n}datepickerend"></form:input>
-        </div>
-    </div>
-
-    <div class="announcements-portlet-row" id="${n}attachment_add_section" style="display:none;">
-        <label>
-            <spring:message code="addAnnouncement.attachments"/>
-            <a style="text-decoration:none;" href="javascript:upAttachments.show(${n}.addAttachmentCallback);">
-                <img src="<c:url value="/icons/add.png"/>" border="0" height="16" width="16" style="vertical-align:middle;"/>
-            </a>
-        </label>
-        <div id="${n}attachments" class="announcements-portlet-col">
-        </div>
-    </div>
-<form:hidden path="id"/>
-<form:hidden path="created"/>
-<form:hidden path="author"/>
-<form:hidden path="parent"/>
-<button type="submit" class="portlet-form-button"><spring:message code="addAnnouncement.save"/></button>
-</form:form>
 
 <script type="text/javascript">
 tinyMCE.init({
