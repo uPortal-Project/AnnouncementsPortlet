@@ -81,7 +81,7 @@
             <div class="col-md-6 no-col-padding">
                 <div class="nav-links">
                     <a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>"><i class="fa fa-plus"></i> <spring:message code="show.addAnn"/></a> |
-                    <a href="<portlet:renderURL portletMode="view"></portlet:renderURL>"><i class="fa fa-home"></i> <spring:message code="general.adminhome"/></a>
+                    <a href="<portlet:renderURL></portlet:renderURL>"><i class="fa fa-home"></i> <spring:message code="general.adminhome"/></a>
                 </div>
             </div>
         </div>

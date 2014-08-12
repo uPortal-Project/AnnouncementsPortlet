@@ -73,9 +73,9 @@
             <div class="col-md-12 no-col-padding">
                 <div class="nav-links">
                     <c:if test="${not isGuest && not disableEdit}">
-                        <a href="<portlet:renderURL portletMode="edit" windowState="normal"/>"><i class="fa fa-edit"></i> <spring:message code="display.link.edit"/></a>
+                        <a href="<portlet:renderURL portletMode="edit" />"><i class="fa fa-edit"></i> <spring:message code="display.link.edit"/></a>
                     </c:if> |
-                    <a href="<portlet:renderURL portletMode="view" ><portlet:param name="action" value="displayHistory"/></portlet:renderURL>"><i class="fa fa-archive"></i> <spring:message code="display.link.history"/></a>
+                    <a href="<portlet:renderURL><portlet:param name="action" value="displayHistory"/></portlet:renderURL>"><i class="fa fa-archive"></i> <spring:message code="display.link.history"/></a>
                 </div>
             </div>
         </div>
@@ -151,11 +151,11 @@
         <div class="row announcement-list-nav">
             <div class="col-md-12">
                 <c:if test="${not (from == 0)}">
-                    <a class="btn btn-default" href="<portlet:renderURL portletMode="view" windowState="normal"><portlet:param name="from" value="${from - increment}"/><portlet:param name="to" value="${to - increment}"/></portlet:renderURL>"><i class="fa fa-hand-o-left"></i> <spring:message code="display.link.prev"/> <c:out value="${increment}"/></a>
+                    <a class="btn btn-default" href="<portlet:renderURL><portlet:param name="from" value="${from - increment}"/><portlet:param name="to" value="${to - increment}"/></portlet:renderURL>"><i class="fa fa-hand-o-left"></i> <spring:message code="display.link.prev"/> <c:out value="${increment}"/></a>
                 </c:if>
                 <c:if test="${(not (from == 0)) and hasMore}">&nbsp;&mdash;&nbsp;</c:if>
                 <c:if test="${hasMore}">
-                    <span class="pull-right"><a class="btn btn-default" href="<portlet:renderURL portletMode="view" windowState="normal"><portlet:param name="from" value="${from + increment}"/><portlet:param name="to" value="${to + increment}"/></portlet:renderURL>"><spring:message code="display.link.next"/> <c:out value="${increment}"/> <i class="fa fa-hand-o-right"></i></a></span>
+                    <span class="pull-right"><a class="btn btn-default" href="<portlet:renderURL><portlet:param name="from" value="${from + increment}"/><portlet:param name="to" value="${to + increment}"/></portlet:renderURL>"><spring:message code="display.link.next"/> <c:out value="${increment}"/> <i class="fa fa-hand-o-right"></i></a></span>
                 </c:if>
             </div>
         </div>

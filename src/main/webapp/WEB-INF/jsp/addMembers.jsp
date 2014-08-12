@@ -53,7 +53,7 @@
             <div class="col-md-6 no-col-padding">
                 <div class="nav-links">
                     <a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>"><i class="fa fa-arrow-left"></i> <spring:message code="general.backtotopic"/></a> |
-                    <a href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>"><i class="fa fa-home"></i> <spring:message code="general.adminhome"/></a>
+                    <a href="<portlet:renderURL />"><i class="fa fa-home"></i> <spring:message code="general.adminhome"/></a>
                 </div>
             </div>
         </div>
@@ -72,6 +72,7 @@
                         </c:forEach>
                     </div>
                     <button type="submit" class="btn btn-primary"><spring:message code="addMembers.update"/></button>
+                    <a class="btn btn-link" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>"><spring:message code="addMembers.cancel"/></a>
                 </form:form>
             </div>
             <div class="col-md-7">

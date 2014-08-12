@@ -32,5 +32,5 @@
 
 <c:out value="${announcement.message}" escapeXml="false"/>
 
-<a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view"><portlet:param name="action" value="displayHistory"/></portlet:renderURL>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="displayFullHistory.back"/></a>
+<a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL><portlet:param name="action" value="displayHistory"/></portlet:renderURL>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="displayFullHistory.back"/></a>
 

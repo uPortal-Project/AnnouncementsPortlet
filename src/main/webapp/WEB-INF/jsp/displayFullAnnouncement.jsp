@@ -63,7 +63,7 @@
     <div class="container-fluid announcements-container">
         <div class="row announcements-portlet-toolbar">
             <div class="nav-links">
-                <a href="<portlet:renderURL portletMode="view" windowState="normal"/>"><i class="fa fa-arrow-left"></i> <spring:message code="displayFull.back"/></a>
+                <a href="<portlet:renderURL />"><i class="fa fa-arrow-left"></i> <spring:message code="displayFull.back"/></a>
             </div>
         </div>
         <div class="ann-display-item-full">

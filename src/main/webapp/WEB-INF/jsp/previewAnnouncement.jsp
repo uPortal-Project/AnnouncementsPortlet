@@ -39,8 +39,8 @@
                     <c:if test="${ user.moderator or (user.userName == announcement.author) }">
                         <a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${announcement.id}"/></portlet:renderURL>" title="<spring:message code="show.viewedit"/>"><i class="fa fa-edit"></i>  <spring:message code="show.edit"/></a> |
                     </c:if>
-                    <a href="<portlet:renderURL portletMode="view"><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ announcement.parent.id }"/></portlet:renderURL>"><i class="fa fa-arrow-left"></i> <spring:message code="general.backtotopic"/></a> |
-                    <a href="<portlet:renderURL portletMode="view" windowState="normal"></portlet:renderURL>"><i class="fa fa-home"></i> <spring:message code="general.adminhome"/></a>
+                    <a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ announcement.parent.id }"/></portlet:renderURL>"><i class="fa fa-arrow-left"></i> <spring:message code="general.backtotopic"/></a> |
+                    <a href="<portlet:renderURL></portlet:renderURL>"><i class="fa fa-home"></i> <spring:message code="general.adminhome"/></a>
                 </div>
             </div>
         </div>
@@ -110,7 +110,7 @@
                        approval: true
                    },
                    function(){
-                       window.location = "<portlet:renderURL portletMode="view"><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ announcement.parent.id }"/></portlet:renderURL>";
+                       window.location = "<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ announcement.parent.id }"/></portlet:renderURL>";
                        return false;
                    }
                );

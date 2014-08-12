@@ -35,7 +35,7 @@
             <div class="col-md-12">
                 <div class="alert alert-danger" role="alert">
                     <p><i class="fa fa-exclamation-triangle"></i> <c:out value="${exception.message}"/></p>
-                    <p><a class="alert-link" href='<portlet:renderURL portletMode="view" windowState="normal"/>'><spring:message code="error.goback"/></a></p>
+                    <p><a class="alert-link" href='<portlet:renderURL portletMode="view"/>'><spring:message code="error.goback"/></a></p>
                 </div>
             </div>
         </div>

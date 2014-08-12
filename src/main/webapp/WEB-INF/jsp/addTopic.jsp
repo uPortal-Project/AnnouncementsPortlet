@@ -76,7 +76,7 @@
         </div>
         <div class="col-md-4 no-col-padding">
             <div class="nav-links">
-                <a href="<portlet:renderURL portletMode='view' windowState='normal'></portlet:renderURL>"><i class="fa fa-home"></i> <spring:message code="general.adminhome"/></a>
+                <a href="<portlet:renderURL />"><i class="fa fa-home"></i> <spring:message code="general.adminhome"/></a>
             </div>
         </div>
     </div>
@@ -130,7 +130,7 @@
                 <div class="form-group">
                     <div class="col-sm-9 col-sm-offset-3">
                         <button type="submit" class="btn btn-primary"><spring:message code="addTopic.saveButton"/></button>
-                        <a class="btn btn-link" href="<portlet:renderURL portletMode='view' windowState='normal'></portlet:renderURL>"><spring:message code="addTopic.cancel"/></a>
+                        <a class="btn btn-link" href="<portlet:renderURL />"><spring:message code="addTopic.cancel"/></a>
                     </div>
                 </div>
             </form:form>
