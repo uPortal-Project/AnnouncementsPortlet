@@ -130,6 +130,7 @@
                 <div class="form-group">
                     <div class="col-sm-9 col-sm-offset-3">
                         <button type="submit" class="btn btn-primary"><spring:message code="addTopic.saveButton"/></button>
+                        <a class="btn btn-link" href="<portlet:renderURL portletMode='view' windowState='normal'></portlet:renderURL>"><spring:message code="addTopic.cancel"/></a>
                     </div>
                 </div>
             </form:form>
