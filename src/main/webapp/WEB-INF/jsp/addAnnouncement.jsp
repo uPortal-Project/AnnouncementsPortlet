@@ -186,6 +186,7 @@
                     <div class="form-group">
                         <div class="col-sm-9 col-sm-offset-3">
                             <button type="submit" class="btn btn-primary"><spring:message code="addAnnouncement.save"/></button>
+                            <a class="btn btn-link" href="<portlet:renderURL />"><spring:message code="addAnnouncement.cancel"/></a>
                         </div>
                     </div>
                 </form:form>
