@@ -68,9 +68,10 @@
 
         });
 
+        var tinyMceFileBrowserCallback = null;  // default
+
         // Display and use the attachments feature only if it's present
-        if(typeof upAttachments != "undefined")
-        {
+        if(typeof upAttachments != "undefined") {
             ${n}.addAttachmentCallback = function(result) {
                 ${n}.addAttachment(result);
                 upAttachments.hide();
@@ -89,7 +90,22 @@
             ${n}.addAttachment(${attachment});
             </c:forEach>
             $("#${n}attachment_add_section").show();
+            // TinyMCE WYSIWYG callback
+            tinyMceFileBrowserCallback = function(field_name, url, type, win) {
+                setTimeout(function() { window.self.focus(); }, 1);
+                upAttachments.show(function(result) {
+                    win.document.getElementById(field_name).value = result.path;
+                    upAttachments.hide();
+                    setTimeout(function() { win.focus(); }, 1);
+                });
+            };
         }
+
+        var tinyMceOptions = { <c:out value="${tinyMceInitializationOptions}" escapeXml="false"/> };
+        if (tinyMceFileBrowserCallback) {
+            tinyMceOptions.file_browser_callback = tinyMceFileBrowserCallback;
+        }
+        tinyMCE.init(tinyMceOptions);
     });
 
 </script>
@@ -138,14 +154,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                    <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.message"/></label>
+                        <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.message"/></label>
                         <div class="col-sm-9">
                             <form:textarea cssClass="form-control mceEditor" path="message"/>
                             <form:errors cssClass="announcements-error label label-danger" path="message"/>
                         </div>
                     </div>
                     <div class="form-group">
-                    <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.link"/></label>
+                        <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.link"/></label>
                         <div class="col-sm-9">
                             <form:errors cssClass="announcements-error label label-danger" path="link"/>
                             <form:input cssClass="form-control" path="link"/>
@@ -177,7 +193,7 @@
                             <a class="btn btn-default btn-sm" href="javascript:upAttachments.show(${n}.addAttachmentCallback);"><i class="fa fa-folder-open-o"></i> Browse...</a>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div class="attachments-container" id="${n}attachments">
+                                    <div class="attachments-container" id="${n}attachments"></div>
                                 </div>
                             </div>
                         </div>
@@ -198,7 +214,4 @@
     </div>
 
 <script type="text/javascript">
-tinyMCE.init({
-    <c:out value="${tinyMceInitializationOptions}" escapeXml="false"/>
-});
 </script>
