@@ -140,7 +140,7 @@
                                     </td>
                                     <td class="text-right">
                                         <c:if test="${((not user.moderator) and user.userName eq ann.author) or user.moderator}">
-                                            <a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="show.viewedit"/>"><i class="fa fa-plus"></i></a>&nbsp;
+                                            <a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="show.viewedit"/>"><i class="fa fa-edit"></i></a>&nbsp;
                                         </c:if>
                                         <c:if test="${user.moderator}">
                                             <a href="#" onclick="<portlet:namespace/>_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="show.delete"/>"><i class="fa fa-trash-o"></i></a>&nbsp;
