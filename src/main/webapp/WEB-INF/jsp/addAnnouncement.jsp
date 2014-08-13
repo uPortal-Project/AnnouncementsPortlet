@@ -96,9 +96,7 @@
 
 <script type="text/template" id="${n}template-attachment-add-item">
     <div id="${n}attachment_add_${"<%="} attachment.id ${"%>"}" class="attachment-item">
-        <a class="remove-button" href="javascript:void(0);">
-            <img id="attachment-delete" src="<c:url value="/icons/delete.png"/>" border="0" style="height:14px;width:14px;vertical-align:middle;margin-right:5px;cursor:pointer;"/>
-        </a>
+        <a class="remove-button" href="javascript:void(0);"> <i class="fa fa-trash-o"></i></a>
         <span>${"<%="} attachment.filename ${"%>"}</span>
         <input type="hidden" name="attachments" value='${"<%="} JSON.stringify(attachment) ${"%>"}'/>
     </div>
@@ -177,18 +175,23 @@
                         <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.attachments"/>:</label>
                         <div class="col-sm-9">
                             <a class="btn btn-default btn-sm" href="javascript:upAttachments.show(${n}.addAttachmentCallback);"><i class="fa fa-folder-open-o"></i> Browse...</a>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="attachments-container" id="${n}attachments">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <form:hidden path="id"/>
-                    <form:hidden path="created"/>
-                    <form:hidden path="author"/>
-                    <form:hidden path="parent"/>
                     <div class="form-group">
                         <div class="col-sm-9 col-sm-offset-3">
                             <button type="submit" class="btn btn-primary"><spring:message code="addAnnouncement.save"/></button>
                             <a class="btn btn-link" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${announcement.parent.id}"/></portlet:renderURL>"><spring:message code="addAnnouncement.cancel"/></a>
                         </div>
                     </div>
+                    <form:hidden path="id"/>
+                    <form:hidden path="created"/>
+                    <form:hidden path="author"/>
+                    <form:hidden path="parent"/>
                 </form:form>
             </div>
         </div>
