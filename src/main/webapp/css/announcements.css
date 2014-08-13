@@ -40,6 +40,10 @@
 .announcements-container form .mceLayout {
   border: 1px solid #ccc !important;
 }
+.announcements-container form .attachments-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 .announcements-container .ann-display-item-summary,
 .announcements-container .ann-display-item-full {
   margin-top: 15px;
