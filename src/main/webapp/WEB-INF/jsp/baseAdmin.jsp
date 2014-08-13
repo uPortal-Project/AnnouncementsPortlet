@@ -17,7 +17,7 @@
     specific language governing permissions and limitations
     under the License.
 
-    --%>
+--%>
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 
