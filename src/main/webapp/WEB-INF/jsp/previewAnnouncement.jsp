@@ -20,13 +20,14 @@
 --%>
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
+<c:set var="n"><portlet:namespace/></c:set>
 
 <link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
 <link rel="stylesheet" href="<rs:resourceURL value='/rs/fontawesome/4.0.3/css/font-awesome.css'/>" type="text/css"/>
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
-<c:if test="${includeJQuery}">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<c:if test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
+    <script type="text/javascript" src="<rs:resourceURL value="/rs/jquery/1.10.2/jquery-1.10.2.min.js"/>"></script>
 </c:if>
 
     <div class="container-fluid bootstrap-styles announcements-container">
@@ -88,7 +89,7 @@
         <c:if test="${ user.moderator and !announcement.published }">
             <div class="row">
                 <div class="col-xs-12">
-                    <form id="<portlet:namespace/>Form">
+                    <form id="${n}Form">
                         <input class="btn btn-success" type="submit" value="<spring:message code="show.publish"/>"/>
                     </form>
                 </div>
@@ -96,14 +97,23 @@
         </c:if>
     </div>
 
-<script type="text/javascript">
-    var <portlet:namespace/> = <portlet:namespace/> || {};
-    <portlet:namespace/>.jQuery = ${ includeJQuery ? 'jQuery.noConflict(true)' : 'jQuery' };
-    <portlet:namespace/>.jQuery(function(){
-       var $ = <portlet:namespace/>.jQuery;
+<script type="text/javascript"><rs:compressJs>
+    var ${n} = ${n} || {};
 
-       $(document).ready(function(){
-           $("#<portlet:namespace/>Form").submit(function(){
+<c:choose>
+    <c:when test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
+        ${n}.jQuery = jQuery.noConflict(true)
+    </c:when>
+    <c:otherwise>
+        ${n}.jQuery = up.jQuery;
+    </c:otherwise>
+</c:choose>
+
+${n}.jQuery(function() {
+    var $ = ${n}.jQuery;
+
+    $(document).ready(function(){
+            $("#${n}Form").submit(function(){
                $.post("<c:url value="/ajaxApprove"/>",
                    {
                        annId: "${announcement.id}",
@@ -117,4 +127,5 @@
            });
        });
     });
-</script>
+
+</rs:compressJs></script>

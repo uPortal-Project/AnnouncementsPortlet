@@ -41,10 +41,6 @@
         </property>
     </bean>
 
-    <bean id="includeJQuery" class="java.lang.Boolean">
-        <constructor-arg value="${javascript.jQuery.include}"/>
-    </bean>
-
     <bean id="customDateFormat" class="java.lang.String">
         <constructor-arg value="${dateformat.input.default}"/>
     </bean>

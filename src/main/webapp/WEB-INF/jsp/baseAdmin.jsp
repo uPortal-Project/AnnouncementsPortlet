@@ -20,18 +20,20 @@
 --%>
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
-
 <c:set var="n"><portlet:namespace/></c:set>
-<script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+
+<c:if test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
+    <script src="<rs:resourceURL value="/rs/jquery/1.10.2/jquery-1.10.2.min.js"/>" type="text/javascript"></script>
+    <script type="text/javascript" src="<rs:resourceURL value="/rs/jquery-migrate/jquery-migrate-1.2.1.min.js"/>"></script>
+    <script src="<rs:resourceURL value="/rs/jqueryui/1.10.3/jquery-ui-1.10.3.min.js"/>" type="text/javascript"></script>
+</c:if>
 <link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css" />
 <link rel="stylesheet" href="<rs:resourceURL value='/rs/fontawesome/4.0.3/css/font-awesome.css'/>" type="text/css" />
 <link href="<c:url value="/css/announcements.css"/>" rel="stylesheet" type="text/css" />
 
 <c:if test="${portalAdmin}">
     <script type="text/javascript">
-        function <portlet:namespace/>_delete(url) {
+        function ${n}_delete(url) {
            var response = window.confirm('<spring:message code="baseAdmin.confirmDeleteTopic"/>');
            if (response) {
               window.location = url;
@@ -42,7 +44,14 @@
 
 <script type="text/javascript">
     var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
-    ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
+<c:choose>
+    <c:when test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
+        ${n}.jQuery = jQuery.noConflict(true)
+    </c:when>
+    <c:otherwise>
+        ${n}.jQuery = up.jQuery;
+    </c:otherwise>
+</c:choose>
 
     /*  runs when the document is finished loading.  This prevents things like the 'div' from being fully created */
     ${n}.jQuery(function () {
@@ -158,7 +167,7 @@
                                                 </td>
                                             <td>
                                                 <c:if test="${topic.subscriptionMethod != 4}">
-                                                    <a class="action-icon" href="#" onclick="<portlet:namespace/>_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="baseAdmin.delete"/>"><i class="fa fa-trash-o"></i></a>
+                                                    <a class="action-icon" href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="baseAdmin.delete"/>"><i class="fa fa-trash-o"></i></a>
                                             </c:if>
                                             </td>
                                         </tr>

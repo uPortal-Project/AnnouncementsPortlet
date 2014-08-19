@@ -31,3 +31,4 @@
 
 <%@ taglib prefix="html" tagdir="/WEB-INF/tags/html" %>
 <%@ taglib prefix="rs" uri="http://www.jasig.org/resource-server" %>
+<portlet:defineObjects></portlet:defineObjects>

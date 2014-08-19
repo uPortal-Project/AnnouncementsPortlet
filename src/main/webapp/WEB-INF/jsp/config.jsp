@@ -20,11 +20,11 @@
 --%>
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
-
 <c:set var="n"><portlet:namespace/></c:set>
-<script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css" />
+<link rel="stylesheet" href="<rs:resourceURL value='/rs/fontawesome/4.0.3/css/font-awesome.css'/>" type="text/css" />
+<link href="<c:url value="/css/announcements.css"/>" rel="stylesheet" type="text/css" />
 
 <portlet:actionURL var="formUrl" escapeXml="false">
     <portlet:param name="action" value="updateConfiguration"/>
@@ -59,26 +59,3 @@
         </form:form>
     </div>
 </div>
-
-<script type="text/javascript">
-    var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
-    ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
-
-    ${n}.fluid = fluid;
-    fluid = null;
-
-    ${n}.jQuery(function(){
-        var $ = ${n}.jQuery;
-        var fluid = ${n}.fluid;
-        fluid = null;
-        fluid_1_1 = null;
-
-        var getTree = function(parameters) {
-        };
-
-        $(document).ready(function(){
-
-        });
-    });
-
-</script>

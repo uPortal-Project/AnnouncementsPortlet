@@ -20,12 +20,11 @@
 --%>
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
-<portlet:defineObjects/>
 
 <c:set var="n"><portlet:namespace/></c:set>
-<script src="http://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+<script src="<rs:resourceURL value="/rs/jquery/1.10.2/jquery-1.10.2.min.js"/>" type="text/javascript"></script>
+<script type="text/javascript" src="<rs:resourceURL value="/rs/jquery-migrate/jquery-migrate-1.2.1.min.js"/>"></script>
+<script src="<rs:resourceURL value="/rs/jqueryui/1.10.3/jquery-ui-1.10.3.min.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/js/underscore-min.js"/>" type="text/javascript"></script>
 
 <link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
@@ -43,8 +42,15 @@
         var $ = ${n}.jQuery; //reassign $ for normal use of jQuery
         var _ = ${n}._;
 
-        $("#${n}datepickerstart").datepicker({dateFormat: 'yy-mm-dd'});
-        $("#${n}datepickerend").datepicker({dateFormat: 'yy-mm-dd'});
+        $("#${n}datepickerStart").datepicker({dateFormat: 'yy-mm-dd'});
+        $("#${n}datepickerEnd").datepicker({dateFormat: 'yy-mm-dd'});
+
+        $("#${n}datepickerStartIcon").click(function() {
+            $("#${n}datepickerStart").datepicker("show");
+        });
+        $("#${n}datepickerEndIcon").click(function() {
+            $("#${n}datepickerEnd").datepicker("show");
+        });
 
         $("#${n}abstractText").bind('keyup input paste change',function(e){
             //get the limit from maxlength attribute
@@ -171,8 +177,8 @@
                         <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.start"/></label>
                         <div class="col-sm-9">
                             <div class="input-group">
-                                <form:input path="startDisplay" cssClass="form-control" id="${n}datepickerstart"/>
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <form:input path="startDisplay" cssClass="form-control" id="${n}datepickerStart"/>
+                                <span id="${n}datepickerStartIcon" class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                             <form:errors cssClass="announcements-error label label-danger" path="startDisplay"/>
                         </div>
@@ -181,8 +187,8 @@
                         <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.end"/></label>
                         <div class="col-sm-9">
                             <div class="input-group">
-                                <form:input path="endDisplay" cssClass="form-control" id="${n}datepickerend"/>
-                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <form:input path="endDisplay" cssClass="form-control" id="${n}datepickerEnd"/>
+                                <span id="${n}datepickerEndIcon" class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
                             <form:errors cssClass="announcements-error label label-danger" path="endDisplay"/>
                         </div>

@@ -48,9 +48,6 @@ public class ShowHistoryController {
 	private IAnnouncementService announcementService;
 
 	@Autowired
-    private Boolean includeJQuery;
-
-    @Autowired
     private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
     @Autowired(required=true)
@@ -84,7 +81,6 @@ public class ShowHistoryController {
 		model.addAttribute("topic", topic);
 		model.addAttribute("announcements", annList);
 		model.addAttribute("now", new Date());
-		model.addAttribute("includeJQuery", includeJQuery);
 
 		return viewNameSelector.select(request, "showHistory");
 	}

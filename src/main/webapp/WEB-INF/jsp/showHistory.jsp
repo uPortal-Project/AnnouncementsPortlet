@@ -20,12 +20,13 @@
 --%>
 
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
+<c:set var="n"><portlet:namespace/></c:set>
 
 <link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
 <link rel="stylesheet" href="<rs:resourceURL value='/rs/fontawesome/4.0.3/css/font-awesome.css'/>" type="text/css"/>
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
-<div id="<portlet:namespace/>">
+<div id="${n}">
 
     <div class="container-fluid bootstrap-styles announcements-container">
         <div class="row announcements-portlet-toolbar">
@@ -60,7 +61,7 @@
                                 <td><fmt:formatDate value="${ann.startDisplay}" dateStyle="short"/></td>
                                 <td><fmt:formatDate value="${ann.endDisplay}" dateStyle="short"/></td>
                                 <td><a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="showHistory.viewedit"/>"><span class="pull-right"><i class="fa fa-edit"></i></span></a></td>
-                                <td><a href="#" onclick="<portlet:namespace/>_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="showHistory.delete"/>"><span class="pull-right"><i class="fa fa-trash-o"></i></span></a></td>
+                                <td><a href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="showHistory.delete"/>"><span class="pull-right"><i class="fa fa-trash-o"></i></span></a></td>
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -70,13 +71,13 @@
     </div>
 
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery.tablesorter.js"/>"></script>
+<script type="text/javascript" src="<rs:resourceURL value="/rs/jquery/1.10.2/jquery-1.10.2.min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/jquery.tablesorter.min.js"/>"></script>
 <script type="text/javascript">
-var <portlet:namespace/>  = jQuery.noConflict(true);
-<portlet:namespace/>(document).ready(function(){
-		<portlet:namespace/>("#historyTable").tablesorter( {sortList: [[1,0], [2,0]]} );
+var ${n} = ${n} || {};
+${n}.jQuery  = jQuery.noConflict(true);
+${n}.jQuery(document).ready(function(){
+		${n}.jQuery("#historyTable").tablesorter( {sortList: [[1,0], [2,0]]} );
 	}
 );
 </script>
