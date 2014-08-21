@@ -231,13 +231,14 @@
     <c:if test="${pendingAnnouncementCount > 0}">
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-12 no-col-padding">
-                <h4><spring:message code="baseAdmin.myapprovals"/></h4>
+                <h4><i class="fa fa-thumbs-up"></i> <spring:message code="baseAdmin.myapprovals"/></h4>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="anc-approvals">
-                    <a class="anc-approval-list-toggle" href="#"><span id="${n}approval_count"><c:out value="${pendingAnnouncementCount}"/></span> <spring:message code="baseAdmin.waitingapproval"/></a>
+                    <span id="${n}approval_count" class="approval-count"><c:out value="${pendingAnnouncementCount}"/></span>
+                    <a class="anc-approval-list-toggle" href="#"><spring:message code="baseAdmin.waitingapproval"/></a>
                     <div class="anc-my-approvals hide">
                         <table class="anc-approval-list table table-condensed">
                             <c:forEach items="${pendingAnnouncements}" var="announcement">
