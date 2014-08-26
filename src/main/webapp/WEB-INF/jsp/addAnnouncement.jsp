@@ -123,7 +123,7 @@
     <portlet:param name="topicId" value="${announcement.parent.id}"/>
 </portlet:actionURL>
 
-    <div class="container-fluid announcements-container">
+    <div class="container-fluid bootstrap-styles announcements-container">
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-6 no-col-padding">
                 <h4 role="heading"><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></h4>
