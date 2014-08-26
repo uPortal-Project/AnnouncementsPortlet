@@ -59,7 +59,7 @@
     });
 </script>
 
-    <div class="container-fluid announcements-container">
+    <div class="container-fluid bootstrap-styles announcements-container">
         <div class="row announcements-portlet-toolbar">
             <div class="nav-links">
                 <a href="<portlet:renderURL portletMode="view" windowState="normal"/>"><i class="fa fa-arrow-left"></i> <spring:message code="displayFull.back"/></a>
