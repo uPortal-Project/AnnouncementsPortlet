@@ -30,7 +30,7 @@
     <artifactId>Announcements</artifactId>
     <packaging>war</packaging>
     <name>Announcements Portlet</name>
-    <version>2.1.1-SNAPSHOT</version>
+    <version>2.1.1</version>
 
     <properties>
     	<resource-server.version>1.0.42</resource-server.version>
@@ -65,7 +65,7 @@
         <connection>scm:git:git://github.com/Jasig/AnnouncementsPortlet.git</connection>
         <developerConnection>scm:git:git@github.com:Jasig/AnnouncementsPortlet.git</developerConnection>
         <url>https://github.com/Jasig/AnnouncementsPortlet</url>
-      <tag>HEAD</tag>
+      <tag>Announcements-2.1.1</tag>
   </scm>
 
     <repositories>
