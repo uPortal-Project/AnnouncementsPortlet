@@ -17,20 +17,6 @@
  * under the License.
  */
 
-@white: #fff;
-@black: #000;
-
-/*
- * Primary color with 3 lightened shades and 3 darkened shades.
- */
-@color1: #4065B0; // medium blue
-//@color1: #97acd9; // medium blue
-@color1-light: lighten(@color1, 10%);
-@color1-lighter: lighten(@color1, 25%);
-@color1-lightest: lighten(@color1, 50%);
-@color1-dark: darken(@color1, 10%);
-@color1-darker: darken(@color1, 25%);
-@color1-darkest: darken(@color1, 50%);
-
-@import "_mixins.less";
-@import "_base.less";
+@import "includes/_variables";
+@import "includes/_mixins.less";
+@import "includes/_base.less";
