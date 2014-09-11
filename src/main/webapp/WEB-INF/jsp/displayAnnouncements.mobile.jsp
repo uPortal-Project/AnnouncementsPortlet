@@ -46,6 +46,11 @@
     
     <div class="annplt-announcements">
         <span class="title"><spring:message code="display.announcements.title"/></span>
+        <c:choose>
+            <c:when test="${empty announcements}">
+                <p><span class=""><spring:message code="display.no.announcements"/></span></p>
+            </c:when>
+        </c:choose>
         <c:forEach items="${announcements}" var="announcement" varStatus="status">
             <div class="annplt-announcement">
                 <div class="announcement_inner">
