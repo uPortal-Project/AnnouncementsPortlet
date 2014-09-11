@@ -12,6 +12,7 @@ target
 overlays/
 pom.xml.versionsBackup
 /bin
+*.css
 
 /node_modules
 Gruntfile.js
