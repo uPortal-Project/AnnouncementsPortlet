@@ -198,6 +198,11 @@
 
         <portlet-preferences>
             <preference>
+                <name>AdminAnnouncementController.useAttachments</name>
+                <value>true</value>
+                <read-only>false</read-only>
+            </preference>
+            <preference>
                 <name>AdminAnnouncementController.allowOpenEndDate</name>
                 <value>false</value>
                 <read-only>true</read-only>

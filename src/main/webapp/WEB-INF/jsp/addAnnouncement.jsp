@@ -193,17 +193,19 @@
                             <form:errors cssClass="announcements-error label label-danger" path="endDisplay"/>
                         </div>
                     </div>
-                    <div class="form-group" id="${n}attachment_add_section" style="display:none;">
-                        <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.attachments"/>:</label>
-                        <div class="col-sm-9">
-                            <a class="btn btn-default btn-sm" href="javascript:upAttachments.show(${n}.addAttachmentCallback);"><i class="fa fa-folder-open-o"></i> Browse...</a>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="attachments-container" id="${n}attachments"></div>
+                    <c:if test="${useAttachments}">
+                        <div class="form-group" id="${n}attachment_add_section" style="display:none;">
+                            <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.attachments"/>:</label>
+                            <div class="col-sm-9">
+                                <a class="btn btn-default btn-sm" href="javascript:upAttachments.show(${n}.addAttachmentCallback);"><i class="fa fa-folder-open-o"></i> Browse...</a>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="attachments-container" id="${n}attachments"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </c:if>
                     <div class="form-group">
                         <div class="col-sm-9 col-sm-offset-3">
                             <button type="submit" class="btn btn-primary"><spring:message code="addAnnouncement.save"/></button>
