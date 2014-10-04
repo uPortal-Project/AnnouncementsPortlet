@@ -51,6 +51,38 @@
                 showURL: false,
                 position: { offset: "15 15" }
             });
+
+            // For announcement display, the following code watches the div size of the
+            // announcements container and readjust the size of the announcements div
+            // to match the width of uPortal customize drawer layout width
+            var watchingDiv = $(".announcements-container");
+            var changingDiv = $(".announcements-summary-row > div");
+            var classToRemove = "col-lg-6";
+            var classToAdd = "col-lg-12";
+
+            // Watch a div and return the width of it
+            function watchDivSize (div) {
+                var divSize = div.width();
+
+                return divSize;
+            }
+
+            // If the width is less than 970 pixels, swap out Bootstrap classes
+            function adjustAnnDisplay(divWidth) {
+                if(divWidth < 970) {
+                    changingDiv.removeClass(classToRemove);
+                    changingDiv.addClass(classToAdd);
+                }
+            }
+
+            // Make the initial watch and adjustment
+            adjustAnnDisplay(watchDivSize(watchingDiv));
+
+            $(document).ready(function() {
+                $(window).resize(function() {
+                    //adjustAnnDisplay(watchDivSize(watchingDiv));
+                });
+            });
         });
     </script>
 
@@ -162,37 +194,3 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    // For announcement display, the following code watches the div size of the
-    // announcements container and readjust the size of the announcements div
-    // to match the width of uPortal customize drawer layout width
-    var watchingDiv = $(".announcements-container");
-    var changingDiv = $(".announcements-summary-row > div");
-    var classToRemove = "col-lg-6";
-    var classToAdd = "col-lg-12";
-
-    // Watch a div and return the width of it
-    function watchDivSize (div) {
-        var divSize = div.width();
-
-        return divSize;
-    }
-
-    // If the width is less than 970 pixels, swap out Bootstrap classes
-    function adjustAnnDisplay(divWidth) {
-        if(divWidth < 970) {
-            changingDiv.removeClass(classToRemove);
-            changingDiv.addClass(classToAdd);
-        }
-    }
-
-    // Make the initial watch and adjustment
-    adjustAnnDisplay(watchDivSize(watchingDiv));
-
-    $(document).ready(function() {
-        $(window).resize(function() {
-            //adjustAnnDisplay(watchDivSize(watchingDiv));
-        });
-    });
-</script>
