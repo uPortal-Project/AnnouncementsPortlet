@@ -131,12 +131,14 @@
                     <th><spring:message code="baseAdmin.header.subscriptionmethod"/></th>
                     <th><spring:message code="baseAdmin.header.actions"/></th>
                 </thead>
-                <c:choose>
+                <c:choose><%-- Needs refactoring... nor reason for 3 loops --%>
                     <c:when test="${portalAdmin}">
                         <c:forEach items="${allTopics}" var="topic">
                             <tr>
                                 <td>
-                                    <c:out value="${topic.title}"/>
+                                    <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.manage"/>">
+                                        <strong><c:out value="${topic.title}"/></strong>
+                                    </a>
                                 </td>
                                 <td class="text-center">
                                     ( <span id="${n}displaying_count_${topic.id}"><c:out value="${topic.displayingAnnouncementCount}"/></span>, <span id="${n}scheduled_count_${topic.id}"><c:out value="${topic.scheduledAnnouncementCount}"/></span>, <span id="${n}pending_count_${topic.id}"><c:out value="${topic.pendingAnnouncementCount}"/></span> )
@@ -158,22 +160,17 @@
                                     <table class="action-icon-table">
                                         <tr>
                                             <td>
-                                                <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.manage"/>"><i class="fa fa-gears"></i></a>
-                                            </td>
-                                            <td>
                                                 <c:if test="${topic.subscriptionMethod != 4}">
-                                                        <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"></i></a>
+                                                    <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"></i></a>
                                                 </c:if>
-                                                </td>
+                                            </td>
                                             <td>
                                                 <c:if test="${topic.subscriptionMethod != 4}">
                                                     <a class="action-icon" href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="baseAdmin.delete"/>"><i class="fa fa-trash-o"></i></a>
-                                            </c:if>
+                                                </c:if>
                                             </td>
                                         </tr>
                                     </table>
-
-
                                 </td>
                             </tr>
                         </c:forEach>
@@ -182,7 +179,9 @@
                         <c:forEach items="${adminTopics}" var="topic">
                             <tr>
                                 <td>
-                                    <c:out value="${topic.title}"/>
+                                    <a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.manage"/>">
+                                        <strong><c:out value="${topic.title}"/></strong>
+                                    </a>
                                 </td>
                                 <td>
                                     ( <span id="${n}displaying_count_${topic.id}"><c:out value="${topic.displayingAnnouncementCount}"/></span>, <span id="${n}scheduled_count_${topic.id}"><c:out value="${topic.scheduledAnnouncementCount}"/></span>, <span id="${n}pending_count_${topic.id}"><c:out value="${topic.pendingAnnouncementCount}"/></span> )
@@ -201,17 +200,19 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.manage"/>"><img src="<c:url value="/icons/cog.png"/>" height="16" width="16" border="0" alt="<spring:message code="baseAdmin.manage"/>"/></a>&nbsp;&nbsp;
                                     <c:if test="${topic.subscriptionMethod != 4}">
                                         <a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><img src="<c:url value="/icons/pencil.png"/>" height="16" width="16" border="0" alt="<spring:message code="baseAdmin.edit"/>"/></a>&nbsp;&nbsp;
                                     </c:if>
+                                    &nbsp;
                                 </td>
                             </tr>
                         </c:forEach>
                         <c:forEach items="${otherTopics}" var="topic">
                             <tr>
                                 <td>
-                                    <c:out value="${topic.title}"/>
+                                    <a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.manage"/>">
+                                        <strong><c:out value="${topic.title}"/></strong>
+                                    </a>
                                 </td>
                                 <td>&nbsp;</td>
                                 <td>
@@ -227,9 +228,7 @@
                                         </c:when>
                                     </c:choose>
                                 </td>
-                                <td>
-                                    <a href="<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.manage"/>"><img src="<c:url value="/icons/cog.png"/>" height="16" width="16" border="0" alt="<spring:message code="baseAdmin.manage"/>"/></a>&nbsp;&nbsp;
-                                </td>
+                                <td>&nbsp;</td>
                             </tr>
                         </c:forEach>
                     </c:otherwise>
