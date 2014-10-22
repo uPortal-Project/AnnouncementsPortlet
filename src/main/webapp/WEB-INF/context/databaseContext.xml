@@ -52,6 +52,12 @@
         <!-- MaxWait probably not needed since uPortal will interrupt thread if it runs too long, but IMHO always good to
              specify a max to avoid losing resources.  -->
         <property name="maxWait" value="60000"/>
+        <!-- ANNPLT-105 some users reported running out of DB connections after days or weeks. Unsure of core issue
+             but this resolves it and would provide additional diagnostic information. -->
+        <property name="removeAbandoned" value="true" />
+        <property name="removeAbandonedTimeout" value="120" />
+        <property name="logAbandoned" value="true" />
+        <property name="numTestsPerEvictionRun" value="5" />
 </bean>
 
 <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
