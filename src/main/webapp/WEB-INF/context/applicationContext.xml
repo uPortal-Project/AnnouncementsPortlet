@@ -115,9 +115,13 @@
         </property>
     </bean>
 
-    <bean id="cacheManager" class="net.sf.ehcache.CacheManager" destroy-method="shutdown">
-        <constructor-arg type="java.net.URL" value="classpath:ehcache-nondb.xml" />
-    </bean>
+    <bean id="springCacheFactory" 
+          class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" 
+          p:shared="true"/>
+
+    <bean id='cacheManager'
+          class='org.springframework.cache.ehcache.EhCacheCacheManager'
+          p:cacheManager-ref='springCacheFactory'/>
 
     <bean id="userPermissionCheckerFactory" class="org.jasig.portlet.announcements.service.UserPermissionCheckerFactory" />
 
