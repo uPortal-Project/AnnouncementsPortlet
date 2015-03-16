@@ -18,9 +18,24 @@
  */
 package org.jasig.portlet.announcements.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+
+import javax.portlet.EventRequest;
+import javax.portlet.EventResponse;
+import javax.portlet.PortletException;
+import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
+import javax.portlet.RenderRequest;
+import javax.xml.namespace.QName;
+
 import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
+
 import org.apache.log4j.Logger;
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Announcement;
@@ -40,6 +55,7 @@ import org.jasig.portlet.notice.NotificationResult;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,21 +63,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
-
-import javax.portlet.EventRequest;
-import javax.portlet.EventResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.RenderRequest;
-import javax.portlet.PortletException;
-import javax.portlet.PortletPreferences;
-import javax.xml.namespace.QName;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author eolsson
@@ -82,7 +83,7 @@ public class AnnouncementsViewController implements InitializingBean {
     private final IAnnouncementService announcementService = null;
 
     @Autowired
-    private CacheManager cm = null;
+    private EhCacheCacheManager cm = null;
 
     @Autowired(required=true)
     private final IViewNameSelector viewNameSelector = null;
@@ -327,7 +328,7 @@ public class AnnouncementsViewController implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        guestAnnouncementCache = cm.getCache("guestAnnouncementCache");
+        guestAnnouncementCache = cm.getCacheManager().getCache("guestAnnouncementCache");
         if (guestAnnouncementCache == null) {
             throw new BeanCreationException("Required guestAnnouncementCache could not be loaded.");
         }
@@ -336,7 +337,7 @@ public class AnnouncementsViewController implements InitializingBean {
         }
     }
 
-    public void setCm(CacheManager cm) {
+    public void setCm(EhCacheCacheManager cm) {
         this.cm = cm;
     }
 

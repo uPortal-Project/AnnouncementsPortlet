@@ -22,7 +22,6 @@ package org.jasig.portlet.announcements.service;
 import javax.portlet.PortletRequest;
 
 import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
 
 import org.apache.log4j.Logger;
@@ -30,6 +29,7 @@ import org.jasig.portlet.announcements.model.Topic;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -39,7 +39,7 @@ public class UserPermissionCheckerFactory implements InitializingBean{
     private static final String CACHE_NAME = "userPermissionCheckerCache";
 
     @Autowired
-    private CacheManager cacheManager = null;
+    private EhCacheCacheManager cacheManager = null;
 
     private Cache cache = null;
 
@@ -66,7 +66,7 @@ public class UserPermissionCheckerFactory implements InitializingBean{
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        cache = cacheManager.getCache(CACHE_NAME);
+        cache = cacheManager.getCacheManager().getCache(CACHE_NAME);
         if (cache == null) {
             throw new BeanCreationException("Required " + CACHE_NAME + " could not be loaded.");
         }
