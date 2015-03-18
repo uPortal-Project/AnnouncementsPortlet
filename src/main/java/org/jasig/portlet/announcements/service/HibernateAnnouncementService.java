@@ -55,7 +55,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
 		List<Topic> result;
 
 		try {
-			result = getHibernateTemplate().find("from Topic");
+			result = (List<Topic>) getHibernateTemplate().find("from Topic");
 		} catch (HibernateException ex) {
 			throw convertHibernateAccessException(ex);
 		}
@@ -69,7 +69,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
 		List<Topic> result;
 
 		try {
-			result = getHibernateTemplate().find("from Topic where SUB_METHOD = 4");
+			result = (List<Topic>) getHibernateTemplate().find("from Topic where SUB_METHOD = 4");
 			t = result.get(0);
 		} catch (HibernateException ex) {
 			throw convertHibernateAccessException(ex);
@@ -147,7 +147,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
 		}
 
 		try {
-			result = getHibernateTemplate().find("from Topic where id = '"+id.toString()+"'");
+			result = (List<Topic>) getHibernateTemplate().find("from Topic where id = '"+id.toString()+"'");
 			if (result.size() != 1) {
 				throw new PortletException("The requested topic ["+id.toString()+"] does not exist.");
 			}
@@ -169,7 +169,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
 		}
 
 		try {
-			result = getHibernateTemplate().find("from Announcement where id = '"+id.toString()+"'");
+			result = (List<Announcement>) getHibernateTemplate().find("from Announcement where id = '"+id.toString()+"'");
 			if (result.size() != 1) {
 				throw new PortletException("The requested announcement ["+id.toString()+"] does not exist.");
 			}
@@ -220,7 +220,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
 		List<TopicSubscription> result = null;
 
 		try {
-			result = getHibernateTemplate().find("from TopicSubscription where OWNER_ID = '"+request.getRemoteUser()+"'");
+			result = (List<TopicSubscription>) getHibernateTemplate().find("from TopicSubscription where OWNER_ID = '"+request.getRemoteUser()+"'");
 		} catch (HibernateException ex) {
 			throw convertHibernateAccessException(ex);
 		}
@@ -260,7 +260,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport implements
 			// any topic subscriptions with this id should be trashed first (since the topic is not aware of
 			// what topic subscriptions exist for it)
 			Long topicId = topic.getId();
-			List<TopicSubscription> result = getHibernateTemplate().find("from TopicSubscription where TOPIC_ID = "+topicId.toString());
+			List<TopicSubscription> result = (List<TopicSubscription>) getHibernateTemplate().find("from TopicSubscription where TOPIC_ID = "+topicId.toString());
 			for (TopicSubscription ts: result) {
 				getHibernateTemplate().delete(ts);
 			}

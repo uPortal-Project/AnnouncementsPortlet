@@ -23,13 +23,12 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.ehcache.CacheManager;
-
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -43,7 +42,7 @@ public class ApproveAjaxController extends AbstractController implements Initial
     private IAnnouncementService announcementService;
 
 	@Autowired
-	private CacheManager cm = null;
+	private EhCacheCacheManager cm = null;
 	
 	/* (non-Javadoc)
 	 * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -85,7 +84,7 @@ public class ApproveAjaxController extends AbstractController implements Initial
 		}
 		
 		ann.setPublished(approval);
-		cm.getCache("guestAnnouncementCache").flush();
+		cm.getCacheManager().getCache("guestAnnouncementCache").flush();
 		
 		announcementService.addOrSaveAnnouncement(ann);
 		
@@ -100,7 +99,7 @@ public class ApproveAjaxController extends AbstractController implements Initial
 		this.announcementService = announcementService;
 	}
 
-	public void setCm(CacheManager cm) {
+	public void setCm(EhCacheCacheManager cm) {
 		this.cm = cm;
 	}
 

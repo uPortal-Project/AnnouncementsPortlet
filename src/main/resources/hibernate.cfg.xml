@@ -22,7 +22,7 @@
 
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
         
 <hibernate-configuration>
     <session-factory>
@@ -36,8 +36,9 @@
         <property name="hibernate.jdbc.batch_versioned_data">true</property>
         
         <property name="hibernate.cache.use_second_level_cache">true</property>
-        <property name="hibernate.cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</property>
+        <property name="hibernate.cache.region.factory_class">net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory</property>
         <property name="hibernate.cache.use_query_cache">true</property>
+        <property name="net.sf.ehcache.configurationResourceName">/ehcache-nondb.xml</property>
         
         <property name="hibernate.hbm2ddl.auto">update</property>
         
