@@ -344,10 +344,12 @@
                         <exclude>**/src/main/webapp/rs/**</exclude>
                         <exclude>**/src/main/webapp/date-picker/**</exclude>
                         <exclude>**/src/main/webapp/tinymce/**</exclude>
+                        <exclude>**/src/main/webapp/fonts/**</exclude>
                     </excludes>
                     <mapping>
                         <tld>XML_STYLE</tld>
                         <tag>DYNASCRIPT_STYLE</tag>
+                        <less>DOUBLESLASH_STYLE</less>
                     </mapping>
                 </configuration>
             </plugin>
