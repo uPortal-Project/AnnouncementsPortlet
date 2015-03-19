@@ -267,7 +267,6 @@ public class Topic {
 	public Set<Announcement> getHistoricAnnouncements() {
 		Set<Announcement> announcementsFiltered = new HashSet<Announcement>();  // Don't use a TreeSet here... causes lost announcements
 		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, -1); // subtract 1 day from today.
 		Date dateStart = cal.getTime();
 		if (this.announcements != null) {
 			for (Announcement ann : this.announcements) {
