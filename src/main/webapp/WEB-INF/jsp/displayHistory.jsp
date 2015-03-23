@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="ann-user-archive-table col-md-12">
                 <table id="historyTable" class="table table-condensed announcements-table">
                     <thead>
                         <tr>
