@@ -30,7 +30,7 @@
 <link rel="stylesheet" href="<rs:resourceURL value='/rs/fontawesome/4.0.3/css/font-awesome.css'/>" type="text/css"/>
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
-<script type="text/javascript" src="<c:url value="/tinymce/tiny_mce.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/tinymce/js/tinymce/tinymce.min.js"/>"></script>
 <script type="text/javascript">
     var ${n} = ${n} || {}; // create a unique variable for our JS namespace
     ${n}.jQuery = jQuery.noConflict(true); // assign jQuery to this namespace
@@ -161,7 +161,10 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.message"/></label>
                         <div class="col-sm-9">
-                            <form:textarea cssClass="form-control mceEditor" path="message"/>
+                            <%-- Removed textarea and replaced with a div that TinyMCE 4.x uses with inline editing.
+                                 Must set id on div because TinyMCE will use that as the added hidden form field name.
+                            <form:textarea cssClass="form-control mceEditor editable" path="message"/>--%>
+                            <div class="mceEditor" id="message"><c:out value="${announcement.message}" escapeXml="false"/></div>
                             <form:errors cssClass="announcements-error label label-danger" path="message"/>
                         </div>
                     </div>
