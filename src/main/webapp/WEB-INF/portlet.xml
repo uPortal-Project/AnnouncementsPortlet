@@ -104,6 +104,14 @@
                 <value>false</value>
                 <read-only>false</read-only>
             </preference>
+            <!-- Controls what style to display in each view, based on respondr property.
+                 If respondr is used, then display normal pattern in every view.
+                 Otherwise, the appropriate mobile view theme is displayed in the layout of the portlet -->
+            <preference>
+                <name>AnnouncementsViewController.respondr</name>
+                <value>true</value>
+                <read-only>false</read-only>
+            </preference>
             <!-- Listed topics (by title) will be broadcast as notifications for 
                  display in the Apereo NotificationPortlet.  The NotificationPortlet 
                  infrastructure underpins both Notification and EmergencyAlert portlets.  -->
