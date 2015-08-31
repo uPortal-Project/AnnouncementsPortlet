@@ -536,7 +536,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>1.5</version>
+                <version>2.2</version>
                 <executions>
                     <execution>
                         <id>schemagen</id>
@@ -583,10 +583,18 @@
                             <toFile>announcement.xsd</toFile>
                         </transformSchema>
                     </transformSchemas>
-                    <includes>
-                        <include>org/jasig/portlet/announcements/model/*.java</include>
-                        <include>org/jasig/portlet/announcements/xml/*.java</include>
-                    </includes>
+                    <schemaSourceExcludeFilters>
+                      <limitIncludes implementation="org.codehaus.mojo.jaxb2.shared.filters.pattern.PatternFileFilter">
+                        <patterns>
+                          <pattern>\/controller\/.*\.java</pattern>
+                          <pattern>\/service\/.*\.java</pattern>
+                          <pattern>\/spring\/.*\.java</pattern>
+                          <pattern>Exporter\.java</pattern>
+                          <pattern>Importer\.java</pattern>
+                          <pattern>UnauthorizedException\.java</pattern>
+                        </patterns>
+                      </limitIncludes>
+                    </schemaSourceExcludeFilters>
                     <outputDirectory>target/generated-schemas</outputDirectory>
                 </configuration>
             </plugin>
