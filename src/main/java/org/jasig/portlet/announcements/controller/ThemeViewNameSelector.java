@@ -20,22 +20,11 @@ package org.jasig.portlet.announcements.controller;
 
 import javax.portlet.PortletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.portlet.PortletPreferences;
-
-
 public class ThemeViewNameSelector implements IViewNameSelector {
-
-    protected final Log log = LogFactory.getLog(getClass());
 
     protected static final String THEME_NAME_PROPERTY = "themeName";
     protected static final String MOBILE_THEMES_KEY = "mobileThemes";
     protected static final String[] MOBILE_THEMES_DEFAULT = new String[]{ "UniversalityMobile" };
-
-    private boolean isRespondr;
-    public static final String PREFERENCE_RESPONDR = "AnnouncementsViewController.respondr";
 
     private String mobileKey = "jqm";
 
@@ -45,30 +34,19 @@ public class ThemeViewNameSelector implements IViewNameSelector {
 
     public String select(PortletRequest req, String baseViewName) {
 
-        PortletPreferences pref = req.getPreferences();
-        isRespondr = Boolean.valueOf(pref.getValue(PREFERENCE_RESPONDR,"true"));
-
         // Assertions.
         if (req == null) {
             String msg = "Argument 'req' cannot be null";
             throw new IllegalArgumentException(msg);
         }
 
-        StringBuilder rslt = new StringBuilder(baseViewName);
-
-        if (isRespondr == true) {
-          rslt.append(""); // don't append any view
-          return rslt.toString();
+        if (isMobile(req)) {
+            return baseViewName.concat(".").concat(mobileKey);
         } else {
-          if (isMobile(req)) {
-              return baseViewName.concat(".").concat(mobileKey);
-          } else {
-              return baseViewName;
-          }
+            return baseViewName;
         }
 
     }
-
 
     protected boolean isMobile(PortletRequest request) {
         String[] mobileThemes = request.getPreferences().getValues(MOBILE_THEMES_KEY, MOBILE_THEMES_DEFAULT);

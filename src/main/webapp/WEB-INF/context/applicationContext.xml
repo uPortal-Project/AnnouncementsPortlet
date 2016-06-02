@@ -114,8 +114,8 @@
         </property>
     </bean>
 
-    <bean id="springCacheFactory" 
-          class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" 
+    <bean id="springCacheFactory"
+          class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
           p:shared="true"/>
 
     <bean id='cacheManager'
@@ -124,18 +124,8 @@
 
     <bean id="userPermissionCheckerFactory" class="org.jasig.portlet.announcements.service.UserPermissionCheckerFactory" />
 
-    <bean id="ViewNameSelector" class="org.jasig.portlet.announcements.controller.UserAgentViewNameSelector">
-        <property name="userAgentMappings">
-            <!-- Regexes of mobile device user agents -->
-            <util:map>
-                <entry key=".*iPhone.*" value=".mobile"/>
-                <entry key=".*Android.*" value=".mobile"/>
-                <entry key=".*Safari.*Pre.*" value=".mobile"/>
-                <entry key=".*Nokia.*AppleWebKit.*" value=".mobile"/>
-            </util:map>
-        </property>
-    </bean>
-    
     <bean id="groupService" class="org.jasig.portlet.announcements.service.PortletXMLGroupService" init-method="init" />
+
+    <import resource="siteConfigurationContext.xml"/>
 
 </beans>

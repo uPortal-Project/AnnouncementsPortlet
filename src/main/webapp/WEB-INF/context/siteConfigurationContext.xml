@@ -1,0 +1,34 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+    <context:annotation-config />
+
+    <!-- View selector that will use the mUnversality mobile view if the user's theme is UniversalityMobile -->
+    <bean id="viewNameSelector" class="org.jasig.portlet.announcements.controller.ThemeViewNameSelector"/>
+
+    <!-- Alternate view selector that will use the mUniversality mobile view if the request's userAgent HTTP header
+          matches a reg-ex of mobile user agent strings.
+    <bean id="viewNameSelector" class="org.jasig.portlet.announcements.controller.UserAgentViewNameSelector">
+        <property name="userAgentMappings">
+            <!- - Regexes of mobile device user agents - ->
+            <util:map>
+                <entry key=".*iPhone.*" value=".mobile"/>
+                <entry key=".*Android.*" value=".mobile"/>
+                <entry key=".*Safari.*Pre.*" value=".mobile"/>
+                <entry key=".*Nokia.*AppleWebKit.*" value=".mobile"/>
+            </util:map>
+        </property>
+    </bean>
+    -->
+
+</beans>
