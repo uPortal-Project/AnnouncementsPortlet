@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.jasig.portlet.announcements.xml.Namespaces;
 
 /**
@@ -50,6 +52,7 @@ public class Topic {
 
 	private static final org.apache.log4j.Logger logger = Logger.getLogger(Topic.class);
 
+	@JsonManagedReference
 	private Set<Announcement> announcements;
 
     private Set<TopicSubscription> subscriptions;
