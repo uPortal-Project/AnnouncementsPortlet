@@ -24,13 +24,17 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletPreferences;
 
 import org.springframework.beans.factory.InitializingBean;
 
 public class UserAgentViewNameSelector implements IViewNameSelector, InitializingBean {
-    
+
     private Map<String,String> userAgentMappings;
     private final Map<Pattern,String> patterns = new HashMap<Pattern,String>();
+
+    private boolean isRespondr;
+    public static final String PREFERENCE_RESPONDR = "AnnouncementsViewController.respondr";
 
     public void afterPropertiesSet() {
         // Compile our patterns
@@ -40,29 +44,36 @@ public class UserAgentViewNameSelector implements IViewNameSelector, Initializin
     }
 
     public String select(PortletRequest req, String baseViewName) {
-        
+
+        PortletPreferences pref = req.getPreferences();
+        isRespondr = Boolean.valueOf(pref.getValue(PREFERENCE_RESPONDR,"true"));
+
         // Assertions.
         if (req == null) {
             String msg = "Argument 'req' cannot be null";
             throw new IllegalArgumentException(msg);
         }
-        
+
         StringBuilder rslt = new StringBuilder(baseViewName);
-        
+
         String userAgent = req.getProperty("user-agent");
-        if (userAgent != null && patterns.size() != 0) {
+        if (isRespondr == true) {
+          rslt.append(""); // don't append any view
+        } else {
+          if (userAgent != null && patterns.size() != 0) {
             for (Map.Entry<Pattern,String> y : patterns.entrySet()) {
-                if (y.getKey().matcher(userAgent).matches()) {
-                    rslt.append(y.getValue());
-                    break;
-                }
+              if (y.getKey().matcher(userAgent).matches()) {
+                  rslt.append(y.getValue());
+                  break;
+              }
             }
+          }
         }
 
         return rslt.toString();
 
     }
-    
+
     public void setUserAgentMappings(Map<String,String> userAgentMappings) {
         this.userAgentMappings = Collections.unmodifiableMap(userAgentMappings);
     }
