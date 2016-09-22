@@ -489,7 +489,6 @@
                                     </classpath>
 
                                     <arg value="${dir}" />
-                                    <arg value="importExportContext.xml" />
                                 </java>
                             </tasks>
                         </configuration>
@@ -526,7 +525,6 @@
                                     </classpath>
 
                                     <arg value="${dir}" />
-                                    <arg value="importExportContext.xml" />
                                 </java>
                             </tasks>
                         </configuration>

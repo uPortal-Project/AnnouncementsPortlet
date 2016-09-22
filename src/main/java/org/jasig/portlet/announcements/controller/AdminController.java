@@ -29,8 +29,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.portlet.RenderRequest;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import java.util.ArrayList;
 import java.util.List;
 

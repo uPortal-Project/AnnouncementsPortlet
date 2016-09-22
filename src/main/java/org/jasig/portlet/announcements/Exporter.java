@@ -39,11 +39,10 @@ public class Exporter {
     private static final String SESSION_FACTORY_BEAN_NAME = "sessionFactory";
     private static final String ANNOUNCEMENT_SVC_BEAN_NAME = "announcementService";
 
-    public static void main(String[] args) throws Exception
-    {
+    public static void main(String[] args) throws Exception {
+
         String dir = args[0];
-        String importExportContext = args[1];
-        ApplicationContext context = PortletApplicationContextLocator.getApplicationContext(importExportContext);
+        ApplicationContext context = PortletApplicationContextLocator.getApplicationContext(PortletApplicationContextLocator.DATABASE_CONTEXT_LOCATION);
         SessionFactory sessionFactory = context.getBean(SESSION_FACTORY_BEAN_NAME, SessionFactory.class);
         IAnnouncementService announcementService = context.getBean(ANNOUNCEMENT_SVC_BEAN_NAME,IAnnouncementService.class);
 

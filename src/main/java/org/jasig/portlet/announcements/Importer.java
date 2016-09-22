@@ -20,7 +20,6 @@ package org.jasig.portlet.announcements;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
@@ -57,15 +56,14 @@ public class Importer {
      * Imports topics and announcements into the database from XML data files.
      * <ul>
      *   <li>args[0] -- <b>file system directory</b> containing XML data files to import</li>
-     *   <li>args[1] -- <b>classpath location</b> of the spring context XML config file, normally named importExportContext.xml</li>
      * </ul>
      *
      * @throws Exception Various exceptions like JAXBException
      */
     public static void main(String[] args) {
 
-        if (args.length != 2) {
-            log.error("Invalid number of arguments. Command:\n  $java org.jasig.portlet.announcements.Importer <dir> <classpathLocationOfSpringContextXmlFile>");
+        if (args.length != 1) {
+            log.error("Invalid number of arguments. Command:\n  $java org.jasig.portlet.announcements.Importer <dir>");
             System.exit(1);
         }
 
@@ -78,16 +76,7 @@ public class Importer {
         }
 
         // announcementService
-        String contextClasspathLocation = args[1];
-        // INPORTANT!  Must load from the context classpath, not the system 
-        // classpath, since the Importer will commonly run in a ClassLoader-enhanced 
-        // context, such as an Ant task.
-        URL u = Thread.currentThread().getContextClassLoader().getResource(contextClasspathLocation);
-        if (u == null) {
-            log.error("Spring context file for Import/Export not found on classpath:  " + contextClasspathLocation);
-            System.exit(1);
-        }
-        ApplicationContext context = PortletApplicationContextLocator.getApplicationContext(u.toString());
+        ApplicationContext context = PortletApplicationContextLocator.getApplicationContext(PortletApplicationContextLocator.DATABASE_CONTEXT_LOCATION);
         IAnnouncementService announcementService = context.getBean(ANNOUNCEMENT_SVC_BEAN_NAME, IAnnouncementService.class);
 
         Importer importer = new Importer(dataDirectory, /*sessionFactory,*/ announcementService);

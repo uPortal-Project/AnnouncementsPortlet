@@ -32,6 +32,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.spring.PortletApplicationContextLocator;
 import org.springframework.transaction.annotation.Transactional;
 import junit.framework.TestCase;
 
@@ -40,7 +41,7 @@ import junit.framework.TestCase;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:context/importExportContext.xml"})
+@ContextConfiguration(locations = {PortletApplicationContextLocator.DATABASE_CONTEXT_LOCATION})
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
 @Transactional
 public class TestImporter extends TestCase {
