@@ -131,7 +131,7 @@
     <div class="container-fluid bootstrap-styles announcements-container">
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-6 no-col-padding">
-                <h4 role="heading"><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></h4>
+                <h4><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></h4>
             </div>
             <div class="col-md-6 no-col-padding">
                 <div class="nav-links">
@@ -144,14 +144,18 @@
             <div class="col-md-12">
                 <form:form commandName="announcement" method="post" action="${actionUrl}" class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label for="title" class="col-sm-3 control-label"><spring:message code="addAnnouncement.title"/></label>
+                        <label for="title" class="col-sm-3 control-label">
+                            <spring:message code="addAnnouncement.title"/>
+                        </label>
                         <div class="col-sm-9">
                             <form:input cssClass="form-control" path="title"/>
                             <form:errors cssClass="announcements-error label label-danger" path="title"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="${n}abstractText" class="col-sm-3 control-label"><spring:message code="addAnnouncement.abstract"/></label>
+                        <label for="${n}abstractText" class="col-sm-3 control-label">
+                            <spring:message code="addAnnouncement.abstract"/>
+                        </label>
                         <div class="col-sm-9">
                             <form:textarea cssClass="form-control" path="abstractText" id="${n}abstractText"/>
                             <form:errors cssClass="announcements-error label label-danger" path="abstractText"/>
@@ -159,7 +163,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.message"/></label>
+                        <label class="col-sm-3 control-label">
+                            <spring:message code="addAnnouncement.message"/>
+                        </label>
                         <div class="col-sm-9">
                             <%-- Removed textarea and replaced with a div that TinyMCE 4.x uses with inline editing.
                                  Must set id on div because TinyMCE will use that as the added hidden form field name.
@@ -169,14 +175,18 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.link"/></label>
+                        <label class="col-sm-3 control-label" for="link">
+                            <spring:message code="addAnnouncement.link"/>
+                        </label>
                         <div class="col-sm-9">
                             <form:errors cssClass="announcements-error label label-danger" path="link"/>
                             <form:input cssClass="form-control" path="link"/>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.start"/></label>
+                        <label class="col-sm-3 control-label" for="${n}datepickerStart">
+                            <spring:message code="addAnnouncement.start"/>
+                        </label>
                         <div class="col-sm-9">
                             <div class="input-group">
                                 <form:input path="startDisplay" cssClass="form-control" id="${n}datepickerStart"/>
@@ -186,7 +196,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label"><spring:message code="addAnnouncement.end"/></label>
+                        <label class="col-sm-3 control-label" for="${n}datepickerEnd">
+                            <spring:message code="addAnnouncement.end"/>
+                        </label>
                         <div class="col-sm-9">
                             <div class="input-group">
                                 <form:input path="endDisplay" cssClass="form-control" id="${n}datepickerEnd"/>
