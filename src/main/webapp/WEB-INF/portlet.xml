@@ -56,15 +56,15 @@
                 <value>false</value>
                 <read-only>false</read-only>
             </preference>
-            <!-- Allows the admin to disable user preferences settings like 
+            <!-- Allows the admin to disable user preferences settings like
                  subscribed topics and display options. -->
             <preference>
                 <name>AnnouncementsViewController.PREFERENCE_DISABLE_EDIT</name>
                 <value>false</value>
                 <read-only>true</read-only>
             </preference>
-            <!-- Allows the admin to set the number of items that appear in a 
-                 page in the display portlet;  has no effect if 
+            <!-- Allows the admin to set the number of items that appear in a
+                 page in the display portlet;  has no effect if
                  AnnouncementsViewController.useScrollingDisplay=true. -->
             <preference>
                 <name>AnnouncementsViewController.PAGE_SIZE</name>
@@ -90,8 +90,8 @@
                 <value>false</value>
                 <read-only>false</read-only>
             </preference>
-            <!-- Allows the admin to specify the height of the announcements 
-                 list (non-emergency) in pixels;  has no effect if 
+            <!-- Allows the admin to specify the height of the announcements
+                 list (non-emergency) in pixels;  has no effect if
                  AnnouncementsViewController.useScrollingDisplay=false. -->
             <preference>
                 <name>AnnouncementsViewController.scrollingDisplayHeightPixels</name>
@@ -104,16 +104,16 @@
                 <value>false</value>
                 <read-only>false</read-only>
             </preference>
-            <!-- Listed topics (by title) will be broadcast as notifications for 
-                 display in the Apereo NotificationPortlet.  The NotificationPortlet 
+            <!-- Listed topics (by title) will be broadcast as notifications for
+                 display in the Apereo NotificationPortlet.  The NotificationPortlet
                  infrastructure underpins both Notification and EmergencyAlert portlets.  -->
             <preference>
                 <name>AnnouncementsViewController.syndicateTopicsAsNotifications</name>
                 <value>EMERGENCY</value>
                 <read-only>false</read-only>
             </preference>
-            <!-- Indicates the FName (unique identifier) for the published 
-                 AnnouncementsDisplay portlet that will show the full content 
+            <!-- Indicates the FName (unique identifier) for the published
+                 AnnouncementsDisplay portlet that will show the full content
                  (via hyperlink) of announcements that are syndicated as notifications.  -->
             <preference>
                 <name>AnnouncementsViewController.syndicateTopicsAnnouncementsDisplayFName</name>
@@ -233,7 +233,7 @@
             <preference>
                 <name>AdminAnnouncementController.tinyMceInitializationOptions</name>
                 <value>
-                    selector: ".announcements-container div.mceEditor", inline: true,
+                    selector: ".announcements-container div.mceEditor",
                     plugins: ["advlist autolink lists link image charmap print preview anchor searchreplace visualblocks visualchars code fullscreen insertdatetime media table contextmenu paste visualchars textcolor colorpicker"],
                     toolbar1: "insertfile undo redo | styleselect fontselect fontsizeselect | link image",
                     toolbar2: "bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent",
