@@ -16,12 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.announcements.controller;
+package org.jasig.portlet.announcements.mvc.portlet.admin;
 
 import javax.portlet.RenderRequest;
 
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
+import org.jasig.portlet.announcements.mvc.IViewNameSelector;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
 import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;

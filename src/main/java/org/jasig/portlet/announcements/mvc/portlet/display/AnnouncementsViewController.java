@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.announcements.controller;
+package org.jasig.portlet.announcements.mvc.portlet.display;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +43,7 @@ import org.jasig.portlet.announcements.model.AnnouncementSortStrategy;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.jasig.portlet.announcements.model.UserRoles;
+import org.jasig.portlet.announcements.mvc.IViewNameSelector;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
@@ -112,7 +113,7 @@ public class AnnouncementsViewController implements InitializingBean {
         
     
     /**
-     * Main method of this display controller. Calculates which topics should be shown to
+     * Main method of this display mvc. Calculates which topics should be shown to
      * this user and which announcements to show from those topics.
      * @param model
      * @param request

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.announcements.controller;
+package org.jasig.portlet.announcements.mvc.servlet;
 
 import java.util.Date;
 
@@ -29,24 +29,36 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-
 /**
  * @author eolsson
- *
  */
+@Controller("ajaxApproveController")
 public class ApproveAjaxController extends AbstractController implements InitializingBean {
     
     private IAnnouncementService announcementService;
 
+	private EhCacheCacheManager cacheManager = null;
+
 	@Autowired
-	private EhCacheCacheManager cm = null;
-	
-	/* (non-Javadoc)
-	 * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
+	public void setAnnouncementService(IAnnouncementService announcementService) {
+		this.announcementService = announcementService;
+	}
+
+	@Autowired
+	public void setCacheManager(EhCacheCacheManager cacheManager) {
+		this.cacheManager = cacheManager;
+	}
+
+	public void afterPropertiesSet() throws Exception {
+		if (cacheManager == null) {
+			throw new BeanCreationException("Required cacheManager field was not set");
+		}
+	}
+
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -84,7 +96,7 @@ public class ApproveAjaxController extends AbstractController implements Initial
 		}
 		
 		ann.setPublished(approval);
-		cm.getCacheManager().getCache("guestAnnouncementCache").flush();
+		cacheManager.getCacheManager().getCache("guestAnnouncementCache").flush();
 		
 		announcementService.addOrSaveAnnouncement(ann);
 		
@@ -92,21 +104,4 @@ public class ApproveAjaxController extends AbstractController implements Initial
 		
 	}
 
-	/**
-	 * @param announcementService the announcementService to set
-	 */
-	public void setAnnouncementService(IAnnouncementService announcementService) {
-		this.announcementService = announcementService;
-	}
-
-	public void setCm(EhCacheCacheManager cm) {
-		this.cm = cm;
-	}
-
-	public void afterPropertiesSet() throws Exception {
-		if (cm == null) {
-			throw new BeanCreationException("Required cacheManager field was not set");
-		}
-	}
-	
 }

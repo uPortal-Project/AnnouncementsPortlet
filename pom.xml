@@ -592,7 +592,7 @@
                     <schemaSourceExcludeFilters>
                       <limitIncludes implementation="org.codehaus.mojo.jaxb2.shared.filters.pattern.PatternFileFilter">
                         <patterns>
-                          <pattern>\/controller\/.*\.java</pattern>
+                          <pattern>\/mvc\/.*\.java</pattern>
                           <pattern>\/service\/.*\.java</pattern>
                           <pattern>\/spring\/.*\.java</pattern>
                           <pattern>Exporter\.java</pattern>

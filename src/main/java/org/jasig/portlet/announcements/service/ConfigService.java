@@ -20,7 +20,6 @@ package org.jasig.portlet.announcements.service;
 
 import org.jasig.portlet.announcements.model.AnnouncementConfiguration;
 import org.jasig.portlet.announcements.model.AnnouncementFilterType;
-import org.springframework.stereotype.Component;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletPreferences;
@@ -29,7 +28,6 @@ import javax.portlet.PortletRequest;
 /**
  * @author Chris Waymire (chris@waymire.net)
  */
-@Component
 public class ConfigService implements IConfigService {
 
     public AnnouncementConfiguration getConfiguration(PortletRequest request)

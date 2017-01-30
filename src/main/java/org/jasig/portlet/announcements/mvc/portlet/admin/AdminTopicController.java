@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.announcements.controller;
+package org.jasig.portlet.announcements.mvc.portlet.admin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,7 +70,7 @@ public class AdminTopicController {
 	private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
 	/**
-	 * Add topic view controller, creates or fetches the topic for adding or editing
+	 * Add topic view mvc, creates or fetches the topic for adding or editing
 	 * @param topicIdStr
 	 * @param model
 	 * @return

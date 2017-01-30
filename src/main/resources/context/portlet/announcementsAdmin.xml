@@ -21,7 +21,6 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:p="http://www.springframework.org/schema/p"
     xmlns:context="http://www.springframework.org/schema/context"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans
@@ -29,6 +28,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
+    <context:component-scan base-package="org.jasig.portlet.announcements.mvc.portlet.admin" />
     <context:annotation-config />
 
     <bean id="propertyConfigurer"
@@ -48,20 +48,11 @@
         <property name="interceptors">
             <list>
                 <ref bean="openSessionInViewInterceptor"/>
-                <bean class="org.jasig.portlet.announcements.controller.MinimizedStateHandlerInterceptor"/>
+                <bean class="org.jasig.portlet.announcements.mvc.portlet.MinimizedStateHandlerInterceptor"/>
             </list>
         </property>
     </bean>
 
-    <!-- Controllers -->
-
-    <bean id="adminController" class="org.jasig.portlet.announcements.controller.AdminController"/>
-    <bean id="adminTopicController" class="org.jasig.portlet.announcements.controller.AdminTopicController"/>
-    <bean id="adminAnnouncementController" class="org.jasig.portlet.announcements.controller.AdminAnnouncementController"/>
-    <bean id="adminRoleSetController" class="org.jasig.portlet.announcements.controller.AdminRoleSetController"/>
-    <bean id="previewAnnouncementController" class="org.jasig.portlet.announcements.controller.PreviewAnnouncementController"/>
-    <bean id="showHistoryController" class="org.jasig.portlet.announcements.controller.ShowHistoryController"/>
-    <bean id="adminHelpController" class="org.jasig.portlet.announcements.controller.AdminHelpController"/>
     <bean id="exceptionHandler" parent="defaultExceptionHandlerTemplate"/>
 
 </beans>

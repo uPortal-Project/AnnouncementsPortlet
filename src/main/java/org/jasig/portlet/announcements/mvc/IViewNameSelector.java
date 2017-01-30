@@ -16,22 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.announcements.controller;
 
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-import javax.portlet.WindowState;
+package org.jasig.portlet.announcements.mvc;
 
-import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
+import javax.portlet.PortletRequest;
 
-public class MinimizedStateHandlerInterceptor extends HandlerInterceptorAdapter {
+public interface IViewNameSelector {
+    
+    String select(PortletRequest req, String baseViewName);
 
-    @Override
-    public boolean preHandleRender(RenderRequest request, RenderResponse response, Object handler) throws Exception {
-        if (WindowState.MINIMIZED.equals(request.getWindowState())) {
-            return false;
-        }
-        
-        return true;
-    }
 }

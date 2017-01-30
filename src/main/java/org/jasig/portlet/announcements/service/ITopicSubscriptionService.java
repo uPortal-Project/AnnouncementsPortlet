@@ -27,7 +27,7 @@ import javax.portlet.RenderRequest;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 
 /**
- * Implementations of this interface tell the controller(s) which topic(s) will 
+ * Implementations of this interface tell the mvc(s) which topic(s) will
  * be displayed in the portlet for the specified user, and for enforcing 
  * restrictions on those topics established by administrators.
  * 

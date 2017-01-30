@@ -21,7 +21,6 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:p="http://www.springframework.org/schema/p"
     xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans 
@@ -29,6 +28,7 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
+    <context:component-scan base-package="org.jasig.portlet.announcements.mvc.portlet.display" />
     <context:annotation-config />
 
     <bean id="propertyConfigurer"
@@ -45,19 +45,11 @@
         <property name="interceptors">
             <list>
                 <ref bean="openSessionInViewInterceptor"/>
-                <bean class="org.jasig.portlet.announcements.controller.MinimizedStateHandlerInterceptor"/>
+                <bean class="org.jasig.portlet.announcements.mvc.portlet.MinimizedStateHandlerInterceptor"/>
             </list>
         </property>
     </bean>
 
-    <bean class="org.jasig.portlet.announcements.controller.AnnouncementsViewController" />
-
-    <bean class="org.jasig.portlet.announcements.controller.AnnouncementConfigurationController" />
-
-    <bean class="org.jasig.portlet.announcements.controller.AnnouncementsPreferencesController" />
-
-    <!-- Portlet Mode handling -->
-            
     <bean id="exceptionHandler" parent="defaultExceptionHandlerTemplate"/>
 
 </beans>

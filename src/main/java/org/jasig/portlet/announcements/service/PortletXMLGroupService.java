@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -35,21 +36,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.model.Role;
 import org.jasig.portlet.announcements.model.RoleSelection;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.ServletContextAware;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-
 /**
- * @author Erik A. Olsson (eolsson@uci.edu)
- * 
- * $LastChangedBy$
- * $LastChangedDate$
- * 
  * This class attempts to read the portlet.xml file to determine what groups should be available to evaluate against.
  * Each group is a <security-role-ref> element in the portlet.xml
+ *
+ * @author Erik A. Olsson (eolsson@uci.edu)
  */
+@Service
 public class PortletXMLGroupService implements ServletContextAware, IGroupService {
 	
 	final private String PORTLET_XML_PATH = "/WEB-INF/portlet.xml";
@@ -58,6 +57,7 @@ public class PortletXMLGroupService implements ServletContextAware, IGroupServic
 	private static Log log = LogFactory.getLog(PortletXMLGroupService.class);
 	private ServletContext context;
 	
+	@PostConstruct
 	public void init() {
 		parseXml();
 		

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.announcements.controller;
+package org.jasig.portlet.announcements.mvc.portlet.display;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;

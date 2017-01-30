@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
@@ -33,12 +34,8 @@ import org.jasig.portlet.announcements.model.AnnouncementFilterType;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 
-
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
- * 
- * $LastChangedBy: eolsson $
- * $LastChangedDate: 2010-01-12 14:39:53 -0700 (Tue, 12 Jan 2010) $
  */
 public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptionService {
 
@@ -49,7 +46,17 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 		
 	private IAnnouncementService announcementService;
 	private Topic emergencyTopic;
-	
+
+    public void setAnnouncementService(IAnnouncementService announcementService) {
+        this.announcementService = announcementService;
+    }
+
+    public void setEmergencyTopic(Topic emergencyTopic) {
+        this.emergencyTopic = emergencyTopic;
+        log.debug("Emergency Topic assigned successfully.");
+    }
+
+    @PostConstruct
 	public void init() {
 		// save the emergencyTopic to the database (if it's not there already)
 		// if the emergencyTopic exists, update it to reflect changes in the spring config
@@ -220,21 +227,6 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 			}
 		}
 		return false;
-	}
-	
-	/**
-	 * @param announcementService the announcementService to set
-	 */
-	public void setAnnouncementService(IAnnouncementService announcementService) {
-		this.announcementService = announcementService;
-	}
-
-	/**
-	 * @param emergencyTopic the emergencyTopic to set
-	 */
-	public void setEmergencyTopic(Topic emergencyTopic) {
-		this.emergencyTopic = emergencyTopic;
-		log.debug("Emergency Topic assigned successfully.");
 	}
 
     private boolean isFiltered(Topic topic,AnnouncementFilterType filterType,List<String> filterItems)

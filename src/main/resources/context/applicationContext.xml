@@ -31,6 +31,11 @@
         http://www.springframework.org/schema/util
         http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
+    <context:component-scan base-package="org.jasig.portlet.announcements">
+        <!-- Items in the following package are a part of the portlet or
+             servlet (sub-)contexts, not a part of the parent (main) context. -->
+        <context:exclude-filter type="regex" expression="org\.jasig\.portlet\.announcements\.mvc\..+"/>
+    </context:component-scan>
     <context:annotation-config />
 
     <!-- Message source for this context, loaded from localized "messages_xx" files -->
@@ -85,26 +90,7 @@
         <property name="expireThreshold" ref="historyExpireThreshold"/>
     </bean>
 
-    <!-- Emergency Topic Definition -->
-    <bean id="emergencyTopic" class="org.jasig.portlet.announcements.model.Topic">
-        <property name="creator"><value>automatic</value></property>
-        <property name="title"><value>EMERGENCY</value></property>
-        <property name="description"><value>Do not edit this topic!</value></property>
-        <property name="allowRss"><value>false</value></property>
-        <property name="subscriptionMethod"><value>4</value></property>
-        <property name="audience">
-            <set>
-                <value>Everyone</value>
-            </set>
-        </property>
-        <property name="admins">
-            <set>
-                <value>Portal_Administrators</value>
-            </set>
-        </property>
-    </bean>
-
-    <bean id="springCacheFactory" 
+    <bean id="springCacheFactory"
           class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" 
           p:shared="true"/>
 
@@ -112,9 +98,7 @@
           class='org.springframework.cache.ehcache.EhCacheCacheManager'
           p:cacheManager-ref='springCacheFactory'/>
 
-    <bean id="userPermissionCheckerFactory" class="org.jasig.portlet.announcements.service.UserPermissionCheckerFactory" />
-
-    <bean id="ViewNameSelector" class="org.jasig.portlet.announcements.controller.UserAgentViewNameSelector">
+    <bean id="ViewNameSelector" class="org.jasig.portlet.announcements.mvc.UserAgentViewNameSelector">
         <property name="userAgentMappings">
             <!-- Regexes of mobile device user agents -->
             <util:map>
@@ -126,6 +110,4 @@
         </property>
     </bean>
     
-    <bean id="groupService" class="org.jasig.portlet.announcements.service.PortletXMLGroupService" init-method="init" />
-
 </beans>

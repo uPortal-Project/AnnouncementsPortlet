@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.announcements.controller;
+package org.jasig.portlet.announcements.mvc.portlet.admin;
 
 import java.beans.PropertyEditor;
 import java.text.SimpleDateFormat;
@@ -25,13 +25,13 @@ import java.util.Date;
 import javax.portlet.*;
 
 import edu.emory.mathcs.backport.java.util.Collections;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.validators.AnnouncementValidator;
+import org.jasig.portlet.announcements.mvc.TopicEditor;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
 import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;
@@ -50,7 +50,6 @@ import org.springframework.web.bind.support.SessionStatus;
 
 /**
  * @author eolsson
- *
  */
 @Controller
 @RequestMapping("VIEW")

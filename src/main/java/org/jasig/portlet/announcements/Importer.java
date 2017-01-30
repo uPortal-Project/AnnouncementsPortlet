@@ -74,6 +74,7 @@ public class Importer {
             log.error("The specified dataDirectory does not exist:  " + dir);
             System.exit(1);
         }
+        log.info("Importing XML data files in the following directory:  " + dataDirectory.getAbsolutePath());
 
         // announcementService
         ApplicationContext context = PortletApplicationContextLocator.getApplicationContext(PortletApplicationContextLocator.DATABASE_CONTEXT_LOCATION);

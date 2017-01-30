@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.announcements.controller;
+package org.jasig.portlet.announcements.mvc.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
@@ -43,23 +45,21 @@ import com.rometools.rome.feed.synd.SyndFeedImpl;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedOutput;
 
-
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
- * 
- * $LastChangedBy$
- * $LastChangedDate$
- *
  */
+@Controller("rssFeedController")
 public class RssFeedController extends AbstractController {
 
-	private IAnnouncementService announcementService;
-	
 	private static final String CONTENT_TYPE = "application/rss+xml";
-	
-	/* (non-Javadoc)
-	 * @see org.springframework.web.servlet.mvc.AbstractController#handleRequestInternal(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
+
+	private IAnnouncementService announcementService;
+
+	@Autowired
+	public void setAnnouncementService(IAnnouncementService announcementService) {
+		this.announcementService = announcementService;
+	}
+
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws IllegalStateException, IOException {
@@ -143,13 +143,6 @@ public class RssFeedController extends AbstractController {
 		
 		return null;
 		
-	}
-
-	/**
-	 * @param announcementService the announcementService to set
-	 */
-	public void setAnnouncementService(IAnnouncementService announcementService) {
-		this.announcementService = announcementService;
 	}
 
 }

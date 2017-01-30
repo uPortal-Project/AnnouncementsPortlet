@@ -16,11 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.jasig.portlet.announcements.controller;
+package org.jasig.portlet.announcements.mvc.portlet.display;
 
 import org.apache.log4j.Logger;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
+import org.jasig.portlet.announcements.mvc.IViewNameSelector;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
