@@ -32,10 +32,7 @@ import org.hibernate.Query;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.stereotype.Service;
-
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)

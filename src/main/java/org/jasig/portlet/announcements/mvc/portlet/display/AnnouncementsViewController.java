@@ -113,7 +113,7 @@ public class AnnouncementsViewController implements InitializingBean {
         
     
     /**
-     * Main method of this display mvc. Calculates which topics should be shown to
+     * Main method of this display controller. Calculates which topics should be shown to
      * this user and which announcements to show from those topics.
      * @param model
      * @param request

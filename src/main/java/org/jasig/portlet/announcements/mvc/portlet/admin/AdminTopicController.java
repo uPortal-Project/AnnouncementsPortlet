@@ -70,7 +70,7 @@ public class AdminTopicController {
 	private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
 	/**
-	 * Add topic view mvc, creates or fetches the topic for adding or editing
+	 * Add topic view controller, creates or fetches the topic for adding or editing
 	 * @param topicIdStr
 	 * @param model
 	 * @return
