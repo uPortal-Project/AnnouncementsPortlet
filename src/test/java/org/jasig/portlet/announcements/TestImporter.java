@@ -64,10 +64,10 @@ public class TestImporter extends TestCase {
         sessionFactory.getCurrentSession().clear();
 
         List<Topic> updatedTopics = announcementService.getAllTopics();
-        assertTrue("topic list should have 2 items, instead had "+ updatedTopics.size(), updatedTopics.size() == 2);
+        assertTrue("topic list should have 1 item; instead had "+ updatedTopics.size(), updatedTopics.size() == 1);
 
         // verify data after import.
-        Topic addedTopic = updatedTopics.get(1);
+        Topic addedTopic = updatedTopics.get(0);
         if (!"Campus Services".equals(addedTopic.getTitle())) {
             addedTopic = updatedTopics.get(0);
         }

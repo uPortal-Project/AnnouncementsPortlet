@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
@@ -33,10 +34,13 @@ import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.model.AnnouncementFilterType;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
  */
+@Service
 public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptionService {
 
     public static final String PREFERENCE_FILTER_TYPE = AnnouncementPreferences.FILTER_TYPE.getKey();
@@ -46,14 +50,22 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 		
 	private IAnnouncementService announcementService;
 	private Topic emergencyTopic;
+	private UserIdService userIdService;
 
+    @Autowired
     public void setAnnouncementService(IAnnouncementService announcementService) {
         this.announcementService = announcementService;
     }
 
+    @Resource(name="emergencyTopic")
     public void setEmergencyTopic(Topic emergencyTopic) {
         this.emergencyTopic = emergencyTopic;
         log.debug("Emergency Topic assigned successfully.");
+    }
+
+    @Autowired
+    public void setUserIdService(UserIdService userIdService) {
+        this.userIdService = userIdService;
     }
 
     @PostConstruct
@@ -76,13 +88,13 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 
     public List<TopicSubscription> getTopicSubscription(PortletRequest request, boolean includeEmergency) throws PortletException {
         
-        List<TopicSubscription> subscriptions = new ArrayList<TopicSubscription>();
+        List<TopicSubscription> subscriptions = new ArrayList<>();
         List<TopicSubscription> subSaved = null;
         // must reload all topics each time, in case new ones were added by admins since last visit
         List<Topic> allTopics = announcementService.getAllTopics();
         
         if (request.getRemoteUser() == null) {
-            subSaved = new ArrayList<TopicSubscription>();
+            subSaved = new ArrayList<>();
         } 
         else { 
             try {
@@ -91,11 +103,8 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
                 log.error("ERROR getting topic subscriptions for "+request.getRemoteUser()+": "+e.getMessage());
             }
         }
-        
-        String user = request.getRemoteUser();
-        if (user == null) {
-            user = "guest";
-        }
+
+        final String userId = userIdService.getUserId(request);
 
         PortletPreferences prefs = request.getPreferences();
         AnnouncementFilterType filterType =
@@ -104,7 +113,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
         List<String> filterItems = Arrays.asList(prefs.getValues(PREFERENCE_FILTER_ITEMS,new String[0]));
 
         if (subSaved != null) {
-            log.debug("Found DisplayPrefs for "+user);
+            log.debug("Found DisplayPrefs for "+userId);
             // we got some preferences from the database for this user, so
             // lets cycle through all the current topics and if any new PUSHED_FORCED 
             // or PUSHED_INITIAL show up, add them to the subscription
@@ -115,7 +124,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
                 if(isFiltered(topic,filterType,filterItems))
                 {
                     if (log.isDebugEnabled()) {
-                        log.debug("Topic " + title + " has been filtered from user " + user);
+                        log.debug("Topic " + title + " has been filtered from user " + userId);
                     }
                     continue;
                 }
@@ -141,14 +150,14 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
                     if (invalid != null) {
                         // Prune it
                         if (log.isDebugEnabled())
-                            log.debug("Removing invalid TopicSubscription topic ["+topic.getId()+"] for "+user);
+                            log.debug("Removing invalid TopicSubscription topic ["+topic.getId()+"] for "+userId);
                         subSaved.remove(invalid);
                         announcementService.deleteTopicSubscription(invalid);
                     }
                     if (!topicSubscriptionExists(topic, subSaved)) {
                         if (log.isDebugEnabled())
-                            log.debug("Adding missing PUSHED_FORCED topic ["+topic.getId()+"] for "+user);
-                        subscriptions.add(new TopicSubscription(user, topic, Boolean.TRUE));
+                            log.debug("Adding missing PUSHED_FORCED topic ["+topic.getId()+"] for "+userId);
+                        subscriptions.add(new TopicSubscription(userId, topic, Boolean.TRUE));
                     }
                 }
                 else if (allowedToViewTopic && 
@@ -156,16 +165,16 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
                         !topicSubscriptionExists( topic, subSaved )) {
                     // this is a PUSHED_INITIAL topic that we have not set a preference for yet
                     if (log.isDebugEnabled())
-                        log.debug("Adding missing PUSHED_INITIAL topic ["+topic.getId()+"] for "+user);
-                    subscriptions.add(new TopicSubscription(user, topic, Boolean.TRUE));
+                        log.debug("Adding missing PUSHED_INITIAL topic ["+topic.getId()+"] for "+userId);
+                    subscriptions.add(new TopicSubscription(userId, topic, Boolean.TRUE));
                 }
                 else if (allowedToViewTopic && 
                         topic.getSubscriptionMethod() == Topic.PULLED &&
                         !topicSubscriptionExists( topic, subSaved )) {
                     // must be an optional topic that's new and hasn't been seen before
                     if (log.isDebugEnabled())
-                        log.debug("Adding missing PULLED topic ["+topic.getId()+"] for "+user);
-                    subscriptions.add(new TopicSubscription(user, topic, Boolean.FALSE));
+                        log.debug("Adding missing PULLED topic ["+topic.getId()+"] for "+userId);
+                    subscriptions.add(new TopicSubscription(userId, topic, Boolean.FALSE));
                 }
                 
                 // if the topic is present, but no longer in audience group, we must remove it
@@ -190,14 +199,14 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
             if (includeEmergency) {
                 // add the emergency topic for everyone, but don't save the topicsubscription to the database since it's implied
                 emergencyTopic = announcementService.getEmergencyTopic();
-                subscriptions.add(new TopicSubscription(user, emergencyTopic, Boolean.TRUE));
+                subscriptions.add(new TopicSubscription(userId, emergencyTopic, Boolean.TRUE));
             }
         
             return subscriptions;
             
         }
         else {
-            throw new PortletException("Could not determine/create subscription preferences for user "+user);
+            throw new PortletException("Could not determine/create subscription preferences for user "+userId);
         }
     }
 	

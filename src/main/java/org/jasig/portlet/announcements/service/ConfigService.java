@@ -20,6 +20,7 @@ package org.jasig.portlet.announcements.service;
 
 import org.jasig.portlet.announcements.model.AnnouncementConfiguration;
 import org.jasig.portlet.announcements.model.AnnouncementFilterType;
+import org.springframework.stereotype.Service;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletPreferences;
@@ -28,10 +29,10 @@ import javax.portlet.PortletRequest;
 /**
  * @author Chris Waymire (chris@waymire.net)
  */
+@Service
 public class ConfigService implements IConfigService {
 
-    public AnnouncementConfiguration getConfiguration(PortletRequest request)
-    {
+    public AnnouncementConfiguration getConfiguration(PortletRequest request) {
         PortletPreferences prefs = request.getPreferences();
         AnnouncementConfiguration config = new AnnouncementConfiguration();
         config.setFilterType(prefs.getValue(AnnouncementPreferences.FILTER_TYPE.getKey(), AnnouncementFilterType.BLACKLIST.getKey()));
@@ -39,12 +40,10 @@ public class ConfigService implements IConfigService {
         return config;
     }
 
-    public void saveConfiguration(ActionRequest request, AnnouncementConfiguration config)
-    {
+    public void saveConfiguration(ActionRequest request, AnnouncementConfiguration config) {
         PortletPreferences prefs = request.getPreferences();
 
-        try
-        {
+        try {
             prefs.setValue(AnnouncementPreferences.FILTER_TYPE.getKey(), config.getFilterType());
             prefs.setValues(AnnouncementPreferences.FILTER_ITEMS.getKey(),config.getFilterItems().toArray(new String[0]));
 

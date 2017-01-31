@@ -28,19 +28,22 @@ import org.jasig.portlet.announcements.model.UserRoles;
 
 
 /**
- * @author Erik A. Olsson (eolsson@uci.edu)
- *
- * $LastChangedBy$
- * $LastChangedDate$
- *
  * Utility class that can be used statically to check role membership of a Topic, or when
  * instantiated, can be used inside a JSP for example to check role membership as it relates to
  * a specific Topic.
  *
+ * @author Erik A. Olsson (eolsson@uci.edu)
  */
 public final class UserPermissionChecker implements UserRoles {
 
-    public static final String GUEST_USERNAME = "guest";
+    /**
+     * This approach to unauthenticated users does not support multiples.  In
+     * this case, thankfully, it only applies to circumstances where the
+     * username 'guest' has been explicitly added to the audience of a topic
+     * (which is uncommon).  It doesn't interfere with general support for
+     * multiple guest users.
+     */
+    private static final String GUEST_USERNAME = "guest";
 
     private final boolean admin;
     private final boolean moderator;
@@ -75,10 +78,6 @@ public final class UserPermissionChecker implements UserRoles {
     }
 
     /**
-     *
-     * @param request
-     * @param role
-     * @param topic
      * @return true if the user in the PortletRequest has the role specified by the Topic
      */
     public static boolean inRoleForTopic(PortletRequest request, String role, Topic topic) {
@@ -113,6 +112,8 @@ public final class UserPermissionChecker implements UserRoles {
         return guest;
     }
     /**
+     * Used in JSPs.
+     *
      * @return the userName
      */
     public String getUserName() {
@@ -120,6 +121,8 @@ public final class UserPermissionChecker implements UserRoles {
     }
 
     /**
+     * Used in JSPs.
+     *
      * @return the admin
      */
     public boolean isAdmin() {
@@ -154,4 +157,5 @@ public final class UserPermissionChecker implements UserRoles {
     public void validateCanEditTopic() {
         if(!canEditTopic()) throw new UnauthorizedException("You do not have access to this topic!");
     }
+
 }

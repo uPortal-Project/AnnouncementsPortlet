@@ -118,33 +118,8 @@
         </property>
     </bean>
 
-    <!-- Emergency Topic Definition -->
-    <bean id="emergencyTopic" class="org.jasig.portlet.announcements.model.Topic">
-        <property name="creator"><value>automatic</value></property>
-        <property name="title"><value>EMERGENCY</value></property>
-        <property name="description"><value>Do not edit this topic!</value></property>
-        <property name="allowRss"><value>false</value></property>
-        <property name="subscriptionMethod"><value>4</value></property>
-        <property name="audience">
-            <set>
-                <value>Everyone</value>
-            </set>
-        </property>
-        <property name="admins">
-            <set>
-                <value>Portal_Administrators</value>
-            </set>
-        </property>
-    </bean>
-
-    <bean id="topicSubscriptionService" class="org.jasig.portlet.announcements.service.UserConfiguredTopicSubscriptionService" init-method="init">
-        <property name="announcementService" ref="announcementService"/>
-        <property name="emergencyTopic" ref="emergencyTopic"/>
-    </bean>
-
-    <bean id="configService" class="org.jasig.portlet.announcements.service.ConfigService"/>
-
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+
 </beans>

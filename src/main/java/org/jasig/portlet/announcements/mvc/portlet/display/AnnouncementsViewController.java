@@ -46,6 +46,7 @@ import org.jasig.portlet.announcements.model.UserRoles;
 import org.jasig.portlet.announcements.mvc.IViewNameSelector;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
+import org.jasig.portlet.announcements.service.UserIdService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
 import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;
 import org.jasig.portlet.notice.NotificationCategory;
@@ -67,30 +68,10 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 /**
  * @author eolsson
- *
  */
 @Controller
 @RequestMapping("VIEW")
 public class AnnouncementsViewController implements InitializingBean {
-
-    private static final String GUEST_USERNAME = "guest";
-    private static final Logger logger = Logger.getLogger(AnnouncementsViewController.class);
-    private Cache guestAnnouncementCache = null;
-
-    @Autowired
-    private ITopicSubscriptionService tss = null;
-
-    @Autowired
-    private final IAnnouncementService announcementService = null;
-
-    @Autowired
-    private EhCacheCacheManager cm = null;
-
-    @Autowired(required=true)
-    private final IViewNameSelector viewNameSelector = null;
-
-    @Autowired
-    private final UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
     public static final String PREFERENCE_DISPLAY_STARTDATE = "AnnouncementsViewController.displayPublishDate";
     public static final String PREFERENCE_DISABLE_EDIT = "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
@@ -102,7 +83,7 @@ public class AnnouncementsViewController implements InitializingBean {
     public static final String PREFERENCE_SYNDICATE_TOPICS_AS_NOTIFICATIONS = "AnnouncementsViewController.syndicateTopicsAsNotifications";
     public static final String PREFERENCE_SYNDICATE_TOPICS_ANNOUNCEMENTS_DISPLAY_FNAME = "AnnouncementsViewController.syndicateTopicsAnnouncementsDisplayFName";
     public static final String DEFAULT_SORT_STRATEGY = "START_DISPLAY_DATE_ASCENDING";
-    
+
     public static final String NOTIFICATION_NAMESPACE = "https://source.jasig.org/schemas/portlet/notification";
     public static final String NOTIFICATION_QUERY_LOCAL_NAME = "NotificationQuery";
     public static final QName NOTIFICATION_QUERY_QNAME = new QName(NOTIFICATION_NAMESPACE, NOTIFICATION_QUERY_LOCAL_NAME);
@@ -110,11 +91,32 @@ public class AnnouncementsViewController implements InitializingBean {
     public static final String NOTIFICATION_RESULT_LOCAL_NAME = "NotificationResult";
     public static final QName NOTIFICATION_RESULT_QNAME = new QName(NOTIFICATION_NAMESPACE, NOTIFICATION_RESULT_LOCAL_NAME);
     public static final String NOTIFICATION_RESULT_QNAME_STRING = "{" + NOTIFICATION_NAMESPACE + "}" + NOTIFICATION_RESULT_LOCAL_NAME;
-        
-    
+
+    @Autowired
+    private ITopicSubscriptionService tss = null;
+
+    @Autowired
+    private final IAnnouncementService announcementService = null;
+
+    @Autowired
+    private EhCacheCacheManager cm = null;
+
+    @Autowired(required=true)
+    private IViewNameSelector viewNameSelector;
+
+    @Autowired
+    private UserPermissionCheckerFactory userPermissionCheckerFactory;
+
+    @Autowired
+    private UserIdService userIdService;
+
+    private Cache guestAnnouncementCache = null;
+    private final Logger logger = Logger.getLogger(getClass());
+
     /**
      * Main method of this display controller. Calculates which topics should be shown to
      * this user and which announcements to show from those topics.
+     *
      * @param model
      * @param request
      * @param from
@@ -133,22 +135,22 @@ public class AnnouncementsViewController implements InitializingBean {
             to = (Integer) model.asMap().get("increment");
         }
 
-        PortletPreferences prefs = request.getPreferences();
+        final PortletPreferences prefs = request.getPreferences();
 
         List<Announcement> announcements;
         List<Announcement> emergencyAnnouncements;
 
-        Element guestCacheElement = null;
-        Element emergCacheElement = null;
-        guestCacheElement = guestAnnouncementCache.get("guest");
-        emergCacheElement = guestAnnouncementCache.get("emergency");
+        final String userId = userIdService.getUserId(request);
+
+        Element guestCacheElement = guestAnnouncementCache.get(userId);
+        Element emergCacheElement = guestAnnouncementCache.get("emergency");
 
         final Boolean isGuest = (Boolean) model.asMap().get("isGuest");
         if (!isGuest || (guestCacheElement == null || emergCacheElement == null)) {
 
             // create a new announcement list
-            announcements = new ArrayList<Announcement>();
-            emergencyAnnouncements = new ArrayList<Announcement>();
+            announcements = new ArrayList<>();
+            emergencyAnnouncements = new ArrayList<>();
 
             // fetch the user's topic subscription from the database
             List<TopicSubscription> myTopics = tss.getTopicSubscription(request);
@@ -166,14 +168,14 @@ public class AnnouncementsViewController implements InitializingBean {
 
             // sort the list (since they are not sorted from the database)
             Comparator<Announcement> sortStrategy = AnnouncementSortStrategy.getStrategy(prefs.getValue(PREFERENCE_SORT_STRATEGY,DEFAULT_SORT_STRATEGY));
-            Collections.sort(announcements,sortStrategy);
-            Collections.sort(emergencyAnnouncements,sortStrategy);
+            Collections.sort(announcements, sortStrategy);
+            Collections.sort(emergencyAnnouncements, sortStrategy);
 
             if (isGuest) {
                 if (logger.isDebugEnabled())
                     logger.debug("Guest cache expired. Regenerating guest cache.");
 
-                guestAnnouncementCache.put(new Element("guest", announcements));
+                guestAnnouncementCache.put(new Element(userId, announcements));
                 guestAnnouncementCache.put(new Element("emergency", emergencyAnnouncements));
             }
         }
@@ -403,7 +405,7 @@ public class AnnouncementsViewController implements InitializingBean {
   	
   	@ModelAttribute("isGuest")
   	public boolean isGuest(PortletRequest req) {
-        boolean rslt = (req.getRemoteUser() == null || req.getRemoteUser().equalsIgnoreCase(GUEST_USERNAME));
+        boolean rslt = (req.getRemoteUser() == null);
         logger.debug("isGuest is: "+Boolean.toString(rslt));
         logger.debug("remoteUser is: "+req.getRemoteUser());
         return rslt;

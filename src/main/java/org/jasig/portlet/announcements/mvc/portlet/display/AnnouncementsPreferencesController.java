@@ -45,14 +45,10 @@ import java.util.List;
 
 /**
  * @author eolsson
- *
  */
 @Controller
 @RequestMapping("EDIT")
 public class AnnouncementsPreferencesController {
-
-    private static final String GUEST_USERNAME = "guest";
-    private final Logger logger = Logger.getLogger(getClass());
 
     @Autowired
     private ITopicSubscriptionService tss = null;
@@ -65,6 +61,8 @@ public class AnnouncementsPreferencesController {
 
     public static final String PREFERENCE_HIDE_ABSTRACT = "AnnouncementsViewController.hideAbstract";
 
+    private final Logger logger = Logger.getLogger(getClass());
+
     public void setTss(ITopicSubscriptionService tss) {
         this.tss = tss;
     }
@@ -75,8 +73,7 @@ public class AnnouncementsPreferencesController {
         PortletPreferences prefs = request.getPreferences();
         List<TopicSubscription> myTopics = tss.getTopicSubscriptionEdit(request);
 
-        if (request.getRemoteUser() == null ||
-                request.getRemoteUser().equalsIgnoreCase(GUEST_USERNAME)) {
+        if (request.getRemoteUser() == null) {
             model.addAttribute("isGuest", Boolean.TRUE);
         } else {
             model.addAttribute("isGuest", Boolean.FALSE);
@@ -141,7 +138,7 @@ public class AnnouncementsPreferencesController {
   	
   	@ModelAttribute("isGuest")
   	public boolean isGuest(PortletRequest req) {
-        boolean rslt = (req.getRemoteUser() == null || req.getRemoteUser().equalsIgnoreCase(GUEST_USERNAME));
+        boolean rslt = (req.getRemoteUser() == null);
         logger.debug("isGuest is: "+Boolean.toString(rslt));
         logger.debug("remoteUser is: "+req.getRemoteUser());
         return rslt;

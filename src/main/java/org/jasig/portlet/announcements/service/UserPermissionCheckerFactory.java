@@ -40,6 +40,9 @@ public class UserPermissionCheckerFactory implements InitializingBean{
     @Autowired
     private EhCacheCacheManager cacheManager = null;
 
+    @Autowired
+    private UserIdService userIdService;
+
     private Cache cache = null;
 
     public UserPermissionChecker createUserPermissionChecker(PortletRequest request, Topic topic) {
@@ -77,12 +80,8 @@ public class UserPermissionCheckerFactory implements InitializingBean{
     }
 
     private String getCacheKey(PortletRequest request, Topic topic) {
-        String username = getPortletRequestUsername(request);
-        return new StringBuilder(username).append(CACHE_KEY_DELIM).append(topic.getTitle()).toString();
+        String userId = userIdService.getUserId(request);
+        return new StringBuilder(userId).append(CACHE_KEY_DELIM).append(topic.getTitle()).toString();
     }
 
-    private String getPortletRequestUsername(PortletRequest request) {
-        String username = request.getRemoteUser();
-        return ((username == null) || (username.isEmpty()) ? UserPermissionChecker.GUEST_USERNAME : username);
-    }
 }

@@ -95,7 +95,7 @@ public class PortletXMLGroupService implements ServletContextAware, IGroupServic
 	
 	
 	public List<Role> getAllRoles() {
-		List<Role> list = new ArrayList<Role>();
+		List<Role> list = new ArrayList<>();
 		
 		for (String role: roles) {
 			list.add(new Role(role, false));
@@ -105,7 +105,7 @@ public class PortletXMLGroupService implements ServletContextAware, IGroupServic
 	}
 	
 	public List<Role> getAllRolesFromGroupSet(Set<String> selected) {
-		List<Role> list = new ArrayList<Role>();
+		List<Role> list = new ArrayList<>();
 		
 		for (String role: roles) {
 			if (selected.contains(role))
@@ -124,7 +124,7 @@ public class PortletXMLGroupService implements ServletContextAware, IGroupServic
 	}
 	
 	public Set<String> getSetForRoleSelection(RoleSelection roleSel) {
-		Set<String> newSet = new TreeSet<String>();
+		Set<String> newSet = new TreeSet<>();
 		newSet.addAll(roleSel.getSelectedRoles());
 		return newSet;		
 	}
