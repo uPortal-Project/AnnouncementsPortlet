@@ -69,8 +69,8 @@
         <connection>scm:git:git://github.com/Jasig/AnnouncementsPortlet.git</connection>
         <developerConnection>scm:git:git@github.com:Jasig/AnnouncementsPortlet.git</developerConnection>
         <url>https://github.com/Jasig/AnnouncementsPortlet</url>
-      <tag>Announcements-2.2.0</tag>
-  </scm>
+        <tag>Announcements-2.2.0</tag>
+    </scm>
 
     <repositories>
         <repository>
@@ -643,5 +643,16 @@
             </plugin>
         </plugins>
     </build>
-
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <configLocation>google_checks.xml</configLocation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
