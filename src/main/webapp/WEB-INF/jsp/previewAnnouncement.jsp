@@ -25,7 +25,7 @@
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
 <c:if test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
-    <script type="text/javascript" src="<rs:resourceURL value="/rs/jquery/1.10.2/jquery-1.10.2.min.js"/>"></script>
+    <script type="text/javascript" src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>"></script>
 </c:if>
 
     <div class="container-fluid bootstrap-styles announcements-container">
