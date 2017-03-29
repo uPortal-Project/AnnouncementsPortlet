@@ -1,6 +1,7 @@
 # Apereo Announcements Portlet
 
-[![Build Status](https://travis-ci.org/Jasig/AnnouncementsPortlet.svg?branch=master)](https://travis-ci.org/Jasig/AnnouncementsPortlet)
+[![Linux Build Status](https://travis-ci.org/Jasig/AnnouncementsPortlet.svg?branch=master)](https://travis-ci.org/Jasig/AnnouncementsPortlet)
+[![Windows Build status](https://ci.appveyor.com/api/projects/status/ckh2tqajlcxhepnr/branch/master?svg=true)](https://ci.appveyor.com/project/ChristianMurphy/announcementsportlet-wj0cf/branch/master)
 
 This is a [Sponsored Portlet][] in the uPortal project.
 
