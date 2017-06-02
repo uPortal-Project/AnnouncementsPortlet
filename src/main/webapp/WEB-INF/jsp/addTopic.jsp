@@ -113,26 +113,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="radio_group">
                     <label for="subscriptionMethod" class="col-sm-3 control-label">
 												<spring:message code="addTopic.submethod"/>
 										</label>
-                    <div class="col-sm-9">
+                    <div class="col-sm-9" aria-labelledby="radio_group" aria-required="true" role="radiogroup">
                         <div class="radio">
                             <label for="subscriptionMethod1" title="<spring:message code="addTopic.pushedforced.title"/>">
-                                <form:radiobutton path="subscriptionMethod" value="1"/>
+                                <form:radiobutton role="radio" path="subscriptionMethod" value="1"/>
 																<spring:message code="addTopic.pushedforced"/>
                             </label>
                         </div>
                         <div class="radio">
                             <label for="subscriptionMethod2" title="<spring:message code="addTopic.pushedoptional.title"/>">
-                                <form:radiobutton path="subscriptionMethod" value="2"/>
+                                <form:radiobutton role="radio" path="subscriptionMethod" value="2"/>
 																<spring:message code="addTopic.pushedoptional"/>
                             </label>
                         </div>
                         <div class="radio">
                             <label for="subscriptionMethod3" title="<spring:message code="addTopic.optional.title"/>">
-                                <form:radiobutton path="subscriptionMethod" value="3"/>
+                                <form:radiobutton role="radio" path="subscriptionMethod" value="3"/>
 																<spring:message code="addTopic.optional"/>
                             </label>
                         </div>
