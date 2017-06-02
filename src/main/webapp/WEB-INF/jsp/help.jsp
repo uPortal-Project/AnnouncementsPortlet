@@ -156,4 +156,6 @@
 For more details visit the AnnouncementsPortlet <a href="https://wiki.jasig.org/display/PLT/Announcements+Portlet" target="_blank">wiki page</a>.
 
 <br/><br/>
-<a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view" windowState="normal"/>"><img src="<c:url value="/icons/arrow_left.png"/>" border="0" height="16" width="16" style="vertical-align:middle"/> <spring:message code="general.adminhome"/></a>
+<div class="nav-links">
+    <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view" windowState="normal"/>"><i class="fa fa-arrow-left"></i><spring:message code="general.adminhome"/></a>
+</div>
