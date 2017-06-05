@@ -115,7 +115,7 @@
                         <i class="fa fa-plus"></i> <spring:message code="baseAdmin.addnew"/></a> |
                 </c:if>
                 <a href="<portlet:renderURL portletMode='HELP' windowState='MAXIMIZED'/>">
-                    <i class="fa fa-question-circle"></i>
+                    <i class="fa fa-question-circle"></i> <spring:message code="baseAdmin.help"/>
                 </a>
             </div>
         </div>
@@ -152,23 +152,29 @@
                                         <c:when test="${topic.subscriptionMethod == 3}">
                                             <spring:message code="addTopic.optional"/>
                                         </c:when>
+                                        <c:otherwise>
+                                            <spring:message code="baseAdmin.no.subMethod"/>
+                                        </c:otherwise>
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <table class="action-icon-table">
-                                        <tr>
-                                            <td>
-                                                <c:if test="${topic.subscriptionMethod != 4}">
-                                                    <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"></i></a>
-                                                </c:if>
-                                            </td>
-                                            <td>
-                                                <c:if test="${topic.subscriptionMethod != 4}">
-                                                    <a class="action-icon" href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="baseAdmin.delete"/>"><i class="fa fa-trash-o"></i></a>
-                                                </c:if>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                    <c:choose>
+                                        <c:when test="${topic.subscriptionMethod != 4}">
+                                            <table>
+                                                <tr>
+                                                    <td>                                     
+                                                        <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"></i> <spring:message code="baseAdmin.edit"/></a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="action-icon" href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="baseAdmin.delete"/>"><i class="fa fa-trash-o"></i> <spring:message code="baseAdmin.delete"/></a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <spring:message code="baseAdmin.no.actions"/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -195,13 +201,20 @@
                                         <c:when test="${topic.subscriptionMethod == 3}">
                                             <spring:message code="addTopic.optional"/>
                                         </c:when>
+                                        <c:otherwise>
+                                            <spring:message code="baseAdmin.no.subMethod"/>
+                                        </c:otherwise>
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <c:if test="${topic.subscriptionMethod != 4}">
-                                        <a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><img src="<c:url value="/icons/pencil.png"/>" height="16" width="16" border="0" alt="<spring:message code="baseAdmin.edit"/>"/></a>&nbsp;&nbsp;
-                                    </c:if>
-                                    &nbsp;
+                                    <c:choose> 
+                                        <c:when test="${topic.subscriptionMethod != 4}">
+                                            <a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <spring:message code="baseAdmin.no.actions"/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -223,6 +236,9 @@
                                         </c:when>
                                         <c:when test="${topic.subscriptionMethod == 3}">
                                             <spring:message code="addTopic.optional"/>
+                                        </c:when>
+                                        <c:when test="${topic.subscriptionMethod == 4}">
+                                            <spring:message code="baseAdmin.no.subMethod"/>
                                         </c:when>
                                     </c:choose>
                                 </td>
