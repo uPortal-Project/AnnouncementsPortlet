@@ -51,20 +51,20 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${ts.topic.subscriptionMethod == 1}">
-                                                    <input type="checkbox" disabled="disabled" checked="checked" value="true" name="subscribed_${status.index}"/>
+                                                    <input role="checkbox" aria-labelledby="SubscriptionName" type="checkbox" disabled="disabled" checked="checked" value="true" name="subscribed_${status.index}" aria-checked="true"/>
                                                 </c:when>
                                                 <c:when test="${ts.topic.subscriptionMethod != 1 and ts.subscribed}">
-                                                    <input type="checkbox" checked="checked" value="true" name="subscribed_${status.index}"/>
+                                                    <input role="checkbox" aria-labelledby="SubscriptionName" type="checkbox" checked="checked" value="true" name="subscribed_${status.index}" aria-checked="true"/>
                                                 </c:when>
                                                 <c:when test="${ts.topic.subscriptionMethod != 1 and not ts.subscribed}">
-                                                    <input type="checkbox" value="true" name="subscribed_${status.index}"/>
+                                                    <input role="checkbox" aria-labelledby="SubscriptionName" type="checkbox" value="true" name="subscribed_${status.index}" aria-checked="false"/>
                                                 </c:when>
                                             </c:choose>
                                             <input type="hidden" name="topicId_${status.index}" value="${ts.topic.id}"/>
                                             <input type="hidden" name="topicSubId_${status.index}" value="${ts.id}"/>
                                         </td>
                                         <td>
-                                            <c:out value="${ts.topic.title}"/>
+                                            <label id="SubscriptionName"><c:out value="${ts.topic.title}"/></label>
                                         </td>
                                         <td>
                                             <c:out value="${ts.topic.description}"/>
@@ -112,12 +112,12 @@
                 <div class="col-md-12">
                     <c:choose>
                         <c:when test="${not prefHideAbstract}">
-                            <input type="checkbox" value="true" name="hideAbstract"/>
-                            <label><spring:message code="edit.pref.hideabstract"/></label>
+                            <input role="checkbox" aria-labelledby="HideAbstract" type="checkbox" value="true" name="hideAbstract"/>
+                            <label id="HideAbstract"><spring:message code="edit.pref.hideabstract"/></label>
                         </c:when>
                         <c:otherwise>
-                            <input type="checkbox" value="true" name="hideAbstract" checked="checked"/>
-                            <label><spring:message code="edit.pref.hideabstract"/></label>
+                            <input role="checkbox" aria-labelledby="HideAbstract" type="checkbox" value="true" name="hideAbstract" checked="checked"/>
+                            <label id="HideAbstract"><spring:message code="edit.pref.hideabstract"/></label>
                         </c:otherwise>
                     </c:choose>
                 </div>
