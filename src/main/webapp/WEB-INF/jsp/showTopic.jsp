@@ -108,7 +108,7 @@
                             <th><spring:message code="show.head.status"/></th>
                             <th width="50%"><spring:message code="show.head.title"/></th>
                             <th><spring:message code="show.head.displaying"/></th>
-                            <th></th>
+                            <th><spring:message code="show.head.actions"/></th>
                         </thead>
                         <tbody>
                             <c:forEach items="${announcements}" var="ann">
