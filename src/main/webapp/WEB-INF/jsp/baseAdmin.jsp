@@ -209,7 +209,7 @@
                                 <td>
                                     <c:choose> 
                                         <c:when test="${topic.subscriptionMethod != 4}">
-                                            <a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"></a>
+                                            <a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"/></a>
                                         </c:when>
                                         <c:otherwise>
                                             <spring:message code="baseAdmin.no.actions"/>
