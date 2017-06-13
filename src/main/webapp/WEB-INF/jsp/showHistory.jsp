@@ -57,11 +57,28 @@
                                 <c:forEach items="${announcements}" var="ann">
                                     <tr>
                                         <td><c:out value="${ann.parent.title}"/></td>
-                                        <td><a title="<spring:message code="showHistory.preview"/>"  href="<portlet:renderURL><portlet:param name="action" value="previewAnnouncement"/><portlet:param name="annId" value="${ ann.id }"/></portlet:renderURL>"><c:out value="${ann.title}"/></a><br /><c:out value="${ann.abstractText}"/></td>
+                                        <td>
+                                            <a title="<spring:message code="showHistory.preview"/>"  href="<portlet:renderURL><portlet:param name="action" value="previewAnnouncement"/><portlet:param name="annId" value="${ ann.id }"/></portlet:renderURL>">
+                                                <c:out value="${ann.title}"/>
+                                            </a>
+                                            <br/><c:out value="${ann.abstractText}"/>
+                                        </td>
                                         <td><fmt:formatDate value="${ann.startDisplay}" dateStyle="short"/></td>
                                         <td><fmt:formatDate value="${ann.endDisplay}" dateStyle="short"/></td>
-                                        <td><a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="showHistory.viewedit"/>"><span class="pull-right"><spring:message code="showHistory.viewedit"/> <i class="fa fa-edit" aria-hidden="true"></i></span></a></td>
-                                        <td><a href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="showHistory.delete"/>"><span class="pull-right"><spring:message code="showHistory.delete"/> <i class="fa fa-trash-o" aria-hidden="true"></i></span></a></td>
+                                        <td>
+                                            <a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="showHistory.viewedit"/>">
+                                                <span class="pull-right">
+                                                    <spring:message code="showHistory.viewedit"/> <i class="fa fa-edit" aria-hidden="true"></i>
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="showHistory.delete"/>">
+                                                <span class="pull-right">
+                                                    <spring:message code="showHistory.delete"/> <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                </span>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
