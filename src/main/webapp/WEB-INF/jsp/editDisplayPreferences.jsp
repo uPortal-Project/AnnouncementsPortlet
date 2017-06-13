@@ -51,20 +51,20 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${ts.topic.subscriptionMethod == 1}">
-                                                    <input role="checkbox" aria-labelledby="SubscriptionName" type="checkbox" disabled="disabled" checked="checked" value="true" name="subscribed_${status.index}" aria-checked="true"/>
+                                                    <input role="checkbox" aria-labelledby="${ts.topic.title}" type="checkbox" disabled="disabled" checked="checked" value="true" name="subscribed_${status.index}" aria-checked="true"/>
                                                 </c:when>
                                                 <c:when test="${ts.topic.subscriptionMethod != 1 and ts.subscribed}">
-                                                    <input role="checkbox" aria-labelledby="SubscriptionName" type="checkbox" checked="checked" value="true" name="subscribed_${status.index}" aria-checked="true"/>
+                                                    <input role="checkbox" aria-labelledby="${ts.topic.title}" type="checkbox" checked="checked" value="true" name="subscribed_${status.index}" aria-checked="true"/>
                                                 </c:when>
                                                 <c:when test="${ts.topic.subscriptionMethod != 1 and not ts.subscribed}">
-                                                    <input role="checkbox" aria-labelledby="SubscriptionName" type="checkbox" value="true" name="subscribed_${status.index}" aria-checked="false"/>
+                                                    <input role="checkbox" aria-labelledby="${ts.topic.title}" type="checkbox" value="true" name="subscribed_${status.index}" aria-checked="false"/>
                                                 </c:when>
                                             </c:choose>
                                             <input type="hidden" name="topicId_${status.index}" value="${ts.topic.id}"/>
                                             <input type="hidden" name="topicSubId_${status.index}" value="${ts.id}"/>
                                         </td>
                                         <td>
-                                            <label id="SubscriptionName"><c:out value="${ts.topic.title}"/></label>
+                                            <label id="${ts.topic.title}"><c:out value="${ts.topic.title}"/></label>
                                         </td>
                                         <td>
                                             <c:out value="${ts.topic.description}"/>
