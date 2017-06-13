@@ -157,5 +157,5 @@ For more details visit the AnnouncementsPortlet <a href="https://wiki.jasig.org/
 
 <br/><br/>
 <div class="nav-links">
-    <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view" windowState="normal"/>"><i class="fa fa-arrow-left"></i><spring:message code="general.adminhome"/></a>
+    <a style="text-decoration:none;font-size:0.9em;" href="<portlet:renderURL portletMode="view" windowState="normal"/>"><i class="fa fa-arrow-left" aria-hidden="true"> </i><spring:message code="general.adminhome"/></a>
 </div>

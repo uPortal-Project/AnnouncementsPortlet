@@ -77,7 +77,7 @@
         <div class="col-md-4 no-col-padding">
             <div class="nav-links">
                 <a href="<portlet:renderURL />">
-										<i class="fa fa-home"></i>
+										<i class="fa fa-home" aria-hidden="true"></i>
 										<spring:message code="general.adminhome"/>
 								</a>
             </div>

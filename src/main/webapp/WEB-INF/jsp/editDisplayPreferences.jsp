@@ -35,7 +35,7 @@
             <div class="col-md-6 no-col-padding">
                 <div class="nav-links">
                     <c:if test="${isGuest}">
-                        <a href="<portlet:renderURL portletMode="view"></portlet:renderURL>"><i class="fa fa-arrow-left"></i> <spring:message code="edit.back"/></a>
+                        <a href="<portlet:renderURL portletMode="view"></portlet:renderURL>"><i class="fa fa-arrow-left" aria-hidden="true"></i> <spring:message code="edit.back"/></a>
                     </c:if>
                 </div>
             </div>

@@ -28,7 +28,7 @@
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-12 no-col-padding">
                 <div class="nav-links">
-                    <a href="<portlet:renderURL />"><i class="fa fa-arrow-left"></i> <spring:message code="display.back"/></a>
+                    <a href="<portlet:renderURL />"><i class="fa fa-arrow-left" aria-hidden="true"></i> <spring:message code="display.back"/></a>
                 </div>
             </div>
         </div>

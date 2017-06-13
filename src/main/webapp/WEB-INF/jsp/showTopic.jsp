@@ -87,8 +87,8 @@
         </div>
         <div class="col-md-6 no-col-padding">
             <div class="nav-links">
-                <a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>"><i class="fa fa-plus"></i> <spring:message code="show.addAnn"/></a> |
-                <a href="<portlet:renderURL></portlet:renderURL>"><i class="fa fa-home"></i> <spring:message code="general.adminhome"/></a>
+                <a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>"><i class="fa fa-plus" aria-hidden="true"></i> <spring:message code="show.addAnn"/></a> |
+                <a href="<portlet:renderURL></portlet:renderURL>"><i class="fa fa-home" aria-hidden="true"></i> <spring:message code="general.adminhome"/></a>
             </div>
         </div>
     </div>
@@ -171,7 +171,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <a class="btn btn-default btn-xs pull-right" href="<portlet:renderURL><portlet:param name="action" value="showHistory"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>"><spring:message code="show.history"/> <i class="fa fa-archive"></i></a>
+            <a class="btn btn-default btn-xs pull-right" href="<portlet:renderURL><portlet:param name="action" value="showHistory"/><portlet:param name="topicId" value="${topic.id}"/></portlet:renderURL>"><spring:message code="show.history"/> <i class="fa fa-archive" aria-hidden="true"></i></a>
         </div>
     </div>
     <c:if test="${user.admin}">

@@ -112,10 +112,10 @@
             <div class="nav-links">
                 <c:if test="${portalAdmin}">
                     <a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/></portlet:renderURL>">
-                        <i class="fa fa-plus"></i> <spring:message code="baseAdmin.addnew"/></a> |
+                        <i class="fa fa-plus" aria-hidden="true"></i> <spring:message code="baseAdmin.addnew"/></a> |
                 </c:if>
                 <a href="<portlet:renderURL portletMode='HELP' windowState='MAXIMIZED'/>">
-                    <i class="fa fa-question-circle"></i> <spring:message code="baseAdmin.help"/>
+                    <i class="fa fa-question-circle" aria-hidden="true"></i> <spring:message code="baseAdmin.help"/>
                 </a>
             </div>
         </div>
@@ -163,10 +163,10 @@
                                             <table>
                                                 <tr>
                                                     <td>                                     
-                                                        <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"></i> <spring:message code="baseAdmin.edit"/></a>
+                                                        <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit" aria-hidden="true"></i> <spring:message code="baseAdmin.edit"/></a>
                                                     </td>
                                                     <td>
-                                                        <a class="action-icon" href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="baseAdmin.delete"/>"><i class="fa fa-trash-o"></i> <spring:message code="baseAdmin.delete"/></a>
+                                                        <a class="action-icon" href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="baseAdmin.delete"/>"><i class="fa fa-trash-o" aria-hidden="true"></i> <spring:message code="baseAdmin.delete"/></a>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -253,7 +253,7 @@
     <c:if test="${pendingAnnouncementCount > 0}">
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-12 no-col-padding">
-                <h4><i class="fa fa-thumbs-up"></i> <spring:message code="baseAdmin.myapprovals"/></h4>
+                <h4><i class="fa fa-thumbs-up" aria-hidden="true"></i> <spring:message code="baseAdmin.myapprovals"/></h4>
             </div>
         </div>
         <div class="row">
@@ -272,8 +272,8 @@
                                         <span class="anc-topic"><c:out value="${announcement.parent.title}"/></span>
                                     </td>
                                     <td class="text-right" width="25%">
-                                        <a class="anc-approve" href="<portlet:renderURL/>" onclick="javascript:${n}approval(this,${announcement.parent.id},${announcement.id});return false;;"><i class="fa fa-check-square"></i>  <span><spring:message code="baseAdmin.approve"/></span></a> |
-                                        <a class="anc-edit" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${announcement.id}"/></portlet:renderURL>"><i class="fa fa-pencil"></i> <span><spring:message code="baseAdmin.edit"/></span></a>
+                                        <a class="anc-approve" href="<portlet:renderURL/>" onclick="javascript:${n}approval(this,${announcement.parent.id},${announcement.id});return false;;"><i class="fa fa-check-square" aria-hidden="true"></i>  <span><spring:message code="baseAdmin.approve"/></span></a> |
+                                        <a class="anc-edit" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${announcement.id}"/></portlet:renderURL>"><i class="fa fa-pencil" aria-hidden="true"></i> <span><spring:message code="baseAdmin.edit"/></span></a>
                                     </td>
                                 </tr>
                             </c:forEach>

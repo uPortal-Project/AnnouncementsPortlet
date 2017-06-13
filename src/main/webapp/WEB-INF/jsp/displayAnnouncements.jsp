@@ -111,9 +111,9 @@
         <div class="col-md-12 no-col-padding">
             <div class="nav-links">
                 <c:if test="${not isGuest && not disableEdit}">
-                    <a href="<portlet:renderURL portletMode="edit" />"><i class="fa fa-edit"></i> <spring:message code="display.link.edit"/></a>
+                    <a href="<portlet:renderURL portletMode="edit" />"><i class="fa fa-edit" aria-hidden="true"></i> <spring:message code="display.link.edit"/></a>
                 </c:if> |
-                <a href="<portlet:renderURL><portlet:param name="action" value="displayHistory"/></portlet:renderURL>"><i class="fa fa-archive"></i> <spring:message code="display.link.history"/></a>
+                <a href="<portlet:renderURL><portlet:param name="action" value="displayHistory"/></portlet:renderURL>"><i class="fa fa-archive" aria-hidden="true"></i> <spring:message code="display.link.history"/></a>
             </div>
         </div>
     </div>
