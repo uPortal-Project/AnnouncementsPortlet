@@ -28,38 +28,46 @@
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-12 no-col-padding">
                 <div class="nav-links">
-                    <a href="<portlet:renderURL />"><i class="fa fa-arrow-left"></i> <spring:message code="display.back"/></a>
+                    <a href="<portlet:renderURL />"><i class="fa fa-arrow-left" aria-hidden="true"></i> <spring:message code="display.back"/></a>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="ann-user-archive-table col-md-12">
-                <table id="historyTable" class="table table-condensed announcements-table">
-                    <thead>
-                        <tr>
-                            <th width="15%"><spring:message code="display.header.topic"/></th>
-                            <th><spring:message code="display.header.ann"/></th>
-                            <th><spring:message code="display.header.start"/></th>
-                            <th><spring:message code="display.header.end"/></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${announcements}" var="announcement" varStatus="status">
-                            <tr>
-                                <td><c:out value="${announcement.parent.title}"/></td>
-                                <td>
-                                    <p><a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncementHistory"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a></p>
-                                    <p><c:out value="${announcement.abstractText}"/></p>
-                                    <c:if test="${not empty announcement.link}">
-                                        <p><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></p>
-                                    </c:if>
-                                </td>
-                                <td><p><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></p></td>
-                                <td><p><fmt:formatDate value="${announcement.endDisplay}" dateStyle="medium"/></p></td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <c:choose>
+            <c:when test="${not empty announcements}">
+                <div class="row">
+                    <div class="ann-user-archive-table col-md-12">
+                        <table id="historyTable" class="table table-condensed announcements-table">
+                            <caption class="sr-only"><spring:message code="display.table"/></caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="15%"><spring:message code="display.header.topic"/></th>
+                                    <th scope="col"><spring:message code="display.header.ann"/></th>
+                                    <th scope="col"><spring:message code="display.header.start"/></th>
+                                    <th scope="col"><spring:message code="display.header.end"/></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${announcements}" var="announcement" varStatus="status">
+                                    <tr>
+                                        <td><c:out value="${announcement.parent.title}"/></td>
+                                        <td>
+                                            <p><a title="<spring:message code="display.title.fullannouncement"/>" href="<portlet:renderURL><portlet:param name="action" value="displayFullAnnouncementHistory"/><portlet:param name="announcementId" value="${announcement.id}"/></portlet:renderURL>"><c:out value="${announcement.title}"/></a></p>
+                                            <p><c:out value="${announcement.abstractText}"/></p>
+                                            <c:if test="${not empty announcement.link}">
+                                                <p><spring:message code="display.link.prefix"/> <a href="<c:out value="${announcement.link}"/>"><c:out value="${announcement.link}"/></a></p>
+                                            </c:if>
+                                        </td>
+                                        <td><p><fmt:formatDate value="${announcement.startDisplay}" dateStyle="medium"/></p></td>
+                                        <td><p><fmt:formatDate value="${announcement.endDisplay}" dateStyle="medium"/></p></td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="col-lg-12 alert alert-warning"><spring:message code="display.no.history"/></div>
+            </c:otherwise>
+        </c:choose>
     </div>

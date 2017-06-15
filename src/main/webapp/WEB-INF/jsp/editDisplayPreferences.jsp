@@ -35,7 +35,7 @@
             <div class="col-md-6 no-col-padding">
                 <div class="nav-links">
                     <c:if test="${isGuest}">
-                        <a href="<portlet:renderURL portletMode="view"></portlet:renderURL>"><i class="fa fa-arrow-left"></i> <spring:message code="edit.back"/></a>
+                        <a href="<portlet:renderURL portletMode="view"></portlet:renderURL>"><i class="fa fa-arrow-left" aria-hidden="true"></i> <spring:message code="edit.back"/></a>
                     </c:if>
                 </div>
             </div>
@@ -43,7 +43,7 @@
         <form action="${actionUrl}" method="post" role="form">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                    <table class="table table-condensed announcements-table">
+                    <table role="presentation" class="table table-condensed announcements-table">
                         <c:forEach items="${topicSubscriptions}" var="ts" varStatus="status">
                             <c:choose>
                                 <c:when test="${not isGuest}">
@@ -51,20 +51,20 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${ts.topic.subscriptionMethod == 1}">
-                                                    <input type="checkbox" disabled="disabled" checked="checked" value="true" name="subscribed_${status.index}"/>
+                                                    <input role="checkbox" aria-labelledby="${ts.topic.title}" type="checkbox" disabled="disabled" checked="checked" value="true" name="subscribed_${status.index}" aria-checked="true"/>
                                                 </c:when>
                                                 <c:when test="${ts.topic.subscriptionMethod != 1 and ts.subscribed}">
-                                                    <input type="checkbox" checked="checked" value="true" name="subscribed_${status.index}"/>
+                                                    <input role="checkbox" aria-labelledby="${ts.topic.title}" type="checkbox" checked="checked" value="true" name="subscribed_${status.index}" aria-checked="true"/>
                                                 </c:when>
                                                 <c:when test="${ts.topic.subscriptionMethod != 1 and not ts.subscribed}">
-                                                    <input type="checkbox" value="true" name="subscribed_${status.index}"/>
+                                                    <input role="checkbox" aria-labelledby="${ts.topic.title}" type="checkbox" value="true" name="subscribed_${status.index}" aria-checked="false"/>
                                                 </c:when>
                                             </c:choose>
                                             <input type="hidden" name="topicId_${status.index}" value="${ts.topic.id}"/>
                                             <input type="hidden" name="topicSubId_${status.index}" value="${ts.id}"/>
                                         </td>
                                         <td>
-                                            <c:out value="${ts.topic.title}"/>
+                                            <label id="${ts.topic.title}"><c:out value="${ts.topic.title}"/></label>
                                         </td>
                                         <td>
                                             <c:out value="${ts.topic.description}"/>
@@ -112,12 +112,12 @@
                 <div class="col-md-12">
                     <c:choose>
                         <c:when test="${not prefHideAbstract}">
-                            <input type="checkbox" value="true" name="hideAbstract"/>
-                            <label><spring:message code="edit.pref.hideabstract"/></label>
+                            <input role="checkbox" aria-labelledby="HideAbstract" type="checkbox" value="true" name="hideAbstract"/>
+                            <label id="HideAbstract"><spring:message code="edit.pref.hideabstract"/></label>
                         </c:when>
                         <c:otherwise>
-                            <input type="checkbox" value="true" name="hideAbstract" checked="checked"/>
-                            <label><spring:message code="edit.pref.hideabstract"/></label>
+                            <input role="checkbox" aria-labelledby="HideAbstract" type="checkbox" value="true" name="hideAbstract" checked="checked"/>
+                            <label id="HideAbstract"><spring:message code="edit.pref.hideabstract"/></label>
                         </c:otherwise>
                     </c:choose>
                 </div>

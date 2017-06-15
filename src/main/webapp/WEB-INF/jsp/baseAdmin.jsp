@@ -112,10 +112,10 @@
             <div class="nav-links">
                 <c:if test="${portalAdmin}">
                     <a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/></portlet:renderURL>">
-                        <i class="fa fa-plus"></i> <spring:message code="baseAdmin.addnew"/></a> |
+                        <i class="fa fa-plus" aria-hidden="true"></i> <spring:message code="baseAdmin.addnew"/></a> |
                 </c:if>
                 <a href="<portlet:renderURL portletMode='HELP' windowState='MAXIMIZED'/>">
-                    <i class="fa fa-question-circle"></i>
+                    <i class="fa fa-question-circle" aria-hidden="true"></i> <spring:message code="baseAdmin.help"/>
                 </a>
             </div>
         </div>
@@ -123,11 +123,12 @@
     <div class="row">
         <div class="col-md-12">
             <table class="table table-condensed announcements-table">
+                <caption class="sr-only"><spring:message code="baseAdmin.table"/></caption>
                 <thead>
-                    <th><spring:message code="baseAdmin.header.topics"/></th>
-                    <th><spring:message code="baseAdmin.header.status"/></th>
-                    <th><spring:message code="baseAdmin.header.subscriptionmethod"/></th>
-                    <th><spring:message code="baseAdmin.header.actions"/></th>
+                    <th scope="col"><spring:message code="baseAdmin.header.topics"/></th>
+                    <th scope="col"><spring:message code="baseAdmin.header.status"/></th>
+                    <th scope="col"><spring:message code="baseAdmin.header.subscriptionmethod"/></th>
+                    <th scope="col"><spring:message code="baseAdmin.header.actions"/></th>
                 </thead>
                 <c:choose><%-- Needs refactoring... nor reason for 3 loops --%>
                     <c:when test="${portalAdmin}">
@@ -152,23 +153,29 @@
                                         <c:when test="${topic.subscriptionMethod == 3}">
                                             <spring:message code="addTopic.optional"/>
                                         </c:when>
+                                        <c:otherwise>
+                                            <spring:message code="baseAdmin.no.subMethod"/>
+                                        </c:otherwise>
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <table class="action-icon-table">
-                                        <tr>
-                                            <td>
-                                                <c:if test="${topic.subscriptionMethod != 4}">
-                                                    <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"></i></a>
-                                                </c:if>
-                                            </td>
-                                            <td>
-                                                <c:if test="${topic.subscriptionMethod != 4}">
-                                                    <a class="action-icon" href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="baseAdmin.delete"/>"><i class="fa fa-trash-o"></i></a>
-                                                </c:if>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                    <c:choose>
+                                        <c:when test="${topic.subscriptionMethod != 4}">
+                                            <table role="presentation">
+                                                <tr>
+                                                    <td>                                     
+                                                        <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit" aria-hidden="true"></i> <spring:message code="baseAdmin.edit"/></a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="action-icon" href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="baseAdmin.delete"/>"><i class="fa fa-trash-o" aria-hidden="true"></i> <spring:message code="baseAdmin.delete"/></a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <spring:message code="baseAdmin.no.actions"/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -195,13 +202,20 @@
                                         <c:when test="${topic.subscriptionMethod == 3}">
                                             <spring:message code="addTopic.optional"/>
                                         </c:when>
+                                        <c:otherwise>
+                                            <spring:message code="baseAdmin.no.subMethod"/>
+                                        </c:otherwise>
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <c:if test="${topic.subscriptionMethod != 4}">
-                                        <a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><img src="<c:url value="/icons/pencil.png"/>" height="16" width="16" border="0" alt="<spring:message code="baseAdmin.edit"/>"/></a>&nbsp;&nbsp;
-                                    </c:if>
-                                    &nbsp;
+                                    <c:choose> 
+                                        <c:when test="${topic.subscriptionMethod != 4}">
+                                            <a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"/></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <spring:message code="baseAdmin.no.actions"/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -224,6 +238,9 @@
                                         <c:when test="${topic.subscriptionMethod == 3}">
                                             <spring:message code="addTopic.optional"/>
                                         </c:when>
+                                        <c:when test="${topic.subscriptionMethod == 4}">
+                                            <spring:message code="baseAdmin.no.subMethod"/>
+                                        </c:when>
                                     </c:choose>
                                 </td>
                                 <td>&nbsp;</td>
@@ -237,7 +254,7 @@
     <c:if test="${pendingAnnouncementCount > 0}">
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-12 no-col-padding">
-                <h4><i class="fa fa-thumbs-up"></i> <spring:message code="baseAdmin.myapprovals"/></h4>
+                <h4><i class="fa fa-thumbs-up" aria-hidden="true"></i> <spring:message code="baseAdmin.myapprovals"/></h4>
             </div>
         </div>
         <div class="row">
@@ -246,7 +263,7 @@
                     <span id="${n}approval_count" class="approval-count"><c:out value="${pendingAnnouncementCount}"/></span>
                     <a class="anc-approval-list-toggle" href="#"><spring:message code="baseAdmin.waitingapproval"/></a>
                     <div class="anc-my-approvals hide">
-                        <table class="anc-approval-list table table-condensed">
+                        <table class="anc-approval-list table table-condensed" role="presentation">
                             <c:forEach items="${pendingAnnouncements}" var="announcement">
                                 <tr>
                                     <td>
@@ -256,8 +273,8 @@
                                         <span class="anc-topic"><c:out value="${announcement.parent.title}"/></span>
                                     </td>
                                     <td class="text-right" width="25%">
-                                        <a class="anc-approve" href="<portlet:renderURL/>" onclick="javascript:${n}approval(this,${announcement.parent.id},${announcement.id});return false;;"><i class="fa fa-check-square"></i>  <span><spring:message code="baseAdmin.approve"/></span></a> |
-                                        <a class="anc-edit" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${announcement.id}"/></portlet:renderURL>"><i class="fa fa-pencil"></i> <span><spring:message code="baseAdmin.edit"/></span></a>
+                                        <a class="anc-approve" href="<portlet:renderURL/>" onclick="javascript:${n}approval(this,${announcement.parent.id},${announcement.id});return false;;"><i class="fa fa-check-square" aria-hidden="true"></i>  <span><spring:message code="baseAdmin.approve"/></span></a> |
+                                        <a class="anc-edit" href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${announcement.id}"/></portlet:renderURL>"><i class="fa fa-pencil" aria-hidden="true"></i> <span><spring:message code="baseAdmin.edit"/></span></a>
                                     </td>
                                 </tr>
                             </c:forEach>

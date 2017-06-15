@@ -77,7 +77,7 @@
         <div class="col-md-4 no-col-padding">
             <div class="nav-links">
                 <a href="<portlet:renderURL />">
-										<i class="fa fa-home"></i>
+										<i class="fa fa-home" aria-hidden="true"></i>
 										<spring:message code="general.adminhome"/>
 								</a>
             </div>
@@ -113,32 +113,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="subscriptionMethod" class="col-sm-3 control-label">
-												<spring:message code="addTopic.submethod"/>
-										</label>
-                    <div class="col-sm-9">
+                <fieldset class="form-group">
+                    <legend class="col-sm-3 control-label" id="radio-label">
+                        <spring:message code="addTopic.submethod"/>
+                    </legend>
+                    <div class="col-sm-9" aria-required="true" role="radiogroup" aria-labelledby="radio-label">
                         <div class="radio">
+                            <form:radiobutton role="radio" path="subscriptionMethod" value="1"/>
                             <label for="subscriptionMethod1" title="<spring:message code="addTopic.pushedforced.title"/>">
-                                <form:radiobutton path="subscriptionMethod" value="1"/>
-																<spring:message code="addTopic.pushedforced"/>
+                                <spring:message code="addTopic.pushedforced"/>
                             </label>
                         </div>
                         <div class="radio">
+                            <form:radiobutton role="radio" path="subscriptionMethod" value="2"/>
                             <label for="subscriptionMethod2" title="<spring:message code="addTopic.pushedoptional.title"/>">
-                                <form:radiobutton path="subscriptionMethod" value="2"/>
-																<spring:message code="addTopic.pushedoptional"/>
+                                <spring:message code="addTopic.pushedoptional"/>
                             </label>
                         </div>
                         <div class="radio">
+                            <form:radiobutton role="radio" path="subscriptionMethod" value="3"/>
                             <label for="subscriptionMethod3" title="<spring:message code="addTopic.optional.title"/>">
-                                <form:radiobutton path="subscriptionMethod" value="3"/>
-																<spring:message code="addTopic.optional"/>
+                                <spring:message code="addTopic.optional"/>
                             </label>
                         </div>
                         <form:errors cssClass="announcements-error label label-danger" path="subscriptionMethod"/>
                     </div>
-                </div>
+                </fieldset>
                 <form:hidden path="id"/>
                 <form:hidden path="creator"/>
                 <div class="form-group">
