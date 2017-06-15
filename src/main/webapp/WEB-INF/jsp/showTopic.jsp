@@ -95,6 +95,7 @@
     <div class="row">
         <div class="col-md-12">
             <table class="table table-condensed announcements-table">
+                <caption class="sr-only"><spring:message code="show.table"/></caption>
                 <c:choose>
                     <c:when test="${empty announcements}">
                         <tr>
@@ -105,10 +106,10 @@
                     </c:when>
                     <c:otherwise>
                         <thead>
-                            <th><spring:message code="show.head.status"/></th>
-                            <th width="50%"><spring:message code="show.head.title"/></th>
-                            <th><spring:message code="show.head.displaying"/></th>
-                            <th><spring:message code="show.head.actions"/></th>
+                            <th scope="col"><spring:message code="show.head.status"/></th>
+                            <th scope="col" width="50%"><spring:message code="show.head.title"/></th>
+                            <th scope="col"><spring:message code="show.head.displaying"/></th>
+                            <th scope="col"><spring:message code="show.head.actions"/></th>
                         </thead>
                         <tbody>
                             <c:forEach items="${announcements}" var="ann">

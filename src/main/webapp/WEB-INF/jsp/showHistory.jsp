@@ -43,14 +43,15 @@
                 <div class="row">
                     <div class="col-md-12">
                         <table id="historyTable" class="table table-condensed announcements-table tablesorter">
+                            <caption class="sr-only"><spring:message code="showHistory.table"/></caption>
                             <thead>
                                 <tr>
-                                    <th width="15%"><spring:message code="showHistory.header.topic"/></th>
-                                    <th><spring:message code="showHistory.header.ann"/></th>
-                                    <th><spring:message code="showHistory.header.start"/></th>
-                                    <th><spring:message code="showHistory.header.end"/></th>
-                                    <th><spring:message code="showHistory.header.repost"/></th>
-                                    <th><spring:message code="showHistory.header.delete"/></th>
+                                    <th scope="col" width="15%"><spring:message code="showHistory.header.topic"/></th>
+                                    <th scope="col"><spring:message code="showHistory.header.ann"/></th>
+                                    <th scope="col"><spring:message code="showHistory.header.start"/></th>
+                                    <th scope="col"><spring:message code="showHistory.header.end"/></th>
+                                    <th scope="col"><spring:message code="showHistory.header.repost"/></th>
+                                    <th scope="col"><spring:message code="showHistory.header.delete"/></th>
                                 </tr>
                             </thead>
                             <tbody>

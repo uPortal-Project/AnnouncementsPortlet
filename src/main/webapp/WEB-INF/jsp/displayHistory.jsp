@@ -37,12 +37,13 @@
                 <div class="row">
                     <div class="ann-user-archive-table col-md-12">
                         <table id="historyTable" class="table table-condensed announcements-table">
+                            <caption class="sr-only"><spring:message code="display.table"/></caption>
                             <thead>
                                 <tr>
-                                    <th width="15%"><spring:message code="display.header.topic"/></th>
-                                    <th><spring:message code="display.header.ann"/></th>
-                                    <th><spring:message code="display.header.start"/></th>
-                                    <th><spring:message code="display.header.end"/></th>
+                                    <th scope="col" width="15%"><spring:message code="display.header.topic"/></th>
+                                    <th scope="col"><spring:message code="display.header.ann"/></th>
+                                    <th scope="col"><spring:message code="display.header.start"/></th>
+                                    <th scope="col"><spring:message code="display.header.end"/></th>
                                 </tr>
                             </thead>
                             <tbody>

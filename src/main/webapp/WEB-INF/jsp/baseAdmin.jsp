@@ -123,11 +123,12 @@
     <div class="row">
         <div class="col-md-12">
             <table class="table table-condensed announcements-table">
+                <caption class="sr-only"><spring:message code="baseAdmin.table"/></caption>
                 <thead>
-                    <th><spring:message code="baseAdmin.header.topics"/></th>
-                    <th><spring:message code="baseAdmin.header.status"/></th>
-                    <th><spring:message code="baseAdmin.header.subscriptionmethod"/></th>
-                    <th><spring:message code="baseAdmin.header.actions"/></th>
+                    <th scope="col"><spring:message code="baseAdmin.header.topics"/></th>
+                    <th scope="col"><spring:message code="baseAdmin.header.status"/></th>
+                    <th scope="col"><spring:message code="baseAdmin.header.subscriptionmethod"/></th>
+                    <th scope="col"><spring:message code="baseAdmin.header.actions"/></th>
                 </thead>
                 <c:choose><%-- Needs refactoring... nor reason for 3 loops --%>
                     <c:when test="${portalAdmin}">
@@ -160,7 +161,7 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${topic.subscriptionMethod != 4}">
-                                            <table>
+                                            <table role="presentation">
                                                 <tr>
                                                     <td>                                     
                                                         <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit" aria-hidden="true"></i> <spring:message code="baseAdmin.edit"/></a>
@@ -262,7 +263,7 @@
                     <span id="${n}approval_count" class="approval-count"><c:out value="${pendingAnnouncementCount}"/></span>
                     <a class="anc-approval-list-toggle" href="#"><spring:message code="baseAdmin.waitingapproval"/></a>
                     <div class="anc-my-approvals hide">
-                        <table class="anc-approval-list table table-condensed">
+                        <table class="anc-approval-list table table-condensed" role="presentation">
                             <c:forEach items="${pendingAnnouncements}" var="announcement">
                                 <tr>
                                     <td>

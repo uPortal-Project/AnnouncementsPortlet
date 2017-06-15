@@ -43,7 +43,7 @@
         <form action="${actionUrl}" method="post" role="form">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                    <table class="table table-condensed announcements-table">
+                    <table role="presentation" class="table table-condensed announcements-table">
                         <c:forEach items="${topicSubscriptions}" var="ts" varStatus="status">
                             <c:choose>
                                 <c:when test="${not isGuest}">
