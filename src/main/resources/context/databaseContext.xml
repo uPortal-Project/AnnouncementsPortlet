@@ -122,4 +122,7 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
+    <!-- Used to [drop and] create the Announcements database schema from the command line -->
+    <bean id="schemaCreator" class="org.jasig.portlet.announcements.SchemaCreator" />
+
 </beans>

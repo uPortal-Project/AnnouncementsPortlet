@@ -192,6 +192,13 @@
             <version>3.6.10.Final</version>
         </dependency>
 
+        <!-- Needed for schema reset;  version compatible with org.hibernate:hibernate-core:3.6.10.FINAL -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-tools</artifactId>
+            <version>3.6.0.Final</version>
+        </dependency>
+
         <dependency><!-- java bytecode processor required by hibernate-->
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
@@ -429,35 +436,47 @@
                 <!-- extensions must be set to true to pick up the custom phases -->
                 <extensions>true</extensions>
             </plugin>
+            <!--
+             | Invoke this plugin as follows to drop and recreate the Announcements database tables...
+             |
+             |   >mvn db-init
+             +-->
             <plugin>
-                <!--
-                 | Invoke this plugin as follows to drop and recreate the Announcements database tables...
-                 |
-                 |   >mvn db-init
-                 +-->
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>hibernate3-maven-plugin</artifactId>
-                <version>2.2</version>
+                <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>schema-create</id>
                         <phase>db-init</phase>
                         <goals>
-                            <goal>hbm2ddl</goal>
+                            <goal>run</goal>
                         </goals>
+                        <configuration>
+                            <tasks>
+                                <property name="runtime_classpath" refid="maven.runtime.classpath" />
+                                <property name="plugin_classpath" refid="maven.plugin.classpath" />
+
+                                <java failonerror="true" classname="org.jasig.portlet.announcements.SchemaCreator">
+                                    <sysproperty key="log4j.configuration" value="command-line.log4j.properties" />
+                                    <classpath>
+                                        <pathelement location="${project.build.directory}/${project.artifactId}/WEB-INF/context" />
+                                        <pathelement path="${runtime_classpath}" />
+                                        <pathelement path="${plugin_classpath}" />
+                                    </classpath>
+                                </java>
+                            </tasks>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <componentProperties>
-                        <propertyfile>target/${project.artifactId}/WEB-INF/classes/datasource.properties</propertyfile>
-                        <drop>true</drop>
-                    </componentProperties>
-                </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>${jdbc.groupId}</groupId>
-                        <artifactId>${jdbc.artifactId}</artifactId>
-                        <version>${jdbc.version}</version>
-                        <scope>compile</scope>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>javax.servlet-api</artifactId>
+                        <version>${servlet-api.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.portlet</groupId>
+                        <artifactId>portlet-api</artifactId>
+                        <version>2.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
