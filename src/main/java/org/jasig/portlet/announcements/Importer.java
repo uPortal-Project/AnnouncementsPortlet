@@ -17,12 +17,15 @@ package org.jasig.portlet.announcements;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -74,7 +77,7 @@ public class Importer {
       System.exit(1);
     }
     log.info(
-        "Importing XML data files in the following directory:  " + dataDirectory.getAbsolutePath());
+        "Importing XML data files in the following directory and its descendants:  " + dataDirectory.getAbsolutePath());
 
     // announcementService
     ApplicationContext context =
@@ -83,7 +86,7 @@ public class Importer {
     IAnnouncementService announcementService =
         context.getBean(ANNOUNCEMENT_SVC_BEAN_NAME, IAnnouncementService.class);
 
-    Importer importer = new Importer(dataDirectory, /*sessionFactory,*/ announcementService);
+    Importer importer = new Importer(dataDirectory, announcementService);
     importer.importData();
 
     if (importer.errors.size() > 0) {
@@ -102,7 +105,7 @@ public class Importer {
       JAXBContext jc = JAXBContext.newInstance(Topic.class);
       Unmarshaller unmarshaller = jc.createUnmarshaller();
 
-      File[] files = dataDirectory.listFiles(new TopicImportFileFilter());
+      List<File> files = listFilesRecursively(dataDirectory, new TopicImportFileFilter());
 
       if (files == null) {
         errors.add("Directory " + dataDirectory + " is not a valid directory");
@@ -155,7 +158,7 @@ public class Importer {
       JAXBContext jc = JAXBContext.newInstance(Announcement.class);
       Unmarshaller unmarshaller = jc.createUnmarshaller();
 
-      File[] files = dataDirectory.listFiles(new AnnouncementImportFileFilter());
+      List<File> files = listFilesRecursively(dataDirectory, new AnnouncementImportFileFilter());
 
       if (files == null) {
         errors.add("Directory " + dataDirectory + " is not a valid directory");
@@ -233,6 +236,23 @@ public class Importer {
       }
     }
     return topic;
+  }
+
+  private List<File> listFilesRecursively(File parent, FileFilter filter) {
+    final List<File> rslt = new ArrayList<>();
+    // Sub directories first
+    final File[] subdirs = parent.listFiles(new FileFilter() {
+      @Override
+      public boolean accept(File child) {
+        return child.isDirectory();
+      }
+    });
+    for (File dir : subdirs) {
+      rslt.addAll(listFilesRecursively(dir, filter));
+    }
+    // Now this directory
+    rslt.addAll(Arrays.asList(parent.listFiles(filter)));
+    return Collections.unmodifiableList(rslt);
   }
 
   private static class TopicImportFileFilter implements FileFilter {
