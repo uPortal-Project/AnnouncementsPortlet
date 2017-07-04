@@ -18,7 +18,8 @@ package org.jasig.portlet.announcements;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import javax.sql.DataSource;
+
 import org.apache.log4j.Logger;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -73,7 +74,7 @@ public class SchemaCreator implements ApplicationContextAware {
 
         final LocalSessionFactoryBean sessionFactoryBean = applicationContext
                 .getBean(SESSION_FACTORY_BEAN_NAME, LocalSessionFactoryBean.class);
-        final BasicDataSource dataSource = applicationContext.getBean(DATA_SOURCE_BEAN_NAME, BasicDataSource.class);
+        final DataSource dataSource = applicationContext.getBean(DATA_SOURCE_BEAN_NAME, DataSource.class);
 
         try {
             final Configuration cfg = sessionFactoryBean.getConfiguration();
