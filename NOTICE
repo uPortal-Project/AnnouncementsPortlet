@@ -16,26 +16,41 @@ specific language governing permissions and limitations
 under the License.
 
 This project includes:
+  %systemBundle under Eclipse Public License - v 1.0
   Announcements Portlet under Apache License Version 2.0
+  ant under The Apache Software License, Version 2.0
   AntLR under BSD License
   AOP alliance under Public Domain
+  Apache Commons Collections under Apache License, Version 2.0
   Apache Commons Logging under The Apache Software License, Version 2.0
+  ASM Core under Apache License, Version 2.0
   Backport of JSR 166 under Public Domain
+  Code Generation Library under ASF 2.0
+  Commands under Eclipse Public License - v 1.0
+  Common Eclipse Runtime under Eclipse Public License - v 1.0
   Commons Codec under The Apache Software License, Version 2.0
   Commons DBCP under The Apache Software License, Version 2.0
   Commons IO under The Apache Software License, Version 2.0
   Commons Lang under The Apache Software License, Version 2.0
   Commons Pool under The Apache Software License, Version 2.0
-  commons-collections under Apache License, Version 2.0
+  Core Runtime under Eclipse Public License - v 1.0
   Data Mapper for Jackson under The Apache Software License, Version 2.0
   dom4j under BSD License
+  Eclipse Content Mechanism under Eclipse Public License - v 1.0
+  Eclipse Jobs Mechanism under Eclipse Public License - v 1.0
+  Eclipse Preferences Mechanism under Eclipse Public License - v 1.0
   ehcache under The Apache Software License, Version 2.0
   Ehcache Core under The Apache Software License, Version 2.0
   Ehcache Web Filters under The Apache Software License, Version 2.0
+  Equinox Application Container under Eclipse Public License - v 1.0
+  Extension Registry Support under Eclipse Public License - v 1.0
+  freemarker under BSD-style license
   Guava: Google Core Libraries for Java under The Apache Software License, Version 2.0
   Hamcrest Core under New BSD License
   Hibernate Commons Annotations under GNU LESSER GENERAL PUBLIC LICENSE
   Hibernate Core under GNU Lesser General Public License
+  Hibernate Entity Manager under GNU Lesser General Public License
+  Hibernate Tools under GNU Lesser General Public License
   HyperSQL Database under HSQLDB License, a BSD open source license
   Jackson under The Apache Software License, Version 2.0
   JASYPT: Java Simplified Encryption under The Apache Software License, Version 2.0
@@ -50,6 +65,7 @@ This project includes:
   JDOM under Apache style license
   JPA 2.0 API under Sun Binary Code License
   jstl under Commons Development and Distribution License, Version 1.0
+  JTidy under Java HTML Tidy License
   JUnit under Eclipse Public License 1.0
   Log4j under The Apache Software License, Version 2.0
   NotificationPortlet - API under JA-SIG Collaborative Licence
@@ -76,4 +92,6 @@ This project includes:
   Spring Web Portlet under The Apache Software License, Version 2.0
   standard under Apache License, Version 2.0
   Streaming API for XML under Sun Binary Code License
+  Text under Eclipse Public License - v 1.0
+  Tycho org.eclipse.jdt.core dependency (Incubation) under Eclipse Public License
 
