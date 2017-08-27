@@ -36,12 +36,15 @@ import javax.portlet.PortletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
+import org.jasig.portlet.announcements.mvc.portlet.display.AnnouncementsViewController;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -55,7 +58,22 @@ public class RssFeedController {
 
     private static final String CONTENT_TYPE = "application/rss+xml";
 
+    /**
+     * For announcements that don't specify an external link, we will attempt to construct one based
+     * on what we know about how uPortal constructs URLs.  It will work (until it doesn't), but this
+     * behavior is a flagrant violation of the Java Portlet Specification, which mandates that URLs
+     * to portlet content may only be generated within a RENDER or RESOURCE phase.
+     */
+    private static final String ANNOUNCEMENT_DEEP_LINK_FORMAT =
+            "%s/%s/p/%s?pP_announcementId=%d&pP_action=" + AnnouncementsViewController.ACTION_DISPLAY_FULL_ANNOUNCEMENT;
+
     private IAnnouncementService announcementService;
+
+    @Value("${RssFeedController.portalContextName:uPortal}")
+    private String portalContextName;
+
+    @Value("${RssFeedController.announcementsPortletFname:announcements}")
+    private String announcementsPortletFname;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -112,7 +130,25 @@ public class RssFeedController {
             final SyndEntry entry = new SyndEntryImpl();
             entry.setTitle(a.getTitle());
             entry.setAuthor(a.getAuthor());
-            if (a.getLink() != null) entry.setLink(a.getLink());
+            // Every entry really should have a link
+            if (StringUtils.isNotBlank(a.getLink())) {
+                // Use the external URL, if specified
+                entry.setLink(a.getLink());
+            } else {
+                /*
+                 * Deep-link to the full announcement within this portlet.  There are a number of
+                 * issues with this feature (see note above).
+                 */
+                final String requestUrl = request.getRequestURL().toString();
+                final String requestUri = request.getRequestURI();
+                final int urlPrefixLength = requestUrl.indexOf(requestUri);
+                final String urlPrefix = requestUrl.substring(0, urlPrefixLength);
+                final String deepLink = String.format(ANNOUNCEMENT_DEEP_LINK_FORMAT, urlPrefix,
+                        portalContextName, announcementsPortletFname, a.getId());
+                logger.debug("Calculated the following deepLink for announcement with id={}:  {}",
+                        a.getId(), deepLink);
+                entry.setLink(deepLink);
+            }
             entry.setPublishedDate(a.getStartDisplay());
             final SyndContent description = new SyndContentImpl();
             description.setType("text/plain");

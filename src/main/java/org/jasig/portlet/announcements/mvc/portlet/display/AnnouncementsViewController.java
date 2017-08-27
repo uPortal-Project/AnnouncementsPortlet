@@ -68,6 +68,8 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 @RequestMapping("VIEW")
 public class AnnouncementsViewController implements InitializingBean {
 
+  public static final String ACTION_DISPLAY_FULL_ANNOUNCEMENT = "displayFullAnnouncement";
+
   public static final String PREFERENCE_DISPLAY_STARTDATE =
       "AnnouncementsViewController.displayPublishDate";
   public static final String PREFERENCE_DISABLE_EDIT =
@@ -208,7 +210,7 @@ public class AnnouncementsViewController implements InitializingBean {
     return viewNameSelector.select(request, "displayAnnouncements");
   }
 
-  @RenderMapping(params = "action=displayFullAnnouncement")
+  @RenderMapping(params = "action=" + ACTION_DISPLAY_FULL_ANNOUNCEMENT)
   public String displayFullAnnouncement(
       Model model, RenderRequest request, @RequestParam("announcementId") String announcementId)
       throws Exception {

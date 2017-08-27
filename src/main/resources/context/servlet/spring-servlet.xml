@@ -31,8 +31,10 @@
     <context:component-scan base-package="org.jasig.portlet.announcements.mvc.servlet" />
     <context:annotation-config />
 
+    <!-- Need to bring in the main application PropertySourcesPlaceholderConfigurer -->
+    <bean parent="propertyConfigurer" />
+
     <!-- Handler Mappings -->
-    
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="interceptors">
             <list>
@@ -48,7 +50,6 @@
     </bean>
     
     <!-- Exceptions Handlers -->
-    
     <bean id="defaultExceptionHandler" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <props />
