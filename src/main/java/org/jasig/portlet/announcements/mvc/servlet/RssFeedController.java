@@ -20,6 +20,8 @@ package org.jasig.portlet.announcements.mvc.servlet;
 
 import com.rometools.rome.feed.synd.SyndContent;
 import com.rometools.rome.feed.synd.SyndContentImpl;
+import com.rometools.rome.feed.synd.SyndEnclosure;
+import com.rometools.rome.feed.synd.SyndEnclosureImpl;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndEntryImpl;
 import com.rometools.rome.feed.synd.SyndFeed;
@@ -31,12 +33,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import javax.portlet.PortletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.mvc.portlet.display.AnnouncementsViewController;
@@ -67,6 +72,8 @@ public class RssFeedController {
     private static final String ANNOUNCEMENT_DEEP_LINK_FORMAT =
             "%s/%s/p/%s?pP_announcementId=%d&pP_action=" + AnnouncementsViewController.ACTION_DISPLAY_FULL_ANNOUNCEMENT;
 
+    private static final String PATH_ATTRIBUTE = "path";
+
     private IAnnouncementService announcementService;
 
     @Value("${RssFeedController.portalContextName:uPortal}")
@@ -74,6 +81,8 @@ public class RssFeedController {
 
     @Value("${RssFeedController.announcementsPortletFname:announcements}")
     private String announcementsPortletFname;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -85,21 +94,49 @@ public class RssFeedController {
     @RequestMapping(produces = CONTENT_TYPE)
     public void getRssFeed(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-
         // Locate the Topic specified in the request
-        final Long topicId;
-        final Topic topic;
+        Topic topic = null;
         try {
-            topicId = Long.valueOf(ServletRequestUtils.getIntParameter(request, "topic"));
-            if (topicId == null) {
-                throw new ServletRequestBindingException("Parameter 'topic' not specified");
-            }
-            try {
-                topic = announcementService.getTopic(topicId);
-            } catch (PortletException pe) {
-                logger.warn("Failed to obtain a Topic for the specified id of '{}'", topicId);
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "no such topic");
-                return;
+            /*
+             * There are two options:
+             *
+             *   - 1: by database identifier (original method -- try first)
+             *   - 2: by title (try second)
+             */
+            final Long topicId = ServletRequestUtils.getLongParameter(request, "topic");
+            if (topicId != null) {
+                try {
+                    topic = announcementService.getTopic(topicId);
+                } catch (PortletException pe) {
+                    logger.warn("Failed to obtain a Topic for the specified id of '{}'", topicId);
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "no such topic");
+                    return;
+                }
+            } else {
+                final String titleParameter = ServletRequestUtils.getStringParameter(request, "topicTitle");
+                if (titleParameter != null) {
+                    // We need to find it...
+                    final List<Topic> allTopics = announcementService.getAllTopics();
+                    for (Topic t : allTopics) {
+                        final String convertedTopicTitle = t.getTitle().trim().replaceAll("\\s", "-");
+                        logger.debug("Calculated convertedTopicTitle='{}' for topic with title='{}'",
+                                convertedTopicTitle, t.getTitle());
+                        if (convertedTopicTitle.equalsIgnoreCase(titleParameter)) {
+                            topic = t;
+                            break;
+                        }
+                    }
+                    if (topic != null) {
+                        logger.debug("Found topic '{}' for titleParameter='{}'",
+                                topic.getTitle(), titleParameter);
+                    } else {
+                        final String msg = "No topic found for titleParameter='" + titleParameter + "'";
+                        throw new ServletRequestBindingException(msg);
+                    }
+                } else {
+                    final String msg = "Parameter 'topic' or parameter 'topicTitle' must be specified";
+                    throw new ServletRequestBindingException(msg);
+                }
             }
         } catch (ServletRequestBindingException srbe) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Must specify a valid topic id");
@@ -113,6 +150,8 @@ public class RssFeedController {
             return;
         }
 
+        final String urlPrefix = calculateUrlPrefix(request);
+
         // fetch and sort the announcements
         final List<Announcement> announcements = new ArrayList<>();
         announcements.addAll(topic.getPublishedAnnouncements());
@@ -122,7 +161,7 @@ public class RssFeedController {
         final SyndFeed feed = new SyndFeedImpl();
         feed.setFeedType("rss_2.0");
         feed.setTitle(topic.getTitle());
-        feed.setLink(request.getRequestURL().append("?topic=").append(topicId.toString()).toString());
+        feed.setLink(request.getRequestURL().append("?topic=").append(topic.getId()).toString());
         feed.setDescription(topic.getDescription());
 
         final List<SyndEntry> entries = new ArrayList<>();
@@ -139,10 +178,6 @@ public class RssFeedController {
                  * Deep-link to the full announcement within this portlet.  There are a number of
                  * issues with this feature (see note above).
                  */
-                final String requestUrl = request.getRequestURL().toString();
-                final String requestUri = request.getRequestURI();
-                final int urlPrefixLength = requestUrl.indexOf(requestUri);
-                final String urlPrefix = requestUrl.substring(0, urlPrefixLength);
                 final String deepLink = String.format(ANNOUNCEMENT_DEEP_LINK_FORMAT, urlPrefix,
                         portalContextName, announcementsPortletFname, a.getId());
                 logger.debug("Calculated the following deepLink for announcement with id={}:  {}",
@@ -154,6 +189,18 @@ public class RssFeedController {
             description.setType("text/plain");
             description.setValue(a.getAbstractText());
             entry.setDescription(description);
+            final Set<String> attachments = a.getAttachments();
+            if (!attachments.isEmpty()) {
+                List<SyndEnclosure> enclosures = new ArrayList<>();
+                for (String attachment : attachments) {
+                    final JsonNode json = objectMapper.readTree(attachment);
+                    final SyndEnclosure se = new SyndEnclosureImpl();
+                    final String enclosureUrl = urlPrefix + json.get(PATH_ATTRIBUTE).getTextValue();
+                    se.setUrl(enclosureUrl);
+                    enclosures.add(se);
+                }
+                entry.setEnclosures(enclosures);
+            }
             entries.add(entry);
         }
         feed.setEntries(entries);
@@ -171,6 +218,13 @@ public class RssFeedController {
         response.setContentLength(out.length());
         response.getOutputStream().print(out);
         response.getOutputStream().flush();
+    }
+
+    private String calculateUrlPrefix(HttpServletRequest req) {
+        final String requestUrl = req.getRequestURL().toString();
+        final String requestUri = req.getRequestURI();
+        final int urlPrefixLength = requestUrl.indexOf(requestUri);
+        return requestUrl.substring(0, urlPrefixLength);
     }
 
 }
