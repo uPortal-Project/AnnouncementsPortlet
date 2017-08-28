@@ -31,9 +31,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-/** @author eolsson */
+/**
+ * Responsible for receiving and processing the publish/unpublish messages sent from the Admin
+ * portlet via AJaX.
+ */
 @Controller("ajaxApproveController")
 public class AjaxApproveController {
+
+    private static final int STATUS_SCHEDULED = 0;
+    private static final int STATUS_EXPIRED = 1;
+    private static final int STATUS_SHOWING = 2;
+    private static final int STATUS_PENDING = 3;
 
     private IAnnouncementService announcementService;
 
@@ -67,14 +75,14 @@ public class AjaxApproveController {
         }
 
         final Date now = new Date();
-        int status = 3;
+        int status = STATUS_PENDING; // default
         /* Scheduled = 0 Expired = 1 Showing = 2 Pending = 3 */
         if (startDisplay.after(now) && endDisplay.after(now) && approval) {
-            status = 0;
+            status = STATUS_SCHEDULED;
         } else if (startDisplay.before(now) && endDisplay.after(now) && approval) {
-            status = 2;
+            status = STATUS_SHOWING;
         } else if (endDisplay.before(now)) {
-            status = 1;
+            status = STATUS_EXPIRED;
         }
 
         ann.setPublished(approval);

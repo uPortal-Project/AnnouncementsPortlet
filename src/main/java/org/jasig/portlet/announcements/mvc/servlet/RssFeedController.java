@@ -56,7 +56,7 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * @author Erik A. Olsson (eolsson@uci.edu)
+ * Provides the current content of a topic in RSS format, if the topic permits it.
  */
 @Controller("rssFeedController")
 public class RssFeedController {
@@ -95,60 +95,92 @@ public class RssFeedController {
     public void getRssFeed(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         // Locate the Topic specified in the request
-        Topic topic = null;
+        final Topic topic;
         try {
-            /*
-             * There are two options:
-             *
-             *   - 1: by database identifier (original method -- try first)
-             *   - 2: by title (try second)
-             */
-            final Long topicId = ServletRequestUtils.getLongParameter(request, "topic");
-            if (topicId != null) {
-                try {
-                    topic = announcementService.getTopic(topicId);
-                } catch (PortletException pe) {
-                    logger.warn("Failed to obtain a Topic for the specified id of '{}'", topicId);
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "no such topic");
-                    return;
-                }
-            } else {
-                final String titleParameter = ServletRequestUtils.getStringParameter(request, "topicTitle");
-                if (titleParameter != null) {
-                    // We need to find it...
-                    final List<Topic> allTopics = announcementService.getAllTopics();
-                    for (Topic t : allTopics) {
-                        final String convertedTopicTitle = t.getTitle().trim().replaceAll("\\s", "-");
-                        logger.debug("Calculated convertedTopicTitle='{}' for topic with title='{}'",
-                                convertedTopicTitle, t.getTitle());
-                        if (convertedTopicTitle.equalsIgnoreCase(titleParameter)) {
-                            topic = t;
-                            break;
-                        }
-                    }
-                    if (topic != null) {
-                        logger.debug("Found topic '{}' for titleParameter='{}'",
-                                topic.getTitle(), titleParameter);
-                    } else {
-                        final String msg = "No topic found for titleParameter='" + titleParameter + "'";
-                        throw new ServletRequestBindingException(msg);
-                    }
-                } else {
-                    final String msg = "Parameter 'topic' or parameter 'topicTitle' must be specified";
-                    throw new ServletRequestBindingException(msg);
-                }
-            }
-        } catch (ServletRequestBindingException srbe) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Must specify a valid topic id");
-            logger.info("Returning SC_BAD_REQUEST because topicId was improperly specified in the request", srbe);
+            topic = selectTopic(request);
+        } catch (IllegalArgumentException | ServletRequestBindingException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Must specify a valid 'topic' (id) or 'topicTitle' parameter");
+            logger.info("Returning SC_BAD_REQUEST because topic (id) and/or topicTitle were improperly specified in the request", e);
             return;
         }
 
-        // Validate that this topic permits RSS
+        // Validate:  do we have a topic?
+        if (topic == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "No such topic");
+            return;
+        }
+
+        // Validate:  does our topic permit RSS?
         if (!topic.isAllowRss()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "This topic is not available as RSS");
             return;
         }
+
+        final SyndFeed feed = buildRssFeed(topic, request);
+
+        final SyndFeedOutput output = new SyndFeedOutput();
+        final String out;
+        try {
+            out = output.outputString(feed);
+        } catch (FeedException e) {
+            logger.warn("Failed to create SyndFeedOutput for topic '{}'", topic.getTitle());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating feed");
+            return;
+        }
+
+        response.setContentLength(out.length());
+        response.getOutputStream().print(out);
+        response.getOutputStream().flush();
+
+    }
+
+    private Topic selectTopic(HttpServletRequest req) throws ServletRequestBindingException {
+
+        Topic rslt = null; // default -- not found
+
+        /*
+         * There are two options:
+         *
+         *   - 1: by database identifier (original method -- try first)
+         *   - 2: by title (try second)
+         */
+        final Long topicId = ServletRequestUtils.getLongParameter(req, "topic");
+        if (topicId != null) {
+            try {
+                rslt = announcementService.getTopic(topicId);
+            } catch (PortletException pe) {
+                logger.warn("Failed to obtain a Topic for the specified id of '{}'", topicId);
+            }
+        } else {
+            final String titleParameter = ServletRequestUtils.getStringParameter(req, "topicTitle");
+            if (titleParameter != null) {
+                // We need to find it...
+                final List<Topic> allTopics = announcementService.getAllTopics();
+                for (Topic t : allTopics) {
+                    final String convertedTopicTitle = t.getTitle().trim().replaceAll("\\s", "-");
+                    logger.debug("Calculated convertedTopicTitle='{}' for topic with title='{}'",
+                            convertedTopicTitle, t.getTitle());
+                    if (convertedTopicTitle.equalsIgnoreCase(titleParameter)) {
+                        rslt = t;
+                        break;
+                    }
+                }
+                if (rslt != null) {
+                    logger.debug("Found topic '{}' for titleParameter='{}'",
+                            rslt.getTitle(), titleParameter);
+                } else {
+                    logger.warn("Failed to obtain a Topic for the specified titleParameter of '{}'", titleParameter);
+                }
+            } else {
+                throw new IllegalArgumentException("Neither 'topic' nor 'topicTitle' parameter specified");
+            }
+        }
+
+        return rslt;
+
+    }
+
+    private SyndFeed buildRssFeed(Topic topic, HttpServletRequest request) throws IOException {
 
         final String urlPrefix = calculateUrlPrefix(request);
 
@@ -157,12 +189,11 @@ public class RssFeedController {
         announcements.addAll(topic.getPublishedAnnouncements());
         Collections.sort(announcements);
 
-        // create the feed
-        final SyndFeed feed = new SyndFeedImpl();
-        feed.setFeedType("rss_2.0");
-        feed.setTitle(topic.getTitle());
-        feed.setLink(request.getRequestURL().append("?topic=").append(topic.getId()).toString());
-        feed.setDescription(topic.getDescription());
+        final SyndFeed rslt = new SyndFeedImpl();
+        rslt.setFeedType("rss_2.0");
+        rslt.setTitle(topic.getTitle());
+        rslt.setLink(request.getRequestURL().append("?topic=").append(topic.getId()).toString());
+        rslt.setDescription(topic.getDescription());
 
         final List<SyndEntry> entries = new ArrayList<>();
         for (Announcement a : announcements) {
@@ -203,21 +234,10 @@ public class RssFeedController {
             }
             entries.add(entry);
         }
-        feed.setEntries(entries);
+        rslt.setEntries(entries);
 
-        final SyndFeedOutput output = new SyndFeedOutput();
-        final String out;
-        try {
-            out = output.outputString(feed);
-        } catch (FeedException e) {
-            logger.warn("Failed to create SyndFeedOutput for topic '{}'", topic.getTitle());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating feed");
-            return;
-        }
+        return rslt;
 
-        response.setContentLength(out.length());
-        response.getOutputStream().print(out);
-        response.getOutputStream().flush();
     }
 
     private String calculateUrlPrefix(HttpServletRequest req) {
