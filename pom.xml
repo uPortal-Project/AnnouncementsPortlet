@@ -425,8 +425,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
 
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.9</source>
+                    <target>1.9</target>
                 </configuration>
             </plugin>
 
@@ -601,6 +601,18 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
                 <version>2.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.glassfish.jaxb</groupId>
+                        <artifactId>jaxb-xjc-jdk9</artifactId>
+                        <version>2.3.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.activation</groupId>
+                        <artifactId>javax.activation-api</artifactId>
+                        <version>1.2.0</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>schemagen</id>
