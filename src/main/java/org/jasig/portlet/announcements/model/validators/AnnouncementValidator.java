@@ -18,12 +18,15 @@
  */
 package org.jasig.portlet.announcements.model.validators;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import org.jasig.portlet.announcements.model.Announcement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -33,6 +36,7 @@ import org.springframework.validation.Validator;
  *     <p>$LastChangedBy$ $LastChangedDate$
  */
 public class AnnouncementValidator implements Validator {
+  private final Logger logger = LoggerFactory.getLogger(getClass());
 
   private final boolean allowOpenEndDate;
   private final boolean allowEmptyMessage;
@@ -74,6 +78,9 @@ public class AnnouncementValidator implements Validator {
       if (!validUrlFormat(test.getLink()))
         errors.rejectValue("link", "addAnn.link.malformed.error");
     }
+    test.setAbstractText(scrubText(test.getAbstractText()));
+    test.setTitle(scrubText(test.getTitle()));
+    test.setMessage(scrubText(test.getMessage()));
 
     Date startDisplay = test.getStartDisplay();
     Date endDisplay = test.getEndDisplay();
@@ -116,6 +123,29 @@ public class AnnouncementValidator implements Validator {
       if (startDisplay.equals(endDisplay)) {
         errors.rejectValue("endDisplay", "addAnn.endDisplay.sameAs.startDisplay");
       }
+    }
+  }
+
+  private String scrubText(String s) {
+    try {
+      logger.info("Scrubbing the string:  [{}]", s);
+
+      byte[] defaultbytes = s.getBytes();
+      logger.trace("Default bytes: [{}]", defaultbytes);
+      byte[] utf8bytes = s.getBytes("UTF-8");
+      logger.trace("UTF-8 bytes: [{}]", defaultbytes);
+      byte[] win1252bytes = s.getBytes("Windows-1252");
+      logger.trace("Win-1252 bytes: [{}]", defaultbytes);
+
+      String win1252StrUtf8 = new String(win1252bytes, "UTF-8");
+      logger.trace("Re-encode CP1252 > UTF8: [{}]", win1252StrUtf8);
+      String win1252StrWin1252 = new String(win1252bytes, "Windows-1252");
+      logger.trace("Re-encode CP1252 > CP1252: [{}]", win1252StrWin1252);
+
+      return win1252StrUtf8;
+    } catch (UnsupportedEncodingException e) {
+      logger.warn("Unable to scrub string due to:  {}.", e.getMessage());;
+      return s;
     }
   }
 
