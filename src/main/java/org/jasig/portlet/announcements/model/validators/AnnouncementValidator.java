@@ -18,7 +18,6 @@
  */
 package org.jasig.portlet.announcements.model.validators;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
