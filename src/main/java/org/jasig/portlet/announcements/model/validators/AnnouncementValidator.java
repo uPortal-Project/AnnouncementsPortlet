@@ -80,13 +80,13 @@ public class AnnouncementValidator implements Validator {
     }
     ValidationHelper vHelper = new ValidationHelper();
     logger.debug("Original announcement abstract: [{}]", test.getAbstractText());
-    test.setAbstractText(vHelper.convertSpecialMsCharacters(test.getAbstractText()));
+    test.setAbstractText(vHelper.convertSpecialCharacters(test.getAbstractText()));
     logger.debug("Converted announcement abstract: [{}]", test.getAbstractText());
     logger.debug("Original announcement title: [{}]", test.getTitle());
-    test.setTitle(vHelper.convertSpecialMsCharacters(test.getTitle()));
+    test.setTitle(vHelper.convertSpecialCharacters(test.getTitle()));
     logger.debug("Converted announcement title: [{}]", test.getTitle());
     logger.debug("Original announcement message: [{}]", test.getMessage());
-    test.setMessage(vHelper.convertSpecialMsCharacters(test.getMessage()));
+    test.setMessage(vHelper.convertSpecialCharacters(test.getMessage()));
     logger.debug("Converted announcement message: [{}]", test.getMessage());
 
     Date startDisplay = test.getStartDisplay();

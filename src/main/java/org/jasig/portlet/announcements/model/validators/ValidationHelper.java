@@ -23,7 +23,14 @@ package org.jasig.portlet.announcements.model.validators;
  * Utility class for validation efforts
  */
 public class ValidationHelper {
-  private static enum SpecialMsCharacters {
+  private static enum SpecialCharacters {
+    CONTROL1("\u0080", ""),
+    SET_TRANSMIT_STATE("\u0093", ""),
+    START_OF_STRING("\u0098", ""),
+    CONTROL2("\u0099", ""),
+    STRING_TERM("\u009C", ""),
+    OP_SYS_CMD("\u009D", ""),
+    LATIN_A_CIRCUMFLEX("\u00E2", "a"),
     EN_DASH("\u2013", "-"),
     EM_DASH("\u2014", "-"),
     HOR_BAR("\u2015", "-"),
@@ -43,7 +50,7 @@ public class ValidationHelper {
     private String unicodeValue;
     private String replacementValue;
 
-    SpecialMsCharacters(String uValue, String rValue) {
+    SpecialCharacters(String uValue, String rValue) {
       this.unicodeValue = uValue;
       this.replacementValue = rValue;
     }
@@ -58,12 +65,12 @@ public class ValidationHelper {
   }
 
   /**
-   * Loops through the SpecialMsCharacters enum and does a replace all for each value.
+   * Loops through the SpecialCharacters enum and does a replace all for each value.
    * @param str target string to convert
    * @return
    */
-  public String convertSpecialMsCharacters(String str) {
-    for (SpecialMsCharacters conversion : SpecialMsCharacters.values()) {
+  public String convertSpecialCharacters(String str) {
+    for (SpecialCharacters conversion : SpecialCharacters.values()) {
       str = str.replaceAll(conversion.getUnicodeValue(), conversion.getReplacementValue());
     }
     return str;
