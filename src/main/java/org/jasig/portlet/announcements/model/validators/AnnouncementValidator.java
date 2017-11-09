@@ -78,9 +78,16 @@ public class AnnouncementValidator implements Validator {
       if (!validUrlFormat(test.getLink()))
         errors.rejectValue("link", "addAnn.link.malformed.error");
     }
-    test.setAbstractText(scrubText(test.getAbstractText()));
-    test.setTitle(scrubText(test.getTitle()));
-    test.setMessage(scrubText(test.getMessage()));
+    ValidationHelper vHelper = new ValidationHelper();
+    logger.debug("Original announcement abstract: [{}]", test.getAbstractText());
+    test.setAbstractText(vHelper.convertSpecialMsCharacters(test.getAbstractText()));
+    logger.debug("Converted announcement abstract: [{}]", test.getAbstractText());
+    logger.debug("Original announcement title: [{}]", test.getTitle());
+    test.setTitle(vHelper.convertSpecialMsCharacters(test.getTitle()));
+    logger.debug("Converted announcement title: [{}]", test.getTitle());
+    logger.debug("Original announcement message: [{}]", test.getMessage());
+    test.setMessage(vHelper.convertSpecialMsCharacters(test.getMessage()));
+    logger.debug("Converted announcement message: [{}]", test.getMessage());
 
     Date startDisplay = test.getStartDisplay();
     Date endDisplay = test.getEndDisplay();
@@ -123,29 +130,6 @@ public class AnnouncementValidator implements Validator {
       if (startDisplay.equals(endDisplay)) {
         errors.rejectValue("endDisplay", "addAnn.endDisplay.sameAs.startDisplay");
       }
-    }
-  }
-
-  private String scrubText(String s) {
-    try {
-      logger.info("Scrubbing the string:  [{}]", s);
-
-      byte[] defaultbytes = s.getBytes();
-      logger.trace("Default bytes: [{}]", defaultbytes);
-      byte[] utf8bytes = s.getBytes("UTF-8");
-      logger.trace("UTF-8 bytes: [{}]", defaultbytes);
-      byte[] win1252bytes = s.getBytes("Windows-1252");
-      logger.trace("Win-1252 bytes: [{}]", defaultbytes);
-
-      String win1252StrUtf8 = new String(win1252bytes, "UTF-8");
-      logger.trace("Re-encode CP1252 > UTF8: [{}]", win1252StrUtf8);
-      String win1252StrWin1252 = new String(win1252bytes, "Windows-1252");
-      logger.trace("Re-encode CP1252 > CP1252: [{}]", win1252StrWin1252);
-
-      return win1252StrUtf8;
-    } catch (UnsupportedEncodingException e) {
-      logger.warn("Unable to scrub string due to:  {}.", e.getMessage());;
-      return s;
     }
   }
 
