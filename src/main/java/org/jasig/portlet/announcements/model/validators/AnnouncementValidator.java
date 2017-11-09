@@ -18,17 +18,18 @@
  */
 package org.jasig.portlet.announcements.model.validators;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
@@ -84,9 +85,6 @@ public class AnnouncementValidator implements Validator {
     logger.debug("Original announcement title: [{}]", test.getTitle());
     test.setTitle(vHelper.convertSpecialCharacters(test.getTitle()));
     logger.debug("Converted announcement title: [{}]", test.getTitle());
-    logger.debug("Original announcement message: [{}]", test.getMessage());
-    test.setMessage(vHelper.convertSpecialCharacters(test.getMessage()));
-    logger.debug("Converted announcement message: [{}]", test.getMessage());
 
     Date startDisplay = test.getStartDisplay();
     Date endDisplay = test.getEndDisplay();

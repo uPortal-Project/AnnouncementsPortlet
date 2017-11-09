@@ -24,13 +24,12 @@ package org.jasig.portlet.announcements.model.validators;
  */
 public class ValidationHelper {
   private static enum SpecialCharacters {
-    CONTROL1("\u0080", ""),
+    CONTROL1("\u00E2\u0080", ""), //Looks to always be together when conversion issues arise.
     SET_TRANSMIT_STATE("\u0093", ""),
     START_OF_STRING("\u0098", ""),
     CONTROL2("\u0099", ""),
     STRING_TERM("\u009C", ""),
     OP_SYS_CMD("\u009D", ""),
-    LATIN_A_CIRCUMFLEX("\u00E2", "a"),
     EN_DASH("\u2013", "-"),
     EM_DASH("\u2014", "-"),
     HOR_BAR("\u2015", "-"),
