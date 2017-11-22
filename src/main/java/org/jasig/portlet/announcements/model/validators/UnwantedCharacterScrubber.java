@@ -20,10 +20,10 @@
 package org.jasig.portlet.announcements.model.validators;
 
 /**
- * Utility class for validation efforts
+ * Utility class to scrub a string of unwanted characters
  */
-public class ValidationHelper {
-  private static enum SpecialCharacters {
+public class UnwantedCharacterScrubber {
+  private static enum UnwantedCharacters {
     CONTROL1("\u00E2\u0080", ""), //Looks to always be together when conversion issues arise.
     SET_TRANSMIT_STATE("\u0093", ""),
     START_OF_STRING("\u0098", ""),
@@ -49,7 +49,7 @@ public class ValidationHelper {
     private String unicodeValue;
     private String replacementValue;
 
-    SpecialCharacters(String uValue, String rValue) {
+    UnwantedCharacters(String uValue, String rValue) {
       this.unicodeValue = uValue;
       this.replacementValue = rValue;
     }
@@ -64,12 +64,12 @@ public class ValidationHelper {
   }
 
   /**
-   * Loops through the SpecialCharacters enum and does a replace all for each value.
+   * Loops through the UnwantedCharacters enum and does a replace all for each value.
    * @param str target string to convert
    * @return
    */
-  public String convertSpecialCharacters(String str) {
-    for (SpecialCharacters conversion : SpecialCharacters.values()) {
+  public String scrubUnwantedCharacters(String str) {
+    for (UnwantedCharacters conversion : UnwantedCharacters.values()) {
       str = str.replaceAll(conversion.getUnicodeValue(), conversion.getReplacementValue());
     }
     return str;

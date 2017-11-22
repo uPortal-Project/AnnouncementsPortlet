@@ -78,12 +78,12 @@ public class AnnouncementValidator implements Validator {
       if (!validUrlFormat(test.getLink()))
         errors.rejectValue("link", "addAnn.link.malformed.error");
     }
-    ValidationHelper vHelper = new ValidationHelper();
+    UnwantedCharacterScrubber vHelper = new UnwantedCharacterScrubber();
     logger.debug("Original announcement abstract: [{}]", test.getAbstractText());
-    test.setAbstractText(vHelper.convertSpecialCharacters(test.getAbstractText()));
+    test.setAbstractText(vHelper.scrubUnwantedCharacters(test.getAbstractText()));
     logger.debug("Converted announcement abstract: [{}]", test.getAbstractText());
     logger.debug("Original announcement title: [{}]", test.getTitle());
-    test.setTitle(vHelper.convertSpecialCharacters(test.getTitle()));
+    test.setTitle(vHelper.scrubUnwantedCharacters(test.getTitle()));
     logger.debug("Converted announcement title: [{}]", test.getTitle());
 
     Date startDisplay = test.getStartDisplay();
