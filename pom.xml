@@ -650,12 +650,15 @@
                     <schemaSourceExcludeFilters>
                       <limitIncludes implementation="org.codehaus.mojo.jaxb2.shared.filters.pattern.PatternFileFilter">
                         <patterns>
-                          <pattern>\/mvc\/.*\.java</pattern>
-                          <pattern>\/service\/.*\.java</pattern>
-                          <pattern>\/spring\/.*\.java</pattern>
-                          <pattern>Exporter\.java</pattern>
-                          <pattern>Importer\.java</pattern>
-                          <pattern>UnauthorizedException\.java</pattern>
+                            <pattern>\/mvc\/.*\.java</pattern>
+                            <pattern>\\mvc\\.*\.java</pattern>
+                            <pattern>\/service\/.*\.java</pattern>
+                            <pattern>\\service\\.*\.java</pattern>
+                            <pattern>\/spring\/.*\.java</pattern>
+                            <pattern>\\spring\\.*\.java</pattern>
+                            <pattern>Exporter\.java</pattern>
+                            <pattern>Importer\.java</pattern>
+                            <pattern>UnauthorizedException\.java</pattern>
                         </patterns>
                       </limitIncludes>
                     </schemaSourceExcludeFilters>
