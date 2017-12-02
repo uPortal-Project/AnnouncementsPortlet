@@ -221,7 +221,6 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
-            <type>jar</type>
         </dependency>
 
         <dependency>
@@ -659,11 +658,22 @@
                             <pattern>Exporter\.java</pattern>
                             <pattern>Importer\.java</pattern>
                             <pattern>UnauthorizedException\.java</pattern>
+                            <pattern>SchemaCreator\.java</pattern>
+                            <pattern>ApplicationContextConnectionProvider\.java</pattern>
+                            <pattern>AnnouncementValidator\.java</pattern>
+                            <pattern>TopicValidator\.java</pattern>
                         </patterns>
                       </limitIncludes>
                     </schemaSourceExcludeFilters>
                     <outputDirectory>target/generated-schemas</outputDirectory>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                        <version>1.2.14</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
