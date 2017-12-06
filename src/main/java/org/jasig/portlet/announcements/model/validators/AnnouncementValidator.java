@@ -18,21 +18,25 @@
  */
 package org.jasig.portlet.announcements.model.validators;
 
+import org.jasig.portlet.announcements.model.Announcement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import org.jasig.portlet.announcements.model.Announcement;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.validation.Validator;
 
 /**
  * @author Erik A. Olsson (eolsson@uci.edu)
  *     <p>$LastChangedBy$ $LastChangedDate$
  */
 public class AnnouncementValidator implements Validator {
+  private final Logger logger = LoggerFactory.getLogger(getClass());
 
   private final boolean allowOpenEndDate;
   private final boolean allowEmptyMessage;
@@ -74,6 +78,13 @@ public class AnnouncementValidator implements Validator {
       if (!validUrlFormat(test.getLink()))
         errors.rejectValue("link", "addAnn.link.malformed.error");
     }
+    UnwantedCharacterScrubber vHelper = new UnwantedCharacterScrubber();
+    logger.debug("Original announcement abstract: [{}]", test.getAbstractText());
+    test.setAbstractText(vHelper.scrubUnwantedCharacters(test.getAbstractText()));
+    logger.debug("Converted announcement abstract: [{}]", test.getAbstractText());
+    logger.debug("Original announcement title: [{}]", test.getTitle());
+    test.setTitle(vHelper.scrubUnwantedCharacters(test.getTitle()));
+    logger.debug("Converted announcement title: [{}]", test.getTitle());
 
     Date startDisplay = test.getStartDisplay();
     Date endDisplay = test.getEndDisplay();
