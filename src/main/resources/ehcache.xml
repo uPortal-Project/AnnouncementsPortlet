@@ -31,15 +31,6 @@
         memoryStoreEvictionPolicy="LRU"    
     />
 
-    <cache name="guestAnnouncementCache"
-           maxElementsInMemory="5"
-           eternal="false"
-           overflowToDisk="false"
-           timeToIdleSeconds="0"
-           timeToLiveSeconds="900"
-           memoryStoreEvictionPolicy="LRU"
-    />
-
     <!-- Using a small value for maxElementsInMemory
          because this cache is for administrative users -->
     <cache name="userPermissionCheckerCache"

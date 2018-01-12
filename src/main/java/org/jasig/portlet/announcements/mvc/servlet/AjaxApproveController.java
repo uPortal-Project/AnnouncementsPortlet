@@ -86,7 +86,6 @@ public class AjaxApproveController {
         }
 
         ann.setPublished(approval);
-        cacheManager.getCacheManager().getCache("guestAnnouncementCache").flush();
 
         announcementService.addOrSaveAnnouncement(ann);
 
