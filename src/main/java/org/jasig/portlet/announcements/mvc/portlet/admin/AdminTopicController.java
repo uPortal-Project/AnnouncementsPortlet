@@ -135,6 +135,8 @@ public class AdminTopicController {
         topic.setAudience(oldTopic.getAudience());
         topic.setModerators(oldTopic.getModerators());
         topic.setAuthors(oldTopic.getAuthors());
+        topic.setSubscriptions(oldTopic.getSubscriptions());
+        topic.setAnnouncements(oldTopic.getAnnouncements());
       }
       announcementService.addOrSaveTopic(topic);
       status.setComplete();
