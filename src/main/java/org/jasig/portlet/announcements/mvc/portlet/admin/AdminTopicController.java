@@ -126,19 +126,17 @@ public class AdminTopicController {
       // no id has been assigned by hibernate, so this must be a new topic
       if (!topic.hasId()) {
         topic.setCreator(request.getRemoteUser());
+        announcementService.addOrSaveTopic(topic);
       } else {
         Long id = topic.getId();
         Topic oldTopic = announcementService.getTopic(id);
 
-        topic.setCreator(oldTopic.getCreator());
-        topic.setAdmins(oldTopic.getAdmins());
-        topic.setAudience(oldTopic.getAudience());
-        topic.setModerators(oldTopic.getModerators());
-        topic.setAuthors(oldTopic.getAuthors());
-        topic.setSubscriptions(oldTopic.getSubscriptions());
-        topic.setAnnouncements(oldTopic.getAnnouncements());
+        oldTopic.setTitle(topic.getTitle());
+        oldTopic.setDescription(topic.getDescription());
+        oldTopic.setAllowRss(topic.isAllowRss());
+        oldTopic.setSubscriptionMethod(topic.getSubscriptionMethod());
+        announcementService.addOrSaveTopic(oldTopic);
       }
-      announcementService.addOrSaveTopic(topic);
       status.setComplete();
 
       response.setRenderParameter("action", "baseAdmin");
