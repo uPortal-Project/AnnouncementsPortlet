@@ -21,7 +21,6 @@
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 <c:set var="n"><portlet:namespace/></c:set>
 
-<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
 <c:if test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">

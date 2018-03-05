@@ -26,7 +26,6 @@
     <script type="text/javascript" src="<rs:resourceURL value="/rs/jquery-migrate/jquery-migrate-1.2.1.min.js"/>"></script>
     <script src="<rs:resourceURL value="/rs/jqueryui/1.10.3/jquery-ui-1.10.3.min.js"/>" type="text/javascript"></script>
 </c:if>
-<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css" />
 <link href="<c:url value="/css/announcements.css"/>" rel="stylesheet" type="text/css" />
 
 <c:if test="${portalAdmin}">
@@ -163,7 +162,7 @@
                                         <c:when test="${topic.subscriptionMethod != 4}">
                                             <table role="presentation">
                                                 <tr>
-                                                    <td>                                     
+                                                    <td>
                                                         <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit" aria-hidden="true"></i> <spring:message code="baseAdmin.edit"/></a>
                                                     </td>
                                                     <td>
@@ -208,7 +207,7 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <c:choose> 
+                                    <c:choose>
                                         <c:when test="${topic.subscriptionMethod != 4}">
                                             <a href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit"/></a>
                                         </c:when>

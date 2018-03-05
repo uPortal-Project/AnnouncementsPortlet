@@ -32,7 +32,6 @@
 	<portlet:param name="groupKey" value="${groupKey}"/>
 </portlet:actionURL>
 
-<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
     <div class="container-fluid bootstrap-styles announcements-container">

@@ -25,7 +25,6 @@
 		<portlet:param name="action" value="addTopic"/>
 </portlet:actionURL>
 
-<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
 <script src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
