@@ -24,10 +24,9 @@
 	<portlet:param name="action" value="editDisplayPreferences"/>
 </portlet:actionURL>
 
-<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
-    <div class="container-fluid bootstrap-styles announcements-container">
+    <div class="container-fluid announcements-container">
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-6 no-col-padding">
                 <h4 role="heading"><spring:message code="edit.yoursubs"/></h4>

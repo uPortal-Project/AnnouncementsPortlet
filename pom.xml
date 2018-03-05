@@ -441,8 +441,6 @@
                             <groupId>org.jasig.resourceserver</groupId>
                             <artifactId>resource-server-content</artifactId>
                             <includes>
-                                <include>rs/bootstrap-namespaced/3.1.1/</include>
-                                <include>rs/fontawesome/4.0.3/</include>
                                 <include>rs/jquery/1.11.0/</include>
                                 <include>rs/jquery-migrate/</include>
                                 <include>rs/jqueryui/1.10.3/</include>

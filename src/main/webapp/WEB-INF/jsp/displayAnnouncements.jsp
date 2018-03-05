@@ -19,7 +19,6 @@
 
 --%>
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
-<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
 <c:set var="n"><portlet:namespace/></c:set>
@@ -106,7 +105,7 @@
     </style>
 </c:if>
 
-<div id="${n}container" class="container-fluid bootstrap-styles announcements-container">
+<div id="${n}container" class="container-fluid announcements-container">
     <div class="row announcements-portlet-toolbar">
         <div class="col-md-12 no-col-padding">
             <div class="nav-links">

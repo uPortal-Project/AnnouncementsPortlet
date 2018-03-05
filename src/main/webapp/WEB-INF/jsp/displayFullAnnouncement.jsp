@@ -21,7 +21,6 @@
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 <c:set var="n"><portlet:namespace/></c:set>
 
-<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
 <script src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
@@ -58,7 +57,7 @@
     });
 </script>
 
-    <div class="container-fluid bootstrap-styles announcements-container">
+    <div class="container-fluid announcements-container">
         <div class="row announcements-portlet-toolbar">
             <div class="nav-links">
                 <a href="<portlet:renderURL />"><i class="fa fa-arrow-left" aria-hidden="true"></i> <spring:message code="displayFull.back"/></a>

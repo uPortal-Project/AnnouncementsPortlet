@@ -26,7 +26,6 @@
 <script src="<rs:resourceURL value="/rs/jqueryui/1.10.3/jquery-ui-1.10.3.min.js"/>" type="text/javascript"></script>
 <script src="<c:url value="/js/underscore-min.js"/>" type="text/javascript"></script>
 
-<link rel="stylesheet" href="<rs:resourceURL value='/rs/bootstrap-namespaced/3.1.1/css/bootstrap.min.css'/>" type="text/css"/>
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
 <script type="text/javascript" src="<c:url value="/tinymce/js/tinymce/tinymce.min.js"/>"></script>
@@ -127,7 +126,7 @@
     <portlet:param name="topicId" value="${announcement.parent.id}"/>
 </portlet:actionURL>
 
-    <div class="container-fluid bootstrap-styles announcements-container">
+    <div class="container-fluid announcements-container">
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-6 no-col-padding">
                 <h4><spring:message code="addAnnouncement.header"/> <c:out value="${announcement.parent.title}"/></h4>
