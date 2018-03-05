@@ -22,7 +22,7 @@
 
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
-    <div class="container-fluid bootstrap-styles announcements-container">
+    <div class="container-fluid announcements-container">
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-12 no-col-padding">
                 <h4><spring:message code="errorPermission.unauthorized"/></h4>

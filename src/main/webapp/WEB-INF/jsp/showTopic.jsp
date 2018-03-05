@@ -79,7 +79,7 @@
     }
     </script>
 
-<div class="container-fluid bootstrap-styles announcements-container">
+<div class="container-fluid announcements-container">
     <div class="row announcements-portlet-toolbar">
         <div class="col-md-6 no-col-padding">
             <h4 class="title" role="heading"><spring:message code="show.annfor"/> <c:out value="${topic.title}"/></h4>

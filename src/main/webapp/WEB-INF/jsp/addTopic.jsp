@@ -66,7 +66,7 @@
     }
     #tooltip h3, #tooltip div { margin: 0; }
 </style>
-<div class="container-fluid bootstrap-styles announcements-container">
+<div class="container-fluid announcements-container">
     <div class="row announcements-portlet-toolbar">
         <div class="col-md-8 no-col-padding">
             <h4>

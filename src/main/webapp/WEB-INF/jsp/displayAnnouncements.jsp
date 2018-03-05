@@ -105,7 +105,7 @@
     </style>
 </c:if>
 
-<div id="${n}container" class="container-fluid bootstrap-styles announcements-container">
+<div id="${n}container" class="container-fluid announcements-container">
     <div class="row announcements-portlet-toolbar">
         <div class="col-md-12 no-col-padding">
             <div class="nav-links">

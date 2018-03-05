@@ -27,7 +27,7 @@
     <script type="text/javascript" src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>"></script>
 </c:if>
 
-    <div class="container-fluid bootstrap-styles announcements-container">
+    <div class="container-fluid announcements-container">
         <div class="row announcements-portlet-toolbar">
             <div class="col-md-6 no-col-padding">
                 <h4 role="heading"><spring:message code="preview.header"/></h4>
