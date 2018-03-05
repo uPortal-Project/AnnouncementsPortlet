@@ -23,6 +23,8 @@ import javax.portlet.PortletRequest;
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.UserRoles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class that can be used statically to check role membership of a Topic, or when
@@ -40,6 +42,7 @@ public final class UserPermissionChecker implements UserRoles {
    * guest users.
    */
   private static final String GUEST_USERNAME = "guest";
+  private static final String USERNAME_PREFIX = "USER.";
 
   private final boolean admin;
   private final boolean moderator;
@@ -47,6 +50,8 @@ public final class UserPermissionChecker implements UserRoles {
   private final boolean audience;
   private final String userName;
   private final boolean guest;
+
+  private static final Logger logger = LoggerFactory.getLogger(UserPermissionChecker.class);
 
   /**
    * Used by {@link UserPermissionCheckerFactory}. A fully-constructed instance can tell you
@@ -86,8 +91,19 @@ public final class UserPermissionChecker implements UserRoles {
 
     Set<String> group = topic.getGroup(role);
     for (String groupMember : group) {
-      if (groupMember.startsWith("USER.")) {
+      if (groupMember.startsWith(USERNAME_PREFIX)) {
         String p[] = groupMember.split("\\.");
+        if (p.length == 1) {
+          /*
+           * ANNPLT-137:  The evaluation cannot be made if the groupMember String (value in the
+           * column) is EXACTLY 'USER.';  it's bad data.  We need to capture this fact (and prevent
+           * a stack trace) or else the topic will become unusable.
+           */
+          logger.warn("BAD DATA:  Role '{}' for Topic '{}' contains a username prefix ('"
+                  + USERNAME_PREFIX + "') without a username;  ignoring this value.",
+                  role, topic.getTitle());
+          continue;
+        }
         if (p[1].equalsIgnoreCase(userName)) {
           return true;
         }
