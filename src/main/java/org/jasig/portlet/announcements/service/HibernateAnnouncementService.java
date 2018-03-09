@@ -21,12 +21,15 @@ package org.jasig.portlet.announcements.service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
@@ -189,11 +192,11 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
   @SuppressWarnings("unchecked")
   public void deleteAnnouncementsPastCurrentTime() {
     try {
-      Query q =
-          this.getSession()
-              .createQuery("delete from Announcement where END_DISPLAY < current_timestamp()");
+      Session session = this.getSession();
+      Query q = session.createQuery("delete from Announcement where END_DISPLAY < current_timestamp()");
       int count = q.executeUpdate();
       getHibernateTemplate().flush();
+      this.releaseSession(session);
       log.info("Deleted " + count + " expired announcements that stopped displaying prior to now.");
     } catch (HibernateException ex) {
       throw convertHibernateAccessException(ex);
@@ -206,10 +209,12 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.DATE, (numDays * -1));
 
-      Query q = this.getSession().createQuery("delete from Announcement where END_DISPLAY < :date");
+      Session session = this.getSession();
+      Query q = session.createQuery("delete from Announcement where END_DISPLAY < :date");
       q.setCalendarDate("date", cal);
       int count = q.executeUpdate();
       getHibernateTemplate().flush();
+      this.releaseSession(session);
       log.info(
           "Deleted "
               + count
