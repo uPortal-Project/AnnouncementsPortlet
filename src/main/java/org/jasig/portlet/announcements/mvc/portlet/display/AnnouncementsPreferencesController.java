@@ -28,7 +28,9 @@ import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
-import org.apache.log4j.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.jasig.portlet.announcements.mvc.IViewNameSelector;
@@ -55,7 +57,7 @@ public class AnnouncementsPreferencesController {
 
   public static final String PREFERENCE_HIDE_ABSTRACT = "AnnouncementsViewController.hideAbstract";
 
-  private final Logger logger = Logger.getLogger(getClass());
+  private final Log logger = LogFactory.getLog(getClass());
 
   public void setTss(ITopicSubscriptionService tss) {
     this.tss = tss;

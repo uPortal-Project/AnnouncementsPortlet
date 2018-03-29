@@ -40,14 +40,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.mvc.portlet.display.AnnouncementsViewController;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -84,7 +84,7 @@ public class RssFeedController {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Log logger = LogFactory.getLog(getClass());
 
     @Autowired
     public void setAnnouncementService(IAnnouncementService announcementService) {
@@ -123,7 +123,7 @@ public class RssFeedController {
         try {
             out = output.outputString(feed);
         } catch (FeedException e) {
-            logger.warn("Failed to create SyndFeedOutput for topic '{}'", topic.getTitle());
+            logger.warn(String.format("Failed to create SyndFeedOutput for topic '%s'", topic.getTitle()));
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating feed");
             return;
         }
@@ -149,7 +149,7 @@ public class RssFeedController {
             try {
                 rslt = announcementService.getTopic(topicId);
             } catch (PortletException pe) {
-                logger.warn("Failed to obtain a Topic for the specified id of '{}'", topicId);
+                logger.warn(String.format("Failed to obtain a Topic for the specified id of '%s'", topicId));
             }
         } else {
             final String titleParameter = ServletRequestUtils.getStringParameter(req, "topicTitle");
@@ -158,18 +158,18 @@ public class RssFeedController {
                 final List<Topic> allTopics = announcementService.getAllTopics();
                 for (Topic t : allTopics) {
                     final String convertedTopicTitle = t.getTitle().trim().replaceAll("\\s", "-");
-                    logger.debug("Calculated convertedTopicTitle='{}' for topic with title='{}'",
-                            convertedTopicTitle, t.getTitle());
+                    logger.debug(String.format("Calculated convertedTopicTitle='%s' for topic with title='%s'",
+                            convertedTopicTitle, t.getTitle()));
                     if (convertedTopicTitle.equalsIgnoreCase(titleParameter)) {
                         rslt = t;
                         break;
                     }
                 }
                 if (rslt != null) {
-                    logger.debug("Found topic '{}' for titleParameter='{}'",
-                            rslt.getTitle(), titleParameter);
+                    logger.debug(String.format("Found topic '%s' for titleParameter='%s'",
+                            rslt.getTitle(), titleParameter));
                 } else {
-                    logger.warn("Failed to obtain a Topic for the specified titleParameter of '{}'", titleParameter);
+                    logger.warn(String.format("Failed to obtain a Topic for the specified titleParameter of '%s'", titleParameter));
                 }
             } else {
                 throw new IllegalArgumentException("Neither 'topic' nor 'topicTitle' parameter specified");
@@ -211,8 +211,8 @@ public class RssFeedController {
                  */
                 final String deepLink = String.format(ANNOUNCEMENT_DEEP_LINK_FORMAT, urlPrefix,
                         portalContextName, announcementsPortletFname, a.getId());
-                logger.debug("Calculated the following deepLink for announcement with id={}:  {}",
-                        a.getId(), deepLink);
+                logger.debug(String.format("Calculated the following deepLink for announcement with id=%s:  %s",
+                        a.getId(), deepLink));
                 entry.setLink(deepLink);
             }
             entry.setPublishedDate(a.getStartDisplay());

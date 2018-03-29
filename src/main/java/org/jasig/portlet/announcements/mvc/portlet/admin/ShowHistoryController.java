@@ -25,7 +25,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.portlet.RenderRequest;
-import org.apache.log4j.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.mvc.IViewNameSelector;
@@ -41,8 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ShowHistoryController {
 
-  private static final org.apache.log4j.Logger logger =
-      Logger.getLogger(ShowHistoryController.class);
+  private static final Log logger = LogFactory.getLog(ShowHistoryController.class);
 
   @Autowired private IAnnouncementService announcementService;
 

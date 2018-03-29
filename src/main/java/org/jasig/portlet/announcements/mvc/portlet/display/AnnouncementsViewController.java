@@ -33,7 +33,8 @@ import javax.portlet.RenderRequest;
 import javax.xml.namespace.QName;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.AnnouncementSortStrategy;
@@ -114,7 +115,7 @@ public class AnnouncementsViewController {
 
   @Autowired private UserIdService userIdService;
 
-  private final Logger logger = Logger.getLogger(getClass());
+  private final Log logger = LogFactory.getLog(getClass());
 
   /**
    * Main method of this display controller. Calculates which topics should be shown to this user

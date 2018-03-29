@@ -22,7 +22,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 import javax.sql.DataSource;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.connection.ConnectionProvider;
 import org.jasig.portlet.announcements.spring.PortletApplicationContextLocator;
@@ -42,7 +43,7 @@ public class ApplicationContextConnectionProvider implements ConnectionProvider 
 
   private ApplicationContext context;
 
-  private final Logger logger = Logger.getLogger(getClass());
+  private final Log logger = LogFactory.getLog(getClass());
 
   @Override
   public void close() throws HibernateException {
