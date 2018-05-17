@@ -25,6 +25,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jasig.portlet.announcements.xml.Namespaces;
 
 /** @author Erik A. Olsson (eolsson@uci.edu) */
@@ -95,6 +97,7 @@ public class Announcement implements Comparable<Announcement> {
   }
 
   /** @return the parent */
+  @JsonIgnore
   @XmlElement(name = "parent")
   public Topic getParent() {
     return parent;
