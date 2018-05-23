@@ -45,6 +45,10 @@
         <jdbc.groupId>org.hsqldb</jdbc.groupId>
         <jdbc.artifactId>hsqldb</jdbc.artifactId>
         <jdbc.version>2.2.9</jdbc.version>
+
+        <!-- Utility libraries -->
+        <jackson.version>2.9.5</jackson.version>
+        <lombok.version>1.16.20</lombok.version>
     </properties>
 
     <url>http://www.ja-sig.org/wiki/display/PLT/Announcements+Portlet</url>
@@ -78,16 +82,6 @@
             <id>jasig-repository</id>
             <name>JA-SIG Maven2 Repository</name>
             <url>http://developer.ja-sig.org/maven2</url>
-        </repository>
-        <repository>
-            <id>Codehaus Snapshots</id>
-            <url>http://snapshots.repository.codehaus.org/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
         </repository>
     </repositories>
 
@@ -251,6 +245,23 @@
         </dependency>
         -->
 
+        <!-- Utility libraries -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
@@ -271,7 +282,7 @@
         <dependency>
             <groupId>org.jasig.portal</groupId>
             <artifactId>uPortal-spring</artifactId>
-            <version>5.0.5</version>
+            <version>5.1.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.jasig.portal</groupId>
