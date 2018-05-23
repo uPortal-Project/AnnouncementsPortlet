@@ -110,7 +110,7 @@ public class AnnouncementsViewController {
   @Autowired
   private final IAnnouncementService announcementService = null;
   private final ObjectMapper mapper = new ObjectMapper();
-  private final Logger logger = LogFactory.getLog(getClass());
+  private final Log logger = LogFactory.getLog(getClass());
   @Autowired
   private ITopicSubscriptionService tss = null;
   @Autowired
