@@ -6,9 +6,9 @@
  * Version 2.0 (the "License"); you may not use this file
  * except in compliance with the License.  You may obtain a
  * copy of the License at the following location:
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -18,21 +18,27 @@
  */
 package org.jasig.portlet.announcements.mvc.portlet.display;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 import javax.portlet.EventRequest;
 import javax.portlet.EventResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
 import javax.xml.namespace.QName;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Announcement;
@@ -51,8 +57,6 @@ import org.jasig.portlet.notice.NotificationEntry;
 import org.jasig.portlet.notice.NotificationQuery;
 import org.jasig.portlet.notice.NotificationResponse;
 import org.jasig.portlet.notice.NotificationResult;
-import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Controller;
@@ -62,8 +66,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-/** @author eolsson */
 @Controller
 @RequestMapping("VIEW")
 public class AnnouncementsViewController {
@@ -100,31 +104,24 @@ public class AnnouncementsViewController {
       new QName(NOTIFICATION_NAMESPACE, NOTIFICATION_RESULT_LOCAL_NAME);
   public static final String NOTIFICATION_RESULT_QNAME_STRING =
       "{" + NOTIFICATION_NAMESPACE + "}" + NOTIFICATION_RESULT_LOCAL_NAME;
-
-  @Autowired private ITopicSubscriptionService tss = null;
-
-  @Autowired private final IAnnouncementService announcementService = null;
-
-  @Autowired private EhCacheCacheManager cm = null;
-
+  @Autowired
+  private final IAnnouncementService announcementService = null;
+  private final ObjectMapper mapper = new ObjectMapper();
+  private final Logger logger = Logger.getLogger(getClass());
+  @Autowired
+  private ITopicSubscriptionService tss = null;
+  @Autowired
+  private EhCacheCacheManager cm = null;
   @Autowired(required = true)
   private IViewNameSelector viewNameSelector;
-
-  @Autowired private UserPermissionCheckerFactory userPermissionCheckerFactory;
-
-  @Autowired private UserIdService userIdService;
-
-  private final Logger logger = Logger.getLogger(getClass());
+  @Autowired
+  private UserPermissionCheckerFactory userPermissionCheckerFactory;
+  @Autowired
+  private UserIdService userIdService;
 
   /**
    * Main method of this display controller. Calculates which topics should be shown to this user
    * and which announcements to show from those topics.
-   *
-   * @param model
-   * @param request
-   * @param from
-   * @return
-   * @throws PortletException
    */
   @SuppressWarnings("unchecked")
   @RenderMapping()
@@ -142,27 +139,10 @@ public class AnnouncementsViewController {
 
     final PortletPreferences prefs = request.getPreferences();
 
-    List<Announcement> announcements;
-    List<Announcement> emergencyAnnouncements;
+    List[] lists = getLists(request);
 
-    final String userId = userIdService.getUserId(request);
-
-    // create a new announcement list
-    announcements = new ArrayList<>();
-    emergencyAnnouncements = new ArrayList<>();
-
-    // fetch the user's topic subscription from the database
-    List<TopicSubscription> myTopics = tss.getTopicSubscription(request);
-
-    // add all the published announcements of each subscribed topic to the announcement list
-    // to emergency announcements into their own list
-    for (TopicSubscription ts : myTopics) {
-      if (ts.getSubscribed() && ts.getTopic().getSubscriptionMethod() != Topic.EMERGENCY) {
-        announcements.addAll(ts.getTopic().getPublishedAnnouncements());
-      } else if (ts.getSubscribed() && ts.getTopic().getSubscriptionMethod() == Topic.EMERGENCY) {
-        emergencyAnnouncements.addAll(ts.getTopic().getPublishedAnnouncements());
-      }
-    }
+    List<Announcement> announcements = lists[0];
+    List<Announcement> emergencyAnnouncements = lists[1];
 
     // sort the list (since they are not sorted from the database)
     Comparator<Announcement> sortStrategy =
@@ -188,6 +168,41 @@ public class AnnouncementsViewController {
     model.addAttribute(
         "hideAbstract", Boolean.valueOf(prefs.getValue(PREFERENCE_HIDE_ABSTRACT, "false")));
     return viewNameSelector.select(request, "displayAnnouncements");
+  }
+
+  private List[] getLists(PortletRequest request) throws PortletException {
+    final String userId = userIdService.getUserId(request);
+
+    // fetch the user's topic subscription from the database
+    List<TopicSubscription> myTopics = tss.getTopicSubscription(request);
+
+    Map<Boolean, List<Announcement>> topicLists = myTopics
+        .stream()
+        .filter(TopicSubscription::getSubscribed)
+        .map(ts -> ts.getTopic().getPublishedAnnouncements())
+        .flatMap(x -> x.stream())
+        .collect(Collectors.partitioningBy(
+            (Announcement a) -> a.getParent().getSubscriptionMethod() == Topic.EMERGENCY));
+
+    return new List[]{topicLists.get(false), topicLists.get(true)};
+  }
+
+  @ResourceMapping(value = "emergencies")
+  public void emergenciesResource(ResourceRequest request, ResourceResponse response)
+      throws IOException, PortletException {
+    logger.debug("Processing AJAX resource request for emergency alerts");
+    List[] lists = getLists(request);
+    final String json = mapper.writeValueAsString(lists[1]);
+    response.getWriter().write(json);
+  }
+
+  @ResourceMapping(value = "announcements")
+  public void announcementsResource(ResourceRequest request, ResourceResponse response)
+      throws IOException, PortletException {
+    logger.debug("Processing AJAX resource request for announcements");
+    List[] lists = getLists(request);
+    final String json = mapper.writeValueAsString(lists[0]);
+    response.getWriter().write(json);
   }
 
   @RenderMapping(params = "action=" + ACTION_DISPLAY_FULL_ANNOUNCEMENT)
