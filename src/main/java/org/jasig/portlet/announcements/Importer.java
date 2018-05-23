@@ -31,7 +31,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
@@ -43,7 +44,7 @@ public class Importer {
 
   private static final String ANNOUNCEMENT_SVC_BEAN_NAME = "announcementService";
 
-  private static final Logger log = Logger.getLogger(Importer.class);
+  private static final Log log = LogFactory.getLog(Importer.class);
 
   private File dataDirectory;
   private IAnnouncementService announcementService;

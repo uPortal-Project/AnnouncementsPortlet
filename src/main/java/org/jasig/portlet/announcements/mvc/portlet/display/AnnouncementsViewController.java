@@ -39,7 +39,10 @@ import javax.portlet.ResourceResponse;
 import javax.xml.namespace.QName;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.Element;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.AnnouncementSortStrategy;
@@ -107,7 +110,7 @@ public class AnnouncementsViewController {
   @Autowired
   private final IAnnouncementService announcementService = null;
   private final ObjectMapper mapper = new ObjectMapper();
-  private final Logger logger = Logger.getLogger(getClass());
+  private final Log logger = LogFactory.getLog(getClass());
   @Autowired
   private ITopicSubscriptionService tss = null;
   @Autowired

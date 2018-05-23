@@ -23,8 +23,8 @@ import javax.portlet.PortletRequest;
 import org.jasig.portlet.announcements.UnauthorizedException;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.UserRoles;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Utility class that can be used statically to check role membership of a Topic, or when
@@ -51,7 +51,7 @@ public final class UserPermissionChecker implements UserRoles {
   private final String userName;
   private final boolean guest;
 
-  private static final Logger logger = LoggerFactory.getLogger(UserPermissionChecker.class);
+  private static final Log logger = LogFactory.getLog(UserPermissionChecker.class);
 
   /**
    * Used by {@link UserPermissionCheckerFactory}. A fully-constructed instance can tell you
@@ -99,9 +99,9 @@ public final class UserPermissionChecker implements UserRoles {
            * column) is EXACTLY 'USER.';  it's bad data.  We need to capture this fact (and prevent
            * a stack trace) or else the topic will become unusable.
            */
-          logger.warn("BAD DATA:  Role '{}' for Topic '{}' contains a username prefix ('"
+          logger.warn(String.format("BAD DATA:  Role '%s' for Topic '%s' contains a username prefix ('"
                   + USERNAME_PREFIX + "') without a username;  ignoring this value.",
-                  role, topic.getTitle());
+                  role, topic.getTitle()));
           continue;
         }
         if (p[1].equalsIgnoreCase(userName)) {

@@ -28,7 +28,9 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import org.apache.log4j.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.xml.Namespaces;
 
 /**
@@ -46,7 +48,7 @@ public class Topic {
       3; /* ...Not pushed to anybody, but target audience members can subscribe (pull) if they want to */
   public static final int EMERGENCY = 4; /* A topic that supercedes all other topics */
 
-  private static final org.apache.log4j.Logger logger = Logger.getLogger(Topic.class);
+  private static final Log logger = LogFactory.getLog(Topic.class);
 
   private Set<Announcement> announcements;
 

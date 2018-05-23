@@ -21,7 +21,8 @@ package org.jasig.portlet.announcements.service;
 import javax.portlet.PortletRequest;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.model.Topic;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserPermissionCheckerFactory implements InitializingBean {
-  private static final Logger logger = Logger.getLogger(UserPermissionCheckerFactory.class);
+  private static final Log logger = LogFactory.getLog(UserPermissionCheckerFactory.class);
   private static final String CACHE_KEY_DELIM = "|";
   private static final String CACHE_NAME = "userPermissionCheckerCache";
 
