@@ -193,7 +193,7 @@ public class AnnouncementsViewController {
     logger.debug("Processing AJAX resource request for emergency alerts");
     List[] lists = getLists(request);
     final String json = mapper.writeValueAsString(lists[1]);
-    response.getWriter().write(json);
+    response.getWriter().write(json != null && !json.isEmpty() ? json : "[]");
   }
 
   @ResourceMapping(value = "announcements")
@@ -202,7 +202,7 @@ public class AnnouncementsViewController {
     logger.debug("Processing AJAX resource request for announcements");
     List[] lists = getLists(request);
     final String json = mapper.writeValueAsString(lists[0]);
-    response.getWriter().write(json);
+    response.getWriter().write(json != null && !json.isEmpty() ? json : "[]");
   }
 
   @RenderMapping(params = "action=" + ACTION_DISPLAY_FULL_ANNOUNCEMENT)
