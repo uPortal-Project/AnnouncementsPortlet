@@ -33,8 +33,8 @@
             <generator class="native"/>
         </id>
 
-        <property name="title" type="text" column="TITLE"/>
-        <property name="abstractText" type="text" column="ABSTRACT"/>
+        <property name="title" type="string" column="TITLE"/>
+        <property name="abstractText" type="string" column="ABSTRACT" length="4000"/>
         <property name="created" type="timestamp" column="CREATED"/>
         <property name="startDisplay" type="timestamp" column="START_DISPLAY"/>
         <property name="endDisplay" type="timestamp" column="END_DISPLAY"/>
