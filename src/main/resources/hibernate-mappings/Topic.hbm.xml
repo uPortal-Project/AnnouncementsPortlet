@@ -68,7 +68,7 @@
            <one-to-many class="org.jasig.portlet.announcements.model.TopicSubscription"/>
        </set>
 
-        <property name="title" type="text" column="TITLE"/>
+        <property name="title" type="string" column="TITLE"/>
         <property name="description" type="text" column="DESCRP"/>
         <property name="creator" type="string" column="CREATED_BY"/>
         <property name="allowRss" type="boolean" column="ALLOW_RSS"/>
