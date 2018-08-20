@@ -32,7 +32,7 @@
     <artifactId>Announcements</artifactId>
     <packaging>war</packaging>
     <name>Announcements Portlet</name>
-    <version>2.4.1-SNAPSHOT</version>
+    <version>2.4.1</version>
 
     <properties>
         <junit.version>4.12</junit.version>
@@ -74,7 +74,7 @@
         <connection>scm:git:git://github.com/Jasig/AnnouncementsPortlet.git</connection>
         <developerConnection>scm:git:git@github.com:Jasig/AnnouncementsPortlet.git</developerConnection>
         <url>https://github.com/Jasig/AnnouncementsPortlet</url>
-        <tag>Announcements-2.2.0</tag>
+        <tag>Announcements-2.4.1</tag>
     </scm>
 
     <repositories>
@@ -489,14 +489,14 @@
                         </goals>
                         <configuration>
                             <tasks>
-                                <property name="runtime_classpath" refid="maven.runtime.classpath"/>
-                                <property name="plugin_classpath" refid="maven.plugin.classpath"/>
+                                <property name="runtime_classpath" refid="maven.runtime.classpath" />
+                                <property name="plugin_classpath" refid="maven.plugin.classpath" />
 
                                 <java failonerror="true" classname="org.jasig.portlet.announcements.SchemaCreator">
                                     <classpath>
-                                        <pathelement location="${project.build.directory}/${project.artifactId}/WEB-INF/context"/>
-                                        <pathelement path="${runtime_classpath}"/>
-                                        <pathelement path="${plugin_classpath}"/>
+                                        <pathelement location="${project.build.directory}/${project.artifactId}/WEB-INF/context" />
+                                        <pathelement path="${runtime_classpath}" />
+                                        <pathelement path="${plugin_classpath}" />
                                     </classpath>
                                 </java>
                             </tasks>
@@ -529,27 +529,27 @@
                         <configuration>
                             <tasks>
                                 <!-- Set default value of data location if it is not set -->
-                                <property name="dir" value="${basedir}/src/main/data"/>
+                                <property name="dir" value="${basedir}/src/main/data" />
 
-                                <property name="runtime_classpath" refid="maven.runtime.classpath"/>
-                                <property name="plugin_classpath" refid="maven.plugin.classpath"/>
+                                <property name="runtime_classpath" refid="maven.runtime.classpath" />
+                                <property name="plugin_classpath" refid="maven.plugin.classpath" />
 
                                 <!-- Provided jars aren't added to the runtime
                                      classpath, so we manually add in servlet.jar here  -->
-                                <property name="servlet.jar" value="${maven.dependency.javax.servlet.servlet-api.jar.path}"/>
-                                <property name="portlet.jar" value="${maven.dependency.javax.portlet.portlet-api.jar.path}"/>
+                                <property name="servlet.jar" value="${maven.dependency.javax.servlet.servlet-api.jar.path}" />
+                                <property name="portlet.jar" value="${maven.dependency.javax.portlet.portlet-api.jar.path}" />
 
                                 <java failonerror="true" classname="org.jasig.portlet.announcements.Importer">
-                                    <sysproperty key="log4j.configuration" value="command-line.log4j.properties"/>
+                                    <sysproperty key="log4j.configuration" value="command-line.log4j.properties" />
                                     <classpath>
-                                        <pathelement location="${project.build.directory}/${project.artifactId}/WEB-INF/context"/>
-                                        <pathelement path="${runtime_classpath}"/>
-                                        <pathelement path="${plugin_classpath}"/>
-                                        <pathelement location="${servlet.jar}"/>
-                                        <pathelement location="${portlet.jar}"/>
+                                        <pathelement location="${project.build.directory}/${project.artifactId}/WEB-INF/context" />
+                                        <pathelement path="${runtime_classpath}" />
+                                        <pathelement path="${plugin_classpath}" />
+                                        <pathelement location="${servlet.jar}" />
+                                        <pathelement location="${portlet.jar}" />
                                     </classpath>
 
-                                    <arg value="${dir}"/>
+                                    <arg value="${dir}" />
                                 </java>
                             </tasks>
                         </configuration>
@@ -568,24 +568,24 @@
                                     You must set the "dir" parameter.  (-Ddir={something})
                                 </fail>
 
-                                <property name="runtime_classpath" refid="maven.runtime.classpath"/>
-                                <property name="plugin_classpath" refid="maven.plugin.classpath"/>
+                                <property name="runtime_classpath" refid="maven.runtime.classpath" />
+                                <property name="plugin_classpath" refid="maven.plugin.classpath" />
                                 <!-- Provided jars don't seem to be added to the runtime
                                      classpath, so we manually add in servlet.jar here  -->
-                                <property name="servlet.jar" value="${maven.dependency.javax.servlet.servlet-api.jar.path}"/>
-                                <property name="portlet.jar" value="${maven.dependency.javax.portlet.portlet-api.jar.path}"/>
+                                <property name="servlet.jar" value="${maven.dependency.javax.servlet.servlet-api.jar.path}" />
+                                <property name="portlet.jar" value="${maven.dependency.javax.portlet.portlet-api.jar.path}" />
 
                                 <java failonerror="true" fork="true" classname="org.jasig.portlet.announcements.Exporter">
-                                    <sysproperty key="log4j.configuration" value="command-line.log4j.properties"/>
+                                    <sysproperty key="log4j.configuration" value="command-line.log4j.properties" />
                                     <classpath>
-                                        <pathelement location="${project.build.directory}/${project.artifactId}/WEB-INF/context"/>
-                                        <pathelement path="${runtime_classpath}"/>
-                                        <pathelement path="${plugin_classpath}"/>
-                                        <pathelement location="${servlet.jar}"/>
-                                        <pathelement location="${portlet.jar}"/>
+                                        <pathelement location="${project.build.directory}/${project.artifactId}/WEB-INF/context" />
+                                        <pathelement path="${runtime_classpath}" />
+                                        <pathelement path="${plugin_classpath}" />
+                                        <pathelement location="${servlet.jar}" />
+                                        <pathelement location="${portlet.jar}" />
                                     </classpath>
 
-                                    <arg value="${dir}"/>
+                                    <arg value="${dir}" />
                                 </java>
                             </tasks>
                         </configuration>
