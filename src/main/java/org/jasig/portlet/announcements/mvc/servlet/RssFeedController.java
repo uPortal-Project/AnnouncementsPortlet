@@ -31,12 +31,11 @@ import com.rometools.rome.io.SyndFeedOutput;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.portlet.PortletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,73 +76,6 @@ public class RssFeedController {
     private static final String PATH_ATTRIBUTE = "path";
     private static final String FILENAME_ATTRIBUTE = "filename";
 
-    /**
-     * A Content-Type is required for RSS &lt;enclosure&gt; elements.
-     */
-    private enum TypeMapping {
-
-        GIF("image/gif"){
-            @Override
-            boolean mapsTo(JsonNode json) {
-                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
-                return filenameLc.endsWith(".gif");
-            }
-        },
-
-        JPEG("image/jpeg"){
-            @Override
-            boolean mapsTo(JsonNode json) {
-                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
-                return filenameLc.endsWith(".jpg") || filenameLc.endsWith(".jpeg");
-            }
-        },
-
-        PDF("application/pdf"){
-            @Override
-            boolean mapsTo(JsonNode json) {
-                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
-                return filenameLc.endsWith(".pdf");
-            }
-        },
-
-        PNG("image/png"){
-            @Override
-            boolean mapsTo(JsonNode json) {
-                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
-                return filenameLc.endsWith(".png");
-            }
-        },
-
-        SVG("image/svg+xml"){
-            @Override
-            boolean mapsTo(JsonNode json) {
-                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
-                return filenameLc.endsWith(".svg");
-            }
-        },
-
-        TIFF("image/tiff"){
-            @Override
-            boolean mapsTo(JsonNode json) {
-                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
-                return filenameLc.endsWith(".tiff");
-            }
-        };
-
-        private final String type;
-
-        TypeMapping(String type) {
-            this.type = type;
-        }
-
-        abstract boolean mapsTo(JsonNode json);
-
-        public String getType() {
-            return type;
-        }
-
-    }
-
     private IAnnouncementService announcementService;
 
     @Value("${RssFeedController.portalContextName:uPortal}")
@@ -153,6 +85,8 @@ public class RssFeedController {
     private String announcementsPortletFname;
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    private final MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
 
     private final Log logger = LogFactory.getLog(getClass());
 
@@ -255,8 +189,7 @@ public class RssFeedController {
         final String urlPrefix = calculateUrlPrefix(request);
 
         // fetch and sort the announcements
-        final List<Announcement> announcements = new ArrayList<>();
-        announcements.addAll(topic.getPublishedAnnouncements());
+        final List<Announcement> announcements = new ArrayList<>(topic.getPublishedAnnouncements());
         Collections.sort(announcements);
 
         final SyndFeed rslt = new SyndFeedImpl();
@@ -298,14 +231,7 @@ public class RssFeedController {
                     final SyndEnclosure se = new SyndEnclosureImpl();
                     final String enclosureUrl = urlPrefix + json.get(PATH_ATTRIBUTE).getTextValue();
                     se.setUrl(enclosureUrl);
-                    final Optional<TypeMapping> contentType = Arrays.stream(TypeMapping.values())
-                            .filter(mapping -> mapping.mapsTo(json))
-                            .findFirst();
-                    if (contentType.isPresent()) {
-                        se.setType(contentType.get().getType());
-                    } else {
-                        logger.warn("No content-type mapping is available for the following attachment:  " + json);
-                    }
+                    se.setType(fileTypeMap.getContentType(json.get(FILENAME_ATTRIBUTE).getTextValue()));
                     enclosures.add(se);
                 }
                 entry.setEnclosures(enclosures);
