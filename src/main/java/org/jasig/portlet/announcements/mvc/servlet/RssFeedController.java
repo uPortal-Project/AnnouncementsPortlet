@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.portlet.PortletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,6 +74,7 @@ public class RssFeedController {
             "%s/%s/p/%s?pP_announcementId=%d&pP_action=" + AnnouncementsViewController.ACTION_DISPLAY_FULL_ANNOUNCEMENT;
 
     private static final String PATH_ATTRIBUTE = "path";
+    private static final String FILENAME_ATTRIBUTE = "filename";
 
     private IAnnouncementService announcementService;
 
@@ -83,6 +85,8 @@ public class RssFeedController {
     private String announcementsPortletFname;
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    private final MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
 
     private final Log logger = LogFactory.getLog(getClass());
 
@@ -185,8 +189,7 @@ public class RssFeedController {
         final String urlPrefix = calculateUrlPrefix(request);
 
         // fetch and sort the announcements
-        final List<Announcement> announcements = new ArrayList<>();
-        announcements.addAll(topic.getPublishedAnnouncements());
+        final List<Announcement> announcements = new ArrayList<>(topic.getPublishedAnnouncements());
         Collections.sort(announcements);
 
         final SyndFeed rslt = new SyndFeedImpl();
@@ -228,6 +231,7 @@ public class RssFeedController {
                     final SyndEnclosure se = new SyndEnclosureImpl();
                     final String enclosureUrl = urlPrefix + json.get(PATH_ATTRIBUTE).getTextValue();
                     se.setUrl(enclosureUrl);
+                    se.setType(fileTypeMap.getContentType(json.get(FILENAME_ATTRIBUTE).getTextValue()));
                     enclosures.add(se);
                 }
                 entry.setEnclosures(enclosures);
