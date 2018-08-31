@@ -31,8 +31,10 @@ import com.rometools.rome.io.SyndFeedOutput;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.portlet.PortletException;
@@ -73,6 +75,74 @@ public class RssFeedController {
             "%s/%s/p/%s?pP_announcementId=%d&pP_action=" + AnnouncementsViewController.ACTION_DISPLAY_FULL_ANNOUNCEMENT;
 
     private static final String PATH_ATTRIBUTE = "path";
+    private static final String FILENAME_ATTRIBUTE = "filename";
+
+    /**
+     * A Content-Type is required for RSS &lt;enclosure&gt; elements.
+     */
+    private enum TypeMapping {
+
+        GIF("image/gif"){
+            @Override
+            boolean mapsTo(JsonNode json) {
+                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
+                return filenameLc.endsWith(".gif");
+            }
+        },
+
+        JPEG("image/jpeg"){
+            @Override
+            boolean mapsTo(JsonNode json) {
+                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
+                return filenameLc.endsWith(".jpg") || filenameLc.endsWith(".jpeg");
+            }
+        },
+
+        PDF("application/pdf"){
+            @Override
+            boolean mapsTo(JsonNode json) {
+                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
+                return filenameLc.endsWith(".pdf");
+            }
+        },
+
+        PNG("image/png"){
+            @Override
+            boolean mapsTo(JsonNode json) {
+                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
+                return filenameLc.endsWith(".png");
+            }
+        },
+
+        SVG("image/svg+xml"){
+            @Override
+            boolean mapsTo(JsonNode json) {
+                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
+                return filenameLc.endsWith(".svg");
+            }
+        },
+
+        TIFF("image/tiff"){
+            @Override
+            boolean mapsTo(JsonNode json) {
+                final String filenameLc = json.get(FILENAME_ATTRIBUTE).getTextValue().toLowerCase();
+                return filenameLc.endsWith(".tiff");
+            }
+        };
+
+        private final String type;
+
+        TypeMapping(String type) {
+            this.type = type;
+        }
+
+        abstract boolean mapsTo(JsonNode json);
+
+        public String getType() {
+            return type;
+        }
+
+    }
 
     private IAnnouncementService announcementService;
 
@@ -228,6 +298,14 @@ public class RssFeedController {
                     final SyndEnclosure se = new SyndEnclosureImpl();
                     final String enclosureUrl = urlPrefix + json.get(PATH_ATTRIBUTE).getTextValue();
                     se.setUrl(enclosureUrl);
+                    final Optional<TypeMapping> contentType = Arrays.stream(TypeMapping.values())
+                            .filter(mapping -> mapping.mapsTo(json))
+                            .findFirst();
+                    if (contentType.isPresent()) {
+                        se.setType(contentType.get().getType());
+                    } else {
+                        logger.warn("No content-type mapping is available for the following attachment:  " + json);
+                    }
                     enclosures.add(se);
                 }
                 entry.setEnclosures(enclosures);
