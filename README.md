@@ -10,6 +10,9 @@ This is a [Sponsored Portlet][] in the uPortal project.
 
 See also documentation in the [AnnouncementsPortlet wiki on Confluence][].
 
+### Attachments
+See [docs/attachments.md](https://github.com/Jasig/SimpleContentPortlet/blob/HEAD/docs/attachments.md) of the [Simple Content Portlet](https://github.com/Jasig/SimpleContentPortlet) for information regarding attachments.
+
 ### Using Encrypted Property Values
 
 You may optionally provide sensitive configuration items -- such as database passwords -- in encrypted format. Use the [Jasypt CLI Tools][] to encrypt the sensitive value, then include it in a `.properties` file like this:
