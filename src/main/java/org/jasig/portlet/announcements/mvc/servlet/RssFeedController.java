@@ -196,7 +196,14 @@ public class RssFeedController {
         rslt.setFeedType("rss_2.0");
         rslt.setTitle(topic.getTitle());
         rslt.setLink(request.getRequestURL().append("?topic=").append(topic.getId()).toString());
-        rslt.setDescription(topic.getDescription());
+
+        String feedDescription = String.format("RSS feed for " + topic.getTitle());
+
+        if(!topic.getDescription().isEmpty()) {
+            feedDescription = topic.getDescription();
+        }
+
+        rslt.setDescription(feedDescription);
 
         final List<SyndEntry> entries = new ArrayList<>();
         for (Announcement a : announcements) {
