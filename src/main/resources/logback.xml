@@ -90,8 +90,8 @@
    | Turn up logging for portlet specific package
    +-->
     <!--
+  -->
   <logger name="org.jasig.portlet.announcements" additivity="false" level="DEBUG">
     <appender-ref ref="LOG" />
   </logger>
-  -->
 </configuration>
