@@ -18,16 +18,17 @@
  */
 package org.jasig.portlet.announcements.mvc.portlet.display;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.portlet.EventRequest;
 import javax.portlet.EventResponse;
 import javax.portlet.PortletException;
@@ -37,10 +38,6 @@ import javax.portlet.RenderRequest;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.xml.namespace.QName;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.Element;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.UnauthorizedException;
@@ -61,9 +58,11 @@ import org.jasig.portlet.notice.NotificationQuery;
 import org.jasig.portlet.notice.NotificationResponse;
 import org.jasig.portlet.notice.NotificationResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -107,6 +106,9 @@ public class AnnouncementsViewController {
       new QName(NOTIFICATION_NAMESPACE, NOTIFICATION_RESULT_LOCAL_NAME);
   public static final String NOTIFICATION_RESULT_QNAME_STRING =
       "{" + NOTIFICATION_NAMESPACE + "}" + NOTIFICATION_RESULT_LOCAL_NAME;
+  public static final String USER_TOPICS_CACHE = "userTopicLists";
+  public static final String TOPICS_CACHE = "topicLists";
+
   @Autowired
   private final IAnnouncementService announcementService = null;
   private final ObjectMapper mapper = new ObjectMapper();
@@ -175,17 +177,47 @@ public class AnnouncementsViewController {
 
   private List[] getLists(PortletRequest request) throws PortletException {
     final String userId = userIdService.getUserId(request);
+    List<TopicSubscription> myTopics = null;
 
-    // fetch the user's topic subscription from the database
-    List<TopicSubscription> myTopics = tss.getTopicSubscription(request);
+    final Cache userTopicsCache = cm.getCache(USER_TOPICS_CACHE);
+    String topicsHash = userTopicsCache.get(userId, String.class);
+    logger.debug("topicHash: " + topicsHash + " for " + userId);
+    if (topicsHash == null) {
 
-    Map<Boolean, List<Announcement>> topicLists = myTopics
-        .stream()
-        .filter(TopicSubscription::getSubscribed)
-        .map(ts -> ts.getTopic().getPublishedAnnouncements())
-        .flatMap(x -> x.stream())
-        .collect(Collectors.partitioningBy(
-            (Announcement a) -> a.getParent().getSubscriptionMethod() == Topic.EMERGENCY));
+      // fetch the user's topic subscription from the database
+      myTopics = tss.getTopicSubscription(request);
+
+      final String topicNames = myTopics.stream()
+          .map(t -> t.getTopic().getTitle())
+          .sorted()
+          .collect(Collectors.joining("#"));
+      logger.debug(topicNames);
+
+      topicsHash = DigestUtils.md5DigestAsHex(topicNames.getBytes());
+      userTopicsCache.put(userId, topicsHash);
+      logger.debug("new topicHash: " + topicsHash + " for " + userId);
+    }
+
+    final Cache topicsCache = cm.getCache(TOPICS_CACHE);
+    Map<Boolean, List<Announcement>> topicLists = topicsCache.get(topicsHash, Map.class);
+
+    if (topicLists == null) {
+      logger.debug("Caching topic list for hash: " + topicsHash);
+      if (myTopics == null) {
+        // fetch the user's topic subscription from the database if not done above
+        myTopics = tss.getTopicSubscription(request);
+      }
+
+      topicLists = myTopics
+          .stream()
+          .filter(TopicSubscription::getSubscribed)
+          .map(ts -> ts.getTopic().getPublishedAnnouncements())
+          .flatMap(Collection::stream)
+          .collect(Collectors.partitioningBy(
+              (Announcement a) -> a.getParent().getSubscriptionMethod() == Topic.EMERGENCY));
+
+      topicsCache.put(topicsHash, topicLists);
+    }
 
     return new List[]{topicLists.get(false), topicLists.get(true)};
   }

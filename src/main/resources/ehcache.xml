@@ -133,4 +133,29 @@
         memoryStoreEvictionPolicy="LRU"
     />
 
+    <!--
+     | Cache for users to topic lists cache keys
+     +-->
+    <cache name="userTopicLists"
+      maxElementsInMemory="10000"
+      eternal="false"
+      overflowToDisk="false"
+      timeToIdleSeconds="0"
+      timeToLiveSeconds="900"
+      diskPersistent="false"
+      memoryStoreEvictionPolicy="LRU"
+    />
+
+    <!--
+     | Cache for combined topic lists
+     +-->
+    <cache name="topicLists"
+      maxElementsInMemory="1024"
+      eternal="false"
+      overflowToDisk="false"
+      timeToIdleSeconds="0"
+      timeToLiveSeconds="30"
+      diskPersistent="false"
+      memoryStoreEvictionPolicy="LRU"
+    />
 </ehcache>
