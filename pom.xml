@@ -78,14 +78,6 @@
         <tag>Announcements-2.2.0</tag>
     </scm>
 
-    <repositories>
-        <repository>
-            <id>jasig-repository</id>
-            <name>JA-SIG Maven2 Repository</name>
-            <url>http://developer.ja-sig.org/maven2</url>
-        </repository>
-    </repositories>
-
     <dependencies>
 
         <dependency>
