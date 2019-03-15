@@ -297,28 +297,7 @@
             <groupId>org.jasig.portal</groupId>
             <artifactId>uPortal-spring</artifactId>
             <version>5.5.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jasig.portal</groupId>
-                    <artifactId>uPortal-api-internal</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jasig.portal</groupId>
-                    <artifactId>uPortal-security-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jasig.portal</groupId>
-                    <artifactId>uPortal-security-mvc</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jasig.portal</groupId>
-                    <artifactId>uPortal-tools</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.oauth.core</groupId>
-                    <artifactId>oauth</artifactId>
-                </exclusion>
-            </exclusions>
+            <type>jar</type>
         </dependency>
 
 
