@@ -1,7 +1,3 @@
 {
-  "extends": ["config:base", ":rebaseStalePrs", ":preserveSemverRanges"],
-  "maven": {
-    "enabled": true
-  },
-  "renovateFork": true
+  "extends": ["github>ChristianMurphy/renovate-config-uportal"]
 }
