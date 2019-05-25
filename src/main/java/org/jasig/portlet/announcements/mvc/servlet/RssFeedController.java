@@ -28,18 +28,15 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.feed.synd.SyndFeedImpl;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedOutput;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import javax.activation.MimetypesFileTypeMap;
+import javax.annotation.PostConstruct;
 import javax.portlet.PortletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,6 +48,7 @@ import org.jasig.portlet.announcements.mvc.portlet.display.AnnouncementsViewCont
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.ConfigurableMimeFileTypeMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -86,9 +84,14 @@ public class RssFeedController {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    private final MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
+    private ConfigurableMimeFileTypeMap fileTypeMap = new ConfigurableMimeFileTypeMap();
 
     private final Log logger = LogFactory.getLog(getClass());
+
+    @PostConstruct
+    public void init() {
+        this.fileTypeMap.setMappings("image/png png");
+    }
 
     @Autowired
     public void setAnnouncementService(IAnnouncementService announcementService) {
@@ -238,7 +241,9 @@ public class RssFeedController {
                     final SyndEnclosure se = new SyndEnclosureImpl();
                     final String enclosureUrl = urlPrefix + json.get(PATH_ATTRIBUTE).getTextValue();
                     se.setUrl(enclosureUrl);
-                    se.setType(fileTypeMap.getContentType(json.get(FILENAME_ATTRIBUTE).getTextValue()));
+                    se.setType(
+                            fileTypeMap.getContentType(
+                                    json.get(FILENAME_ATTRIBUTE).getTextValue()));
                     enclosures.add(se);
                 }
                 entry.setEnclosures(enclosures);
@@ -248,7 +253,6 @@ public class RssFeedController {
         rslt.setEntries(entries);
 
         return rslt;
-
     }
 
     private String calculateUrlPrefix(HttpServletRequest req) {
@@ -257,5 +261,4 @@ public class RssFeedController {
         final int urlPrefixLength = requestUrl.indexOf(requestUri);
         return requestUrl.substring(0, urlPrefixLength);
     }
-
 }
