@@ -38,11 +38,8 @@
         </c:otherwise>
     </c:choose>
 
-    function ${n}_delete(url) {
-        var response = window.confirm('<spring:message code="show.deleteAnn"/>');
-        if (response) {
-            window.location = url;
-        }
+    function ${n}_delete() {
+        return window.confirm('<spring:message code="show.deleteAnn"/>');
     }
     function ${n}approval(id, newValue) {
         var $ = ${n}.jQuery;
@@ -147,10 +144,17 @@
                                     </td>
                                     <td class="text-right">
                                         <c:if test="${((not user.moderator) and user.userName eq ann.author) or user.moderator}">
-                                            <a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="show.viewedit"/>"><i class="fa fa-edit"></i></a>&nbsp;
+                                            <a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="show.viewedit"/>"><i class="fa fa-edit"></i></a>
                                         </c:if>
                                         <c:if test="${user.moderator}">
-                                            <a href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteAnnouncement"/><portlet:param name="annId" value="${ann.id}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="show.delete"/>"><i class="fa fa-trash-o"></i></a>&nbsp;
+                                            <form action="<portlet:actionURL escapeXml="false"></portlet:actionURL>" onSubmit="return ${n}_delete()" method="post" style="display: inline-block">
+                                                <input type="hidden" name="action" value="deleteAnnouncement"/>
+                                                <input type="hidden" name="annId" value="${ann.id}"/>
+                                                <input type="hidden" name="topicId" value="${topic.id}"/>
+                                                <button type="submit" title="<spring:message code="show.delete"/>" style="background-color: transparent; border: none;">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            </form>
                                             <c:choose>
                                                 <c:when test="${ann.published}">
                                                     <a id="${n}annSwitch-${ann.id}" href="javascript:${n}approval(${ann.id},'false');" title="<spring:message code="show.unpublish"/>"><i class="fa fa-stop"></i></a>
