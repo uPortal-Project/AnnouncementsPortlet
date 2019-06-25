@@ -31,7 +31,7 @@
 <c:if test="${portalAdmin}">
     <script type="text/javascript">
         function ${n}_delete() {
-           return response = window.confirm('<spring:message code="baseAdmin.confirmDeleteTopic"/>');
+           return window.confirm('<spring:message code="baseAdmin.confirmDeleteTopic"/>');
         }
     </script>
 </c:if>
