@@ -151,7 +151,7 @@
                                                 <input type="hidden" name="action" value="deleteAnnouncement"/>
                                                 <input type="hidden" name="annId" value="${ann.id}"/>
                                                 <input type="hidden" name="topicId" value="${topic.id}"/>
-                                                <button type="submit" title="<spring:message code="show.delete"/>" style="background-color: transparent; border: none;">
+                                                <button type="submit" title="<spring:message code="show.delete"/>">
                                                     <i class="fa fa-trash-o"></i>
                                                 </button>
                                             </form>
