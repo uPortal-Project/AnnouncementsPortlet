@@ -30,11 +30,8 @@
 
 <c:if test="${portalAdmin}">
     <script type="text/javascript">
-        function ${n}_delete(url) {
-           var response = window.confirm('<spring:message code="baseAdmin.confirmDeleteTopic"/>');
-           if (response) {
-              window.location = url;
-           }
+        function ${n}_delete() {
+           return response = window.confirm('<spring:message code="baseAdmin.confirmDeleteTopic"/>');
         }
     </script>
 </c:if>
@@ -166,7 +163,13 @@
                                                         <a class="action-icon" href="<portlet:renderURL><portlet:param name="action" value="addTopic"/><portlet:param name="edit" value="${topic.id}"/></portlet:renderURL>" title="<spring:message code="baseAdmin.edit"/>"><i class="fa fa-edit" aria-hidden="true"></i> <spring:message code="baseAdmin.edit"/></a>
                                                     </td>
                                                     <td>
-                                                        <a class="action-icon" href="#" onclick="${n}_delete('<portlet:actionURL escapeXml="false"><portlet:param name="action" value="deleteTopic"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>');" title="<spring:message code="baseAdmin.delete"/>"><i class="fa fa-trash-o" aria-hidden="true"></i> <spring:message code="baseAdmin.delete"/></a>
+                                                        <form action="<portlet:actionURL escapeXml="false"></portlet:actionURL>" onSubmit="return ${n}_delete()" method="post" style="display: inline-block">
+                                                            <input type="hidden" name="action" value="deleteTopic"/>
+                                                            <input type="hidden" name="topicId" value="${topic.id}"/>
+                                                            <button type="submit">
+                                                                <i class="fa fa-trash-o" aria-hidden="true"></i> <spring:message code="baseAdmin.delete"/>
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             </table>
