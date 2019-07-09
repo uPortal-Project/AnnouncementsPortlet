@@ -15,7 +15,7 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
- */src/main/java/org/jasig/portlet/announcements/model/AnnouncementSortStrategy.java
+ */
 package org.jasig.portlet.announcements.model;
 
 import java.util.Comparator;
@@ -107,14 +107,14 @@ public enum AnnouncementSortStrategy {
    *
    * @return a {@link java.util.Comparator} object.
    */
+  public abstract Comparator<Announcement> getComparator();
+
   /**
    * <p>getStrategy.</p>
    *
    * @param strategyName a {@link java.lang.String} object.
    * @return a {@link java.util.Comparator} object.
    */
-  public abstract Comparator<Announcement> getComparator();
-
   public static Comparator<Announcement> getStrategy(String strategyName) {
     AnnouncementSortStrategy strategy = AnnouncementSortStrategy.valueOf(strategyName);
     return strategy != null ? strategy.getComparator() : DEFAULT.getComparator();
