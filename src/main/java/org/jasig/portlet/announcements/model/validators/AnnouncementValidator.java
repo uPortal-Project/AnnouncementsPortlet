@@ -32,8 +32,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
+ * <p>AnnouncementValidator class.</p>
+ *
  * @author Erik A. Olsson (eolsson@uci.edu)
  *     <p>$LastChangedBy$ $LastChangedDate$
+ * @version $Id: $Id
  */
 public class AnnouncementValidator implements Validator {
   private final Log logger = LogFactory.getLog(getClass());
@@ -41,10 +44,19 @@ public class AnnouncementValidator implements Validator {
   private final boolean allowOpenEndDate;
   private final boolean allowEmptyMessage;
 
+  /**
+   * <p>Constructor for AnnouncementValidator.</p>
+   */
   public AnnouncementValidator() {
     this(false, false);
   }
 
+  /**
+   * <p>Constructor for AnnouncementValidator.</p>
+   *
+   * @param allowOpenEndDate a boolean.
+   * @param allowEmptyMessage a boolean.
+   */
   public AnnouncementValidator(boolean allowOpenEndDate, boolean allowEmptyMessage) {
     this.allowOpenEndDate = allowOpenEndDate;
     this.allowEmptyMessage = allowEmptyMessage;
@@ -53,6 +65,7 @@ public class AnnouncementValidator implements Validator {
   /* (non-Javadoc)
    * @see org.springframework.validation.Validator#supports(java.lang.Class)
    */
+  /** {@inheritDoc} */
   public boolean supports(Class<?> clazz) {
     return Announcement.class.isAssignableFrom(clazz);
   }
@@ -60,6 +73,7 @@ public class AnnouncementValidator implements Validator {
   /* (non-Javadoc)
    * @see org.springframework.validation.Validator#validate(java.lang.Object, org.springframework.validation.Errors)
    */
+  /** {@inheritDoc} */
   public void validate(Object obj, Errors errors) {
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "addAnn.title.required.error");
     ValidationUtils.rejectIfEmptyOrWhitespace(

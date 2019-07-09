@@ -38,6 +38,9 @@ import org.springframework.stereotype.Service;
  * have <code>null</code> for both <code>getRemoteUser</code> and the <code>USER_INFO</code> map. We
  * need to differentiate them (in the case of multiple guest users) based on the role(s) they belong
  * to.
+ *
+ * @author Unknown
+ * @version $Id: $Id
  */
 @Service("userIdService")
 public class UserIdService {
@@ -50,6 +53,9 @@ public class UserIdService {
 
   private MessageDigest md5;
 
+  /**
+   * <p>init.</p>
+   */
   @PostConstruct
   public void init() {
     try {
@@ -60,6 +66,12 @@ public class UserIdService {
     }
   }
 
+  /**
+   * <p>getUserId.</p>
+   *
+   * @param req a {@link javax.portlet.PortletRequest} object.
+   * @return a {@link java.lang.String} object.
+   */
   public String getUserId(PortletRequest req) {
     final String rslt =
         req.getRemoteUser() != null

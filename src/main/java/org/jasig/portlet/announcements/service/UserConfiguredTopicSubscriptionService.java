@@ -35,11 +35,18 @@ import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/** @author Erik A. Olsson (eolsson@uci.edu) */
+/**
+ * <p>UserConfiguredTopicSubscriptionService class.</p>
+ *
+ * @author Erik A. Olsson (eolsson@uci.edu)
+ * @version $Id: $Id
+ */
 @Service
 public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptionService {
 
+  /** Constant <code>PREFERENCE_FILTER_TYPE="AnnouncementPreferences.FILTER_TYPE.get"{trunked}</code> */
   public static final String PREFERENCE_FILTER_TYPE = AnnouncementPreferences.FILTER_TYPE.getKey();
+  /** Constant <code>PREFERENCE_FILTER_ITEMS="AnnouncementPreferences.FILTER_ITEMS.ge"{trunked}</code> */
   public static final String PREFERENCE_FILTER_ITEMS =
       AnnouncementPreferences.FILTER_ITEMS.getKey();
 
@@ -49,22 +56,40 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
   private Topic emergencyTopic;
   private UserIdService userIdService;
 
+  /**
+   * <p>Setter for the field <code>announcementService</code>.</p>
+   *
+   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   */
   @Autowired
   public void setAnnouncementService(IAnnouncementService announcementService) {
     this.announcementService = announcementService;
   }
 
+  /**
+   * <p>Setter for the field <code>emergencyTopic</code>.</p>
+   *
+   * @param emergencyTopic a {@link org.jasig.portlet.announcements.model.Topic} object.
+   */
   @Resource(name = "emergencyTopic")
   public void setEmergencyTopic(Topic emergencyTopic) {
     this.emergencyTopic = emergencyTopic;
     log.debug("Emergency Topic assigned successfully.");
   }
 
+  /**
+   * <p>Setter for the field <code>userIdService</code>.</p>
+   *
+   * @param userIdService a {@link org.jasig.portlet.announcements.service.UserIdService} object.
+   */
   @Autowired
   public void setUserIdService(UserIdService userIdService) {
     this.userIdService = userIdService;
   }
 
+  /**
+   * <p>init.</p>
+   */
   @PostConstruct
   public void init() {
     // save the emergencyTopic to the database (if it's not there already)
@@ -85,6 +110,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
     }
   }
 
+  /** {@inheritDoc} */
   public List<TopicSubscription> getTopicSubscription(
       PortletRequest request, boolean includeEmergency) throws PortletException {
 
@@ -213,11 +239,13 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
     }
   }
 
+  /** {@inheritDoc} */
   public List<TopicSubscription> getTopicSubscriptionEdit(RenderRequest request)
       throws PortletException {
     return getTopicSubscription(request, false);
   }
 
+  /** {@inheritDoc} */
   public List<TopicSubscription> getTopicSubscription(PortletRequest request)
       throws PortletException {
     return getTopicSubscription(request, true);

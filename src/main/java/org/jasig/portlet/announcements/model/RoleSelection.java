@@ -24,27 +24,48 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * <p>RoleSelection class.</p>
+ *
  * @author Erik A. Olsson (eolsson@uci.edu)
  *     <p>$LastChangedBy$ $LastChangedDate$
+ * @version $Id: $Id
  */
 public class RoleSelection implements Serializable {
 
   private static final long serialVersionUID = -4522351577889716059L;
   List<String> selectedRoles;
 
+  /**
+   * <p>Constructor for RoleSelection.</p>
+   */
   public RoleSelection() {
     selectedRoles = new ArrayList<String>();
   }
 
+  /**
+   * <p>Constructor for RoleSelection.</p>
+   *
+   * @param selection a {@link java.util.Set} object.
+   */
   public RoleSelection(Set<String> selection) {
     selectedRoles = new ArrayList<String>();
     selectedRoles.addAll(selection);
   }
 
+  /**
+   * <p>Getter for the field <code>selectedRoles</code>.</p>
+   *
+   * @return a {@link java.util.List} object.
+   */
   public List<String> getSelectedRoles() {
     return selectedRoles;
   }
 
+  /**
+   * <p>Setter for the field <code>selectedRoles</code>.</p>
+   *
+   * @param selectedRoles a {@link java.util.List} object.
+   */
   public void setSelectedRoles(List<String> selectedRoles) {
     this.selectedRoles = selectedRoles;
   }

@@ -40,6 +40,9 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
  * with Announcements' Spring-managed ORM strategy and Announcements' configuration features (esp.
  * encrypted properties).  It is invokable from the command line with '$ java', but designed to be
  * integrated with build tools like Gradle.
+ *
+ * @author Unknown
+ * @version $Id: $Id
  */
 public class SchemaCreator implements ApplicationContextAware {
 
@@ -55,6 +58,11 @@ public class SchemaCreator implements ApplicationContextAware {
 
     private final Log logger = LogFactory.getLog(getClass());
 
+    /**
+     * <p>main.</p>
+     *
+     * @param args an array of {@link java.lang.String} objects.
+     */
     public static void main(String[] args) {
 
         // There will be an instance of this class in the ApplicationContent
@@ -65,6 +73,7 @@ public class SchemaCreator implements ApplicationContextAware {
         System.exit(schemaCreator.create());
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;

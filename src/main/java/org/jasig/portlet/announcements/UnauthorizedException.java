@@ -19,17 +19,28 @@
 package org.jasig.portlet.announcements;
 
 /**
+ * <p>UnauthorizedException class.</p>
+ *
  * @author Erik A. Olsson (eolsson@uci.edu)
  *     <p>$LastChangedBy$ $LastChangedDate$
+ * @version $Id: $Id
  */
 public class UnauthorizedException extends SecurityException {
 
   private static final long serialVersionUID = 6700248976586222636L;
 
+  /**
+   * <p>Constructor for UnauthorizedException.</p>
+   */
   public UnauthorizedException() {
     super();
   }
 
+  /**
+   * <p>Constructor for UnauthorizedException.</p>
+   *
+   * @param m a {@link java.lang.String} object.
+   */
   public UnauthorizedException(String m) {
     super(m);
   }

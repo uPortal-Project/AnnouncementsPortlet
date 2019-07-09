@@ -19,8 +19,11 @@
 package org.jasig.portlet.announcements.model;
 
 /**
+ * <p>Role class.</p>
+ *
  * @author Erik A. Olsson (eolsson@uci.edu)
  *     <p>$LastChangedBy$ $LastChangedDate$
+ * @version $Id: $Id
  */
 public class Role {
 
@@ -28,13 +31,27 @@ public class Role {
   private Boolean selected;
 
   // No arg default constructor needed to get rid of error with jaxb2-maven-plugin:schemaGen
+  /**
+   * <p>Constructor for Role.</p>
+   */
   public Role() {}
 
+  /**
+   * <p>Constructor for Role.</p>
+   *
+   * @param name a {@link java.lang.String} object.
+   * @param selected a boolean.
+   */
   public Role(String name, boolean selected) {
     this.name = name;
     this.selected = new Boolean(selected);
   }
 
+  /**
+   * <p>getPerson.</p>
+   *
+   * @return a boolean.
+   */
   public boolean getPerson() {
     if (name != null) {
       return name.startsWith("USER.");
@@ -42,6 +59,11 @@ public class Role {
     return false;
   }
 
+  /**
+   * <p>getPersonName.</p>
+   *
+   * @return a {@link java.lang.String} object.
+   */
   public String getPersonName() {
     if (name != null && name.startsWith("USER.")) {
       String[] p = name.split("\\.");
@@ -50,18 +72,38 @@ public class Role {
     return name;
   }
 
+  /**
+   * <p>Getter for the field <code>name</code>.</p>
+   *
+   * @return a {@link java.lang.String} object.
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * <p>Setter for the field <code>name</code>.</p>
+   *
+   * @param name a {@link java.lang.String} object.
+   */
   public void setName(String name) {
     this.name = name;
   }
 
+  /**
+   * <p>Getter for the field <code>selected</code>.</p>
+   *
+   * @return a {@link java.lang.Boolean} object.
+   */
   public Boolean getSelected() {
     return selected;
   }
 
+  /**
+   * <p>Setter for the field <code>selected</code>.</p>
+   *
+   * @param selected a {@link java.lang.Boolean} object.
+   */
   public void setSelected(Boolean selected) {
     this.selected = selected;
   }

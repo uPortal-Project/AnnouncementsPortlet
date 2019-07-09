@@ -25,11 +25,20 @@ import java.util.regex.Pattern;
 import javax.portlet.PortletRequest;
 import org.springframework.beans.factory.InitializingBean;
 
+/**
+ * <p>UserAgentViewNameSelector class.</p>
+ *
+ * @author Unknown
+ * @version $Id: $Id
+ */
 public class UserAgentViewNameSelector implements IViewNameSelector, InitializingBean {
 
   private Map<String, String> userAgentMappings;
   private final Map<Pattern, String> patterns = new HashMap<Pattern, String>();
 
+  /**
+   * <p>afterPropertiesSet.</p>
+   */
   public void afterPropertiesSet() {
     // Compile our patterns
     for (Map.Entry<String, String> y : userAgentMappings.entrySet()) {
@@ -37,6 +46,7 @@ public class UserAgentViewNameSelector implements IViewNameSelector, Initializin
     }
   }
 
+  /** {@inheritDoc} */
   public String select(PortletRequest req, String baseViewName) {
 
     // Assertions.
@@ -60,6 +70,11 @@ public class UserAgentViewNameSelector implements IViewNameSelector, Initializin
     return rslt.toString();
   }
 
+  /**
+   * <p>Setter for the field <code>userAgentMappings</code>.</p>
+   *
+   * @param userAgentMappings a {@link java.util.Map} object.
+   */
   public void setUserAgentMappings(Map<String, String> userAgentMappings) {
     this.userAgentMappings = Collections.unmodifiableMap(userAgentMappings);
   }

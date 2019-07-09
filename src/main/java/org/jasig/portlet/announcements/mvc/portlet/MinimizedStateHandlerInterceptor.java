@@ -23,8 +23,15 @@ import javax.portlet.RenderResponse;
 import javax.portlet.WindowState;
 import org.springframework.web.portlet.handler.HandlerInterceptorAdapter;
 
+/**
+ * <p>MinimizedStateHandlerInterceptor class.</p>
+ *
+ * @author Unknown
+ * @version $Id: $Id
+ */
 public class MinimizedStateHandlerInterceptor extends HandlerInterceptorAdapter {
 
+  /** {@inheritDoc} */
   @Override
   public boolean preHandleRender(RenderRequest request, RenderResponse response, Object handler)
       throws Exception {

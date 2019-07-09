@@ -34,6 +34,9 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Responsible for receiving and processing the publish/unpublish messages sent from the Admin
  * portlet via AJaX.
+ *
+ * @author Unknown
+ * @version $Id: $Id
  */
 @Controller("ajaxApproveController")
 public class AjaxApproveController {
@@ -47,16 +50,33 @@ public class AjaxApproveController {
 
     private EhCacheCacheManager cacheManager = null;
 
+    /**
+     * <p>Setter for the field <code>announcementService</code>.</p>
+     *
+     * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+     */
     @Autowired
     public void setAnnouncementService(IAnnouncementService announcementService) {
         this.announcementService = announcementService;
     }
 
+    /**
+     * <p>Setter for the field <code>cacheManager</code>.</p>
+     *
+     * @param cacheManager a {@link org.springframework.cache.ehcache.EhCacheCacheManager} object.
+     */
     @Autowired
     public void setCacheManager(EhCacheCacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 
+    /**
+     * <p>toggleApprove.</p>
+     *
+     * @param request a {@link javax.servlet.http.HttpServletRequest} object.
+     * @return a {@link org.springframework.web.servlet.ModelAndView} object.
+     * @throws javax.portlet.PortletException if any.
+     */
     @RequestMapping
     public ModelAndView toggleApprove(HttpServletRequest request) throws PortletException {
 

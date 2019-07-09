@@ -56,6 +56,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Provides the current content of a topic in RSS format, if the topic permits it.
+ *
+ * @author Unknown
+ * @version $Id: $Id
  */
 @Controller("rssFeedController")
 public class RssFeedController {
@@ -88,16 +91,31 @@ public class RssFeedController {
 
     private final Log logger = LogFactory.getLog(getClass());
 
+    /**
+     * <p>init.</p>
+     */
     @PostConstruct
     public void init() {
         this.fileTypeMap.setMappings("image/png png");
     }
 
+    /**
+     * <p>Setter for the field <code>announcementService</code>.</p>
+     *
+     * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+     */
     @Autowired
     public void setAnnouncementService(IAnnouncementService announcementService) {
         this.announcementService = announcementService;
     }
 
+    /**
+     * <p>getRssFeed.</p>
+     *
+     * @param request a {@link javax.servlet.http.HttpServletRequest} object.
+     * @param response a {@link javax.servlet.http.HttpServletResponse} object.
+     * @throws java.io.IOException if any.
+     */
     @RequestMapping(produces = CONTENT_TYPE)
     public void getRssFeed(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

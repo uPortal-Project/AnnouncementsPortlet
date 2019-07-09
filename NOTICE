@@ -17,15 +17,34 @@ under the License.
 
 This project includes:
   %systemBundle under Eclipse Public License - v 1.0
+  A Hibernate O/RM Module under GNU Lesser General Public License
   Announcements Portlet under Apache License Version 2.0
   ant under The Apache Software License, Version 2.0
   AntLR under BSD License
+  AOP alliance under Public Domain
+  Apache Ant Core under The Apache Software License, Version 2.0
+  Apache Ant Launcher under The Apache Software License, Version 2.0
+  Apache Commons CLI under Apache License, Version 2.0
   Apache Commons Codec under Apache License, Version 2.0
   Apache Commons Collections under Apache License, Version 2.0
+  Apache Commons Compress under Apache License, Version 2.0
+  Apache Commons Lang under Apache License, Version 2.0
   Apache Commons Logging under The Apache Software License, Version 2.0
+  Apache Commons Math under Apache License, Version 2.0
+  Apache Commons Pool under Apache License, Version 2.0
+  Apache Groovy under The Apache Software License, Version 2.0
+  Apache HttpClient under Apache License, Version 2.0
+  Apache HttpCore under Apache License, Version 2.0
+  Apache Pluto Portal Driver under The Apache Software License, Version 2.0
+  Apache Pluto Portlet Container under The Apache Software License, Version 2.0
+  Apache Tika core under Apache License, Version 2.0
   ASM Core under Apache License, Version 2.0
+  AspectJ runtime under Eclipse Public License - v 1.0
   Backport of JSR 166 under Public Domain
+  Bouncy Castle Provider under Bouncy Castle Licence
+  cglib under Apache License, Version 2.0
   Code Generation Library under ASF 2.0
+  com.sun:tools under COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0
   Commands under Eclipse Public License - v 1.0
   Common Eclipse Runtime under Eclipse Public License - v 1.0
   Commons DBCP under The Apache Software License, Version 2.0
@@ -35,11 +54,13 @@ This project includes:
   Core Runtime under Eclipse Public License - v 1.0
   Data Mapper for Jackson under The Apache Software License, Version 2.0
   dom4j under BSD License
+  Dough Lea's util.concurrent package under Public domain, Sun Microsoystems
   Eclipse Content Mechanism under Eclipse Public License - v 1.0
   Eclipse Jobs Mechanism under Eclipse Public License - v 1.0
   Eclipse Preferences Mechanism under Eclipse Public License - v 1.0
   ehcache under The Apache Software License, Version 2.0
   Ehcache Core under The Apache Software License, Version 2.0
+  Ehcache Spring Annotations - Core under Apache 2
   Ehcache Web Filters under The Apache Software License, Version 2.0
   Equinox Application Container under Eclipse Public License - v 1.0
   Extension Registry Support under Eclipse Public License - v 1.0
@@ -55,26 +76,41 @@ This project includes:
   Jackson-annotations under The Apache Software License, Version 2.0
   Jackson-core under The Apache Software License, Version 2.0
   jackson-databind under The Apache Software License, Version 2.0
+  Jadira Usertype Core (for Joda Time, Joda Money, Libphonenum and JDK Types with Hibernate) under Apache 2
+  Jadira Usertype SPI Classes for Hibernate under Apache 2
   JASYPT: Java Simplified Encryption under The Apache Software License, Version 2.0
   Java Portlet Specification V2.0 under Commons Development and Distribution License, Version 1.0
   Java Servlet API under CDDL + GPLv2 with classpath exception
   Java Transaction API under Commons Development and Distribution License, Version 1.0
-  JavaBeans Activation Framework (JAF) under Common Development and Distribution License (CDDL) v1.0
+  JavaBeans Activation Framework API jar under CDDL/GPLv2+CE
   Javassist under MPL 1.1 or LGPL 2.1
-  jaxb-api under Commons Development and Distribution License, Version 1.0
+  jaxb-api under CDDL 1.1 or GPL2 w/ CPE
   jaxb-impl under Commons Development and Distribution License, Version 1.0
   JAXB2 Basics - Runtime under BSD-Style License
+  JBoss Logging 3 under GNU Lesser General Public License, version 2.1
   JCL 1.2 implemented over SLF4J under MIT License
   JDOM under Apache style license
+  JGroups under Apache License 2.0
+  JJWT :: API under Apache License, Version 2.0
+  JJWT :: Extensions :: Jackson under Apache License, Version 2.0
+  JJWT :: Impl under Apache License, Version 2.0
+  Joda-Time under Apache 2
   JPA 2.0 API under Sun Binary Code License
   jstl under Commons Development and Distribution License, Version 1.0
   JTidy under Java HTML Tidy License
   JUL to SLF4J bridge under MIT License
   JUnit under Eclipse Public License 1.0
+  LDAPTIVE CORE under Apache 2 or GNU Lesser General Public License
   Log4j Implemented Over SLF4J under Apache Software Licenses
   Logback Classic Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   Logback Core Module under Eclipse Public License - v 1.0 or GNU Lesser General Public License
   NotificationPortlet - API under JA-SIG Collaborative Licence
+  OAuth Core under The Apache Software License, Version 2.0
+  OGNL - Object Graph Navigation Library under Apache License, Version 2.0
+  oro under Apache License, Version 2.0
+  Person Directory API under Apache License, Version 2.0
+  Person Directory Implementations under Apache License, Version 2.0
+  Portlet JDBC Utilities under Apache License Version 2.0
   Project Lombok under The MIT License
   Resource Server API under Apache License Version 2.0
   Resource Server Content under Apache License Version 2.0
@@ -85,20 +121,32 @@ This project includes:
   SLF4J API Module under MIT License
   Spring AOP under Apache License, Version 2.0
   Spring Beans under Apache License, Version 2.0
+  Spring Binding under The Apache Software License, Version 2.0
   Spring Context under Apache License, Version 2.0
   Spring Context Support under Apache License, Version 2.0
   Spring Core under Apache License, Version 2.0
   Spring Expression Language (SpEL) under Apache License, Version 2.0
   Spring JDBC under Apache License, Version 2.0
+  Spring JS under The Apache Software License, Version 2.0
+  Spring JS Resources under The Apache Software License, Version 2.0
   Spring Object/Relational Mapping under Apache License, Version 2.0
+  Spring Object/XML Marshalling under Apache License, Version 2.0
   Spring TestContext Framework under Apache License, Version 2.0
   Spring Transaction under Apache License, Version 2.0
   Spring Web under Apache License, Version 2.0
+  Spring Web Flow under The Apache Software License, Version 2.0
   Spring Web MVC under Apache License, Version 2.0
   Spring Web Portlet under Apache License, Version 2.0
+  spring-ldap-core under The Apache Software License, Version 2.0
+  spring-modules-cache under Apache License, Version 2.0
+  spring-security-core under The Apache Software License, Version 2.0
+  spring-security-web under The Apache Software License, Version 2.0
   standard under Apache License, Version 2.0
-  Streaming API for XML under Sun Binary Code License
+  Stax2 API under The BSD License
   Text under Eclipse Public License - v 1.0
+  tomcat-jdbc under Apache License, Version 2.0
+  tomcat-juli under Apache License, Version 2.0
   Tycho org.eclipse.jdt.core dependency (Incubation) under Eclipse Public License
   uPortal under The Apache License, Version 2.0
+  Woodstox under The Apache License, Version 2.0
 

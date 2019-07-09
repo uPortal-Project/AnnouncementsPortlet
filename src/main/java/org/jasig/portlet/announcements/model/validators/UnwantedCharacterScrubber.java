@@ -20,6 +20,9 @@ package org.jasig.portlet.announcements.model.validators;
 
 /**
  * Utility class to scrub a string of unwanted characters
+ *
+ * @author Unknown
+ * @version $Id: $Id
  */
 public class UnwantedCharacterScrubber {
   private static enum UnwantedCharacters {
@@ -64,8 +67,9 @@ public class UnwantedCharacterScrubber {
 
   /**
    * Loops through the UnwantedCharacters enum and does a replace all for each value.
+   *
    * @param str target string to convert
-   * @return
+   * @return a {@link java.lang.String} object.
    */
   public String scrubUnwantedCharacters(String str) {
     for (UnwantedCharacters conversion : UnwantedCharacters.values()) {

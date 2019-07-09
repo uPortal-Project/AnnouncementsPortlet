@@ -22,11 +22,17 @@ package org.jasig.portlet.announcements.model;
  * Description
  *
  * @author James Wennmacher, jwennmacher@unicon.net
+ * @version $Id: $Id
  */
 public interface UserRoles {
+  /** Constant <code>PORTAL_ADMIN_ROLE_NAME="Portal_Administrators"</code> */
   String PORTAL_ADMIN_ROLE_NAME = "Portal_Administrators";
+  /** Constant <code>ADMIN_ROLE_NAME="admin"</code> */
   String ADMIN_ROLE_NAME = "admin";
+  /** Constant <code>MODERATOR_ROLE_NAME="moderator"</code> */
   String MODERATOR_ROLE_NAME = "moderator";
+  /** Constant <code>AUTHOR_ROLE_NAME="author"</code> */
   String AUTHOR_ROLE_NAME = "author";
+  /** Constant <code>AUDIENCE_ROLE_NAME="audience"</code> */
   String AUDIENCE_ROLE_NAME = "audience";
 }

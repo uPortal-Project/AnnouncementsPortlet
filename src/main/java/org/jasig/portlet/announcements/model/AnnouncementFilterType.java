@@ -18,7 +18,12 @@
  */
 package org.jasig.portlet.announcements.model;
 
-/** @author Chris Waymire (chris@waymire.net) */
+/**
+ * <p>AnnouncementFilterType class.</p>
+ *
+ * @author Chris Waymire (chris@waymire.net)
+ * @version $Id: $Id
+ */
 public enum AnnouncementFilterType {
   WHITELIST("WHITELIST"),
   BLACKLIST("BLACKLIST"),
@@ -30,10 +35,20 @@ public enum AnnouncementFilterType {
     this.key = key;
   }
 
+  /**
+   * <p>Getter for the field <code>key</code>.</p>
+   *
+   * @return a {@link java.lang.String} object.
+   */
   public String getKey() {
     return key;
   }
 
+  /**
+   * <p>toString.</p>
+   *
+   * @return a {@link java.lang.String} object.
+   */
   public String toString() {
     return key;
   }

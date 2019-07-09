@@ -40,6 +40,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * <p>ShowHistoryController class.</p>
+ *
+ * @author Unknown
+ * @version $Id: $Id
+ */
 @Controller
 public class ShowHistoryController {
 
@@ -52,6 +58,15 @@ public class ShowHistoryController {
   @Autowired(required = true)
   private final IViewNameSelector viewNameSelector = null;
 
+  /**
+   * <p>showHistory.</p>
+   *
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @param request a {@link javax.portlet.RenderRequest} object.
+   * @param topicId a {@link java.lang.String} object.
+   * @return a {@link java.lang.String} object.
+   * @throws java.lang.Exception if any.
+   */
   @RequestMapping(value = "VIEW", params = "action=showHistory")
   protected String showHistory(
       Model model, RenderRequest request, @RequestParam("topicId") String topicId)

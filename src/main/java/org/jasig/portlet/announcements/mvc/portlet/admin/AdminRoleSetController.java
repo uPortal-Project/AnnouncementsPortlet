@@ -34,7 +34,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/** @author eolsson */
+/**
+ * <p>AdminRoleSetController class.</p>
+ *
+ * @author eolsson
+ * @version $Id: $Id
+ */
 @Controller
 @RequestMapping("VIEW")
 public class AdminRoleSetController {
@@ -42,6 +47,16 @@ public class AdminRoleSetController {
   @Autowired private IAnnouncementService announcementService;
   @Autowired private IGroupService groupService;
 
+  /**
+   * <p>processSubmit.</p>
+   *
+   * @param rolesSelected a {@link org.jasig.portlet.announcements.model.RoleSelection} object.
+   * @param errors a {@link org.springframework.validation.BindingResult} object.
+   * @param topicId a {@link java.lang.Long} object.
+   * @param groupKey a {@link java.lang.String} object.
+   * @param response a {@link javax.portlet.ActionResponse} object.
+   * @throws javax.portlet.PortletException if any.
+   */
   @RequestMapping(params = "action=addMembers")
   public void processSubmit(
       @ModelAttribute("selection") RoleSelection rolesSelected,
@@ -81,6 +96,15 @@ public class AdminRoleSetController {
     }
   }
 
+  /**
+   * <p>showForm.</p>
+   *
+   * @param topicId a {@link java.lang.Long} object.
+   * @param groupKey a {@link java.lang.String} object.
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @return a {@link java.lang.String} object.
+   * @throws javax.portlet.PortletException if any.
+   */
   @RequestMapping(params = "action=addMembers")
   public String showForm(
       @RequestParam("topicId") Long topicId, @RequestParam("groupKey") String groupKey, Model model)
@@ -103,11 +127,11 @@ public class AdminRoleSetController {
   /**
    * Handler for adding individual users to a topic's permission set
    *
-   * @param response
-   * @param topicId
-   * @param groupKey
-   * @param userAdd
-   * @throws PortletException
+   * @param response a {@link javax.portlet.ActionResponse} object.
+   * @param topicId a {@link java.lang.Long} object.
+   * @param groupKey a {@link java.lang.String} object.
+   * @param userAdd a {@link java.lang.String} object.
+   * @throws javax.portlet.PortletException
    */
   @RequestMapping(params = "action=addUser")
   public void processAddUser(
@@ -129,6 +153,15 @@ public class AdminRoleSetController {
     response.setRenderParameter("action", "addMembers");
   }
 
+  /**
+   * <p>processDeleteUser.</p>
+   *
+   * @param response a {@link javax.portlet.ActionResponse} object.
+   * @param topicId a {@link java.lang.Long} object.
+   * @param groupKey a {@link java.lang.String} object.
+   * @param userKey a {@link java.lang.String} object.
+   * @throws javax.portlet.PortletException if any.
+   */
   @RequestMapping(params = "action=deleteUser")
   public void processDeleteUser(
       ActionResponse response,
@@ -150,11 +183,21 @@ public class AdminRoleSetController {
   }
 
   /** @param announcementService the announcementService to set */
+  /**
+   * <p>Setter for the field <code>announcementService</code>.</p>
+   *
+   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   */
   public void setAnnouncementService(IAnnouncementService announcementService) {
     this.announcementService = announcementService;
   }
 
   /** @param groupService the groupService to set */
+  /**
+   * <p>Setter for the field <code>groupService</code>.</p>
+   *
+   * @param groupService a {@link org.jasig.portlet.announcements.service.IGroupService} object.
+   */
   public void setGroupService(IGroupService groupService) {
     this.groupService = groupService;
   }

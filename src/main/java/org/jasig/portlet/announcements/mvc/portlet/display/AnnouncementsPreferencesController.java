@@ -43,7 +43,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/** @author eolsson */
+/**
+ * <p>AnnouncementsPreferencesController class.</p>
+ *
+ * @author eolsson
+ * @version $Id: $Id
+ */
 @Controller
 @RequestMapping("EDIT")
 public class AnnouncementsPreferencesController {
@@ -55,14 +60,28 @@ public class AnnouncementsPreferencesController {
   @Autowired(required = true)
   private final IViewNameSelector viewNameSelector = null;
 
+  /** Constant <code>PREFERENCE_HIDE_ABSTRACT="AnnouncementsViewController.hideAbstrac"{trunked}</code> */
   public static final String PREFERENCE_HIDE_ABSTRACT = "AnnouncementsViewController.hideAbstract";
 
   private final Log logger = LogFactory.getLog(getClass());
 
+  /**
+   * <p>Setter for the field <code>tss</code>.</p>
+   *
+   * @param tss a {@link org.jasig.portlet.announcements.service.ITopicSubscriptionService} object.
+   */
   public void setTss(ITopicSubscriptionService tss) {
     this.tss = tss;
   }
 
+  /**
+   * <p>editPreferences.</p>
+   *
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @param request a {@link javax.portlet.RenderRequest} object.
+   * @return a {@link java.lang.String} object.
+   * @throws javax.portlet.PortletException if any.
+   */
   @RequestMapping()
   public String editPreferences(Model model, RenderRequest request) throws PortletException {
 
@@ -81,6 +100,15 @@ public class AnnouncementsPreferencesController {
     return viewNameSelector.select(request, "editDisplayPreferences");
   }
 
+  /**
+   * <p>savePreferences.</p>
+   *
+   * @param request a {@link javax.portlet.ActionRequest} object.
+   * @param response a {@link javax.portlet.ActionResponse} object.
+   * @param topicsToUpdate a {@link java.lang.Integer} object.
+   * @throws javax.portlet.PortletException if any.
+   * @throws java.io.IOException if any.
+   */
   @RequestMapping()
   public void savePreferences(
       ActionRequest request,
@@ -139,6 +167,12 @@ public class AnnouncementsPreferencesController {
     response.setRenderParameter("action", "displayAnnouncements");
   }
 
+  /**
+   * <p>isGuest.</p>
+   *
+   * @param req a {@link javax.portlet.PortletRequest} object.
+   * @return a boolean.
+   */
   @ModelAttribute("isGuest")
   public boolean isGuest(PortletRequest req) {
     boolean rslt = (req.getRemoteUser() == null);

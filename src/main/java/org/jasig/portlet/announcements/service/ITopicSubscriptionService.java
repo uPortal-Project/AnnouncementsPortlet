@@ -30,13 +30,36 @@ import org.jasig.portlet.announcements.model.TopicSubscription;
  * administrators.
  *
  * @author awills
+ * @version $Id: $Id
  */
 public interface ITopicSubscriptionService {
 
+  /**
+   * <p>getTopicSubscription.</p>
+   *
+   * @param request a {@link javax.portlet.PortletRequest} object.
+   * @param includeEmergency a boolean.
+   * @return a {@link java.util.List} object.
+   * @throws javax.portlet.PortletException if any.
+   */
   List<TopicSubscription> getTopicSubscription(PortletRequest request, boolean includeEmergency)
       throws PortletException;
 
+  /**
+   * <p>getTopicSubscriptionEdit.</p>
+   *
+   * @param request a {@link javax.portlet.RenderRequest} object.
+   * @return a {@link java.util.List} object.
+   * @throws javax.portlet.PortletException if any.
+   */
   List<TopicSubscription> getTopicSubscriptionEdit(RenderRequest request) throws PortletException;
 
+  /**
+   * <p>getTopicSubscription.</p>
+   *
+   * @param request a {@link javax.portlet.PortletRequest} object.
+   * @return a {@link java.util.List} object.
+   * @throws javax.portlet.PortletException if any.
+   */
   List<TopicSubscription> getTopicSubscription(PortletRequest request) throws PortletException;
 }

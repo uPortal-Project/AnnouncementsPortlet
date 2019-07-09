@@ -34,7 +34,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-/** @author Chris Waymire (chris@waymire.net) */
+/**
+ * <p>AnnouncementConfigurationController class.</p>
+ *
+ * @author Chris Waymire (chris@waymire.net)
+ * @version $Id: $Id
+ */
 @Controller
 @RequestMapping("CONFIG")
 public class AnnouncementConfigurationController {
@@ -42,16 +47,35 @@ public class AnnouncementConfigurationController {
 
   private IConfigService configService;
 
+  /**
+   * <p>Setter for the field <code>configService</code>.</p>
+   *
+   * @param configService a {@link org.jasig.portlet.announcements.service.IConfigService} object.
+   */
   @Autowired(required = true)
   public void setConfigService(IConfigService configService) {
     this.configService = configService;
   }
 
+  /**
+   * <p>getConfigFormView.</p>
+   *
+   * @return a {@link java.lang.String} object.
+   */
   @RequestMapping
   public String getConfigFormView() {
     return "config";
   }
 
+  /**
+   * <p>saveConfiguration.</p>
+   *
+   * @param request a {@link javax.portlet.ActionRequest} object.
+   * @param response a {@link javax.portlet.ActionResponse} object.
+   * @param config a {@link org.jasig.portlet.announcements.model.AnnouncementConfiguration} object.
+   * @param save a {@link java.lang.String} object.
+   * @throws javax.portlet.PortletModeException if any.
+   */
   @RequestMapping(params = "action=updateConfiguration")
   public void saveConfiguration(
       ActionRequest request,
@@ -68,6 +92,12 @@ public class AnnouncementConfigurationController {
     response.setPortletMode(PortletMode.VIEW);
   }
 
+  /**
+   * <p>announcementConfiguration.</p>
+   *
+   * @param request a {@link javax.portlet.PortletRequest} object.
+   * @return a {@link org.jasig.portlet.announcements.model.AnnouncementConfiguration} object.
+   */
   @ModelAttribute("config")
   public AnnouncementConfiguration announcementConfiguration(final PortletRequest request) {
     final AnnouncementConfiguration config = configService.getConfiguration(request);

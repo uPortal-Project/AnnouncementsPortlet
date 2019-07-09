@@ -18,7 +18,12 @@
  */
 package org.jasig.portlet.announcements.service;
 
-/** @author Chris Waymire (chris@waymire.net) */
+/**
+ * <p>AnnouncementPreferences class.</p>
+ *
+ * @author Chris Waymire (chris@waymire.net)
+ * @version $Id: $Id
+ */
 public enum AnnouncementPreferences {
   FILTER_TYPE("filterType"),
   FILTER_ITEMS("filterItems"),
@@ -30,6 +35,11 @@ public enum AnnouncementPreferences {
     this.key = AnnouncementPreferences.class.getSimpleName() + "." + key;
   }
 
+  /**
+   * <p>Getter for the field <code>key</code>.</p>
+   *
+   * @return a {@link java.lang.String} object.
+   */
   public String getKey() {
     return key;
   }

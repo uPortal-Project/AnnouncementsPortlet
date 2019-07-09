@@ -20,18 +20,33 @@ package org.jasig.portlet.announcements.mvc;
 
 import javax.portlet.PortletRequest;
 
+/**
+ * <p>ThemeViewNameSelector class.</p>
+ *
+ * @author Unknown
+ * @version $Id: $Id
+ */
 public class ThemeViewNameSelector implements IViewNameSelector {
 
+  /** Constant <code>THEME_NAME_PROPERTY="themeName"</code> */
   protected static final String THEME_NAME_PROPERTY = "themeName";
+  /** Constant <code>MOBILE_THEMES_KEY="mobileThemes"</code> */
   protected static final String MOBILE_THEMES_KEY = "mobileThemes";
+  /** Constant <code>MOBILE_THEMES_DEFAULT</code> */
   protected static final String[] MOBILE_THEMES_DEFAULT = new String[] {"UniversalityMobile"};
 
   private String mobileKey = "jqm";
 
+  /**
+   * <p>Setter for the field <code>mobileKey</code>.</p>
+   *
+   * @param mobileKey a {@link java.lang.String} object.
+   */
   public void setMobileKey(String mobileKey) {
     this.mobileKey = mobileKey;
   }
 
+  /** {@inheritDoc} */
   public String select(PortletRequest req, String baseViewName) {
 
     // Assertions.
@@ -47,6 +62,12 @@ public class ThemeViewNameSelector implements IViewNameSelector {
     }
   }
 
+  /**
+   * <p>isMobile.</p>
+   *
+   * @param request a {@link javax.portlet.PortletRequest} object.
+   * @return a boolean.
+   */
   protected boolean isMobile(PortletRequest request) {
     String[] mobileThemes =
         request.getPreferences().getValues(MOBILE_THEMES_KEY, MOBILE_THEMES_DEFAULT);

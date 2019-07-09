@@ -35,10 +35,22 @@ import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.spring.PortletApplicationContextLocator;
 import org.springframework.context.ApplicationContext;
 
+/**
+ * <p>Exporter class.</p>
+ *
+ * @author Unknown
+ * @version $Id: $Id
+ */
 public class Exporter {
   private static final String SESSION_FACTORY_BEAN_NAME = "sessionFactory";
   private static final String ANNOUNCEMENT_SVC_BEAN_NAME = "announcementService";
 
+  /**
+   * <p>main.</p>
+   *
+   * @param args an array of {@link java.lang.String} objects.
+   * @throws java.lang.Exception if any.
+   */
   public static void main(String[] args) throws Exception {
 
     String dir = args[0];

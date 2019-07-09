@@ -27,8 +27,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
+ * <p>AnnouncementCleanupThread class.</p>
+ *
  * @author Erik A. Olsson (eolsson@uci.edu)
  *     <p>$LastChangedBy$ $LastChangedDate$
+ * @version $Id: $Id
  */
 public class AnnouncementCleanupThread extends Thread {
 
@@ -43,11 +46,17 @@ public class AnnouncementCleanupThread extends Thread {
 
   private static Log log = LogFactory.getLog(AnnouncementCleanupThread.class);
 
+  /**
+   * <p>Constructor for AnnouncementCleanupThread.</p>
+   */
   public AnnouncementCleanupThread() {
     setDaemon(true);
     keepRunning = true;
   }
 
+  /**
+   * <p>stopThread.</p>
+   */
   public void stopThread() {
     keepRunning = false;
     log.info("Stopping cleanup thread...");
@@ -57,6 +66,7 @@ public class AnnouncementCleanupThread extends Thread {
   /* (non-Javadoc)
    * @see java.lang.Thread#run()
    */
+  /** {@inheritDoc} */
   @Override
   public void run() {
     if (expireThreshold < 0) {
@@ -105,25 +115,50 @@ public class AnnouncementCleanupThread extends Thread {
   }
 
   /** @param checkInterval the checkInterval to set */
+  /**
+   * <p>Setter for the field <code>checkInterval</code>.</p>
+   *
+   * @param checkInterval a int.
+   */
   public void setCheckInterval(int checkInterval) {
     this.checkInterval = checkInterval;
   }
 
   /** @param hourToCheck the hourToCheck to set */
+  /**
+   * <p>Setter for the field <code>hourToCheck</code>.</p>
+   *
+   * @param hourToCheck a int.
+   */
   public void setHourToCheck(int hourToCheck) {
     this.hourToCheck = hourToCheck;
   }
 
   /** @param minuteToCheck the minuteToCheck to set */
+  /**
+   * <p>Setter for the field <code>minuteToCheck</code>.</p>
+   *
+   * @param minuteToCheck a int.
+   */
   public void setMinuteToCheck(int minuteToCheck) {
     this.minuteToCheck = minuteToCheck;
   }
 
   /** @param maxCheckIntervalMillis the maxCheckIntervalMillis to set */
+  /**
+   * <p>Setter for the field <code>maxCheckIntervalMillis</code>.</p>
+   *
+   * @param maxCheckIntervalMillis a long.
+   */
   public void setMaxCheckIntervalMillis(long maxCheckIntervalMillis) {
     this.maxCheckIntervalMillis = maxCheckIntervalMillis;
   }
 
+  /**
+   * <p>Setter for the field <code>expireThreshold</code>.</p>
+   *
+   * @param expireThreshold a int.
+   */
   public void setExpireThreshold(int expireThreshold) {
     this.expireThreshold = expireThreshold;
   }

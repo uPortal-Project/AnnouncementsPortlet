@@ -46,27 +46,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
-/** @author eolsson */
+/**
+ * <p>AdminAnnouncementController class.</p>
+ *
+ * @author eolsson
+ * @version $Id: $Id
+ */
 @Controller
 @RequestMapping("VIEW")
 public class AdminAnnouncementController implements InitializingBean {
 
+  /** Constant <code>PREFERENCE_USE_ATTACHMENTS="AdminAnnouncementController.useAttachme"{trunked}</code> */
   public static final String PREFERENCE_USE_ATTACHMENTS =
       "AdminAnnouncementController.useAttachments";
+  /** Constant <code>DEFAULT_USE_ATTACHMENTS="true"</code> */
   public static final String DEFAULT_USE_ATTACHMENTS = "true";
 
+  /** Constant <code>PREFERENCE_ALLOW_OPEN_ENDDATE="AdminAnnouncementController.allowOpenEn"{trunked}</code> */
   public static final String PREFERENCE_ALLOW_OPEN_ENDDATE =
       "AdminAnnouncementController.allowOpenEndDate";
 
+  /** Constant <code>PREFERENCE_ALLOW_EMPTY_MESSAGE="AdminAnnouncementController.allowEmptyM"{trunked}</code> */
   public static final String PREFERENCE_ALLOW_EMPTY_MESSAGE =
       "AdminAnnouncementController.allowEmptyMessage";
 
+  /** Constant <code>PREFERENCE_ABSTRACT_MAX_LENGTH="AdminAnnouncementController.abstractTex"{trunked}</code> */
   public static final String PREFERENCE_ABSTRACT_MAX_LENGTH =
       "AdminAnnouncementController.abstractTextMaxLength";
+  /** Constant <code>DEFAULT_ABSTRACT_MAX_LENGTH="255"</code> */
   public static final String DEFAULT_ABSTRACT_MAX_LENGTH = "255";
 
+  /** Constant <code>PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS="AdminAnnouncementController.tinyMceInit"{trunked}</code> */
   public static final String PREFERENCE_TINY_MCE_INITIALIZATION_OPTIONS =
       "AdminAnnouncementController.tinyMceInitializationOptions";
+  /** Constant <code>DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS="mode:\"textareas\",  editor_selector:\""{trunked}</code> */
   public static final String DEFAULT_TINY_MCE_INITIALIZATION_OPTIONS =
       "mode:\"textareas\", "
           + " editor_selector:\"mceEditor\", "
@@ -92,6 +105,11 @@ public class AdminAnnouncementController implements InitializingBean {
 
   @Autowired private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
+  /**
+   * <p>initBinder.</p>
+   *
+   * @param binder a {@link org.springframework.web.bind.WebDataBinder} object.
+   */
   @InitBinder("announcement")
   public void initBinder(WebDataBinder binder) {
     SimpleDateFormat dateFormat = new SimpleDateFormat(customDateFormat);
@@ -115,7 +133,16 @@ public class AdminAnnouncementController implements InitializingBean {
         });
   }
 
-  /** Does all the prep work before showing the form */
+  /**
+   * Does all the prep work before showing the form
+   *
+   * @param editId a {@link java.lang.Long} object.
+   * @param topicId a {@link java.lang.Long} object.
+   * @param request a {@link javax.portlet.RenderRequest} object.
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @return a {@link java.lang.String} object.
+   * @throws javax.portlet.PortletException if any.
+   */
   @RequestMapping(params = "action=addAnnouncement")
   public String showAddAnnouncementForm(
       @RequestParam(value = "editId", required = false) Long editId,
@@ -171,9 +198,12 @@ public class AdminAnnouncementController implements InitializingBean {
   /**
    * Saves the announcement
    *
-   * @param req
-   * @param res
-   * @throws PortletException
+   * @param req a {@link javax.portlet.ActionRequest} object.
+   * @param res a {@link javax.portlet.ActionResponse} object.
+   * @throws javax.portlet.PortletException
+   * @param announcement a {@link org.jasig.portlet.announcements.model.Announcement} object.
+   * @param result a {@link org.springframework.validation.BindingResult} object.
+   * @param status a {@link org.springframework.web.bind.support.SessionStatus} object.
    */
   @RequestMapping(params = "action=addAnnouncement")
   public void actionAddAnnouncementForm(
@@ -227,10 +257,11 @@ public class AdminAnnouncementController implements InitializingBean {
   /**
    * Handles deletion of announcements
    *
-   * @param topicId
-   * @param annId
-   * @param response
-   * @throws PortletException
+   * @param topicId a {@link java.lang.Long} object.
+   * @param annId a {@link java.lang.Long} object.
+   * @param response a {@link javax.portlet.ActionResponse} object.
+   * @throws javax.portlet.PortletException
+   * @param request a {@link javax.portlet.ActionRequest} object.
    */
   @RequestMapping(params = "action=deleteAnnouncement")
   public void actionDeleteAnnouncement(
@@ -260,11 +291,23 @@ public class AdminAnnouncementController implements InitializingBean {
     response.setRenderParameter("action", "showTopic");
   }
 
+  /**
+   * <p>getAllowOpenEndDate.</p>
+   *
+   * @param req a {@link javax.portlet.PortletRequest} object.
+   * @return a boolean.
+   */
   public boolean getAllowOpenEndDate(PortletRequest req) {
     PortletPreferences prefs = req.getPreferences();
     return Boolean.parseBoolean(prefs.getValue(PREFERENCE_ALLOW_OPEN_ENDDATE, "false"));
   }
 
+  /**
+   * <p>getAllowEmptyMessage.</p>
+   *
+   * @param req a {@link javax.portlet.PortletRequest} object.
+   * @return a boolean.
+   */
   public boolean getAllowEmptyMessage(PortletRequest req) {
     PortletPreferences prefs = req.getPreferences();
     return Boolean.parseBoolean(prefs.getValue(PREFERENCE_ALLOW_EMPTY_MESSAGE, "false"));
@@ -274,7 +317,7 @@ public class AdminAnnouncementController implements InitializingBean {
    * When a custom date format is set by Spring, this method converts it immediately to a string of
    * two CSS classes required by the date picker in the view.
    *
-   * @param customDateFormat
+   * @param customDateFormat a {@link java.lang.String} object.
    */
   public void setCustomDateFormat(String customDateFormat) {
     this.customDateFormat = customDateFormat;
@@ -353,10 +396,20 @@ public class AdminAnnouncementController implements InitializingBean {
   }
 
   /** @param announcementService the announcementService to set */
+  /**
+   * <p>Setter for the field <code>announcementService</code>.</p>
+   *
+   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   */
   public void setAnnouncementService(IAnnouncementService announcementService) {
     this.announcementService = announcementService;
   }
 
+  /**
+   * <p>afterPropertiesSet.</p>
+   *
+   * @throws java.lang.Exception if any.
+   */
   public void afterPropertiesSet() throws Exception {
     topicEditor = new TopicEditor(announcementService);
   }

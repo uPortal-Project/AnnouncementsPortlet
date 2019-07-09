@@ -20,7 +20,20 @@ package org.jasig.portlet.announcements.mvc;
 
 import javax.portlet.PortletRequest;
 
+/**
+ * <p>IViewNameSelector interface.</p>
+ *
+ * @author Unknown
+ * @version $Id: $Id
+ */
 public interface IViewNameSelector {
 
+  /**
+   * <p>select.</p>
+   *
+   * @param req a {@link javax.portlet.PortletRequest} object.
+   * @param baseViewName a {@link java.lang.String} object.
+   * @return a {@link java.lang.String} object.
+   */
   String select(PortletRequest req, String baseViewName);
 }

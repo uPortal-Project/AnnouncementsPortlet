@@ -40,6 +40,12 @@ import org.jasig.portlet.announcements.service.IAnnouncementService;
 import org.jasig.portlet.announcements.spring.PortletApplicationContextLocator;
 import org.springframework.context.ApplicationContext;
 
+/**
+ * <p>Importer class.</p>
+ *
+ * @author Unknown
+ * @version $Id: $Id
+ */
 public class Importer {
 
   private static final String ANNOUNCEMENT_SVC_BEAN_NAME = "announcementService";
@@ -50,6 +56,12 @@ public class Importer {
   private IAnnouncementService announcementService;
   private List<String> errors = new ArrayList<String>();
 
+  /**
+   * <p>Constructor for Importer.</p>
+   *
+   * @param dataDirectory a {@link java.io.File} object.
+   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   */
   public Importer(
       File dataDirectory, /*SessionFactory sessionFactory, */
       IAnnouncementService announcementService) {
@@ -64,7 +76,7 @@ public class Importer {
    *   <li>args[0] -- <b>file system directory</b> containing XML data files to import
    * </ul>
    *
-   * @throws Exception Various exceptions like JAXBException
+   * @param args an array of {@link java.lang.String} objects.
    */
   public static void main(String[] args) {
 
@@ -100,6 +112,9 @@ public class Importer {
     }
   }
 
+  /**
+   * <p>importData.</p>
+   */
   public void importData() {
     importTopics();
     importAnnouncements();

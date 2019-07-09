@@ -24,14 +24,18 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 /**
+ * <p>TopicValidator class.</p>
+ *
  * @author Erik A. Olsson (eolsson@uci.edu)
  *     <p>$LastChangedBy$ $LastChangedDate$
+ * @version $Id: $Id
  */
 public class TopicValidator implements Validator {
 
   /* (non-Javadoc)
    * @see org.springframework.validation.Validator#supports(java.lang.Class)
    */
+  /** {@inheritDoc} */
   public boolean supports(Class<?> clazz) {
     return Topic.class.isAssignableFrom(clazz);
   }
@@ -39,6 +43,7 @@ public class TopicValidator implements Validator {
   /* (non-Javadoc)
    * @see org.springframework.validation.Validator#validate(java.lang.Object, org.springframework.validation.Errors)
    */
+  /** {@inheritDoc} */
   public void validate(Object obj, Errors errors) {
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "addtopic.title.required.error");
 

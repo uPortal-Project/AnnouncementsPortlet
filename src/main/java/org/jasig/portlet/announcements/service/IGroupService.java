@@ -24,14 +24,34 @@ import org.jasig.portlet.announcements.model.Role;
 import org.jasig.portlet.announcements.model.RoleSelection;
 
 /**
+ * <p>IGroupService interface.</p>
+ *
  * @author Erik A. Olsson (eolsson@uci.edu)
  *     <p>$LastChangedBy$ $LastChangedDate$
+ * @version $Id: $Id
  */
 public interface IGroupService {
 
+  /**
+   * <p>getAllRoles.</p>
+   *
+   * @return a {@link java.util.List} object.
+   */
   public List<Role> getAllRoles();
 
+  /**
+   * <p>getSetForRoleSelection.</p>
+   *
+   * @param roleSel a {@link org.jasig.portlet.announcements.model.RoleSelection} object.
+   * @return a {@link java.util.Set} object.
+   */
   public Set<String> getSetForRoleSelection(RoleSelection roleSel);
 
+  /**
+   * <p>getAllRolesFromGroupSet.</p>
+   *
+   * @param selected a {@link java.util.Set} object.
+   * @return a {@link java.util.List} object.
+   */
   public List<Role> getAllRolesFromGroupSet(Set<String> selected);
 }

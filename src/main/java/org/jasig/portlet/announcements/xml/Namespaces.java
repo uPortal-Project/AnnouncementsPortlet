@@ -22,12 +22,16 @@ package org.jasig.portlet.announcements.xml;
  * Namespaces to use for XML Schema generation and JAXB
  *
  * @author James Wennmacher, jwennmacher@unicon.net
+ * @version $Id: $Id
  */
 public interface Namespaces {
 
+  /** Constant <code>TOPIC_NAMESPACE="http://www.uPortal.org/schema/announcem"{trunked}</code> */
   public static final String TOPIC_NAMESPACE = "http://www.uPortal.org/schema/announcement/topic";
+  /** Constant <code>TOPIC_SUBSCRIPTION_NAMESPACE="http://www.uPortal.org/schema/announcem"{trunked}</code> */
   public static final String TOPIC_SUBSCRIPTION_NAMESPACE =
       "http://www.uPortal.org/schema/announcement/topicSubscription";
+  /** Constant <code>ANNOUNCEMENT_NAMESPACE="http://www.uPortal.org/schema/announcem"{trunked}</code> */
   public static final String ANNOUNCEMENT_NAMESPACE =
       "http://www.uPortal.org/schema/announcement/announcement";
 }

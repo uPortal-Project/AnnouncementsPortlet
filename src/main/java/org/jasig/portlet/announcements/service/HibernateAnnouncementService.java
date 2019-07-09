@@ -35,7 +35,12 @@ import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-/** @author Erik A. Olsson (eolsson@uci.edu) */
+/**
+ * <p>HibernateAnnouncementService class.</p>
+ *
+ * @author Erik A. Olsson (eolsson@uci.edu)
+ * @version $Id: $Id
+ */
 public class HibernateAnnouncementService extends HibernateDaoSupport
     implements IAnnouncementService {
 
@@ -44,7 +49,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
   /**
    * Fetch all the Topics from the database and return them as a list
    *
-   * @return
+   * @return a {@link java.util.List} object.
    */
   @SuppressWarnings("unchecked")
   public List<Topic> getAllTopics() {
@@ -60,6 +65,11 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     return result;
   }
 
+  /**
+   * <p>getEmergencyTopic.</p>
+   *
+   * @return a {@link org.jasig.portlet.announcements.model.Topic} object.
+   */
   @SuppressWarnings("unchecked")
   public Topic getEmergencyTopic() {
     Topic t = null;
@@ -75,6 +85,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     return t;
   }
 
+  /** {@inheritDoc} */
   public void addOrSaveTopic(Topic topic) {
     try {
       log.debug(
@@ -88,6 +99,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     }
   }
 
+  /** {@inheritDoc} */
   public void persistTopic(Topic topic) {
     try {
       log.debug("Persisting topic: [topicId: " + topic.getId().toString() + "]");
@@ -98,6 +110,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     }
   }
 
+  /** {@inheritDoc} */
   public void mergeTopic(Topic topic) {
     try {
       log.debug("Merging topic: [topicId: " + topic.getId().toString() + "]");
@@ -108,6 +121,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     }
   }
 
+  /** {@inheritDoc} */
   public void addOrSaveAnnouncement(Announcement ann) {
     try {
       if (ann.getCreated() == null) {
@@ -124,6 +138,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     }
   }
 
+  /** {@inheritDoc} */
   public void mergeAnnouncement(Announcement ann) {
     try {
       log.debug(
@@ -138,11 +153,9 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
   }
 
   /**
-   * Lookup the specified topic id and return it from the database
+   * {@inheritDoc}
    *
-   * @param id
-   * @return the requested Topic
-   * @throws PortletException if called with a null parameter or if the requested topic is invalid
+   * Lookup the specified topic id and return it from the database
    */
   @SuppressWarnings("unchecked")
   public Topic getTopic(Long id) throws PortletException {
@@ -166,6 +179,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     return result.get(0);
   }
 
+  /** {@inheritDoc} */
   @SuppressWarnings("unchecked")
   public Announcement getAnnouncement(Long id) throws PortletException {
     List<Announcement> result = null;
@@ -189,6 +203,9 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     return result.get(0);
   }
 
+  /**
+   * <p>deleteAnnouncementsPastCurrentTime.</p>
+   */
   @SuppressWarnings("unchecked")
   public void deleteAnnouncementsPastCurrentTime() {
     try {
@@ -203,6 +220,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     }
   }
 
+  /** {@inheritDoc} */
   @SuppressWarnings("unchecked")
   public void deleteAnnouncementsPastExpirationThreshold(int numDays) {
     try {
@@ -225,11 +243,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     }
   }
 
-  /**
-   * @param request
-   * @return
-   * @throws PortletException
-   */
+  /** {@inheritDoc} */
   @SuppressWarnings("unchecked")
   public List<TopicSubscription> getTopicSubscriptionFor(PortletRequest request)
       throws PortletException {
@@ -248,6 +262,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     return result;
   }
 
+  /** {@inheritDoc} */
   public void addOrSaveTopicSubscription(List<TopicSubscription> subs) {
 
     try {
@@ -260,6 +275,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     }
   }
 
+  /** {@inheritDoc} */
   public void persistTopicSubscription(List<TopicSubscription> subs) {
 
     try {
@@ -272,6 +288,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     }
   }
 
+  /** {@inheritDoc} */
   @SuppressWarnings("unchecked")
   public void deleteTopic(Topic topic) {
     try {
@@ -293,6 +310,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     }
   }
 
+  /** {@inheritDoc} */
   public void deleteAnnouncement(Announcement ann) {
     try {
       getHibernateTemplate().delete(ann);
@@ -302,6 +320,7 @@ public class HibernateAnnouncementService extends HibernateDaoSupport
     }
   }
 
+  /** {@inheritDoc} */
   public void deleteTopicSubscription(TopicSubscription sub) {
     try {
       getHibernateTemplate().delete(sub);

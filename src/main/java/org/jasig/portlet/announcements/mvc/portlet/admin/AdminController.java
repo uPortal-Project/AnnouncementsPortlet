@@ -31,7 +31,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-/** @author eolsson */
+/**
+ * <p>AdminController class.</p>
+ *
+ * @author eolsson
+ * @version $Id: $Id
+ */
 @Controller
 @RequestMapping("VIEW")
 public class AdminController {
@@ -44,9 +49,9 @@ public class AdminController {
    * Base view mapping for the Admin portlet, fetches all the topics and figures out what
    * permissions the current user has on each.
    *
-   * @param request
+   * @param request a {@link javax.portlet.RenderRequest} object.
    * @param model .
-   * @return
+   * @return a {@link java.lang.String} object.
    */
   @RequestMapping
   public String showBaseView(RenderRequest request, Model model) {
@@ -91,6 +96,11 @@ public class AdminController {
   }
 
   /** @param announcementService the announcementService to set */
+  /**
+   * <p>Setter for the field <code>announcementService</code>.</p>
+   *
+   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   */
   public void setAnnouncementService(IAnnouncementService announcementService) {
     this.announcementService = announcementService;
   }

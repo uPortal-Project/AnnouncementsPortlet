@@ -30,6 +30,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Component;
 
+/**
+ * <p>UserPermissionCheckerFactory class.</p>
+ *
+ * @author Unknown
+ * @version $Id: $Id
+ */
 @Component
 public class UserPermissionCheckerFactory implements InitializingBean {
   private static final Log logger = LogFactory.getLog(UserPermissionCheckerFactory.class);
@@ -42,6 +48,13 @@ public class UserPermissionCheckerFactory implements InitializingBean {
 
   private Cache cache = null;
 
+  /**
+   * <p>createUserPermissionChecker.</p>
+   *
+   * @param request a {@link javax.portlet.PortletRequest} object.
+   * @param topic a {@link org.jasig.portlet.announcements.model.Topic} object.
+   * @return a {@link org.jasig.portlet.announcements.service.UserPermissionChecker} object.
+   */
   public UserPermissionChecker createUserPermissionChecker(PortletRequest request, Topic topic) {
 
     String key = getCacheKey(request, topic);
@@ -62,6 +75,7 @@ public class UserPermissionCheckerFactory implements InitializingBean {
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public void afterPropertiesSet() throws Exception {
     cache = cacheManager.getCacheManager().getCache(CACHE_NAME);

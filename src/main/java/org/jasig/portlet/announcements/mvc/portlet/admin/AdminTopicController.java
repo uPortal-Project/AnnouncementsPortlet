@@ -48,13 +48,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
-/** @author eolsson */
+/**
+ * <p>AdminTopicController class.</p>
+ *
+ * @author eolsson
+ * @version $Id: $Id
+ */
 @Controller
 @RequestMapping("VIEW")
 public class AdminTopicController {
 
+  /** Constant <code>PREFERENCE_SORT_STRATEGY="AdminTopicController.AnnouncementSortSt"{trunked}</code> */
   public static final String PREFERENCE_SORT_STRATEGY =
       "AdminTopicController.AnnouncementSortStrategy";
+  /** Constant <code>DEFAULT_SORT_STRATEGY="START_DISPLAY_DATE_ASCENDING"</code> */
   public static final String DEFAULT_SORT_STRATEGY = "START_DISPLAY_DATE_ASCENDING";
 
   private static final Log log = LogFactory.getLog(AdminTopicController.class);
@@ -66,10 +73,10 @@ public class AdminTopicController {
   /**
    * Add topic view controller, creates or fetches the topic for adding or editing
    *
-   * @param topicIdStr
-   * @param model
-   * @return
-   * @throws PortletException
+   * @param topicIdStr a {@link java.lang.String} object.
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @throws javax.portlet.PortletException
+   * @return a {@link java.lang.String} object.
    */
   @RequestMapping(params = "action=addTopic")
   public String showAddTopicForm(
@@ -93,12 +100,12 @@ public class AdminTopicController {
   /**
    * Saves the Topic that was submitted
    *
-   * @param topic
-   * @param result
-   * @param status
-   * @param request
-   * @param response
-   * @throws PortletException
+   * @param topic a {@link org.jasig.portlet.announcements.model.Topic} object.
+   * @param result a {@link org.springframework.validation.BindingResult} object.
+   * @param status a {@link org.springframework.web.bind.support.SessionStatus} object.
+   * @param request a {@link javax.portlet.ActionRequest} object.
+   * @param response a {@link javax.portlet.ActionResponse} object.
+   * @throws javax.portlet.PortletException
    */
   @RequestMapping(params = "action=addTopic")
   public void actionAddTopicForm(
@@ -146,10 +153,11 @@ public class AdminTopicController {
   /**
    * Delete a specified topic
    *
-   * @param topicId
-   * @param response
-   * @throws NumberFormatException
-   * @throws PortletException
+   * @param topicId a {@link java.lang.String} object.
+   * @param response a {@link javax.portlet.ActionResponse} object.
+   * @throws java.lang.NumberFormatException
+   * @throws javax.portlet.PortletException
+   * @param request a {@link javax.portlet.ActionRequest} object.
    */
   @RequestMapping(params = "action=deleteTopic")
   public void actionDeleteTopic(
@@ -169,12 +177,12 @@ public class AdminTopicController {
   /**
    * Show a specified topic management view
    *
-   * @param topicId
-   * @param request
-   * @param model
-   * @return
-   * @throws NumberFormatException
-   * @throws PortletException
+   * @param topicId a {@link java.lang.String} object.
+   * @param request a {@link javax.portlet.RenderRequest} object.
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @throws java.lang.NumberFormatException
+   * @throws javax.portlet.PortletException
+   * @return a {@link java.lang.String} object.
    */
   @RequestMapping(params = "action=showTopic")
   public String showTopic(
@@ -209,6 +217,11 @@ public class AdminTopicController {
   }
 
   /** @param announcementService the announcementService to set */
+  /**
+   * <p>Setter for the field <code>announcementService</code>.</p>
+   *
+   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   */
   public void setAnnouncementService(IAnnouncementService announcementService) {
     this.announcementService = announcementService;
   }

@@ -25,10 +25,16 @@ import org.jasig.portlet.announcements.model.AnnouncementConfiguration;
 import org.jasig.portlet.announcements.model.AnnouncementFilterType;
 import org.springframework.stereotype.Service;
 
-/** @author Chris Waymire (chris@waymire.net) */
+/**
+ * <p>ConfigService class.</p>
+ *
+ * @author  Chris Waymire (chris@waymire.net)
+ * @version $Id: $Id
+ */
 @Service
 public class ConfigService implements IConfigService {
 
+  /** {@inheritDoc} */
   public AnnouncementConfiguration getConfiguration(PortletRequest request) {
     PortletPreferences prefs = request.getPreferences();
     AnnouncementConfiguration config = new AnnouncementConfiguration();
@@ -41,6 +47,7 @@ public class ConfigService implements IConfigService {
     return config;
   }
 
+  /** {@inheritDoc} */
   public void saveConfiguration(ActionRequest request, AnnouncementConfiguration config) {
     PortletPreferences prefs = request.getPreferences();
 

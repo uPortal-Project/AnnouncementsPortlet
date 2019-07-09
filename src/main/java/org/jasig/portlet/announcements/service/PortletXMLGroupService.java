@@ -45,6 +45,7 @@ import org.xml.sax.InputSource;
  * evaluate against. Each group is a <security-role-ref> element in the portlet.xml
  *
  * @author Erik A. Olsson (eolsson@uci.edu)
+ * @version $Id: $Id
  */
 @Service
 public class PortletXMLGroupService implements ServletContextAware, IGroupService {
@@ -55,6 +56,9 @@ public class PortletXMLGroupService implements ServletContextAware, IGroupServic
   private static Log log = LogFactory.getLog(PortletXMLGroupService.class);
   private ServletContext context;
 
+  /**
+   * <p>init.</p>
+   */
   @PostConstruct
   public void init() {
     parseXml();
@@ -90,6 +94,11 @@ public class PortletXMLGroupService implements ServletContextAware, IGroupServic
     }
   }
 
+  /**
+   * <p>getAllRoles.</p>
+   *
+   * @return a {@link java.util.List} object.
+   */
   public List<Role> getAllRoles() {
     List<Role> list = new ArrayList<>();
 
@@ -100,6 +109,7 @@ public class PortletXMLGroupService implements ServletContextAware, IGroupServic
     return list;
   }
 
+  /** {@inheritDoc} */
   public List<Role> getAllRolesFromGroupSet(Set<String> selected) {
     List<Role> list = new ArrayList<>();
 
@@ -117,6 +127,7 @@ public class PortletXMLGroupService implements ServletContextAware, IGroupServic
     return list;
   }
 
+  /** {@inheritDoc} */
   public Set<String> getSetForRoleSelection(RoleSelection roleSel) {
     Set<String> newSet = new TreeSet<>();
     newSet.addAll(roleSel.getSelectedRoles());
@@ -153,6 +164,7 @@ public class PortletXMLGroupService implements ServletContextAware, IGroupServic
     }
   }
 
+  /** {@inheritDoc} */
   public void setServletContext(ServletContext context) {
     this.context = context;
   }

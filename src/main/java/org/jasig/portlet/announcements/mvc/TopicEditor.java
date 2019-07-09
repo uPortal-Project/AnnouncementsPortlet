@@ -23,11 +23,21 @@ import javax.portlet.PortletException;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.service.IAnnouncementService;
 
-/** @author eolsson */
+/**
+ * <p>TopicEditor class.</p>
+ *
+ * @author eolsson
+ * @version $Id: $Id
+ */
 public class TopicEditor extends PropertyEditorSupport {
 
   private IAnnouncementService announcementService;
 
+  /**
+   * <p>Constructor for TopicEditor.</p>
+   *
+   * @param service a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   */
   public TopicEditor(IAnnouncementService service) {
     this.announcementService = service;
   }
@@ -35,6 +45,7 @@ public class TopicEditor extends PropertyEditorSupport {
   /* (non-Javadoc)
    * @see java.beans.PropertyEditorSupport#getAsText()
    */
+  /** {@inheritDoc} */
   @Override
   public String getAsText() {
     Topic t = (Topic) super.getValue();
@@ -47,6 +58,7 @@ public class TopicEditor extends PropertyEditorSupport {
   /* (non-Javadoc)
    * @see java.beans.PropertyEditorSupport#setAsText(java.lang.String)
    */
+  /** {@inheritDoc} */
   @Override
   public void setAsText(String text) throws IllegalArgumentException {
     if (text != null && !"".equals(text)) {

@@ -39,10 +39,18 @@ public abstract class DoubleCheckedCreator<T> {
   protected final Lock readLock;
   protected final Lock writeLock;
 
+  /**
+   * <p>Constructor for DoubleCheckedCreator.</p>
+   */
   public DoubleCheckedCreator() {
     this(new ReentrantReadWriteLock());
   }
 
+  /**
+   * <p>Constructor for DoubleCheckedCreator.</p>
+   *
+   * @param readWriteLock a {@link java.util.concurrent.locks.ReadWriteLock} object.
+   */
   public DoubleCheckedCreator(ReadWriteLock readWriteLock) {
     Validate.notNull(readWriteLock, "readWriteLock can not be null");
     this.readWriteLock = readWriteLock;
@@ -51,12 +59,16 @@ public abstract class DoubleCheckedCreator<T> {
   }
 
   /**
+   * <p>create.</p>
+   *
    * @param args Arguments to use when creating the object
    * @return A newly created object
    */
   protected abstract T create(Object... args);
 
   /**
+   * <p>retrieve.</p>
+   *
    * @param args Arguments to use when retrieving the object
    * @return An existing object if available
    */

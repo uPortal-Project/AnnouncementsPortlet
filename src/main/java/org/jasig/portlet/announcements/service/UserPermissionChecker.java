@@ -32,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
  * specific Topic.
  *
  * @author Erik A. Olsson (eolsson@uci.edu)
+ * @version $Id: $Id
  */
 public final class UserPermissionChecker implements UserRoles {
 
@@ -79,6 +80,14 @@ public final class UserPermissionChecker implements UserRoles {
   }
 
   /** @return true if the user in the PortletRequest has the role specified by the Topic */
+  /**
+   * <p>inRoleForTopic.</p>
+   *
+   * @param request a {@link javax.portlet.PortletRequest} object.
+   * @param role a {@link java.lang.String} object.
+   * @param topic a {@link org.jasig.portlet.announcements.model.Topic} object.
+   * @return a boolean.
+   */
   public static boolean inRoleForTopic(PortletRequest request, String role, Topic topic) {
     boolean isGuest = (request.getRemoteUser() == null);
 
@@ -114,10 +123,21 @@ public final class UserPermissionChecker implements UserRoles {
     return false;
   }
 
+  /**
+   * <p>isPortalAdmin.</p>
+   *
+   * @param request a {@link javax.portlet.PortletRequest} object.
+   * @return a boolean.
+   */
   public static boolean isPortalAdmin(PortletRequest request) {
     return request.isUserInRole(UserRoles.PORTAL_ADMIN_ROLE_NAME);
   }
 
+  /**
+   * <p>isGuest.</p>
+   *
+   * @return a boolean.
+   */
   public boolean isGuest() {
     return guest;
   }
@@ -140,24 +160,47 @@ public final class UserPermissionChecker implements UserRoles {
   }
 
   /** @return the moderator */
+  /**
+   * <p>isModerator.</p>
+   *
+   * @return a boolean.
+   */
   public boolean isModerator() {
     return moderator;
   }
 
   /** @return the author */
+  /**
+   * <p>isAuthor.</p>
+   *
+   * @return a boolean.
+   */
   public boolean isAuthor() {
     return author;
   }
 
   /** @return the audience */
+  /**
+   * <p>isAudience.</p>
+   *
+   * @return a boolean.
+   */
   public boolean isAudience() {
     return audience;
   }
 
+  /**
+   * <p>canEditTopic.</p>
+   *
+   * @return a boolean.
+   */
   public boolean canEditTopic() {
     return (isAuthor() || isModerator() || isAdmin());
   }
 
+  /**
+   * <p>validateCanEditTopic.</p>
+   */
   public void validateCanEditTopic() {
     if (!canEditTopic()) throw new UnauthorizedException("You do not have access to this topic!");
   }

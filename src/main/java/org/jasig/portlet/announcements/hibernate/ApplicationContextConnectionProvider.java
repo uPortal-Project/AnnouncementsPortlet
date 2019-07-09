@@ -36,6 +36,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * (in datasource.properties).
  *
  * @author drewwills
+ * @version $Id: $Id
  */
 public class ApplicationContextConnectionProvider implements ConnectionProvider {
 
@@ -45,6 +46,7 @@ public class ApplicationContextConnectionProvider implements ConnectionProvider 
 
   private final Log logger = LogFactory.getLog(getClass());
 
+  /** {@inheritDoc} */
   @Override
   public void close() throws HibernateException {
     if (context != null) {
@@ -52,11 +54,13 @@ public class ApplicationContextConnectionProvider implements ConnectionProvider 
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public void closeConnection(Connection conn) throws SQLException {
     conn.close();
   }
 
+  /** {@inheritDoc} */
   @Override
   public void configure(Properties props) throws HibernateException {
     /*
@@ -65,6 +69,7 @@ public class ApplicationContextConnectionProvider implements ConnectionProvider 
      */
   }
 
+  /** {@inheritDoc} */
   @Override
   public Connection getConnection() throws SQLException {
 
@@ -78,6 +83,7 @@ public class ApplicationContextConnectionProvider implements ConnectionProvider 
     return rslt;
   }
 
+  /** {@inheritDoc} */
   @Override
   public boolean supportsAggressiveRelease() {
     return false; // WTF?

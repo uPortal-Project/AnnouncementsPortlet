@@ -26,18 +26,23 @@ import org.jasig.portlet.announcements.model.AnnouncementConfiguration;
  * Provides access to the config mode settings for the Announcement portlet
  *
  * @author Chris Waymire (chris@waymire.net)
+ * @version $Id: $Id
  */
 public interface IConfigService {
 
   /**
-   * @param request
-   * @return
+   * <p>getConfiguration.</p>
+   *
+   * @param request a {@link javax.portlet.PortletRequest} object.
+   * @return a {@link org.jasig.portlet.announcements.model.AnnouncementConfiguration} object.
    */
   public AnnouncementConfiguration getConfiguration(PortletRequest request);
 
   /**
-   * @param request
-   * @param config
+   * <p>saveConfiguration.</p>
+   *
+   * @param request a {@link javax.portlet.ActionRequest} object.
+   * @param config a {@link org.jasig.portlet.announcements.model.AnnouncementConfiguration} object.
    */
   public void saveConfiguration(ActionRequest request, AnnouncementConfiguration config);
 }

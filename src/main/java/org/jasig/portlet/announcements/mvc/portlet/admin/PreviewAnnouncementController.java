@@ -31,6 +31,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * <p>PreviewAnnouncementController class.</p>
+ *
+ * @author Unknown
+ * @version $Id: $Id
+ */
 @Controller
 public class PreviewAnnouncementController {
 
@@ -41,6 +47,15 @@ public class PreviewAnnouncementController {
 
   @Autowired private final UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
+  /**
+   * <p>previewAnnouncement.</p>
+   *
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @param request a {@link javax.portlet.RenderRequest} object.
+   * @param annId a {@link java.lang.String} object.
+   * @return a {@link java.lang.String} object.
+   * @throws java.lang.Exception if any.
+   */
   @RequestMapping(value = "VIEW", params = "action=previewAnnouncement")
   protected String previewAnnouncement(
       Model model, RenderRequest request, @RequestParam("annId") String annId) throws Exception {

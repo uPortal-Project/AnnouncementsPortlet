@@ -70,43 +70,69 @@ import org.springframework.web.portlet.bind.annotation.EventMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+/**
+ * <p>AnnouncementsViewController class.</p>
+ *
+ * @author Unknown
+ * @version $Id: $Id
+ */
 @Controller
 @RequestMapping("VIEW")
 public class AnnouncementsViewController {
 
+  /** Constant <code>ACTION_DISPLAY_FULL_ANNOUNCEMENT="displayFullAnnouncement"</code> */
   public static final String ACTION_DISPLAY_FULL_ANNOUNCEMENT = "displayFullAnnouncement";
 
+  /** Constant <code>PREFERENCE_DISPLAY_STARTDATE="AnnouncementsViewController.displayPubl"{trunked}</code> */
   public static final String PREFERENCE_DISPLAY_STARTDATE =
       "AnnouncementsViewController.displayPublishDate";
+  /** Constant <code>PREFERENCE_DISABLE_EDIT="AnnouncementsViewController.PREFERENCE_"{trunked}</code> */
   public static final String PREFERENCE_DISABLE_EDIT =
       "AnnouncementsViewController.PREFERENCE_DISABLE_EDIT";
+  /** Constant <code>PREFERENCE_PAGE_SIZE="AnnouncementsViewController.PAGE_SIZE"</code> */
   public static final String PREFERENCE_PAGE_SIZE = "AnnouncementsViewController.PAGE_SIZE";
+  /** Constant <code>PREFERENCE_SORT_STRATEGY="AnnouncementsViewController.Announcemen"{trunked}</code> */
   public static final String PREFERENCE_SORT_STRATEGY =
       "AnnouncementsViewController.AnnouncementSortStrategy";
+  /** Constant <code>PREFERENCE_USE_SCROLLING_DISPLAY="AnnouncementsViewController.useScrollin"{trunked}</code> */
   public static final String PREFERENCE_USE_SCROLLING_DISPLAY =
       "AnnouncementsViewController.useScrollingDisplay";
+  /** Constant <code>PREFERENCE_SCROLLING_DISPLAY_HEIGHT_PIXELS="AnnouncementsViewController.scrollingDi"{trunked}</code> */
   public static final String PREFERENCE_SCROLLING_DISPLAY_HEIGHT_PIXELS =
       "AnnouncementsViewController.scrollingDisplayHeightPixels";
+  /** Constant <code>PREFERENCE_HIDE_ABSTRACT="AnnouncementsViewController.hideAbstrac"{trunked}</code> */
   public static final String PREFERENCE_HIDE_ABSTRACT = "AnnouncementsViewController.hideAbstract";
+  /** Constant <code>PREFERENCE_SYNDICATE_TOPICS_AS_NOTIFICATIONS="AnnouncementsViewController.syndicateTo"{trunked}</code> */
   public static final String PREFERENCE_SYNDICATE_TOPICS_AS_NOTIFICATIONS =
       "AnnouncementsViewController.syndicateTopicsAsNotifications";
+  /** Constant <code>PREFERENCE_SYNDICATE_TOPICS_ANNOUNCEMENTS_DISPLAY_FNAME="AnnouncementsViewController.syndicateTo"{trunked}</code> */
   public static final String PREFERENCE_SYNDICATE_TOPICS_ANNOUNCEMENTS_DISPLAY_FNAME =
       "AnnouncementsViewController.syndicateTopicsAnnouncementsDisplayFName";
+  /** Constant <code>DEFAULT_SORT_STRATEGY="START_DISPLAY_DATE_ASCENDING"</code> */
   public static final String DEFAULT_SORT_STRATEGY = "START_DISPLAY_DATE_ASCENDING";
 
+  /** Constant <code>NOTIFICATION_NAMESPACE="https://source.jasig.org/schemas/portle"{trunked}</code> */
   public static final String NOTIFICATION_NAMESPACE =
       "https://source.jasig.org/schemas/portlet/notification";
+  /** Constant <code>NOTIFICATION_QUERY_LOCAL_NAME="NotificationQuery"</code> */
   public static final String NOTIFICATION_QUERY_LOCAL_NAME = "NotificationQuery";
+  /** Constant <code>NOTIFICATION_QUERY_QNAME</code> */
   public static final QName NOTIFICATION_QUERY_QNAME =
       new QName(NOTIFICATION_NAMESPACE, NOTIFICATION_QUERY_LOCAL_NAME);
+  /** Constant <code>NOTIFICATION_QUERY_QNAME_STRING="{ + NOTIFICATION_NAMESPACE + } + NOTIFI"{trunked}</code> */
   public static final String NOTIFICATION_QUERY_QNAME_STRING =
       "{" + NOTIFICATION_NAMESPACE + "}" + NOTIFICATION_QUERY_LOCAL_NAME;
+  /** Constant <code>NOTIFICATION_RESULT_LOCAL_NAME="NotificationResult"</code> */
   public static final String NOTIFICATION_RESULT_LOCAL_NAME = "NotificationResult";
+  /** Constant <code>NOTIFICATION_RESULT_QNAME</code> */
   public static final QName NOTIFICATION_RESULT_QNAME =
       new QName(NOTIFICATION_NAMESPACE, NOTIFICATION_RESULT_LOCAL_NAME);
+  /** Constant <code>NOTIFICATION_RESULT_QNAME_STRING="{ + NOTIFICATION_NAMESPACE + } + NOTIFI"{trunked}</code> */
   public static final String NOTIFICATION_RESULT_QNAME_STRING =
       "{" + NOTIFICATION_NAMESPACE + "}" + NOTIFICATION_RESULT_LOCAL_NAME;
+  /** Constant <code>USER_TOPICS_CACHE="userTopicLists"</code> */
   public static final String USER_TOPICS_CACHE = "userTopicLists";
+  /** Constant <code>TOPICS_CACHE="topicLists"</code> */
   public static final String TOPICS_CACHE = "topicLists";
 
   @Autowired
@@ -127,6 +153,13 @@ public class AnnouncementsViewController {
   /**
    * Main method of this display controller. Calculates which topics should be shown to this user
    * and which announcements to show from those topics.
+   *
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @param request a {@link javax.portlet.RenderRequest} object.
+   * @param from a {@link java.lang.Integer} object.
+   * @param to a {@link java.lang.Integer} object.
+   * @return a {@link java.lang.String} object.
+   * @throws javax.portlet.PortletException if any.
    */
   @SuppressWarnings("unchecked")
   @RenderMapping()
@@ -222,6 +255,14 @@ public class AnnouncementsViewController {
     return new List[]{topicLists.get(false), topicLists.get(true)};
   }
 
+  /**
+   * <p>emergenciesResource.</p>
+   *
+   * @param request a {@link javax.portlet.ResourceRequest} object.
+   * @param response a {@link javax.portlet.ResourceResponse} object.
+   * @throws java.io.IOException if any.
+   * @throws javax.portlet.PortletException if any.
+   */
   @ResourceMapping(value = "emergencies")
   public void emergenciesResource(ResourceRequest request, ResourceResponse response)
       throws IOException, PortletException {
@@ -231,6 +272,14 @@ public class AnnouncementsViewController {
     response.getWriter().write(json != null && !json.isEmpty() ? json : "[]");
   }
 
+  /**
+   * <p>announcementsResource.</p>
+   *
+   * @param request a {@link javax.portlet.ResourceRequest} object.
+   * @param response a {@link javax.portlet.ResourceResponse} object.
+   * @throws java.io.IOException if any.
+   * @throws javax.portlet.PortletException if any.
+   */
   @ResourceMapping(value = "announcements")
   public void announcementsResource(ResourceRequest request, ResourceResponse response)
       throws IOException, PortletException {
@@ -240,6 +289,15 @@ public class AnnouncementsViewController {
     response.getWriter().write(json != null && !json.isEmpty() ? json : "[]");
   }
 
+  /**
+   * <p>displayFullAnnouncement.</p>
+   *
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @param request a {@link javax.portlet.RenderRequest} object.
+   * @param announcementId a {@link java.lang.String} object.
+   * @return a {@link java.lang.String} object.
+   * @throws java.lang.Exception if any.
+   */
   @RenderMapping(params = "action=" + ACTION_DISPLAY_FULL_ANNOUNCEMENT)
   public String displayFullAnnouncement(
       Model model, RenderRequest request, @RequestParam("announcementId") String announcementId)
@@ -251,6 +309,13 @@ public class AnnouncementsViewController {
     return viewNameSelector.select(request, "displayFullAnnouncement");
   }
 
+  /**
+   * <p>syndicateAnnouncementsAsNotifications.</p>
+   *
+   * @param req a {@link javax.portlet.EventRequest} object.
+   * @param res a {@link javax.portlet.EventResponse} object.
+   * @throws javax.portlet.PortletException if any.
+   */
   @EventMapping(NOTIFICATION_QUERY_QNAME_STRING)
   public void syndicateAnnouncementsAsNotifications(final EventRequest req, final EventResponse res)
       throws PortletException {
@@ -359,20 +424,45 @@ public class AnnouncementsViewController {
     res.setEvent(NOTIFICATION_RESULT_QNAME, result);
   }
 
+  /**
+   * <p>getDisplayPublishDate.</p>
+   *
+   * @param req a {@link javax.portlet.PortletRequest} object.
+   * @return a boolean.
+   */
   @ModelAttribute("displayPublishDate")
   public boolean getDisplayPublishDate(PortletRequest req) {
     PortletPreferences prefs = req.getPreferences();
     return Boolean.parseBoolean(prefs.getValue(PREFERENCE_DISPLAY_STARTDATE, "false"));
   }
 
+  /**
+   * <p>Setter for the field <code>tss</code>.</p>
+   *
+   * @param tss a {@link org.jasig.portlet.announcements.service.ITopicSubscriptionService} object.
+   */
   public void setTss(ITopicSubscriptionService tss) {
     this.tss = tss;
   }
 
+  /**
+   * <p>Setter for the field <code>cm</code>.</p>
+   *
+   * @param cm a {@link org.springframework.cache.ehcache.EhCacheCacheManager} object.
+   */
   public void setCm(EhCacheCacheManager cm) {
     this.cm = cm;
   }
 
+  /**
+   * <p>displayFullAnnouncementHistory.</p>
+   *
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @param request a {@link javax.portlet.RenderRequest} object.
+   * @param announcementId a {@link java.lang.String} object.
+   * @return a {@link java.lang.String} object.
+   * @throws java.lang.Exception if any.
+   */
   @RenderMapping(params = "action=displayFullAnnouncementHistory")
   public String displayFullAnnouncementHistory(
       Model model, RenderRequest request, @RequestParam("announcementId") String announcementId)
@@ -384,6 +474,14 @@ public class AnnouncementsViewController {
     return viewNameSelector.select(request, "displayFullAnnouncementHistory");
   }
 
+  /**
+   * <p>displayHistory.</p>
+   *
+   * @param model a {@link org.springframework.ui.Model} object.
+   * @param request a {@link javax.portlet.RenderRequest} object.
+   * @return a {@link java.lang.String} object.
+   * @throws java.lang.Exception if any.
+   */
   @RenderMapping(params = "action=displayHistory")
   public String displayHistory(Model model, RenderRequest request) throws Exception {
 
@@ -416,6 +514,12 @@ public class AnnouncementsViewController {
     return viewNameSelector.select(request, "displayHistory");
   }
 
+  /**
+   * <p>getPageSize.</p>
+   *
+   * @param req a {@link javax.portlet.PortletRequest} object.
+   * @return a int.
+   */
   @ModelAttribute("increment")
   public int getPageSize(PortletRequest req) {
     final PortletPreferences prefs = req.getPreferences();
@@ -433,6 +537,12 @@ public class AnnouncementsViewController {
     return rslt;
   }
 
+  /**
+   * <p>isGuest.</p>
+   *
+   * @param req a {@link javax.portlet.PortletRequest} object.
+   * @return a boolean.
+   */
   @ModelAttribute("isGuest")
   public boolean isGuest(PortletRequest req) {
     boolean rslt = (req.getRemoteUser() == null);
@@ -441,6 +551,12 @@ public class AnnouncementsViewController {
     return rslt;
   }
 
+  /**
+   * <p>getUseScrollingDisplay.</p>
+   *
+   * @param req a {@link javax.portlet.PortletRequest} object.
+   * @return a boolean.
+   */
   @ModelAttribute("useScrollingDisplay")
   public boolean getUseScrollingDisplay(PortletRequest req) {
     final PortletPreferences prefs = req.getPreferences();
@@ -448,6 +564,12 @@ public class AnnouncementsViewController {
         prefs.getValue(PREFERENCE_USE_SCROLLING_DISPLAY, "false")); // default is false
   }
 
+  /**
+   * <p>getScrollingDisplayHeightPixels.</p>
+   *
+   * @param req a {@link javax.portlet.PortletRequest} object.
+   * @return a int.
+   */
   @ModelAttribute("scrollingDisplayHeightPixels")
   public int getScrollingDisplayHeightPixels(PortletRequest req) {
     final PortletPreferences prefs = req.getPreferences();

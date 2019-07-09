@@ -44,12 +44,13 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * <p>For legacy portal code that is not yet Spring managed and does not have access to the {@link
  * javax.servlet.ServletContext} this class provides similar functionality to {@link
  * org.springframework.web.context.support.WebApplicationContextUtils} via the {@link
- * #getWebApplicationContext()} and {@link #getRequiredWebApplicationContext()}. These methods are
+ *#getWebApplicationContext()} and {@link #getRequiredWebApplicationContext()}. These methods are
  * deprecated as any code that requires a {@link
  * org.springframework.web.context.WebApplicationContext} should either be refactored as a Spring
  * managed bean or have access to the {@link javax.servlet.ServletContext}
  *
  * @author Eric Dalquist
+ * @version $Id: $Id
  */
 public class PortletApplicationContextLocator implements ServletContextListener {
 
@@ -66,6 +67,7 @@ public class PortletApplicationContextLocator implements ServletContextListener 
   /* (non-Javadoc)
    * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
    */
+  /** {@inheritDoc} */
   public void contextInitialized(ServletContextEvent sce) {
     servletContext = sce.getServletContext();
   }
@@ -73,11 +75,14 @@ public class PortletApplicationContextLocator implements ServletContextListener 
   /* (non-Javadoc)
    * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
    */
+  /** {@inheritDoc} */
   public void contextDestroyed(ServletContextEvent sce) {
     servletContext = null;
   }
 
   /**
+   * <p>isRunningInWebApplication.</p>
+   *
    * @return <code>true</code> if a WebApplicationContext is available, <code>false</code> if only
    *     an ApplicationContext is available
    * @deprecated Only needed for using {@link #getRequiredWebApplicationContext()} or {@link
@@ -89,8 +94,10 @@ public class PortletApplicationContextLocator implements ServletContextListener 
   }
 
   /**
+   * <p>getRequiredWebApplicationContext.</p>
+   *
    * @return The WebApplicationContext for the portal
-   * @throws IllegalStateException if no ServletContext is available to retrieve a
+   * @throws java.lang.IllegalStateException if no ServletContext is available to retrieve a
    *     WebApplicationContext for or if the root WebApplicationContext could not be found
    * @deprecated This method is a work-around for areas in uPortal that do not have the ability to
    *     use the {@link
@@ -109,6 +116,8 @@ public class PortletApplicationContextLocator implements ServletContextListener 
   }
 
   /**
+   * <p>getWebApplicationContext.</p>
+   *
    * @return The WebApplicationContext for the portal, null if no ServletContext is available
    * @deprecated This method is a work-around for areas in uPortal that do not have the ability to
    *     use the {@link
@@ -133,6 +142,7 @@ public class PortletApplicationContextLocator implements ServletContextListener 
    * this method should be used as it will work both when running in and out of a web application
    *
    * @return The {@link org.springframework.context.ApplicationContext} for the portal.
+   * @param importExportContextFile a {@link java.lang.String} object.
    */
   public static ApplicationContext getApplicationContext(String importExportContextFile) {
     final ServletContext context = servletContext;
