@@ -32,7 +32,7 @@
     <artifactId>Announcements</artifactId>
     <packaging>war</packaging>
     <name>Announcements Portlet</name>
-    <version>2.4.6-SNAPSHOT</version>
+    <version>2.4.6</version>
 
     <properties>
         <junit.version>4.12</junit.version>
@@ -75,7 +75,7 @@
         <connection>scm:git:git://github.com/Jasig/AnnouncementsPortlet.git</connection>
         <developerConnection>scm:git:git@github.com:Jasig/AnnouncementsPortlet.git</developerConnection>
         <url>https://github.com/Jasig/AnnouncementsPortlet</url>
-        <tag>Announcements-2.2.0</tag>
+        <tag>Announcements-2.4.6</tag>
     </scm>
 
     <dependencies>
