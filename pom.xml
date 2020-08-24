@@ -177,14 +177,14 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>3.6.10.Final</version>
+            <version>5.4.20.Final</version>
         </dependency>
 
         <!-- Needed for schema reset;  version compatible with org.hibernate:hibernate-core:3.6.10.FINAL -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-tools</artifactId>
-            <version>3.6.0.Final</version>
+            <version>5.4.20.Final</version>
         </dependency>
 
         <dependency><!-- java bytecode processor required by hibernate-->
