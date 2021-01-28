@@ -49,7 +49,7 @@
 
         <!-- Utility libraries -->
         <jackson.version>2.12.1</jackson.version>
-        <lombok.version>1.18.16</lombok.version>
+        <lombok.version>1.18.18</lombok.version>
     </properties>
 
     <url>http://www.ja-sig.org/wiki/display/PLT/Announcements+Portlet</url>
