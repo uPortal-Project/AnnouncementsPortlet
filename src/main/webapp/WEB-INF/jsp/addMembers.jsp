@@ -78,7 +78,14 @@
                     <div class="form-group">
                         <c:forEach items="${roles}" var="roleIter">
                             <c:if test="${roleIter.person}">
-                                <c:out value="${roleIter.personName}"/> <a href="<portlet:actionURL escapeXml="false"><portlet:param name="userKey" value="${roleIter.name}"/><portlet:param name="action" value="deleteUser"/><portlet:param name="groupKey" value="${groupKey}"/><portlet:param name="topicId" value="${topic.id}"/></portlet:actionURL>" title="<spring:message code="addMembers.deleteUser"/>"><i class="fa fa-trash-o"></i></a>
+                                <c:out value="${roleIter.personName}"/>
+                                <form method="post" action="<portlet:actionURL escapeXml='false'/>"/>
+                                  <input type="hidden" name="userKey" value="${roleIter.name}" />
+                                  <input type="hidden" name="action" value="deleteUser" />
+                                  <input type="hidden" name="groupKey" value="${groupKey}" />
+                                  <input type="hidden" name="topicId" value="${topic.id}" />
+                                  <button type="submit" class="btn btn-link" title="<spring:message code='addMembers.deleteUser'/>"><i class="fa fa-trash-o"></i></button>
+                                </form>
                             </c:if>
                         </c:forEach>
                     </div>
