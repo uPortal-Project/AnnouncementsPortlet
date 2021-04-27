@@ -200,7 +200,7 @@ public class AdminAnnouncementController implements InitializingBean {
    *
    * @param req a {@link javax.portlet.ActionRequest} object.
    * @param res a {@link javax.portlet.ActionResponse} object.
-   * @throws javax.portlet.PortletException
+   * @throws javax.portlet.PortletException if any.
    * @param announcement a {@link org.jasig.portlet.announcements.model.Announcement} object.
    * @param result a {@link org.springframework.validation.BindingResult} object.
    * @param status a {@link org.springframework.web.bind.support.SessionStatus} object.
@@ -260,7 +260,7 @@ public class AdminAnnouncementController implements InitializingBean {
    * @param topicId a {@link java.lang.Long} object.
    * @param annId a {@link java.lang.Long} object.
    * @param response a {@link javax.portlet.ActionResponse} object.
-   * @throws javax.portlet.PortletException
+   * @throws javax.portlet.PortletException if any.
    * @param request a {@link javax.portlet.ActionRequest} object.
    */
   @RequestMapping(params = "action=deleteAnnouncement")
@@ -407,8 +407,6 @@ public class AdminAnnouncementController implements InitializingBean {
 
   /**
    * <p>afterPropertiesSet.</p>
-   *
-   * @throws java.lang.Exception if any.
    */
   public void afterPropertiesSet() throws Exception {
     topicEditor = new TopicEditor(announcementService);

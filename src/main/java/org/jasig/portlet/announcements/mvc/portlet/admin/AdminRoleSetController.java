@@ -131,7 +131,7 @@ public class AdminRoleSetController {
    * @param topicId a {@link java.lang.Long} object.
    * @param groupKey a {@link java.lang.String} object.
    * @param userAdd a {@link java.lang.String} object.
-   * @throws javax.portlet.PortletException
+   * @throws javax.portlet.PortletException if any.
    */
   @RequestMapping(params = "action=addUser")
   public void processAddUser(

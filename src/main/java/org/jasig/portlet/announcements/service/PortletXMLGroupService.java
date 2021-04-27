@@ -42,7 +42,7 @@ import org.xml.sax.InputSource;
 
 /**
  * This class attempts to read the portlet.xml file to determine what groups should be available to
- * evaluate against. Each group is a <security-role-ref> element in the portlet.xml
+ * evaluate against. Each group is a &lt;security-role-ref&gt; element in the portlet.xml
  *
  * @author Erik A. Olsson (eolsson@uci.edu)
  * @version $Id: $Id

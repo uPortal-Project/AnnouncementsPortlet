@@ -75,7 +75,7 @@ public class AdminTopicController {
    *
    * @param topicIdStr a {@link java.lang.String} object.
    * @param model a {@link org.springframework.ui.Model} object.
-   * @throws javax.portlet.PortletException
+   * @throws javax.portlet.PortletException if any.
    * @return a {@link java.lang.String} object.
    */
   @RequestMapping(params = "action=addTopic")
@@ -105,7 +105,7 @@ public class AdminTopicController {
    * @param status a {@link org.springframework.web.bind.support.SessionStatus} object.
    * @param request a {@link javax.portlet.ActionRequest} object.
    * @param response a {@link javax.portlet.ActionResponse} object.
-   * @throws javax.portlet.PortletException
+   * @throws javax.portlet.PortletException if any.
    */
   @RequestMapping(params = "action=addTopic")
   public void actionAddTopicForm(
@@ -155,8 +155,8 @@ public class AdminTopicController {
    *
    * @param topicId a {@link java.lang.String} object.
    * @param response a {@link javax.portlet.ActionResponse} object.
-   * @throws java.lang.NumberFormatException
-   * @throws javax.portlet.PortletException
+   * @throws java.lang.NumberFormatException if the topicId is not a valid {@code Long}
+   * @throws javax.portlet.PortletException if any.
    * @param request a {@link javax.portlet.ActionRequest} object.
    */
   @RequestMapping(params = "action=deleteTopic")
@@ -180,8 +180,8 @@ public class AdminTopicController {
    * @param topicId a {@link java.lang.String} object.
    * @param request a {@link javax.portlet.RenderRequest} object.
    * @param model a {@link org.springframework.ui.Model} object.
-   * @throws java.lang.NumberFormatException
-   * @throws javax.portlet.PortletException
+   * @throws java.lang.NumberFormatException if the topicId is not a valid {@code Long}
+   * @throws javax.portlet.PortletException if any.
    * @return a {@link java.lang.String} object.
    */
   @RequestMapping(params = "action=showTopic")
