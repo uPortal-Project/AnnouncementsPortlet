@@ -364,7 +364,7 @@ public class Topic {
   }
 
   /**
-   * Get the current number of approved & scheduled announcements
+   * Get the current number of approved &amp; scheduled announcements
    *
    * @return a int.
    */

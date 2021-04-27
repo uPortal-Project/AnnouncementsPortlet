@@ -36,7 +36,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
  * If running in a web application a {@link org.springframework.web.context.WebApplicationContext}
  * is available.
  *
- * <p>{@link #getApplicationContext()} should be used by most uPortal code that needs access to the
+ * <p>{@code #getApplicationContext()} should be used by most uPortal code that needs access to the
  * portal's {@link org.springframework.context.ApplicationContext}. It ensures that a single {@link
  * org.springframework.context.ApplicationContext} is used portal-wide both when the portal is
  * running as a web-application and when tools are run from the command line.
@@ -173,10 +173,10 @@ public class PortletApplicationContextLocator implements ServletContextListener 
   }
 
   /**
-   * If the ApplicationContext returned by {@link #getApplicationContext()} is 'portal managed' the
+   * If the ApplicationContext returned by {@code #getApplicationContext()} is 'portal managed' the
    * shutdown hook for the context is called, closing and cleaning up all spring managed resources.
    *
-   * <p>If the ApplicationContext returned by {@link #getApplicationContext()} is actually a
+   * <p>If the ApplicationContext returned by {@code #getApplicationContext()} is actually a
    * WebApplicationContext this method does nothing but log an error message.
    */
   public static void shutdown() {
