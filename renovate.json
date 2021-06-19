@@ -1,3 +1,4 @@
 {
-  "extends": ["github>ChristianMurphy/renovate-config-uportal"]
+  "extends": ["config:base", ":rebaseStalePrs", ":preserveSemverRanges"],
+  "renovateFork": true
 }
