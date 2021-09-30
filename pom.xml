@@ -48,7 +48,7 @@
         <jdbc.version>2.5.0</jdbc.version>
 
         <!-- Utility libraries -->
-        <jackson.version>2.12.5</jackson.version>
+        <jackson.version>2.13.0</jackson.version>
         <lombok.version>1.18.20</lombok.version>
     </properties>
 
