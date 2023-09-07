@@ -31,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.mvc.IViewNameSelector;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
 import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class ShowHistoryController {
 
   private static final Log logger = LogFactory.getLog(ShowHistoryController.class);
 
-  @Autowired private IAnnouncementService announcementService;
+  @Autowired private IAnnouncementsService announcementsService;
 
   @Autowired private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
@@ -72,7 +72,7 @@ public class ShowHistoryController {
       Model model, RenderRequest request, @RequestParam("topicId") String topicId)
       throws Exception {
 
-    Topic topic = announcementService.getTopic(Long.parseLong(topicId));
+    Topic topic = announcementsService.getTopic(Long.parseLong(topicId));
     UserPermissionChecker upChecker =
         userPermissionCheckerFactory.createUserPermissionChecker(request, topic);
     upChecker.validateCanEditTopic();

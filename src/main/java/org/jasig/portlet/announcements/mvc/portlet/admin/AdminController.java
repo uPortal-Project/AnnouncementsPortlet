@@ -23,7 +23,7 @@ import java.util.List;
 import javax.portlet.RenderRequest;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
 import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("VIEW")
 public class AdminController {
 
-  @Autowired private IAnnouncementService announcementService;
+  @Autowired private IAnnouncementsService announcementsService;
 
   @Autowired private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
@@ -56,7 +56,7 @@ public class AdminController {
   @RequestMapping
   public String showBaseView(RenderRequest request, Model model) {
 
-    List<Topic> allTopics = announcementService.getAllTopics();
+    List<Topic> allTopics = announcementsService.getAllTopics();
     List<Announcement> pendingAnnouncements = new ArrayList<Announcement>();
 
     // add all topics for the portal admin
@@ -95,13 +95,13 @@ public class AdminController {
     return "baseAdmin";
   }
 
-  /** @param announcementService the announcementService to set */
+  /** @param announcementsService the announcementService to set */
   /**
    * <p>Setter for the field <code>announcementService</code>.</p>
    *
-   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   * @param announcementsService a {@link org.jasig.portlet.announcements.service.IAnnouncementsService} object.
    */
-  public void setAnnouncementService(IAnnouncementService announcementService) {
-    this.announcementService = announcementService;
+  public void setAnnouncementsService(IAnnouncementsService announcementsService) {
+    this.announcementsService = announcementsService;
   }
 }

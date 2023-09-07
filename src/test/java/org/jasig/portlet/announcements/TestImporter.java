@@ -21,46 +21,47 @@ package org.jasig.portlet.announcements;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Resource;
 import junit.framework.TestCase;
-import org.hibernate.SessionFactory;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.jasig.portlet.announcements.spring.PortletApplicationContextLocator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
 
 /** @author eolsson */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {PortletApplicationContextLocator.DATABASE_CONTEXT_LOCATION})
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 @Transactional
 public class TestImporter extends TestCase {
 
-  @Resource SessionFactory sessionFactory;
+  @Autowired
+  private EntityManager entityManager;
 
-  @Resource IAnnouncementService announcementService;
+  @Autowired
+  IAnnouncementsService announcementsService;
 
   @Test
   public void testImporter() {
-    String basedir = System.getProperty("basedir", ".");
-    File dataDirectory = new File(basedir + "/src/main/data");
+    File dataDirectory = new File(this.getClass().getResource("/data").getFile());
 
-    Importer importer = new Importer(dataDirectory, announcementService);
+    Importer importer = new Importer(dataDirectory, announcementsService);
     importer.importData();
 
     // Clear the first level cache to remove the topics that are cached
-    sessionFactory.getCurrentSession().clear();
+    entityManager.clear();
 
-    List<Topic> updatedTopics = announcementService.getAllTopics();
-    assertTrue(
+    List<Topic> updatedTopics = announcementsService.getAllTopics();
+    assertEquals(
         "topic list should have 1 item; instead had " + updatedTopics.size(),
-        updatedTopics.size() == 1);
+        1,
+        updatedTopics.size());
 
     // verify data after import.
     Topic addedTopic = updatedTopics.get(0);
@@ -70,9 +71,10 @@ public class TestImporter extends TestCase {
     assert "Campus Services".equals(addedTopic.getTitle());
 
     Set<Announcement> announcements = addedTopic.getAnnouncements();
-    assertTrue(
+    assertEquals(
         "Campus Services topic has " + announcements.size() + " announcement instead of 2",
-        announcements.size() == 2);
+        2,
+        announcements.size());
     boolean firstAnnFound = false;
     boolean secondAnnFound = false;
     for (Announcement announcement : announcements) {
@@ -85,4 +87,5 @@ public class TestImporter extends TestCase {
     assertTrue("Did not find first announcement", firstAnnFound);
     assertTrue("Did not find second announcement", secondAnnFound);
   }
+
 }

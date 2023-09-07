@@ -48,7 +48,7 @@
             <element column="ATTACHMENT_INFO" type="string"/>
         </set>
 
-        <many-to-one name="parent" column="PARENT_ID" lazy="proxy"/>
+        <many-to-one name="parent" class="Topic" column="PARENT_ID" not-null="true" lazy="proxy"/>
 
     </class>
 

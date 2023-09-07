@@ -34,7 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.jasig.portlet.announcements.mvc.IViewNameSelector;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,7 +55,7 @@ public class AnnouncementsPreferencesController {
 
   @Autowired private ITopicSubscriptionService tss = null;
 
-  @Autowired private final IAnnouncementService announcementService = null;
+  @Autowired private final IAnnouncementsService announcementsService = null;
 
   @Autowired(required = true)
   private final IViewNameSelector viewNameSelector = null;
@@ -127,7 +127,7 @@ public class AnnouncementsPreferencesController {
       String topicSubId = request.getParameter("topicSubId_" + i).trim();
 
       Boolean subscribed = Boolean.valueOf(request.getParameter("subscribed_" + i));
-      Topic topic = announcementService.getTopic(topicId);
+      Topic topic = announcementsService.getTopic(topicId);
 
       // Make sure that any pushed_forced topics weren't sneakingly removed (by tweaking the URL, for example)
       if (topic.getSubscriptionMethod() == Topic.PUSHED_FORCED) {
@@ -149,7 +149,7 @@ public class AnnouncementsPreferencesController {
 
     if (newSubscription.size() > 0) {
       try {
-        announcementService.addOrSaveTopicSubscription(newSubscription);
+        announcementsService.addOrSaveTopicSubscription(newSubscription);
       } catch (Exception e) {
         logger.error(
             "ERROR saving TopicSubscriptions for user "

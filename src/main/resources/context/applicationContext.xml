@@ -31,6 +31,8 @@
         http://www.springframework.org/schema/util
         http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
+    <import resource="classpath:/context/databaseContext.xml"/>
+
     <context:component-scan base-package="org.jasig.portlet.announcements">
         <!-- Items in the following package are a part of the portlet or
              servlet (sub-)contexts, not a part of the parent (main) context. -->
@@ -45,13 +47,6 @@
                 <value>i18n/messages</value>
                 <value>i18n/validation</value>
             </list>
-        </property>
-    </bean>
-
-    <bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor">
-        <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="flushModeName">
-            <value>FLUSH_AUTO</value>
         </property>
     </bean>
 

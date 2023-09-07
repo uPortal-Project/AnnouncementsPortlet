@@ -24,7 +24,7 @@ import javax.portlet.PortletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.jasig.portlet.announcements.model.Announcement;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Controller;
@@ -46,18 +46,13 @@ public class AjaxApproveController {
     private static final int STATUS_SHOWING = 2;
     private static final int STATUS_PENDING = 3;
 
-    private IAnnouncementService announcementService;
+    private IAnnouncementsService announcementsService;
 
     private EhCacheCacheManager cacheManager = null;
 
-    /**
-     * <p>Setter for the field <code>announcementService</code>.</p>
-     *
-     * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
-     */
     @Autowired
-    public void setAnnouncementService(IAnnouncementService announcementService) {
-        this.announcementService = announcementService;
+    public void setAnnouncementsService(IAnnouncementsService announcementsService) {
+        this.announcementsService = announcementsService;
     }
 
     /**
@@ -82,7 +77,7 @@ public class AjaxApproveController {
 
         final Long annId = Long.valueOf(request.getParameter("annId"));
         final Boolean approval = Boolean.valueOf(request.getParameter("approval"));
-        final Announcement ann = announcementService.getAnnouncement(annId);
+        final Announcement ann = announcementsService.getAnnouncement(annId);
 
         final Date startDisplay = ann.getStartDisplay();
         Date endDisplay = ann.getEndDisplay();
@@ -107,7 +102,7 @@ public class AjaxApproveController {
 
         ann.setPublished(approval);
 
-        announcementService.addOrSaveAnnouncement(ann);
+        announcementsService.addOrSaveAnnouncement(ann);
 
         return new ModelAndView("ajaxApprove", "status", status);
     }
