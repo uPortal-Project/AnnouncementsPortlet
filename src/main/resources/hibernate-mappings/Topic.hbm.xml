@@ -34,9 +34,9 @@
              <generator class="native"/>
         </id>
             
-        <set name="announcements" lazy="true" inverse="false" cascade="all">
-             <key column="PARENT_ID"/>
-             <one-to-many class="org.jasig.portlet.announcements.model.Announcement" />
+        <set name="announcements" lazy="true" inverse="true" cascade="all">
+             <key column="PARENT_ID" not-null="true"/>
+             <one-to-many class="Announcement" />
         </set>
             
         <set name="audience" lazy="false" table="AUDIENCE">
@@ -65,7 +65,7 @@
 
        <set name="subscriptions" lazy="true" inverse="false" cascade="all">
            <key column="TOPIC_ID"/>
-           <one-to-many class="org.jasig.portlet.announcements.model.TopicSubscription"/>
+           <one-to-many class="TopicSubscription"/>
        </set>
 
         <property name="title" type="string" column="TITLE"/>

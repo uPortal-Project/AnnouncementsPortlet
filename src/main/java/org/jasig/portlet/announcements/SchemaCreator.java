@@ -18,21 +18,22 @@
  */
 package org.jasig.portlet.announcements;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.io.File;
+import java.util.EnumSet;
 import java.util.List;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManagerFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.schema.TargetType;
 import org.jasig.portlet.announcements.spring.PortletApplicationContextLocator;
-import org.springframework.beans.BeansException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
 /**
  * This tool is responsible for creating the Announcements portlet database schema (and dropping
@@ -40,31 +41,15 @@ import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
  * with Announcements' Spring-managed ORM strategy and Announcements' configuration features (esp.
  * encrypted properties).  It is invokable from the command line with '$ java', but designed to be
  * integrated with build tools like Gradle.
- *
- * @author Unknown
- * @version $Id: $Id
  */
-public class SchemaCreator implements ApplicationContextAware {
+public class SchemaCreator {
 
-    /*
-     * Prefixing a Spring factory bean with '&' gives you the factory itself, rather than the product.
-     * (https://stackoverflow.com/questions/2736100/how-can-i-get-the-hibernate-configuration-object-from-spring)
-     */
-    private static final String SESSION_FACTORY_BEAN_NAME = "&sessionFactory";
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final String DATA_SOURCE_BEAN_NAME = "dataSource";
+    @Autowired
+    private EntityManagerFactory entityManagerFactory;
 
-    private ApplicationContext applicationContext;
-
-    private final Log logger = LogFactory.getLog(getClass());
-
-    /**
-     * <p>main.</p>
-     *
-     * @param args an array of {@link java.lang.String} objects.
-     */
     public static void main(String[] args) {
-
         // There will be an instance of this class in the ApplicationContent
         ApplicationContext context =
                 PortletApplicationContextLocator.getApplicationContext(
@@ -73,43 +58,32 @@ public class SchemaCreator implements ApplicationContextAware {
         System.exit(schemaCreator.create());
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
-
     private int create() {
+        try {
+            SessionFactoryImplementor sessionFactory = entityManagerFactory.unwrap(SessionFactoryImplementor.class);
+            ServiceRegistry serviceRegistry = sessionFactory.getServiceRegistry();
 
-        /*
-         * We will need to provide a Configuration and a Connection;  both should be properly
-         * managed by the Spring ApplicationContext.
-         */
+            MetadataSources metadata = new MetadataSources(serviceRegistry.getParentServiceRegistry());
+            metadata.addDirectory(new File("src/main/resources/hibernate-mappings"));
 
-        final LocalSessionFactoryBean sessionFactoryBean = applicationContext
-                .getBean(SESSION_FACTORY_BEAN_NAME, LocalSessionFactoryBean.class);
-        final DataSource dataSource = applicationContext.getBean(DATA_SOURCE_BEAN_NAME, DataSource.class);
-
-        try (final Connection conn = dataSource.getConnection()) {
-            final Configuration cfg = sessionFactoryBean.getConfiguration();
-            final SchemaExport schemaExport = new SchemaExport(cfg, conn);
-            schemaExport.execute(true, true, false, false);
+            EnumSet<TargetType> enumSet = EnumSet.of(TargetType.DATABASE);
+            SchemaExport schemaExport = new SchemaExport();
+            schemaExport.execute(enumSet, SchemaExport.Action.BOTH, metadata.buildMetadata());
 
             final List<Exception> exceptions = schemaExport.getExceptions();
-            if (exceptions.size() != 0) {
+            if (!exceptions.isEmpty()) {
                 logger.error("Schema Create Failed;  see below for details");
                 for (Exception e : exceptions) {
                     logger.error("Exception from Hibernate Tools SchemaExport", e);
                 }
                 return 1;
             }
-        } catch (SQLException sqle) {
-            logger.error("Failed to initialize & invoke the SchemaExport tool", sqle);
+        } catch (Exception e) {
+            logger.error("Failed to initialize & invoke the SchemaExport tool", e);
             return 1;
         }
 
         return 0;
-
     }
 
 }

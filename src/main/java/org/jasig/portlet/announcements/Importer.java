@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.jasig.portlet.announcements.spring.PortletApplicationContextLocator;
 import org.springframework.context.ApplicationContext;
 
@@ -48,25 +48,25 @@ import org.springframework.context.ApplicationContext;
  */
 public class Importer {
 
-  private static final String ANNOUNCEMENT_SVC_BEAN_NAME = "announcementService";
+  private static final String ANNOUNCEMENTS_SVC_BEAN_NAME = "announcementsService";
 
   private static final Log log = LogFactory.getLog(Importer.class);
 
   private File dataDirectory;
-  private IAnnouncementService announcementService;
+  private IAnnouncementsService announcementsService;
   private List<String> errors = new ArrayList<String>();
 
   /**
    * <p>Constructor for Importer.</p>
    *
    * @param dataDirectory a {@link java.io.File} object.
-   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   * @param announcementsService a {@link org.jasig.portlet.announcements.service.IAnnouncementsService} object.
    */
   public Importer(
       File dataDirectory, /*SessionFactory sessionFactory, */
-      IAnnouncementService announcementService) {
+      IAnnouncementsService announcementsService) {
     this.dataDirectory = dataDirectory;
-    this.announcementService = announcementService;
+    this.announcementsService = announcementsService;
   }
 
   /**
@@ -100,10 +100,10 @@ public class Importer {
     ApplicationContext context =
         PortletApplicationContextLocator.getApplicationContext(
             PortletApplicationContextLocator.DATABASE_CONTEXT_LOCATION);
-    IAnnouncementService announcementService =
-        context.getBean(ANNOUNCEMENT_SVC_BEAN_NAME, IAnnouncementService.class);
+    IAnnouncementsService announcementsService =
+        context.getBean(ANNOUNCEMENTS_SVC_BEAN_NAME, IAnnouncementsService.class);
 
-    Importer importer = new Importer(dataDirectory, announcementService);
+    Importer importer = new Importer(dataDirectory, announcementsService);
     importer.importData();
 
     if (importer.errors.size() > 0) {
@@ -147,7 +147,7 @@ public class Importer {
               log.error(msg);
               errors.add(msg);
             } else {
-              announcementService.addOrSaveTopic(topic);
+              announcementsService.addOrSaveTopic(topic);
               log.info("Successfully imported topic '" + topic.getTitle() + "'");
             }
           } catch (JAXBException e) {
@@ -209,7 +209,7 @@ public class Importer {
             } else {
               Topic topic = findTopicForAnnouncement(announcement);
               announcement.setParent(topic);
-              announcementService.addOrSaveAnnouncement(announcement);
+              announcementsService.addOrSaveAnnouncement(announcement);
               log.info("Successfully imported announcement '" + announcement.getTitle() + "'");
             }
           } catch (ImportException e) {
@@ -240,7 +240,7 @@ public class Importer {
 
   private Topic findTopicForAnnouncement(Announcement announcement) {
     Topic topic = null;
-    List<Topic> topics = announcementService.getAllTopics();
+    List<Topic> topics = announcementsService.getAllTopics();
     for (Topic t : topics) {
       if (t.getTitle().equals(announcement.getParent().getTitle())) {
         if (topic != null) {

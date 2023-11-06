@@ -22,93 +22,87 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 import javax.sql.DataSource;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.hibernate.HibernateException;
-import org.hibernate.connection.ConnectionProvider;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.jasig.portlet.announcements.spring.PortletApplicationContextLocator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
- * When the hibernate3-maven-plugin:hbm2ddl goal is executed, this class provides connections from
- * the Spring ApplicationContext, which is capable of using encrypted database connection settings
- * (in datasource.properties).
+ * When the hibernate3-maven-plugin:hbm2ddl goal is executed, this class
+ * provides connections from the Spring ApplicationContext, which is capable of
+ * using encrypted database connection settings (in datasource.properties).
  *
- * @author drewwills
- * @version $Id: $Id
+ * @deprecated Because this class is not necessary for Import/Export based on Gradle
  */
+@Deprecated
 public class ApplicationContextConnectionProvider implements ConnectionProvider {
 
-  private static final String DATA_SOURCE_BEAN_NAME = "dataSource";
+    private static final long serialVersionUID = 1L;
 
-  private ApplicationContext context;
+    private static final String DATA_SOURCE_BEAN_NAME = "dataSource";
 
-  private final Log logger = LogFactory.getLog(getClass());
+    private ApplicationContext context;
 
-  /** {@inheritDoc} */
-  @Override
-  public void close() throws HibernateException {
-    if (context != null) {
-      ((ConfigurableApplicationContext) context).close();
+    Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Override
+    public void closeConnection(Connection conn) throws SQLException {
+        conn.close();
     }
-  }
 
-  /** {@inheritDoc} */
-  @Override
-  public void closeConnection(Connection conn) throws SQLException {
-    conn.close();
-  }
+    @Override
+    public Connection getConnection() throws SQLException {
 
-  /** {@inheritDoc} */
-  @Override
-  public void configure(Properties props) throws HibernateException {
+        if (context == null) {
+            init();
+        }
+
+        final DataSource dataSource = context.getBean(DATA_SOURCE_BEAN_NAME, DataSource.class);
+        final Connection rslt = dataSource.getConnection();
+        log.info("Providing the following connection to hbm2ddl:  " + rslt);
+        return rslt;
+
+    }
+
+    @Override
+    public boolean supportsAggressiveRelease() {
+        return false;  // WTF?
+    }
+
+    @Override
+    public boolean isUnwrappableAs(@SuppressWarnings("rawtypes") Class arg0) {
+        return false;  // WTF?
+    }
+
+    @Override
+    public <T> T unwrap(Class<T> arg0) {
+        throw new UnsupportedOperationException();
+    }
+
     /*
-     * Configuration is handled by the ApplicationContext itself;  there is
-     * nothing to do here.
+     * Implementation
      */
-  }
 
-  /** {@inheritDoc} */
-  @Override
-  public Connection getConnection() throws SQLException {
+    private synchronized void init() {
 
-    if (context == null) {
-      init();
+        if (context != null) {
+            // Already done...
+            return;
+        }
+
+        try {
+            context =
+                PortletApplicationContextLocator.getApplicationContext(
+                    PortletApplicationContextLocator.DATABASE_CONTEXT_LOCATION);
+        } catch (Exception e) {
+            log.error(
+                "Unable to load the application context from "
+                    + PortletApplicationContextLocator.DATABASE_CONTEXT_LOCATION,
+                e);
+        }
     }
 
-    final DataSource dataSource = context.getBean(DATA_SOURCE_BEAN_NAME, DataSource.class);
-    final Connection rslt = dataSource.getConnection();
-    logger.info("Providing the following connection to hbm2ddl:  " + rslt);
-    return rslt;
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public boolean supportsAggressiveRelease() {
-    return false; // WTF?
-  }
-
-  /*
-   * Implementation
-   */
-
-  private synchronized void init() {
-
-    if (context != null) {
-      // Already done...
-      return;
-    }
-
-    try {
-      context =
-          PortletApplicationContextLocator.getApplicationContext(
-              PortletApplicationContextLocator.DATABASE_CONTEXT_LOCATION);
-    } catch (Exception e) {
-      logger.error(
-          "Unable to load the application context from "
-              + PortletApplicationContextLocator.DATABASE_CONTEXT_LOCATION,
-          e);
-    }
-  }
 }

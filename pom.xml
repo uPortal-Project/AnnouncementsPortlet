@@ -37,6 +37,9 @@
     <properties>
         <junit.version>4.13.2</junit.version>
         <logback.version>1.3.5</logback.version>
+        <hibernate.version>5.6.15.Final</hibernate.version>
+        <hsqldb.version>2.7.0</hsqldb.version>
+        <persistence-api.version>2.2</persistence-api.version>
         <resource-server.version>1.3.1</resource-server.version>
         <servlet-api.version>3.1.0</servlet-api.version>
         <slf4j.version>2.0.6</slf4j.version>
@@ -105,6 +108,12 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>${persistence-api.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.1.2</version>
@@ -135,13 +144,11 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
-            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -151,52 +158,56 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${spring.version}</version>
+            <artifactId>spring-tx</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc-portlet</artifactId>
-            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
          </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>3.6.10.Final</version>
+            <version>${hibernate.version}</version>
         </dependency>
 
-        <!-- Needed for schema reset;  version compatible with org.hibernate:hibernate-core:3.6.10.FINAL -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-tools</artifactId>
-            <version>3.6.0.Final</version>
+            <version>${hibernate.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -212,18 +223,12 @@
         </dependency>
 
         <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>2.10.6</version>
-        </dependency>
-
-        <dependency>
             <groupId>backport-util-concurrent</groupId>
             <artifactId>backport-util-concurrent</artifactId>
             <version>3.1</version>
         </dependency>
 
-        <dependency>
+	<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
@@ -314,8 +319,46 @@
         <dependency>
             <groupId>org.jasig.portal</groupId>
             <artifactId>uPortal-spring</artifactId>
-            <version>5.12.0</version>
+            <version>5.15.1</version>
             <type>jar</type>
+	    <exclusions>
+                <exclusion>
+                    <groupId>org.jasig.portal</groupId>
+                    <artifactId>uPortal-api-internal</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jasig.portal</groupId>
+                    <artifactId>uPortal-security-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jasig.portal</groupId>
+                    <artifactId>uPortal-security-mvc</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jasig.portal</groupId>
+                    <artifactId>uPortal-tools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.oauth.core</groupId>
+                    <artifactId>oauth</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-webmvc</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.sf.ehcache</groupId>
+                    <artifactId>ehcache-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jadira.usertype</groupId>
+                    <artifactId>usertype.core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jadira.usertype</groupId>
+                    <artifactId>usertype.spi</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
 
@@ -358,6 +401,14 @@
             <version>${resource-server.version}</version>
             <exclusions>
                 <exclusion>
+                    <groupId>net.sf.ehcache</groupId>
+                    <artifactId>ehcache-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.sf.ehcache</groupId>
+                    <artifactId>ehcache-web</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-web</artifactId>
                 </exclusion>
@@ -377,26 +428,27 @@
         </dependency>
     </dependencies>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <type>pom</type>
+	        <version>${spring.version}</version>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-releasetrain</artifactId>
+                <version>Hopper-SR3</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <finalName>${project.artifactId}</finalName>
-        <!-- textResources makes context files available to Spring integration tests -->
-        <testResources>
-            <testResource>
-                <directory>src/main/webapp/WEB-INF</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*.xml</include>
-                    <include>**/*.properties</include>
-                </includes>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*.properties</include>
-                </includes>
-            </testResource>
-        </testResources>
         <plugins>
             <plugin>
                 <groupId>com.mycila</groupId>
@@ -445,7 +497,6 @@
 
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -455,7 +506,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-
                 <configuration>
                     <warName>Announcements</warName>
                     <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
@@ -490,9 +540,8 @@
                 <extensions>true</extensions>
             </plugin>
             <!--
-             | Invoke this plugin as follows to drop and recreate the Announcements database tables...
-             |
-             |   >mvn db-init
+             | To drop and recreate the Announcements database tables, use:  mvn db-init
+             | To import the announcement db tables, use:  mvn [-Ddir=dir] data-import
              +-->
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -518,24 +567,6 @@
                             </tasks>
                         </configuration>
                     </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.servlet</groupId>
-                        <artifactId>javax.servlet-api</artifactId>
-                        <version>${servlet-api.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>javax.portlet</groupId>
-                        <artifactId>portlet-api</artifactId>
-                        <version>2.0</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <!-- To import the announcement db tables, use mvn [-Ddir=dir] data-import -->
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <executions>
                     <execution>
                         <id>data-import</id>
                         <phase>data-import</phase>
@@ -612,6 +643,16 @@
                         <groupId>rhino</groupId>
                         <artifactId>js</artifactId>
                         <version>1.7R2</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>javax.servlet-api</artifactId>
+                        <version>${servlet-api.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.portlet</groupId>
+                        <artifactId>portlet-api</artifactId>
+                        <version>2.0</version>
                     </dependency>
                 </dependencies>
             </plugin>

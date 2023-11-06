@@ -45,7 +45,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.mvc.portlet.display.AnnouncementsViewController;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.ConfigurableMimeFileTypeMap;
@@ -77,7 +77,7 @@ public class RssFeedController {
     private static final String PATH_ATTRIBUTE = "path";
     private static final String FILENAME_ATTRIBUTE = "filename";
 
-    private IAnnouncementService announcementService;
+    private IAnnouncementsService announcementsService;
 
     @Value("${RssFeedController.portalContextName:uPortal}")
     private String portalContextName;
@@ -99,14 +99,9 @@ public class RssFeedController {
         this.fileTypeMap.setMappings("image/png png");
     }
 
-    /**
-     * <p>Setter for the field <code>announcementService</code>.</p>
-     *
-     * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
-     */
     @Autowired
-    public void setAnnouncementService(IAnnouncementService announcementService) {
-        this.announcementService = announcementService;
+    public void setAnnouncementsService(IAnnouncementsService announcementsService) {
+        this.announcementsService = announcementsService;
     }
 
     /**
@@ -172,7 +167,7 @@ public class RssFeedController {
         final Long topicId = ServletRequestUtils.getLongParameter(req, "topic");
         if (topicId != null) {
             try {
-                rslt = announcementService.getTopic(topicId);
+                rslt = announcementsService.getTopic(topicId);
             } catch (PortletException pe) {
                 logger.warn(String.format("Failed to obtain a Topic for the specified id of '%s'", topicId));
             }
@@ -180,7 +175,7 @@ public class RssFeedController {
             final String titleParameter = ServletRequestUtils.getStringParameter(req, "topicTitle");
             if (titleParameter != null) {
                 // We need to find it...
-                final List<Topic> allTopics = announcementService.getAllTopics();
+                final List<Topic> allTopics = announcementsService.getAllTopics();
                 for (Topic t : allTopics) {
                     final String convertedTopicTitle = t.getTitle().trim().replaceAll("\\s", "-");
                     logger.debug(String.format("Calculated convertedTopicTitle='%s' for topic with title='%s'",

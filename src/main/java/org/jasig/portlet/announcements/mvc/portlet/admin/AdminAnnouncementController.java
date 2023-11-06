@@ -30,7 +30,7 @@ import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.validators.AnnouncementValidator;
 import org.jasig.portlet.announcements.mvc.TopicEditor;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
 import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -93,7 +93,7 @@ public class AdminAnnouncementController implements InitializingBean {
           + " extended_valid_elements:\"a[name|href|target|title|onclick],span[class|align|style]\", "
           + " theme_advanced_path:false";
 
-  @Autowired private IAnnouncementService announcementService;
+  @Autowired private IAnnouncementsService announcementsService;
 
   private static final Log log = LogFactory.getLog(AdminController.class);
   private PropertyEditor topicEditor;
@@ -161,7 +161,7 @@ public class AdminAnnouncementController implements InitializingBean {
         try {
           log.debug(
               "editId found. This is an edit request for announcement Id " + editId.toString());
-          ann = announcementService.getAnnouncement(editId);
+          ann = announcementsService.getAnnouncement(editId);
           // return immediately when we have our announcement
 
         } catch (NumberFormatException e) {
@@ -171,7 +171,7 @@ public class AdminAnnouncementController implements InitializingBean {
 
       if (ann != null && ann.getParent() == null) {
         try {
-          topic = announcementService.getTopic(topicId);
+          topic = announcementsService.getTopic(topicId);
           ann.setParent(topic);
         } catch (NumberFormatException e) {
           log.error("Unable to get topicId from request");
@@ -243,11 +243,8 @@ public class AdminAnnouncementController implements InitializingBean {
         // add the automatic data
         announcement.setAuthor(req.getRemoteUser());
         announcement.setCreated(new Date());
-        announcementService.addOrSaveAnnouncement(announcement);
-      } else {
-        announcementService.mergeAnnouncement(announcement);
       }
-
+      announcementsService.addOrSaveAnnouncement(announcement);
       status.setComplete();
       res.setRenderParameter("topicId", announcement.getParent().getId().toString());
       res.setRenderParameter("action", "showTopic");
@@ -271,8 +268,8 @@ public class AdminAnnouncementController implements InitializingBean {
       ActionResponse response)
       throws PortletException {
 
-    Topic topic = announcementService.getTopic(topicId);
-    Announcement ann = announcementService.getAnnouncement(annId);
+    Topic topic = announcementsService.getTopic(topicId);
+    Announcement ann = announcementsService.getAnnouncement(annId);
 
     UserPermissionChecker upChecker =
         userPermissionCheckerFactory.createUserPermissionChecker(request, topic);
@@ -282,7 +279,7 @@ public class AdminAnnouncementController implements InitializingBean {
             && ann.getAuthor() != null
             && ann.getAuthor().equals(request.getRemoteUser()))) {
       // the person deleting the announcement must be the author, a moderator or an admin
-      announcementService.deleteAnnouncement(ann);
+      announcementsService.deleteAnnouncement(ann);
     } else {
       throw new UnauthorizedException("You do not have permission to delete this announcement");
     }
@@ -395,20 +392,20 @@ public class AdminAnnouncementController implements InitializingBean {
     }
   }
 
-  /** @param announcementService the announcementService to set */
+  /** @param announcementsService the announcementsService to set */
   /**
    * <p>Setter for the field <code>announcementService</code>.</p>
    *
-   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   * @param announcementsService a {@link org.jasig.portlet.announcements.service.IAnnouncementsService} object.
    */
-  public void setAnnouncementService(IAnnouncementService announcementService) {
-    this.announcementService = announcementService;
+  public void setAnnouncementsService(IAnnouncementsService announcementsService) {
+    this.announcementsService = announcementsService;
   }
 
   /**
    * <p>afterPropertiesSet.</p>
    */
   public void afterPropertiesSet() throws Exception {
-    topicEditor = new TopicEditor(announcementService);
+    topicEditor = new TopicEditor(announcementsService);
   }
 }

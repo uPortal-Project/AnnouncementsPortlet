@@ -33,6 +33,7 @@ import org.jasig.portlet.announcements.model.AnnouncementFilterType;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
@@ -52,18 +53,13 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 
   private Log log = LogFactory.getLog(getClass());
 
-  private IAnnouncementService announcementService;
+  private IAnnouncementsService announcementsService;
   private Topic emergencyTopic;
   private UserIdService userIdService;
 
-  /**
-   * <p>Setter for the field <code>announcementService</code>.</p>
-   *
-   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
-   */
   @Autowired
-  public void setAnnouncementService(IAnnouncementService announcementService) {
-    this.announcementService = announcementService;
+  public void setAnnouncementsService(IAnnouncementsService announcementsService) {
+    this.announcementsService = announcementsService;
   }
 
   /**
@@ -71,7 +67,8 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
    *
    * @param emergencyTopic a {@link org.jasig.portlet.announcements.model.Topic} object.
    */
-  @Resource(name = "emergencyTopic")
+  @Autowired(required = false)
+  @Qualifier("emergencyTopic")
   public void setEmergencyTopic(Topic emergencyTopic) {
     this.emergencyTopic = emergencyTopic;
     log.debug("Emergency Topic assigned successfully.");
@@ -96,7 +93,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
     // if the emergencyTopic exists, update it to reflect changes in the spring config
     Topic t = null;
     try {
-      t = announcementService.getEmergencyTopic();
+      t = announcementsService.getEmergencyTopic();
     } catch (Exception ex) {
       log.warn(
           "Could not load emergencyTopic from database (OK during unit tests or after dbinit): "
@@ -104,7 +101,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
     }
 
     if (t == null && emergencyTopic != null) {
-      announcementService.addOrSaveTopic(emergencyTopic);
+      announcementsService.addOrSaveTopic(emergencyTopic);
     } else {
       emergencyTopic = t;
     }
@@ -117,13 +114,13 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
     List<TopicSubscription> subscriptions = new ArrayList<>();
     List<TopicSubscription> subSaved = null;
     // must reload all topics each time, in case new ones were added by admins since last visit
-    List<Topic> allTopics = announcementService.getAllTopics();
+    List<Topic> allTopics = announcementsService.getAllTopics();
 
     if (request.getRemoteUser() == null) {
       subSaved = new ArrayList<>();
     } else {
       try {
-        subSaved = announcementService.getTopicSubscriptionFor(request);
+        subSaved = announcementsService.getTopicSubscriptionFor(request);
       } catch (Exception e) {
         log.error(
             "ERROR getting topic subscriptions for "
@@ -183,7 +180,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
               log.debug(
                   "Removing invalid TopicSubscription topic [" + topic.getId() + "] for " + userId);
             subSaved.remove(invalid);
-            announcementService.deleteTopicSubscription(invalid);
+            announcementsService.deleteTopicSubscription(invalid);
           }
           if (!topicSubscriptionExists(topic, subSaved)) {
             if (log.isDebugEnabled())
@@ -218,7 +215,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
             subSaved.remove(toRemove);
             // We're here because a DB record is no longer
             // allowable... remove from persistence as well!
-            announcementService.deleteTopicSubscription(toRemove);
+            announcementsService.deleteTopicSubscription(toRemove);
           }
         }
       }
@@ -227,7 +224,7 @@ public class UserConfiguredTopicSubscriptionService implements ITopicSubscriptio
 
       if (includeEmergency) {
         // add the emergency topic for everyone, but don't save the topicsubscription to the database since it's implied
-        emergencyTopic = announcementService.getEmergencyTopic();
+        emergencyTopic = announcementsService.getEmergencyTopic();
         subscriptions.add(new TopicSubscription(userId, emergencyTopic, Boolean.TRUE));
       }
 

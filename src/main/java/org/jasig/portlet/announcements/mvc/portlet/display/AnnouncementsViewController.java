@@ -47,7 +47,7 @@ import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 import org.jasig.portlet.announcements.model.UserRoles;
 import org.jasig.portlet.announcements.mvc.IViewNameSelector;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.jasig.portlet.announcements.service.ITopicSubscriptionService;
 import org.jasig.portlet.announcements.service.UserIdService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
@@ -136,7 +136,7 @@ public class AnnouncementsViewController {
   public static final String TOPICS_CACHE = "topicLists";
 
   @Autowired
-  private final IAnnouncementService announcementService = null;
+  private final IAnnouncementsService announcementsService = null;
   private final ObjectMapper mapper = new ObjectMapper();
   private final Log logger = LogFactory.getLog(getClass());
   @Autowired
@@ -613,7 +613,7 @@ public class AnnouncementsViewController {
   private Announcement getAnnouncementById(PortletRequest request, String announcementId)
       throws Exception {
     Long annId = Long.valueOf(announcementId);
-    Announcement announcement = announcementService.getAnnouncement(annId);
+    Announcement announcement = announcementsService.getAnnouncement(annId);
 
     if (!UserPermissionChecker.inRoleForTopic(
         request, UserRoles.AUDIENCE_ROLE_NAME, announcement.getParent())) {

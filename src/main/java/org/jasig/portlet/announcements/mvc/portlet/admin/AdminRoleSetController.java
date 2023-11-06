@@ -24,7 +24,7 @@ import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import org.jasig.portlet.announcements.model.RoleSelection;
 import org.jasig.portlet.announcements.model.Topic;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.jasig.portlet.announcements.service.IGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("VIEW")
 public class AdminRoleSetController {
 
-  @Autowired private IAnnouncementService announcementService;
+  @Autowired private IAnnouncementsService announcementsService;
   @Autowired private IGroupService groupService;
 
   /**
@@ -67,7 +67,7 @@ public class AdminRoleSetController {
       throws PortletException {
 
     if (!errors.hasErrors()) {
-      Topic topic = announcementService.getTopic(topicId);
+      Topic topic = announcementsService.getTopic(topicId);
 
       // Extract and save the USER members
       Set<String> oldGroupList = topic.getGroup(groupKey);
@@ -89,7 +89,7 @@ public class AdminRoleSetController {
       topic.setGroup(groupKey, newList);
 
       // save the topic to the database
-      announcementService.addOrSaveTopic(topic);
+      announcementsService.addOrSaveTopic(topic);
 
       response.setRenderParameter("topicId", topicId.toString());
       response.setRenderParameter("action", "showTopic");
@@ -111,7 +111,7 @@ public class AdminRoleSetController {
       throws PortletException {
 
     if (!model.containsAttribute("selection")) {
-      Topic topic = announcementService.getTopic(topicId);
+      Topic topic = announcementsService.getTopic(topicId);
       Set<String> group = topic.getGroup(groupKey);
 
       model.addAttribute("selection", new RoleSelection(group));
@@ -141,12 +141,12 @@ public class AdminRoleSetController {
       @RequestParam("userAdd") String userAdd)
       throws PortletException {
 
-    Topic topic = announcementService.getTopic(topicId);
+    Topic topic = announcementsService.getTopic(topicId);
     Set<String> updateGroup = topic.getGroup(groupKey);
 
     updateGroup.add("USER." + userAdd);
 
-    announcementService.addOrSaveTopic(topic);
+    announcementsService.addOrSaveTopic(topic);
 
     response.setRenderParameter("topicId", topicId.toString());
     response.setRenderParameter("groupKey", groupKey);
@@ -170,34 +170,22 @@ public class AdminRoleSetController {
       @RequestParam("userKey") String userKey)
       throws PortletException {
 
-    Topic topic = announcementService.getTopic(topicId);
+    Topic topic = announcementsService.getTopic(topicId);
     Set<String> updateGroup = topic.getGroup(groupKey);
 
     updateGroup.remove(userKey);
 
-    announcementService.addOrSaveTopic(topic);
+    announcementsService.addOrSaveTopic(topic);
 
     response.setRenderParameter("topicId", topicId.toString());
     response.setRenderParameter("groupKey", groupKey);
     response.setRenderParameter("action", "addMembers");
   }
 
-  /** @param announcementService the announcementService to set */
-  /**
-   * <p>Setter for the field <code>announcementService</code>.</p>
-   *
-   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
-   */
-  public void setAnnouncementService(IAnnouncementService announcementService) {
-    this.announcementService = announcementService;
+  public void setAnnouncementsService(IAnnouncementsService announcementsService) {
+    this.announcementsService = announcementsService;
   }
 
-  /** @param groupService the groupService to set */
-  /**
-   * <p>Setter for the field <code>groupService</code>.</p>
-   *
-   * @param groupService a {@link org.jasig.portlet.announcements.service.IGroupService} object.
-   */
   public void setGroupService(IGroupService groupService) {
     this.groupService = groupService;
   }

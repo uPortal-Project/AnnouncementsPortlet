@@ -21,7 +21,7 @@ package org.jasig.portlet.announcements.mvc;
 import java.beans.PropertyEditorSupport;
 import javax.portlet.PortletException;
 import org.jasig.portlet.announcements.model.Topic;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 
 /**
  * <p>TopicEditor class.</p>
@@ -31,15 +31,15 @@ import org.jasig.portlet.announcements.service.IAnnouncementService;
  */
 public class TopicEditor extends PropertyEditorSupport {
 
-  private IAnnouncementService announcementService;
+  private IAnnouncementsService announcementsService;
 
   /**
    * <p>Constructor for TopicEditor.</p>
    *
-   * @param service a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
+   * @param service a {@link org.jasig.portlet.announcements.service.IAnnouncementsService} object.
    */
-  public TopicEditor(IAnnouncementService service) {
-    this.announcementService = service;
+  public TopicEditor(IAnnouncementsService service) {
+    this.announcementsService = service;
   }
 
   /* (non-Javadoc)
@@ -63,7 +63,7 @@ public class TopicEditor extends PropertyEditorSupport {
   public void setAsText(String text) throws IllegalArgumentException {
     if (text != null && !"".equals(text)) {
       try {
-        super.setValue(announcementService.getTopic(Long.parseLong(text)));
+        super.setValue(announcementsService.getTopic(Long.parseLong(text)));
       } catch (PortletException e) {
         throw new IllegalArgumentException("Invalid Topic ID. Cannot convert to object.");
       }

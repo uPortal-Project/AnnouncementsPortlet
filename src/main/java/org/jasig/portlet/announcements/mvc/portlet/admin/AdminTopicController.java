@@ -36,7 +36,7 @@ import org.jasig.portlet.announcements.model.AnnouncementSortStrategy;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.UserRoles;
 import org.jasig.portlet.announcements.model.validators.TopicValidator;
-import org.jasig.portlet.announcements.service.IAnnouncementService;
+import org.jasig.portlet.announcements.service.IAnnouncementsService;
 import org.jasig.portlet.announcements.service.UserPermissionChecker;
 import org.jasig.portlet.announcements.service.UserPermissionCheckerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class AdminTopicController {
 
   private static final Log log = LogFactory.getLog(AdminTopicController.class);
 
-  @Autowired private IAnnouncementService announcementService;
+  @Autowired private IAnnouncementsService announcementsService;
 
   @Autowired private UserPermissionCheckerFactory userPermissionCheckerFactory = null;
 
@@ -86,7 +86,7 @@ public class AdminTopicController {
     if (!model.containsAttribute("topic")) {
       if (topicIdStr != null && !"".equals(topicIdStr)) {
         Long topicId = Long.parseLong(topicIdStr);
-        Topic t = announcementService.getTopic(topicId);
+        Topic t = announcementsService.getTopic(topicId);
         model.addAttribute("topic", t);
         if (log.isDebugEnabled()) log.debug("Adding existing topic to model: " + t.toString());
       } else {
@@ -133,16 +133,16 @@ public class AdminTopicController {
       // no id has been assigned by hibernate, so this must be a new topic
       if (!topic.hasId()) {
         topic.setCreator(request.getRemoteUser());
-        announcementService.addOrSaveTopic(topic);
+        announcementsService.addOrSaveTopic(topic);
       } else {
         Long id = topic.getId();
-        Topic oldTopic = announcementService.getTopic(id);
+        Topic oldTopic = announcementsService.getTopic(id);
 
         oldTopic.setTitle(topic.getTitle());
         oldTopic.setDescription(topic.getDescription());
         oldTopic.setAllowRss(topic.isAllowRss());
         oldTopic.setSubscriptionMethod(topic.getSubscriptionMethod());
-        announcementService.addOrSaveTopic(oldTopic);
+        announcementsService.addOrSaveTopic(oldTopic);
       }
       status.setComplete();
 
@@ -163,13 +163,13 @@ public class AdminTopicController {
   public void actionDeleteTopic(
       @RequestParam("topicId") String topicId, ActionRequest request, ActionResponse response)
       throws NumberFormatException, PortletException {
-    Topic topic = announcementService.getTopic(Long.parseLong(topicId));
+    Topic topic = announcementsService.getTopic(Long.parseLong(topicId));
 
     if (!UserPermissionChecker.inRoleForTopic(request, UserRoles.ADMIN_ROLE_NAME, topic)) {
       throw new UnauthorizedException("You do not have access to delete this topic!");
     }
 
-    announcementService.deleteTopic(topic);
+    announcementsService.deleteTopic(topic);
 
     response.setRenderParameter("action", "baseAdmin");
   }
@@ -190,7 +190,7 @@ public class AdminTopicController {
       throws NumberFormatException, PortletException {
 
     PortletPreferences prefs = request.getPreferences();
-    Topic topic = announcementService.getTopic(Long.parseLong(topicId));
+    Topic topic = announcementsService.getTopic(Long.parseLong(topicId));
 
     UserPermissionChecker upChecker =
         userPermissionCheckerFactory.createUserPermissionChecker(request, topic);
@@ -216,13 +216,7 @@ public class AdminTopicController {
     return "showTopic";
   }
 
-  /** @param announcementService the announcementService to set */
-  /**
-   * <p>Setter for the field <code>announcementService</code>.</p>
-   *
-   * @param announcementService a {@link org.jasig.portlet.announcements.service.IAnnouncementService} object.
-   */
-  public void setAnnouncementService(IAnnouncementService announcementService) {
-    this.announcementService = announcementService;
+  public void setAnnouncementsService(IAnnouncementsService announcementsService) {
+    this.announcementsService = announcementsService;
   }
 }

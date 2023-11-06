@@ -57,7 +57,7 @@ public class Topic {
 
   private static final Log logger = LogFactory.getLog(Topic.class);
 
-  private Set<Announcement> announcements;
+  private Set<Announcement> announcements = new HashSet<>();
 
   private Set<TopicSubscription> subscriptions;
 
@@ -439,6 +439,7 @@ public class Topic {
    */
   public void setAnnouncements(Set<Announcement> announcements) {
     this.announcements = announcements;
+    this.announcements.forEach(ann -> ann.setParent(this));
   }
 
   /** @param id the id to set */

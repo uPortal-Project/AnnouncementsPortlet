@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class AnnouncementCleanupThread extends Thread {
 
-  @Autowired private IAnnouncementService announcementService;
+  @Autowired private IAnnouncementsService announcementsService;
 
   private int hourToCheck = 3; // military time
   private int minuteToCheck = 0;
@@ -96,10 +96,10 @@ public class AnnouncementCleanupThread extends Thread {
 
         if (expireThreshold > 0) {
           log.info("Going to delete old announcements at " + now.toString());
-          announcementService.deleteAnnouncementsPastExpirationThreshold(expireThreshold);
+          announcementsService.deleteAnnouncementsPastExpirationThreshold(expireThreshold);
         } else {
           log.info("Going to delete expired announcements at " + now.toString());
-          announcementService.deleteAnnouncementsPastCurrentTime();
+          announcementsService.deleteAnnouncementsPastCurrentTime();
         }
 
         lastCheckTime = System.currentTimeMillis();

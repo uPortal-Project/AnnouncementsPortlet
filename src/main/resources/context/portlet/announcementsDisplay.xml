@@ -44,7 +44,6 @@
     <bean class="org.springframework.web.portlet.mvc.annotation.DefaultAnnotationHandlerMapping">
         <property name="interceptors">
             <list>
-                <ref bean="openSessionInViewInterceptor"/>
                 <bean class="org.jasig.portlet.announcements.mvc.portlet.MinimizedStateHandlerInterceptor"/>
             </list>
         </property>

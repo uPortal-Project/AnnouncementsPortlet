@@ -26,13 +26,13 @@ import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.model.TopicSubscription;
 
 /**
- * <p>IAnnouncementService interface.</p>
+ * <p>IAnnouncementsService interface.</p>
  *
  * @author Erik A. Olsson (eolsson@uci.edu)
  *     <p>$LastChangedBy$ $LastChangedDate$
  * @version $Id: $Id
  */
-public interface IAnnouncementService {
+public interface IAnnouncementsService {
 
   /**
    * <p>getAllTopics.</p>
@@ -63,25 +63,11 @@ public interface IAnnouncementService {
   public void persistTopic(Topic topic);
 
   /**
-   * <p>mergeTopic.</p>
-   *
-   * @param topic a {@link org.jasig.portlet.announcements.model.Topic} object.
-   */
-  public void mergeTopic(Topic topic);
-
-  /**
    * <p>addOrSaveAnnouncement.</p>
    *
    * @param ann a {@link org.jasig.portlet.announcements.model.Announcement} object.
    */
   public void addOrSaveAnnouncement(Announcement ann);
-
-  /**
-   * <p>mergeAnnouncement.</p>
-   *
-   * @param ann a {@link org.jasig.portlet.announcements.model.Announcement} object.
-   */
-  public void mergeAnnouncement(Announcement ann);
 
   /**
    * <p>getTopic.</p>
@@ -129,13 +115,6 @@ public interface IAnnouncementService {
    * @param subs a {@link java.util.List} object.
    */
   public void addOrSaveTopicSubscription(List<TopicSubscription> subs);
-
-  /**
-   * <p>persistTopicSubscription.</p>
-   *
-   * @param subs a {@link java.util.List} object.
-   */
-  public void persistTopicSubscription(List<TopicSubscription> subs);
 
   /**
    * <p>deleteTopic.</p>
