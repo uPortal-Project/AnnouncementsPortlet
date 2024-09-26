@@ -44,7 +44,7 @@ public class Role {
    */
   public Role(String name, boolean selected) {
     this.name = name;
-    this.selected = new Boolean(selected);
+    this.selected = selected;
   }
 
   /**
