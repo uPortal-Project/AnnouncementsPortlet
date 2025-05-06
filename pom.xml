@@ -387,6 +387,12 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.5.0</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.jasig.resourceserver</groupId>
@@ -508,6 +514,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
                 <configuration>
                     <warName>Announcements</warName>
                     <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
@@ -531,6 +538,7 @@
                 <version>2.22.2</version>
                 <configuration>
                     <workingDirectory>src/main/webapp</workingDirectory>
+                    <argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
             <!-- Plug-in to add lifecycles to support db-init, data-import, and data-export -->
