@@ -21,11 +21,6 @@
 <jsp:directive.include file="/WEB-INF/jsp/include.jsp"/>
 <c:set var="n"><portlet:namespace/></c:set>
 
-<c:if test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
-    <script src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
-    <script type="text/javascript" src="<rs:resourceURL value="/rs/jquery-migrate/jquery-migrate-1.2.1.min.js"/>"></script>
-    <script src="<rs:resourceURL value="/rs/jqueryui/1.10.3/jquery-ui-1.10.3.min.js"/>" type="text/javascript"></script>
-</c:if>
 <link href="<c:url value="/css/announcements.css"/>" rel="stylesheet" type="text/css" />
 
 <c:if test="${portalAdmin}">
@@ -37,68 +32,56 @@
 </c:if>
 
 <script type="text/javascript">
-    var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
-<c:choose>
-    <c:when test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
-        ${n}.jQuery = jQuery.noConflict(true)
-    </c:when>
-    <c:otherwise>
-        ${n}.jQuery = up.jQuery;
-    </c:otherwise>
-</c:choose>
-
-    /*  runs when the document is finished loading.  This prevents things like the 'div' from being fully created */
-    ${n}.jQuery(function () {
-        var $ = ${n}.jQuery; //reassign $ for normal use of jQuery
-        $(".anc-approvals .anc-approval-list-toggle").click(function(e) {
-            e.preventDefault();
-            $(".anc-my-approvals").toggleClass("hide");
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        var toggle = document.querySelector('.anc-approvals .anc-approval-list-toggle');
+        if (toggle) {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.anc-my-approvals').forEach(function(el) {
+                    el.classList.toggle('hide');
+                });
+            });
+        }
     });
 
-    function ${n}approval(el,topicId,annId) {
-        var $ = ${n}.jQuery;
-        $.post("<c:url value="/ajaxApprove"/>",
-        {
-            annId: annId,
-            approval: 'true'
-        },
-        function(data) {
-            switch(data.status) {
-                        case "0": //scheduled
-                        {
-                            $("#${n}scheduled_count_"+topicId).text(parseInt($("#${n}scheduled_count_"+topicId).text())+1);
-                            $("#${n}pending_count_"+topicId).text(parseInt($("#${n}pending_count_"+topicId).text())-1);
-                            break;
-                        }
-                        case "1": //expired
-                        {
-                            $("#${n}pending_count_"+topicId).text(parseInt($("#${n}pending_count_"+topicId).text())-1);
-                            break;
-                        }
-                        case 2: //showing
-                        {
-                            $("#${n}displaying_count_"+topicId).text(parseInt($("#${n}displaying_count_"+topicId).text())+1);
-                            $("#${n}pending_count_"+topicId).text(parseInt($("#${n}pending_count_"+topicId).text())-1);
-                            break;
-                        }
-                        case "3": //pending
-                        {
-                            break;
-                        }
-                    }
+    function ${n}approval(el, topicId, annId) {
+        fetch('<c:url value="/ajaxApprove"/>', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ annId: annId, approval: 'true' })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var scheduled = document.getElementById('${n}scheduled_count_' + topicId);
+            var pending = document.getElementById('${n}pending_count_' + topicId);
+            var displaying = document.getElementById('${n}displaying_count_' + topicId);
 
-                    var pendingApproval = parseInt($("#${n}approval_count").text())-1;
-                    if(pendingApproval > 0) {
-                        $("#${n}approval_count").text(pendingApproval);
-                    } else {
-                        $(".anc-approvals").hide();
-                    }
+            switch (String(data.status)) {
+                case '0': // scheduled
+                    scheduled.textContent = parseInt(scheduled.textContent) + 1;
+                    pending.textContent = parseInt(pending.textContent) - 1;
+                    break;
+                case '1': // expired
+                    pending.textContent = parseInt(pending.textContent) - 1;
+                    break;
+                case '2': // showing
+                    displaying.textContent = parseInt(displaying.textContent) + 1;
+                    pending.textContent = parseInt(pending.textContent) - 1;
+                    break;
+            }
 
-                    $(el).parent('li').remove();
-                },
-                "json"
-                );
+            var approvalCount = document.getElementById('${n}approval_count');
+            var remaining = parseInt(approvalCount.textContent) - 1;
+            if (remaining > 0) {
+                approvalCount.textContent = remaining;
+            } else {
+                document.querySelectorAll('.anc-approvals').forEach(function(el) {
+                    el.style.display = 'none';
+                });
+            }
+
+            el.closest('li').remove();
+        });
     }
 </script>
 

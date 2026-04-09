@@ -23,9 +23,6 @@
 
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
-<c:if test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
-    <script type="text/javascript" src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>"></script>
-</c:if>
 
     <div class="container-fluid announcements-container">
         <div class="row announcements-portlet-toolbar">
@@ -94,35 +91,20 @@
         </c:if>
     </div>
 
-<script type="text/javascript"><rs:compressJs>
-    var ${n} = ${n} || {};
-
-<c:choose>
-    <c:when test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
-        ${n}.jQuery = jQuery.noConflict(true)
-    </c:when>
-    <c:otherwise>
-        ${n}.jQuery = up.jQuery;
-    </c:otherwise>
-</c:choose>
-
-${n}.jQuery(function() {
-    var $ = ${n}.jQuery;
-
-    $(document).ready(function(){
-            $("#${n}Form").submit(function(){
-               $.post("<c:url value="/ajaxApprove"/>",
-                   {
-                       annId: "${announcement.id}",
-                       approval: true
-                   },
-                   function(){
-                       window.location = "<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ announcement.parent.id }"/></portlet:renderURL>";
-                       return false;
-                   }
-               );
-           });
-       });
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('${n}Form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                fetch('<c:url value="/ajaxApprove"/>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ annId: '${announcement.id}', approval: 'true' })
+                }).then(function() {
+                    window.location = '<portlet:renderURL><portlet:param name="action" value="showTopic"/><portlet:param name="topicId" value="${ announcement.parent.id }"/></portlet:renderURL>';
+                });
+            });
+        }
     });
-
-</rs:compressJs></script>
+</script>

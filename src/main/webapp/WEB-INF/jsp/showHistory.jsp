@@ -93,15 +93,24 @@
     </div>
 
 
-<script type="text/javascript" src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/js/jquery.tablesorter.min.js"/>"></script>
 <script type="text/javascript">
-var ${n} = ${n} || {};
-${n}.jQuery  = jQuery.noConflict(true);
-${n}.jQuery(document).ready(function(){
-		${n}.jQuery("#historyTable").tablesorter( {sortList: [[1,0], [2,0]]} );
-	}
-);
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('#historyTable th').forEach(function(th, i) {
+        th.style.cursor = 'pointer';
+        th.addEventListener('click', function() {
+            var tbody = th.closest('table').querySelector('tbody');
+            var rows = Array.from(tbody.querySelectorAll('tr'));
+            var asc = th.dataset.sort !== 'asc';
+            th.dataset.sort = asc ? 'asc' : 'desc';
+            rows.sort(function(a, b) {
+                var at = a.cells[i].textContent.trim();
+                var bt = b.cells[i].textContent.trim();
+                return asc ? at.localeCompare(bt) : bt.localeCompare(at);
+            });
+            rows.forEach(function(r) { tbody.appendChild(r); });
+        });
+    });
+});
 </script>
 
 </div>

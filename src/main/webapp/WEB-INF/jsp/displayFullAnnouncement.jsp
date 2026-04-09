@@ -23,39 +23,6 @@
 
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
-<script src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
-<script type="text/javascript" src="<rs:resourceURL value="/rs/jquery-migrate/jquery-migrate-1.2.1.min.js"/>"></script>
-<script src="<rs:resourceURL value="/rs/jqueryui/1.10.3/jquery-ui-1.10.3.min.js"/>" type="text/javascript"></script>
-<script src="<c:url value="/js/underscore-min.js"/>" type="text/javascript"></script>
-
-<script type="text/template" id="${n}template-attachment-display-item">
-    <div class="row">
-        <div class="col-md-12">
-            <div id="${n}attachment_display_${"<%="} attachment.id ${"%>"}">
-                <i class="fa fa-download"></i> <a href='${"<%="} attachment.path ${"%>"}'><span>${"<%="} attachment.filename ${"%>"}</span></a>
-            </div>
-        </div>
-    </div>
-</script>
-
-<script type="text/javascript">
-    var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
-    ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
-    ${n}._ = _.noConflict();
-
-    ${n}.jQuery(function () {
-        var $ = ${n}.jQuery; //reassign $ for normal use of jQuery
-        var _ = ${n}._;
-        var template = $('#${n}template-attachment-display-item').html();
-        _.templateSettings.variable = "attachment";
-
-        <c:forEach items="${announcement.attachments}" var="attachment" varStatus="status">
-            var ${n}attachment = ${attachment};
-            var compiled = _.template(template, ${attachment});
-            $("#${n}attachment-list").append(compiled);
-        </c:forEach>
-    });
-</script>
 
     <div class="container-fluid announcements-container">
         <div class="row announcements-portlet-toolbar">
@@ -96,7 +63,9 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div id="${n}attachment-list"></div>
+                    <c:forEach items="${announcement.attachments}" var="att">
+                        <div><i class="fa fa-download"></i> <a href="${att.path}"><c:out value="${att.filename}"/></a></div>
+                    </c:forEach>
                 </div>
             </div>
         </c:if>
