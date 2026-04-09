@@ -35,9 +35,9 @@
     <script type="text/javascript">
         // Adjust layout when container is narrow (e.g., portal customize drawer)
         document.addEventListener('DOMContentLoaded', function() {
-            var container = document.querySelector('#${n}container .announcements-container');
+            var container = document.getElementById('${n}container');
             if (container && container.offsetWidth < 970) {
-                document.querySelectorAll('#${n}container .announcements-summary-row > div').forEach(function(div) {
+                container.querySelectorAll('.announcements-summary-row > div').forEach(function(div) {
                     div.classList.remove('col-lg-6');
                     div.classList.add('col-lg-12');
                 });

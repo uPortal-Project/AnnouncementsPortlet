@@ -63,8 +63,8 @@
                                             </a>
                                             <br/><c:out value="${ann.abstractText}"/>
                                         </td>
-                                        <td><fmt:formatDate value="${ann.startDisplay}" dateStyle="short"/></td>
-                                        <td><fmt:formatDate value="${ann.endDisplay}" dateStyle="short"/></td>
+                                        <td data-sort-value="<fmt:formatDate value="${ann.startDisplay}" pattern="yyyy-MM-dd"/>"><fmt:formatDate value="${ann.startDisplay}" dateStyle="short"/></td>
+                                        <td data-sort-value="<fmt:formatDate value="${ann.endDisplay}" pattern="yyyy-MM-dd"/>"><fmt:formatDate value="${ann.endDisplay}" dateStyle="short"/></td>
                                         <td>
                                             <a href="<portlet:renderURL><portlet:param name="action" value="addAnnouncement"/><portlet:param name="editId" value="${ann.id}"/></portlet:renderURL>" title="<spring:message code="showHistory.viewedit"/>">
                                                 <span class="pull-right">
@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', function() {
             var asc = th.dataset.sort !== 'asc';
             th.dataset.sort = asc ? 'asc' : 'desc';
             rows.sort(function(a, b) {
-                var at = a.cells[i].textContent.trim();
-                var bt = b.cells[i].textContent.trim();
+                var at = a.cells[i].dataset.sortValue || a.cells[i].textContent.trim();
+                var bt = b.cells[i].dataset.sortValue || b.cells[i].textContent.trim();
                 return asc ? at.localeCompare(bt) : bt.localeCompare(at);
             });
             rows.forEach(function(r) { tbody.appendChild(r); });

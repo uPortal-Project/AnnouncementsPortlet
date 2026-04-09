@@ -50,11 +50,11 @@
             if (newValue === 'true') {
                 switchEl.querySelector('i').className = messages[6];
                 switchEl.title = messages[4];
-                switchEl.href = 'javascript:${n}approval(' + id + ",'false');";
+                switchEl.href = "javascript:${n}approval(" + id + ", 'false');";
             } else {
                 switchEl.querySelector('i').className = messages[7];
                 switchEl.title = messages[5];
-                switchEl.href = 'javascript:${n}approval(' + id + ",'true');";
+                switchEl.href = "javascript:${n}approval(" + id + ", 'true');";
             }
             statusEl.style.backgroundColor = colors[data.status];
             statusEl.textContent = messages[data.status];

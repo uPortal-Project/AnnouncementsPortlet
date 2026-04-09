@@ -63,9 +63,24 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <c:forEach items="${announcement.attachments}" var="att">
-                        <div><i class="fa fa-download"></i> <a href="${att.path}"><c:out value="${att.filename}"/></a></div>
-                    </c:forEach>
+                    <div id="${n}attachment-list"></div>
+                    <script type="text/javascript">
+                        (function() {
+                            var attachments = [];
+                            <c:forEach items="${announcement.attachments}" var="att">
+                            attachments.push(<c:out value="${att}" escapeXml="false"/>);
+                            </c:forEach>
+                            var container = document.getElementById('${n}attachment-list');
+                            attachments.forEach(function(att) {
+                                if (!att || !att.path || !att.filename) return;
+                                var div = document.createElement('div');
+                                div.innerHTML = '<i class="fa fa-download"></i> <a href="' +
+                                    att.path.replace(/"/g, '&quot;') + '">' +
+                                    att.filename.replace(/</g, '&lt;') + '</a>';
+                                container.appendChild(div);
+                            });
+                        })();
+                    </script>
                 </div>
             </div>
         </c:if>
