@@ -55,11 +55,9 @@ public class ThemeViewNameSelector implements IViewNameSelector {
       throw new IllegalArgumentException(msg);
     }
 
-    if (isMobile(req)) {
-      return baseViewName.concat(".").concat(mobileKey);
-    } else {
-      return baseViewName;
-    }
+    // Mobile-specific views (jqm, mobile) have been removed.
+    // The base views use responsive Bootstrap layouts for all devices.
+    return baseViewName;
   }
 
   /**
