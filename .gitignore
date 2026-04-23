@@ -16,3 +16,5 @@ pom.xml.versionsBackup
 /node_modules
 Gruntfile.js
 package.json
+.sdkmanrc
+.vscode/

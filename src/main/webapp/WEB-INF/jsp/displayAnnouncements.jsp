@@ -32,77 +32,18 @@
 </style>
 
 <c:if test="${hideAbstract}">
-    <script src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
-    <script type="text/javascript" src="<rs:resourceURL value="/rs/jquery-migrate/jquery-migrate-1.2.1.min.js"/>"></script>
-    <script src="<rs:resourceURL value="/rs/jqueryui/1.10.3/jquery-ui-1.10.3.min.js"/>" type="text/javascript"></script>
-    <script src="<c:url value="/rs/jquery-tooltip/1.3/jquery.tooltip.js"/>" type="text/javascript"></script>
     <script type="text/javascript">
-        var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
-        ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
-
-        /*  runs when the document is finished loading.  This prevents things like the 'div' from being fully created */
-        ${n}.jQuery(function () {
-            var $ = ${n}.jQuery; //reassign $ for normal use of jQuery
-
-            $("#${n}container .announcement-link-tooltip").tooltip({
-                showURL: false,
-                position: { offset: "15 15" }
-            });
-
-            // For announcement display, the following code watches the div size of the
-            // announcements container and readjust the size of the announcements div
-            // to match the width of uPortal customize drawer layout width
-            var watchingDiv = $(".announcements-container");
-            var changingDiv = $(".announcements-summary-row > div");
-            var classToRemove = "col-lg-6";
-            var classToAdd = "col-lg-12";
-
-            // Watch a div and return the width of it
-            function watchDivSize (div) {
-                var divSize = div.width();
-
-                return divSize;
-            }
-
-            // If the width is less than 970 pixels, swap out Bootstrap classes
-            function adjustAnnDisplay(divWidth) {
-                if(divWidth < 970) {
-                    changingDiv.removeClass(classToRemove);
-                    changingDiv.addClass(classToAdd);
-                }
-            }
-
-            // Make the initial watch and adjustment
-            adjustAnnDisplay(watchDivSize(watchingDiv));
-
-            $(document).ready(function() {
-                $(window).resize(function() {
-                    //adjustAnnDisplay(watchDivSize(watchingDiv));
+        // Adjust layout when container is narrow (e.g., portal customize drawer)
+        document.addEventListener('DOMContentLoaded', function() {
+            var container = document.getElementById('${n}container');
+            if (container && container.offsetWidth < 970) {
+                container.querySelectorAll('.announcements-summary-row > div').forEach(function(div) {
+                    div.classList.remove('col-lg-6');
+                    div.classList.add('col-lg-12');
                 });
-            });
+            }
         });
     </script>
-
-    <style>
-        #tooltip {
-            padding:8px;
-            opacity: 0.85;
-            position:absolute;
-            z-index:9999;
-            -o-box-shadow: 0 0 5px #aaa;
-            -moz-box-shadow: 0 0 5px #aaa;
-            -webkit-box-shadow: 0 0 5px #aaa;
-            box-shadow: 0 0 5px #aaa;
-            max-width: 400px;
-            background-color: #ffffff;
-            background-image: none;
-            border: 1px solid #111;
-            border-width:2px;
-            font-size: 11px;
-            font-family: inherit;
-        }
-        #tooltip h3, #tooltip div { margin: 0; }
-    </style>
 </c:if>
 
 <div id="${n}container" class="container-fluid announcements-container">

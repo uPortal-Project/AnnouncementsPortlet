@@ -27,45 +27,6 @@
 
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
-<script src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
-<script type="text/javascript" src="<rs:resourceURL value="/rs/jquery-migrate/jquery-migrate-1.2.1.min.js"/>"></script>
-<script src="<rs:resourceURL value="/rs/jqueryui/1.10.3/jquery-ui-1.10.3.min.js"/>" type="text/javascript"></script>
-<script src="<c:url value='/rs/jquery-tooltip/1.3/jquery.tooltip.js'/>" type="text/javascript"></script>
-
-<script type="text/javascript">
-    var ${n} = ${n} || {}; //create a unique variable to assign our namespace too
-    ${n}.jQuery = jQuery.noConflict(true); //assign jQuery to this namespace
-
-    /*  runs when the document is finished loading.  This prevents things like the 'div' from being fully created */
-    ${n}.jQuery(function () {
-        var $ = ${n}.jQuery; //reassign $ for normal use of jQuery
-
-        $(".announcements-portlet-sub-methods label").tooltip({
-            showURL: false,
-            position: { offset: "15 15" }
-        });
-    });
-</script>
-<style>
-    #tooltip {
-        padding:8px;
-        opacity: 0.85;
-        position:absolute;
-        z-index:9999;
-        -o-box-shadow: 0 0 5px #aaa;
-        -moz-box-shadow: 0 0 5px #aaa;
-        -webkit-box-shadow: 0 0 5px #aaa;
-        box-shadow: 0 0 5px #aaa;
-        max-width: 400px;
-        background-color: #ffffff;
-        background-image: none;
-        border: 1px solid #111;
-        border-width:2px;
-        font-size: 11px;
-        font-family: inherit;
-    }
-    #tooltip h3, #tooltip div { margin: 0; }
-</style>
 <div class="container-fluid announcements-container">
     <div class="row announcements-portlet-toolbar">
         <div class="col-md-8 no-col-padding">

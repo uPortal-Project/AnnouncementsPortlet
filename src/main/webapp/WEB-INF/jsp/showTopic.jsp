@@ -23,58 +23,44 @@
 
 <link href="<c:url value='/css/announcements.css'/>" rel="stylesheet" type="text/css"/>
 
-<c:if test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
-    <script type="text/javascript" src="<rs:resourceURL value="/rs/jquery/1.11.0/jquery-1.11.0.min.js"/>"></script>
-</c:if>
-
 <script type="text/javascript">
-    var ${n} = ${n} || {};
-    <c:choose>
-        <c:when test="${portletPreferencesValues['includeJQuery'][0] != 'false'}">
-            ${n}.jQuery = jQuery.noConflict(true)
-        </c:when>
-        <c:otherwise>
-            ${n}.jQuery = up.jQuery;
-        </c:otherwise>
-    </c:choose>
-
     function ${n}_delete() {
         return window.confirm('<spring:message code="show.deleteAnn"/>');
     }
     function ${n}approval(id, newValue) {
-        var $ = ${n}.jQuery;
-        var messages = new Array("<spring:message code="show.scheduled"/>",
-                "<spring:message code="show.expired"/>",
-                "<spring:message code="show.showing"/>",
-                "<spring:message code="show.pending"/>",
-                "<spring:message code="show.unpublish"/>",
-                "<spring:message code="show.publish"/>",
-                "fa fa-stop",
-                "fa fa-check-square");
-        var colors = new Array("#070", "#c00", "#070", "#c00");
+        var messages = ['<spring:message code="show.scheduled"/>',
+                '<spring:message code="show.expired"/>',
+                '<spring:message code="show.showing"/>',
+                '<spring:message code="show.pending"/>',
+                '<spring:message code="show.unpublish"/>',
+                '<spring:message code="show.publish"/>',
+                'fa fa-stop',
+                'fa fa-check-square'];
+        var colors = ['#070', '#c00', '#070', '#c00'];
 
-        $.post("<c:url value="/ajaxApprove"/>",
-                {
-                    annId: id,
-                    approval: newValue
-                },
-                function(data) {
-                    if (newValue == 'true') {
-                        $("#${n}annSwitch-"+id+" > i").attr("class", messages[6]);
-                        $("#${n}annSwitch-"+id).attr("title", messages[4]);
-                        $("#${n}annSwitch-"+id).attr("href", "javascript:${n}approval("+id+",'false');");
-                    } else {
-                        $("#${n}annSwitch-"+id+" > i").attr("class", messages[7]);
-                        $("#${n}annSwitch-"+id).attr("title", messages[5]);
-                        $("#${n}annSwitch-"+id).attr("href", "javascript:${n}approval("+id+",'true');");
-                    }
-                    $("#${n}annStatus-"+id).css("background-color", colors[data.status]);
-                    $("#${n}annStatus-"+id).empty().append(messages[data.status]);
-                },
-                "json"
-        );
+        fetch('<c:url value="/ajaxApprove"/>', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ annId: id, approval: newValue })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var switchEl = document.getElementById('${n}annSwitch-' + id);
+            var statusEl = document.getElementById('${n}annStatus-' + id);
+            if (newValue === 'true') {
+                switchEl.querySelector('i').className = messages[6];
+                switchEl.title = messages[4];
+                switchEl.href = "javascript:${n}approval(" + id + ", 'false');";
+            } else {
+                switchEl.querySelector('i').className = messages[7];
+                switchEl.title = messages[5];
+                switchEl.href = "javascript:${n}approval(" + id + ", 'true');";
+            }
+            statusEl.style.backgroundColor = colors[data.status];
+            statusEl.textContent = messages[data.status];
+        });
     }
-    </script>
+</script>
 
 <div class="container-fluid announcements-container">
     <div class="row announcements-portlet-toolbar">

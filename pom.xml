@@ -38,7 +38,6 @@
         <hibernate.version>5.6.15.Final</hibernate.version>
         <hsqldb.version>2.7.0</hsqldb.version>
         <persistence-api.version>2.2</persistence-api.version>
-        <resource-server.version>1.5.2</resource-server.version>
         <spring.version>4.3.30.RELEASE</spring.version>
 
         <!-- The JDBC Driver used by the portlet -->
@@ -257,6 +256,11 @@
 
         <!-- Utility libraries -->
         <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.17.1</version>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
         </dependency>
@@ -350,44 +354,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.jasig.resourceserver</groupId>
-            <artifactId>resource-server-content</artifactId>
-            <version>${resource-server.version}</version>
-            <type>war</type>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jasig.resourceserver</groupId>
-            <artifactId>resource-server-utils</artifactId>
-            <version>${resource-server.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.sf.ehcache</groupId>
-                    <artifactId>ehcache-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.sf.ehcache</groupId>
-                    <artifactId>ehcache-web</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-web</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-beans</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -454,17 +420,6 @@
                 <configuration>
                     <warName>Announcements</warName>
                     <webXml>${basedir}/src/main/webapp/WEB-INF/web.xml</webXml>
-                    <overlays>
-                        <overlay>
-                            <groupId>org.jasig.resourceserver</groupId>
-                            <artifactId>resource-server-content</artifactId>
-                            <includes>
-                                <include>rs/jquery/1.11.0/</include>
-                                <include>rs/jquery-migrate/</include>
-                                <include>rs/jqueryui/1.10.3/</include>
-                            </includes>
-                        </overlay>
-                    </overlays>
                 </configuration>
             </plugin>
 
@@ -723,7 +678,7 @@
                         <configuration>
                             <rules>
                                 <requireJavaVersion>
-                                    <version>1.8</version>
+                                    <version>11</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
