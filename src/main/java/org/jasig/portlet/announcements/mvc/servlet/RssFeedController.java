@@ -40,8 +40,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jasig.portlet.announcements.model.Announcement;
 import org.jasig.portlet.announcements.model.Topic;
 import org.jasig.portlet.announcements.mvc.portlet.display.AnnouncementsViewController;
@@ -252,11 +252,11 @@ public class RssFeedController {
                 for (String attachment : attachments) {
                     final JsonNode json = objectMapper.readTree(attachment);
                     final SyndEnclosure se = new SyndEnclosureImpl();
-                    final String enclosureUrl = urlPrefix + json.get(PATH_ATTRIBUTE).getTextValue();
+                    final String enclosureUrl = urlPrefix + json.get(PATH_ATTRIBUTE).textValue();
                     se.setUrl(enclosureUrl);
                     se.setType(
                             fileTypeMap.getContentType(
-                                    json.get(FILENAME_ATTRIBUTE).getTextValue()));
+                                    json.get(FILENAME_ATTRIBUTE).textValue()));
                     enclosures.add(se);
                 }
                 entry.setEnclosures(enclosures);
