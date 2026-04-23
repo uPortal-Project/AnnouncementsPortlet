@@ -27,10 +27,10 @@
     <portlet:param name="action" value="updateConfiguration"/>
 </portlet:actionURL>
 
-<div class="fl-widget portlet" role="section">
+<div class="portlet" role="section">
 
     <!-- Portlet Body -->
-    <div class="fl-widget-content portlet-body" role="main">
+    <div class="portlet-body" role="main">
         <form:form action="${ formUrl }" method="POST" commandName="config" htmlEscape="false">
             <!-- General Configuration Section -->
             <div class="portlet-section" role="region">
