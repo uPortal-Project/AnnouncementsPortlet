@@ -22,9 +22,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
-        <groupId>org.jasig.parent</groupId>
-        <artifactId>jasig-parent</artifactId>
-        <version>41</version>
+        <groupId>org.jasig.portlet</groupId>
+        <artifactId>uportal-portlet-parent</artifactId>
+        <version>46</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -82,12 +82,6 @@
     </scm>
 
     <dependencies>
-
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.2</version>
-        </dependency>
 
         <dependency>
             <groupId>javax.xml.bind</groupId>
@@ -443,6 +437,15 @@
                 <version>Hopper-SR3</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <!-- uportal-portlet-parent:46 pins spring-data-jpa to 2.7.18, which requires
+                 Spring Framework 5.3.x. This portlet still runs on Spring 4.3.x, so override
+                 spring-data-jpa to the version declared by the Hopper-SR3 release train BOM
+                 imported above. -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>1.10.3.RELEASE</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
