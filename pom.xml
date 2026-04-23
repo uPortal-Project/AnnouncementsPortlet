@@ -368,18 +368,20 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-releasetrain</artifactId>
-                <version>Hopper-SR3</version>
+                <version>Ingalls-SR23</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-            <!-- uportal-portlet-parent:46 pins spring-data-jpa to 2.7.18, which requires
+            <!-- uportal-portlet-parent:48 pins spring-data-jpa to 2.7.18, which requires
                  Spring Framework 5.3.x. This portlet still runs on Spring 4.3.x, so override
-                 spring-data-jpa to the version declared by the Hopper-SR3 release train BOM
-                 imported above. -->
+                 spring-data-jpa to the version declared by the Ingalls-SR23 release train
+                 BOM imported above. Ingalls is the last spring-data release train that
+                 supports Spring 4.3, and SR23 is its last patch (includes the security
+                 fix called out by CVE-2024-22259 / GHSA-871m-92cj-85g6). -->
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
-                <version>1.10.3.RELEASE</version>
+                <version>1.11.23.RELEASE</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
