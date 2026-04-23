@@ -38,7 +38,7 @@
         <hibernate.version>5.6.15.Final</hibernate.version>
         <hsqldb.version>2.7.0</hsqldb.version>
         <persistence-api.version>2.2</persistence-api.version>
-        <spring.version>4.3.30.RELEASE</spring.version>
+        <spring.version>7.0.7</spring.version>
 
         <!-- The JDBC Driver used by the portlet -->
         <jdbc.groupId>org.hsqldb</jdbc.groupId>
