@@ -32,11 +32,6 @@
       ],
       "allowedVersions": "< 6.0",
       "description": "Pinned to Hibernate 5.6.x. Hibernate 6+ requires Jakarta EE (incompatible with javax.servlet) and Java 17+."
-    },
-    {
-      "matchPackageNames": ["org.jasig.portlet.notification:notification-portlet-api"],
-      "enabled": false,
-      "description": "Notification API v4 requires migrating off Jackson 1.x (org.codehaus.jackson) in RssFeedController. Re-enable once that migration lands."
     }
   ]
 }
