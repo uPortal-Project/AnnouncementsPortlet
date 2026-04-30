@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.jasig.portlet</groupId>
         <artifactId>uportal-portlet-parent</artifactId>
-        <version>48</version>
+        <version>49</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -393,26 +393,22 @@
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
-                    <basedir>${basedir}</basedir>
-                    <header>${jasig-short-license-url}</header>
-                    <aggregate>true</aggregate>
+                    <!--
+                      | Parent v49 provides version, header URL, basedir,
+                      | aggregate, strictCheck, and the standard excludes/
+                      | mappings (.gitignore, .idea/**, overlays/**, LICENSE,
+                      | NOTICE, **/src/main/webapp/rs/**, target/**,
+                      | release.properties, plus tld/tag/xjb/etc mappings).
+                      | Local block keeps only the AnnouncementsPortlet-
+                      | specific webapp asset excludes; <less> mapping drops
+                      | so we inherit parent's SLASHSTAR_STYLE.
+                    +-->
                     <excludes>
-                        <exclude>.gitignore</exclude>
-                        <exclude>.idea/**</exclude>  <!-- for intelliJ Idea -->
-                        <exclude>overlays/**</exclude>  <!-- for intelliJ Idea -->
-                        <exclude>LICENSE</exclude>
-                        <exclude>NOTICE</exclude>
                         <exclude>**/src/main/webapp/js/**</exclude>
-                        <exclude>**/src/main/webapp/rs/**</exclude>
                         <exclude>**/src/main/webapp/date-picker/**</exclude>
                         <exclude>**/src/main/webapp/tinymce/**</exclude>
                         <exclude>**/src/main/webapp/fonts/**</exclude>
                     </excludes>
-                    <mapping>
-                        <tld>XML_STYLE</tld>
-                        <tag>DYNASCRIPT_STYLE</tag>
-                        <less>DOUBLESLASH_STYLE</less>
-                    </mapping>
                 </configuration>
             </plugin>
 
