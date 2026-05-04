@@ -35,7 +35,7 @@
     <version>2.5.4-SNAPSHOT</version>
 
     <properties>
-        <hibernate.version>5.6.15.Final</hibernate.version>
+        <hibernate.version>7.3.3.Final</hibernate.version>
         <hsqldb.version>2.7.0</hsqldb.version>
         <persistence-api.version>2.2</persistence-api.version>
         <spring.version>4.3.30.RELEASE</spring.version>
