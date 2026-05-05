@@ -294,7 +294,7 @@
         <dependency>
             <groupId>org.jasig.portal</groupId>
             <artifactId>uPortal-spring</artifactId>
-            <version>5.17.3</version>
+            <version>5.17.5</version>
             <type>jar</type>
 	    <exclusions>
                 <exclusion>
