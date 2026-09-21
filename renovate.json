@@ -8,9 +8,19 @@
       "description": "uPortal runs JSR-286 (Portlet API 2.0). Portlet API 3.x (JSR-362) is a different container contract and is not supported."
     },
     {
-      "matchPackagePrefixes": ["org.springframework:", "org.springframework.data:"],
+      "matchPackagePrefixes": ["org.springframework:"],
       "allowedVersions": "< 5.0",
       "description": "This portlet is pinned to Spring Framework 4.3.x. Spring 5+ requires a coordinated migration; Spring 6+ additionally needs Jakarta EE + Java 17+."
+    },
+    {
+      "matchPackagePrefixes": ["org.springframework.data:"],
+      "allowedVersions": "< 2.0",
+      "description": "Spring Data uses a different version scale than Spring Framework: the 1.x line (e.g. spring-data-jpa 1.11.x, Ingalls train) pairs with Spring 4.3.x. Spring Data 2.x needs Spring 5, and 3.x/4.x need Spring 6 + Jakarta Persistence + Java 17. A '< 5.0' cap (correct for the framework) wrongly admits spring-data-jpa 4.x, so Spring Data needs its own '< 2.0' ceiling."
+    },
+    {
+      "matchPackageNames": ["org.springframework.data:spring-data-releasetrain"],
+      "enabled": false,
+      "description": "spring-data-releasetrain uses codename versioning (e.g. Ingalls-SR23) that Renovate cannot reconcile with numeric versions; it proposes nonsensical downgrades like 1.4.6.RELEASE. Disable updates for this BOM import."
     },
     {
       "matchPackagePrefixes": ["org.hibernate:", "org.hibernate.orm:"],
