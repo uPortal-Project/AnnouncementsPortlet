@@ -46,4 +46,4 @@ jobs:
           distribution: temurin
           java-version: 11
       - name: Build and Test
-        run: mvn -B package
+        run: ./mvnw -B package
