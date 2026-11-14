@@ -54,6 +54,11 @@
       "matchPackageNames": ["javax.servlet:javax.servlet-api"],
       "allowedVersions": "< 4.0",
       "description": "uPortal-start runs on Tomcat 8.5/9 which serves the Servlet 3.1 spec. Servlet API 5+ is in the Jakarta EE namespace and incompatible with this portlet's javax.servlet imports."
+    },
+    {
+      "matchDatasources": ["java-version"],
+      "allowedVersions": "< 12",
+      "description": "This portlet targets Java 11, and CI builds on Java 11 to match. Moving CI's setup-java to a newer JDK (e.g. 25) is a deliberate platform migration, not a routine dependency bump; Spring 4.3.x and Hibernate 5.6.x pin the portlet to the javax/Java 11 line."
     }
   ]
 }
